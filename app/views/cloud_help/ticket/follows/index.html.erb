@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ticket Follows</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ticket_follows.each do |ticket_follow| %>
+      <tr>
+        <td><%= link_to 'Show', ticket_follow %></td>
+        <td><%= link_to 'Edit', edit_ticket_follow_path(ticket_follow) %></td>
+        <td><%= link_to 'Destroy', ticket_follow, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ticket Follow', new_ticket_follow_path %>
