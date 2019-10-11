@@ -21,22 +21,8 @@ Building a better future, one line of code at a time.
 @license  Propietary - all rights reserved.
 @version  GIT: 0.1.0 alpha
 
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+//  · Public website template
+// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 */
 
-
-// · Import main app
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCloud/vue/app-single'
-
-
-
-// · Import apps and components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "dashboard/default")
+@import 'leslicloud/templates/application';

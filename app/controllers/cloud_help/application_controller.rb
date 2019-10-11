@@ -1,7 +1,7 @@
 module CloudHelp
     class ApplicationController < LesliApplicationController
         protect_from_forgery with: :exception
-        #before_action :check_account
+        before_action :check_account
         
         def check_account
 

@@ -1,0 +1,8 @@
+%nav.module-navigation.navbar.is-transparent
+    #header-module-navbar.navbar-menu
+        .navbar-start
+            = link_to "Dashboards", root_path, class: "navbar-item"
+            = link_to "Tickets", tickets_path, class: "navbar-item"
+        
+        .navbar-end
+            %router-link{ :to => "/new", :class => "navbar-item" } Create ticket

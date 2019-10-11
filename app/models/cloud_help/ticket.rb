@@ -1,7 +1,4 @@
 module CloudHelp
-  module Ticket
-    def self.table_name_prefix
-      'cloud_help_ticket_'
+    class Ticket  < ApplicationRecord
     end
-  end
 end

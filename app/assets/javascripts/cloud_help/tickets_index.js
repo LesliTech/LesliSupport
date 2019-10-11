@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 47);
+/******/ 	return __webpack_require__(__webpack_require__.s = 46);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -29424,8 +29424,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(9)))
 
 /***/ }),
-/* 46 */,
-/* 47 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29469,13 +29468,7 @@ var notify = __webpack_require__(24);
 // EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
 var chatbox = __webpack_require__(25);
 
-// CONCATENATED MODULE: ./app/vue/app-single.js
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+// CONCATENATED MODULE: ./app/vue/app-spa.js
 /*
 Lesli
 
@@ -29532,23 +29525,190 @@ vue_default.a.use(http["a" /* default */]);
 vue_default.a.use(cable["a" /* default */]); // · Vue app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-/* harmony default export */ var app_single = (function (module, app) {
-  var components = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+/* harmony default export */ var app_spa = (function (module, app, base_path) {
+  var routes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
   functions_document["a" /* default */].ready(function () {
     var cloud = new vue_default.a({
       components: {
         'component-layout-header': header["a" /* default */],
         'component-layout-notify': notify["a" /* default */],
         'component-layout-chatbox': chatbox["a" /* default */]
-      }
+      },
+      router: new vue_router_esm["a" /* default */]({
+        mode: "history",
+        base: base_path,
+        routes: routes
+      })
     });
-    cloud.$options.components = _objectSpread({}, cloud.$options.components, {}, components);
     cloud.$mount("#lesli-cloud-app");
     if (false) {}
     if (true) browser_default.a.info(app, module);
   });
 });
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/dashboards/default.js
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/list.vue?vue&type=template&id=67dfcb03&
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "section" }, [_vm._v("\n    list :)\n")])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/list.vue?vue&type=template&id=67dfcb03&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/list.vue?vue&type=script&lang=js&
+/* harmony default export */ var listvue_type_script_lang_js_ = ({});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/list.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_listvue_type_script_lang_js_ = (listvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/list.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_listvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "engines/CloudHelp/app/vue/tickets/components/list.vue"
+/* harmony default export */ var list = (component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=template&id=34e017cb&
+var newvue_type_template_id_34e017cb_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "section" }, [_vm._v("\n    new :)\n")])
+}
+var newvue_type_template_id_34e017cb_staticRenderFns = []
+newvue_type_template_id_34e017cb_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=template&id=34e017cb&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=script&lang=js&
+/* harmony default export */ var newvue_type_script_lang_js_ = ({});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_newvue_type_script_lang_js_ = (newvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/new.vue
+
+
+
+
+
+/* normalize component */
+
+var new_component = Object(componentNormalizer["a" /* default */])(
+  components_newvue_type_script_lang_js_,
+  newvue_type_template_id_34e017cb_render,
+  newvue_type_template_id_34e017cb_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var new_api; }
+new_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/new.vue"
+/* harmony default export */ var components_new = (new_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/edit.vue?vue&type=template&id=7727f26f&
+var editvue_type_template_id_7727f26f_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "section" }, [_vm._v("\n    edit :)\n")])
+}
+var editvue_type_template_id_7727f26f_staticRenderFns = []
+editvue_type_template_id_7727f26f_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/edit.vue?vue&type=template&id=7727f26f&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/edit.vue?vue&type=script&lang=js&
+/* harmony default export */ var editvue_type_script_lang_js_ = ({});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/edit.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_editvue_type_script_lang_js_ = (editvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/edit.vue
+
+
+
+
+
+/* normalize component */
+
+var edit_component = Object(componentNormalizer["a" /* default */])(
+  components_editvue_type_script_lang_js_,
+  editvue_type_template_id_7727f26f_render,
+  editvue_type_template_id_7727f26f_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var edit_api; }
+edit_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/edit.vue"
+/* harmony default export */ var edit = (edit_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=template&id=0378ade2&
+var showvue_type_template_id_0378ade2_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "section" }, [_vm._v("\n    show :)\n")])
+}
+var showvue_type_template_id_0378ade2_staticRenderFns = []
+showvue_type_template_id_0378ade2_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=template&id=0378ade2&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=script&lang=js&
+/* harmony default export */ var showvue_type_script_lang_js_ = ({});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_showvue_type_script_lang_js_ = (showvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/show.vue
+
+
+
+
+
+/* normalize component */
+
+var show_component = Object(componentNormalizer["a" /* default */])(
+  components_showvue_type_script_lang_js_,
+  showvue_type_template_id_0378ade2_render,
+  showvue_type_template_id_0378ade2_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var show_api; }
+show_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/show.vue"
+/* harmony default export */ var show = (show_component.exports);
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/index.js
 /*
 Lesli
 
@@ -29579,10 +29739,26 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
  // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+
+
+
+
+ // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-app_single("CloudHelp", "dashboard/default");
+app_spa("CloudHelp", "dashboard/default", "help/tickets", [{
+  path: "/",
+  component: list
+}, {
+  path: "/new",
+  component: components_new
+}, {
+  path: "/:id/edit",
+  component: edit
+}, {
+  path: "/:id/show",
+  component: show
+}]);
 
 /***/ })
 /******/ ]);

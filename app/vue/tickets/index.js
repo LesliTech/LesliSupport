@@ -28,15 +28,31 @@ Building a better future, one line of code at a time.
 
 // · Import main app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCloud/vue/app-single'
+import app from 'LesliCloud/vue/app-spa'
 
 
 
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentList from './components/list.vue'
+import componentNew from './components/new.vue'
+import componentEdit from './components/edit.vue'
+import componentShow from './components/show.vue'
 
 
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "dashboard/default")
+app("CloudHelp", "dashboard/default", "help/tickets", [{
+    path: "/",
+    component: componentList,
+},{
+    path: "/new",
+    component: componentNew,
+},{
+    path: "/:id/edit",
+    component: componentEdit,
+},{
+    path: "/:id/show",
+    component: componentShow,
+}])
