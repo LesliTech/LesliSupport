@@ -12,6 +12,10 @@ CloudHelp::Engine.routes.draw do
         resources :details
     end
 
+    namespace :api do
+        resources :ticket
+    end
+
     resources :tickets
     resources :slas
     resources :ticket_types
@@ -21,8 +25,6 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_categories
     resources :ticket_tags
     
-
-    scope :api do
-    end
+    #get '/api/tickets', to: 'tickets#api_list'
 
 end

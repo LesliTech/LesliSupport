@@ -27422,276 +27422,6 @@ use(Buefy);
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/header.vue?vue&type=template&id=2c7eec86&
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("header", [
-    _c("nav", { staticClass: "navbar is-transparent" }, [
-      _c(
-        "div",
-        { staticClass: "navbar-menu", attrs: { id: "header-main-navbar" } },
-        [
-          _c("div", { staticClass: "navbar-start" }, [
-            _c(
-              "button",
-              {
-                staticClass: "button is-white",
-                attrs: { type: "button" },
-                on: { click: _vm.emitSidenavShow }
-              },
-              [_c("i", { staticClass: "fas fa-bars" })]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "button is-white",
-                attrs: { disabled: !_vm.microphone, type: "button" },
-                on: { click: _vm.listen }
-              },
-              [
-                _vm.microphone
-                  ? _c("i", { staticClass: "fas fa-microphone" })
-                  : _vm._e(),
-                _vm._v(" "),
-                !_vm.microphone
-                  ? _c("i", { staticClass: "fas fa-microphone-slash" })
-                  : _vm._e()
-              ]
-            ),
-            _vm._v(" "),
-            _c(
-              "form",
-              {
-                on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.emitChatbotIntent()
-                  }
-                }
-              },
-              [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.chatbotIntent,
-                      expression: "chatbotIntent"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Hello, how can I help you today? :)"
-                  },
-                  domProps: { value: _vm.chatbotIntent },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.chatbotIntent = $event.target.value
-                    }
-                  }
-                })
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
-          _vm._m(1)
-        ]
-      )
-    ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "navbar-brand" }, [
-      _c("a", { staticClass: "navbar-item", attrs: { href: "/" } }, [
-        _c("img", {
-          attrs: {
-            alt: "LesliCloud logo",
-            src: "/assets/brand/leslicloud-logo.svg"
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "navbar-end" }, [
-      _c("div", { staticClass: "navbar-item" }, [
-        _c("div", { staticClass: "navbar-item has-dropdown is-hoverable" }, [
-          _c("a", { staticClass: "navbar-link is-arrowless" }, [
-            _c("i", { staticClass: "fas fa-bell" })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "navbar-dropdown is-boxed" }, [
-            _c(
-              "a",
-              {
-                staticClass: "navbar-item",
-                attrs: {
-                  href: "https://bulma.io/documentation/overview/start/"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                Notification\n                            "
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "navbar-item has-dropdown is-hoverable" }, [
-          _c(
-            "a",
-            {
-              staticClass: "navbar-link is-arrowless",
-              attrs: { href: "https://bulma.io/documentation/overview/start/" }
-            },
-            [
-              _c("figure", { staticClass: "image" }, [
-                _c("img", {
-                  staticClass: "is-rounded",
-                  attrs: {
-                    src: "https://placekitten.com/g/30/30",
-                    alt: "profile thumbnail"
-                  }
-                })
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "navbar-dropdown is-boxed" }, [
-            _c(
-              "a",
-              {
-                staticClass: "navbar-item",
-                attrs: {
-                  href: "https://bulma.io/documentation/overview/start/"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                Profile\n                            "
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "navbar-item", attrs: { href: "/logout" } }, [
-          _c("i", { staticClass: "fas fa-sign-out-alt" })
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-
-
-// CONCATENATED MODULE: ./app/vue/layout/header.vue?vue&type=template&id=2c7eec86&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/header.vue?vue&type=script&lang=js&
-/* harmony default export */ var headervue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      chatbotIntent: '',
-      microphone: true,
-      timer: null
-    };
-  },
-  mounted: function mounted() {
-    this.checkIfMicrophoneWorks();
-  },
-  methods: {
-    checkIfMicrophoneWorks: function checkIfMicrophoneWorks() {
-      window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-
-      if (window.SpeechRecognition) {
-        this.microphone = true;
-        return;
-      }
-
-      this.microphone = false;
-    },
-    talk: function talk() {//var msg = new SpeechSynthesisUtterance('Hello World');
-      //window.speechSynthesis.speak(msg);
-    },
-    listen: function listen() {
-      window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-
-      if (window.SpeechRecognition) {
-        var recognition = new window.SpeechRecognition();
-
-        recognition.onresult = function (event) {
-          var speechToText = event.results[0][0].transcript;
-        };
-
-        recognition.start();
-      }
-    },
-    emitSidenavShow: function emitSidenavShow() {
-      clearTimeout(this.timer);
-      var el = document.getElementsByTagName('aside')[0];
-      el.classList.toggle('show');
-      this.timer = setTimeout(function () {
-        return el.classList.remove('show');
-      }, 4000);
-    },
-    emitChatbotIntent: function emitChatbotIntent() {
-      this.bus.$emit('lesli.component.chatbox.postIntent', this.chatbotIntent);
-      this.chatbotIntent = "";
-    }
-  }
-});
-// CONCATENATED MODULE: ./app/vue/layout/header.vue?vue&type=script&lang=js&
- /* harmony default export */ var layout_headervue_type_script_lang_js_ = (headervue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(2);
-
-// CONCATENATED MODULE: ./app/vue/layout/header.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  layout_headervue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "app/vue/layout/header.vue"
-/* harmony default export */ var header = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-/* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/notify.vue?vue&type=template&id=2e728079&
 var render = function() {
   var _vm = this
@@ -27808,7 +27538,7 @@ component.options.__file = "app/vue/layout/notify.vue"
 /* harmony default export */ var notify = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28106,6 +27836,276 @@ var component = Object(componentNormalizer["a" /* default */])(
 if (false) { var api; }
 component.options.__file = "app/vue/layout/chatbox.vue"
 /* harmony default export */ var chatbox = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/header.vue?vue&type=template&id=2c7eec86&
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("header", [
+    _c("nav", { staticClass: "navbar is-transparent" }, [
+      _c(
+        "div",
+        { staticClass: "navbar-menu", attrs: { id: "header-main-navbar" } },
+        [
+          _c("div", { staticClass: "navbar-start" }, [
+            _c(
+              "button",
+              {
+                staticClass: "button is-white",
+                attrs: { type: "button" },
+                on: { click: _vm.emitSidenavShow }
+              },
+              [_c("i", { staticClass: "fas fa-bars" })]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "button is-white",
+                attrs: { disabled: !_vm.microphone, type: "button" },
+                on: { click: _vm.listen }
+              },
+              [
+                _vm.microphone
+                  ? _c("i", { staticClass: "fas fa-microphone" })
+                  : _vm._e(),
+                _vm._v(" "),
+                !_vm.microphone
+                  ? _c("i", { staticClass: "fas fa-microphone-slash" })
+                  : _vm._e()
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.emitChatbotIntent()
+                  }
+                }
+              },
+              [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.chatbotIntent,
+                      expression: "chatbotIntent"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: {
+                    type: "text",
+                    placeholder: "Hello, how can I help you today? :)"
+                  },
+                  domProps: { value: _vm.chatbotIntent },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.chatbotIntent = $event.target.value
+                    }
+                  }
+                })
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1)
+        ]
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "navbar-brand" }, [
+      _c("a", { staticClass: "navbar-item", attrs: { href: "/" } }, [
+        _c("img", {
+          attrs: {
+            alt: "LesliCloud logo",
+            src: "/assets/brand/leslicloud-logo.svg"
+          }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "navbar-end" }, [
+      _c("div", { staticClass: "navbar-item" }, [
+        _c("div", { staticClass: "navbar-item has-dropdown is-hoverable" }, [
+          _c("a", { staticClass: "navbar-link is-arrowless" }, [
+            _c("i", { staticClass: "fas fa-bell" })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "navbar-dropdown is-boxed" }, [
+            _c(
+              "a",
+              {
+                staticClass: "navbar-item",
+                attrs: {
+                  href: "https://bulma.io/documentation/overview/start/"
+                }
+              },
+              [
+                _vm._v(
+                  "\n                                Notification\n                            "
+                )
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "navbar-item has-dropdown is-hoverable" }, [
+          _c(
+            "a",
+            {
+              staticClass: "navbar-link is-arrowless",
+              attrs: { href: "https://bulma.io/documentation/overview/start/" }
+            },
+            [
+              _c("figure", { staticClass: "image" }, [
+                _c("img", {
+                  staticClass: "is-rounded",
+                  attrs: {
+                    src: "https://placekitten.com/g/30/30",
+                    alt: "profile thumbnail"
+                  }
+                })
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "navbar-dropdown is-boxed" }, [
+            _c(
+              "a",
+              {
+                staticClass: "navbar-item",
+                attrs: {
+                  href: "https://bulma.io/documentation/overview/start/"
+                }
+              },
+              [
+                _vm._v(
+                  "\n                                Profile\n                            "
+                )
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "navbar-item", attrs: { href: "/logout" } }, [
+          _c("i", { staticClass: "fas fa-sign-out-alt" })
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/layout/header.vue?vue&type=template&id=2c7eec86&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/header.vue?vue&type=script&lang=js&
+/* harmony default export */ var headervue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      chatbotIntent: '',
+      microphone: true,
+      timer: null
+    };
+  },
+  mounted: function mounted() {
+    this.checkIfMicrophoneWorks();
+  },
+  methods: {
+    checkIfMicrophoneWorks: function checkIfMicrophoneWorks() {
+      window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+
+      if (window.SpeechRecognition) {
+        this.microphone = true;
+        return;
+      }
+
+      this.microphone = false;
+    },
+    talk: function talk() {//var msg = new SpeechSynthesisUtterance('Hello World');
+      //window.speechSynthesis.speak(msg);
+    },
+    listen: function listen() {
+      window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+
+      if (window.SpeechRecognition) {
+        var recognition = new window.SpeechRecognition();
+
+        recognition.onresult = function (event) {
+          var speechToText = event.results[0][0].transcript;
+        };
+
+        recognition.start();
+      }
+    },
+    emitSidenavShow: function emitSidenavShow() {
+      clearTimeout(this.timer);
+      var el = document.getElementsByTagName('aside')[0];
+      el.classList.toggle('show');
+      this.timer = setTimeout(function () {
+        return el.classList.remove('show');
+      }, 4000);
+    },
+    emitChatbotIntent: function emitChatbotIntent() {
+      this.bus.$emit('lesli.component.chatbox.postIntent', this.chatbotIntent);
+      this.chatbotIntent = "";
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/layout/header.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layout_headervue_type_script_lang_js_ = (headervue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./app/vue/layout/header.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  layout_headervue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/vue/layout/header.vue"
+/* harmony default export */ var header = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 /* 26 */
@@ -29461,13 +29461,13 @@ var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 var functions_document = __webpack_require__(21);
 
 // EXTERNAL MODULE: ./app/vue/layout/header.vue + 4 modules
-var header = __webpack_require__(23);
+var header = __webpack_require__(25);
 
 // EXTERNAL MODULE: ./app/vue/layout/notify.vue + 4 modules
-var notify = __webpack_require__(24);
+var notify = __webpack_require__(23);
 
 // EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
-var chatbox = __webpack_require__(25);
+var chatbox = __webpack_require__(24);
 
 // CONCATENATED MODULE: ./app/vue/app-single.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
