@@ -11,6 +11,8 @@ module CloudHelp
 
         # GET /tickets/1
         def show
+            #ticket = Ticket.joins(:detail).select(:id, :subject, :created_at, :updated_at).first
+            responseWithSuccessful(@ticket)
         end
 
         # GET /tickets/new
@@ -61,7 +63,10 @@ module CloudHelp
 
         # Use callbacks to share common setup or constraints between actions.
         def set_ticket
-            @ticket = Ticket.find(params[:id])
+            @ticket = Ticket
+                .joins(:detail)
+                .select(:id, :subject, :created_at, :updated_at)
+                .find(params[:id])
         end
 
         # Only allow a trusted parameter "white list" through.
@@ -69,7 +74,6 @@ module CloudHelp
             params.fetch(:ticket, {})
             params.require(:ticket).permit(
                 detail_attributes: [
-                    #:id,
                     :subject
                 ]
             )
