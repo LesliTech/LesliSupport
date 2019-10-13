@@ -35,9 +35,9 @@ import app from 'LesliCloud/vue/app-spa'
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import componentList from './components/list.vue'
-import componentNew from './components/new.vue'
 import componentEdit from './components/edit.vue'
 import componentShow from './components/show.vue'
+import componentNew from './components/new.vue'
 
 
 
@@ -53,6 +53,6 @@ app("CloudHelp", "dashboard/default", "help/tickets", [{
     path: "/:id/edit",
     component: componentEdit,
 },{
-    path: "/:id/show",
+    path: "/:ticket_id/show",
     component: componentShow,
 }])
