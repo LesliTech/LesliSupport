@@ -1,10 +1,11 @@
 <script>
+import componentForm from './form.vue'
 export default {
-    
+    components: {
+        'component-form': componentForm
+    }
 }
 </script>
 <template>
-    <section class="section">
-        edit :)
-    </section>
+    <component-form></component-form>
 </template>

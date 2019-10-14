@@ -64,9 +64,11 @@ export default {
                 <h2 class="card-header-title">
                     {{ ticket.subject }}
                 </h2>
+                <router-link :to="`/${ticket.id}/edit`" class="card-header-icon">
+                    edit
+                </router-link>
             </div>
-            <div class="card-content">
-
+            <div class="card-content" v-html="ticket.description">
             </div>
         </div>
     </section>

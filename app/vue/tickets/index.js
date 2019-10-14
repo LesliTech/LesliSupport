@@ -50,7 +50,7 @@ app("CloudHelp", "dashboard/default", "help/tickets", [{
     path: "/new",
     component: componentNew,
 },{
-    path: "/:id/edit",
+    path: "/:ticket_id/edit",
     component: componentEdit,
 },{
     path: "/:ticket_id/show",

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 47);
+/******/ 	return __webpack_require__(__webpack_require__.s = 55);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -12032,7 +12032,7 @@
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(44).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(26).setImmediate))
 
 /***/ }),
 /* 1 */
@@ -12042,7 +12042,7 @@
 
 
 var bind = __webpack_require__(5);
-var isBuffer = __webpack_require__(27);
+var isBuffer = __webpack_require__(29);
 
 /*global toString:true*/
 
@@ -15381,7 +15381,7 @@ module.exports = function isCancel(value) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(1);
-var normalizeHeaderName = __webpack_require__(32);
+var normalizeHeaderName = __webpack_require__(34);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -15677,10 +15677,10 @@ process.umask = function() { return 0; };
 
 
 var utils = __webpack_require__(1);
-var settle = __webpack_require__(33);
+var settle = __webpack_require__(35);
 var buildURL = __webpack_require__(6);
-var parseHeaders = __webpack_require__(35);
-var isURLSameOrigin = __webpack_require__(36);
+var parseHeaders = __webpack_require__(37);
+var isURLSameOrigin = __webpack_require__(38);
 var createError = __webpack_require__(11);
 
 module.exports = function xhrAdapter(config) {
@@ -15773,7 +15773,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(37);
+      var cookies = __webpack_require__(39);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -15857,7 +15857,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(34);
+var enhanceError = __webpack_require__(36);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -15990,9 +15990,6 @@ Building a better future, one line of code at a time.
 // ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 //  · 
 */
-//  · Loading frameworks, libraries and tools
-// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-//import Vue from 'vue';
 //  · Plugin initializing 
 // ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -16042,17 +16039,13 @@ Building a better future, one line of code at a time.
 //  · Plugin initializing 
 // ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 /* harmony default export */ __webpack_exports__["a"] = ({
-  install: function install(Vue) {
+  install: function install(Vue, router) {
     Vue.prototype.url = {
       // · Redirect to specific url
       go: function go() {
         var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
         url = new URL(url, leslicloud_request.root_url);
         window.location.href = url.href;
-
-        if (window.location.hash != '#/' && window.location.hash.startsWith('#/')) {
-          location.reload();
-        }
       },
       // · Get well formated url
       to: function to() {
@@ -16159,7 +16152,7 @@ Building a better future, one line of code at a time.
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(26);
+module.exports = __webpack_require__(28);
 
 /***/ }),
 /* 18 */
@@ -16759,8 +16752,7 @@ Building a better future, one line of code at a time.
 // · 
 */
 
-
-module.exports = __webpack_require__(42)
+module.exports = __webpack_require__(44)
 
 
 /***/ }),
@@ -16770,9 +16762,7 @@ module.exports = __webpack_require__(42)
 "use strict";
 /*
 Lesli
-
 Copyright (c) 2019, Lesli Technologies, S. A.
-
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
 Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
@@ -16780,17 +16770,13 @@ rights of the code, texts, trade mark, design, pictures and any other informatio
 Without the written permission of Lesli Technologies, S. A., any replication, modification,
 transmission, publication is strictly forbidden.
 For more information read the license file including with this software.
-
 LesliCloud - Your Smart Business Assistant
-
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
-
 @dev      Luis Donis <ldonis@lesli.tech>
 @author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
 @version  GIT: 0.1.0 alpha
-
 //  · 
 // ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
 */
@@ -27422,127 +27408,6 @@ use(Buefy);
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/notify.vue?vue&type=template&id=2e728079&
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "component_notify" },
-    [
-      _c(
-        "b-notification",
-        {
-          attrs: {
-            type: _vm.type,
-            duration: 4000,
-            active: _vm.isActive,
-            "auto-close": "",
-            "aria-close-label": "Close notification"
-          },
-          on: {
-            "update:active": function($event) {
-              _vm.isActive = $event
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n        Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    "
-          )
-        ]
-      )
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-// CONCATENATED MODULE: ./app/vue/layout/notify.vue?vue&type=template&id=2e728079&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/notify.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
-
-//  · 
-// ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
-*/
-// · LesliCloud component
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-/* harmony default export */ var notifyvue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      isActive: false,
-      type: "is-danger"
-    };
-  },
-  mounted: function mounted() {
-    var self = this;
-    this.cable.subscriptions.create("CloudCourier::Bell::WebNotificationChannel", {
-      received: function received(data) {
-        self.isActive = true;
-      }
-    });
-  }
-});
-// CONCATENATED MODULE: ./app/vue/layout/notify.vue?vue&type=script&lang=js&
- /* harmony default export */ var layout_notifyvue_type_script_lang_js_ = (notifyvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(2);
-
-// CONCATENATED MODULE: ./app/vue/layout/notify.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  layout_notifyvue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "app/vue/layout/notify.vue"
-/* harmony default export */ var notify = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-/* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/chatbox.vue?vue&type=template&id=20e92c73&
 var render = function() {
   var _vm = this
@@ -27838,7 +27703,7 @@ component.options.__file = "app/vue/layout/chatbox.vue"
 /* harmony default export */ var chatbox = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28108,7 +27973,199 @@ component.options.__file = "app/vue/layout/header.vue"
 /* harmony default export */ var header = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/notify.vue?vue&type=template&id=2e728079&
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "component_notify" },
+    [
+      _c(
+        "b-notification",
+        {
+          attrs: {
+            type: _vm.type,
+            duration: 4000,
+            active: _vm.isActive,
+            "auto-close": "",
+            "aria-close-label": "Close notification"
+          },
+          on: {
+            "update:active": function($event) {
+              _vm.isActive = $event
+            }
+          }
+        },
+        [
+          _vm._v(
+            "\n        Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    "
+          )
+        ]
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/layout/notify.vue?vue&type=template&id=2e728079&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/notify.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  GIT: 0.1.0 alpha
+
+//  · 
+// ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
+*/
+// · LesliCloud component
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+/* harmony default export */ var notifyvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      isActive: false,
+      type: "is-danger"
+    };
+  },
+  mounted: function mounted() {
+    var self = this;
+    this.cable.subscriptions.create("CloudCourier::Bell::WebNotificationChannel", {
+      received: function received(data) {
+        self.isActive = true;
+      }
+    });
+  }
+});
+// CONCATENATED MODULE: ./app/vue/layout/notify.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layout_notifyvue_type_script_lang_js_ = (notifyvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(2);
+
+// CONCATENATED MODULE: ./app/vue/layout/notify.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  layout_notifyvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/vue/layout/notify.vue"
+/* harmony default export */ var notify = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
 /* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(46);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
+
+/***/ }),
+/* 27 */,
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28116,7 +28173,7 @@ component.options.__file = "app/vue/layout/header.vue"
 
 var utils = __webpack_require__(1);
 var bind = __webpack_require__(5);
-var Axios = __webpack_require__(28);
+var Axios = __webpack_require__(30);
 var mergeConfig = __webpack_require__(12);
 var defaults = __webpack_require__(8);
 
@@ -28152,14 +28209,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(13);
-axios.CancelToken = __webpack_require__(40);
+axios.CancelToken = __webpack_require__(42);
 axios.isCancel = __webpack_require__(7);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(41);
+axios.spread = __webpack_require__(43);
 
 module.exports = axios;
 
@@ -28168,7 +28225,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports) {
 
 /*!
@@ -28185,7 +28242,7 @@ module.exports = function isBuffer (obj) {
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28193,8 +28250,8 @@ module.exports = function isBuffer (obj) {
 
 var utils = __webpack_require__(1);
 var buildURL = __webpack_require__(6);
-var InterceptorManager = __webpack_require__(29);
-var dispatchRequest = __webpack_require__(30);
+var InterceptorManager = __webpack_require__(31);
+var dispatchRequest = __webpack_require__(32);
 var mergeConfig = __webpack_require__(12);
 
 /**
@@ -28278,7 +28335,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28337,18 +28394,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(1);
-var transformData = __webpack_require__(31);
+var transformData = __webpack_require__(33);
 var isCancel = __webpack_require__(7);
 var defaults = __webpack_require__(8);
-var isAbsoluteURL = __webpack_require__(38);
-var combineURLs = __webpack_require__(39);
+var isAbsoluteURL = __webpack_require__(40);
+var combineURLs = __webpack_require__(41);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -28430,7 +28487,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28457,7 +28514,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28476,7 +28533,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28508,7 +28565,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28557,7 +28614,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28617,7 +28674,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28692,7 +28749,7 @@ module.exports = (
 
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28752,7 +28809,7 @@ module.exports = (
 
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28773,7 +28830,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28794,7 +28851,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28858,7 +28915,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28892,7 +28949,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -28925,7 +28982,7 @@ Building a better future, one line of code at a time.
 
 // · Loading node modules
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-let utils = __webpack_require__(43)
+let utils = __webpack_require__(45)
 
 
 // · 
@@ -28991,7 +29048,7 @@ module.exports = new browserDebugService
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports) {
 
 /*
@@ -29161,77 +29218,7 @@ module.exports = new Utils
 
 
 /***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(45);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -29424,8 +29411,15 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(9)))
 
 /***/ }),
-/* 46 */,
-/* 47 */
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29461,13 +29455,13 @@ var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 var functions_document = __webpack_require__(21);
 
 // EXTERNAL MODULE: ./app/vue/layout/header.vue + 4 modules
-var header = __webpack_require__(25);
+var header = __webpack_require__(24);
 
 // EXTERNAL MODULE: ./app/vue/layout/notify.vue + 4 modules
-var notify = __webpack_require__(23);
+var notify = __webpack_require__(25);
 
 // EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
-var chatbox = __webpack_require__(24);
+var chatbox = __webpack_require__(23);
 
 // CONCATENATED MODULE: ./app/vue/app-single.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -29534,15 +29528,15 @@ vue_default.a.use(cable["a" /* default */]); // · Vue app
 
 /* harmony default export */ var app_single = (function (module, app) {
   var components = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+  var cloud = new vue_default.a({
+    components: {
+      'component-layout-header': header["a" /* default */],
+      'component-layout-notify': notify["a" /* default */],
+      'component-layout-chatbox': chatbox["a" /* default */]
+    }
+  });
+  cloud.$options.components = _objectSpread({}, cloud.$options.components, {}, components);
   functions_document["a" /* default */].ready(function () {
-    var cloud = new vue_default.a({
-      components: {
-        'component-layout-header': header["a" /* default */],
-        'component-layout-notify': notify["a" /* default */],
-        'component-layout-chatbox': chatbox["a" /* default */]
-      }
-    });
-    cloud.$options.components = _objectSpread({}, cloud.$options.components, {}, components);
     cloud.$mount("#lesli-cloud-app");
     if (false) {}
     if (true) browser_default.a.info(app, module);

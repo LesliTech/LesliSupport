@@ -6,12 +6,10 @@ module CloudHelp
 
         # GET /tickets
         def index
-            #@tickets = Ticket.all
         end
 
         # GET /tickets/1
         def show
-            #ticket = Ticket.joins(:detail).select(:id, :subject, :created_at, :updated_at).first
             responseWithSuccessful(@ticket)
         end
 
@@ -32,7 +30,7 @@ module CloudHelp
             ticket.cloud_help_accounts_id = current_user.account.id
 
             if ticket.save
-                responseWithSuccessful
+                responseWithSuccessful(ticket)
             else
                 responseWithError("error creating new ticket", ticket.errors.full_messages)
             end
@@ -55,7 +53,7 @@ module CloudHelp
         end
 
         def api_list
-            tickets = Ticket.all
+            tickets = current_user.account.help.ticket.all
             responseWithSuccessful(tickets)
         end
 
@@ -63,9 +61,9 @@ module CloudHelp
 
         # Use callbacks to share common setup or constraints between actions.
         def set_ticket
-            @ticket = Ticket
+            @ticket = current_user.account.help.ticket
                 .joins(:detail)
-                .select(:id, :subject, :created_at, :updated_at)
+                .select(:id, :subject, :description, :created_at, :updated_at)
                 .find(params[:id])
         end
 
@@ -74,7 +72,8 @@ module CloudHelp
             params.fetch(:ticket, {})
             params.require(:ticket).permit(
                 detail_attributes: [
-                    :subject
+                    :subject,
+                    :description
                 ]
             )
         end
