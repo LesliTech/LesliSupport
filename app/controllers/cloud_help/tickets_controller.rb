@@ -69,7 +69,6 @@ module CloudHelp
 
         # Only allow a trusted parameter "white list" through.
         def ticket_params
-            params.fetch(:ticket, {})
             params.require(:ticket).permit(
                 detail_attributes: [
                     :subject,

@@ -12036,6 +12036,107 @@
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12373,107 +12474,6 @@ module.exports = {
   extend: extend,
   trim: trim
 };
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
 
 
 /***/ }),
@@ -15290,7 +15290,7 @@ module.exports = function bind(fn, thisArg) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -15380,7 +15380,7 @@ module.exports = function isCancel(value) {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 var normalizeHeaderName = __webpack_require__(34);
 
 var DEFAULT_CONTENT_TYPE = {
@@ -15676,7 +15676,7 @@ process.umask = function() { return 0; };
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 var settle = __webpack_require__(35);
 var buildURL = __webpack_require__(6);
 var parseHeaders = __webpack_require__(37);
@@ -15882,7 +15882,7 @@ module.exports = function createError(message, config, code, request, response) 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 /**
  * Config-specific merge-function which creates a new config-object
@@ -27676,7 +27676,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./app/vue/layout/chatbox.vue?vue&type=script&lang=js&
  /* harmony default export */ var layout_chatboxvue_type_script_lang_js_ = (chatboxvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(2);
+var componentNormalizer = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./app/vue/layout/chatbox.vue
 
@@ -27946,7 +27946,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./app/vue/layout/header.vue?vue&type=script&lang=js&
  /* harmony default export */ var layout_headervue_type_script_lang_js_ = (headervue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(2);
+var componentNormalizer = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./app/vue/layout/header.vue
 
@@ -28067,7 +28067,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./app/vue/layout/notify.vue?vue&type=script&lang=js&
  /* harmony default export */ var layout_notifyvue_type_script_lang_js_ = (notifyvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(2);
+var componentNormalizer = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./app/vue/layout/notify.vue
 
@@ -28192,7 +28192,7 @@ if (content.locals) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 var bind = __webpack_require__(5);
 var Axios = __webpack_require__(30);
 var mergeConfig = __webpack_require__(12);
@@ -28269,7 +28269,7 @@ module.exports = function isBuffer (obj) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 var buildURL = __webpack_require__(6);
 var InterceptorManager = __webpack_require__(31);
 var dispatchRequest = __webpack_require__(32);
@@ -28362,7 +28362,7 @@ module.exports = Axios;
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -28421,7 +28421,7 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 var transformData = __webpack_require__(33);
 var isCancel = __webpack_require__(7);
 var defaults = __webpack_require__(8);
@@ -28514,7 +28514,7 @@ module.exports = function dispatchRequest(config) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 /**
  * Transform the data for a request or a response
@@ -28541,7 +28541,7 @@ module.exports = function transformData(data, headers, fns) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -28641,7 +28641,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 // Headers whose duplicates are ignored by node
 // c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -28701,7 +28701,7 @@ module.exports = function parseHeaders(headers) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -28776,7 +28776,7 @@ module.exports = (
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(2);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -30007,8 +30007,8 @@ vue_default.a.use(cable["a" /* default */]); // · Vue app
       'component-layout-chatbox': chatbox["a" /* default */]
     },
     router: new vue_router_esm["a" /* default */]({
-      mode: "history",
-      base: base_path,
+      //mode: "history",
+      //base: base_path,
       routes: routes
     })
   });
@@ -30119,7 +30119,7 @@ Building a better future, one line of code at a time.
 var listvue_type_style_index_0_lang_css_ = __webpack_require__(49);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(2);
+var componentNormalizer = __webpack_require__(1);
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/list.vue
 
@@ -30935,38 +30935,45 @@ var showvue_type_template_id_0378ade2_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "section" }, [
-    _c("div", { staticClass: "card" }, [
-      _c(
-        "div",
-        { staticClass: "card-header" },
-        [
-          _c("h2", { staticClass: "card-header-title" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.ticket.subject) +
-                "\n            "
+  return _c(
+    "section",
+    { staticClass: "section" },
+    [
+      _c("div", { staticClass: "card" }, [
+        _c(
+          "div",
+          { staticClass: "card-header" },
+          [
+            _c("h2", { staticClass: "card-header-title" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.ticket.subject) +
+                  "\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "card-header-icon",
+                attrs: { to: "/" + _vm.ticket.id + "/edit" }
+              },
+              [_vm._v("\n                edit\n            ")]
             )
-          ]),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            {
-              staticClass: "card-header-icon",
-              attrs: { to: "/" + _vm.ticket.id + "/edit" }
-            },
-            [_vm._v("\n                edit\n            ")]
-          )
-        ],
-        1
-      ),
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass: "card-content",
+          domProps: { innerHTML: _vm._s(_vm.ticket.description) }
+        })
+      ]),
       _vm._v(" "),
-      _c("div", {
-        staticClass: "card-content",
-        domProps: { innerHTML: _vm._s(_vm.ticket.description) }
-      })
-    ])
-  ])
+      _c("component-app-comment")
+    ],
+    1
+  )
 }
 var showvue_type_template_id_0378ade2_staticRenderFns = []
 showvue_type_template_id_0378ade2_render._withStripped = true
@@ -30974,6 +30981,402 @@ showvue_type_template_id_0378ade2_render._withStripped = true
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=template&id=0378ade2&
 
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/comments.vue?vue&type=template&id=8dec5bc8&
+var commentsvue_type_template_id_8dec5bc8_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "section" },
+    [
+      _c("component-comment-form", { attrs: { module: "/help/ticket/" } }),
+      _vm._v(" "),
+      _c("component-comment-list")
+    ],
+    1
+  )
+}
+var commentsvue_type_template_id_8dec5bc8_staticRenderFns = []
+commentsvue_type_template_id_8dec5bc8_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/apps/comments.vue?vue&type=template&id=8dec5bc8&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/comment.vue?vue&type=template&id=4e199beb&
+var commentvue_type_template_id_4e199beb_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "section" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-content" }, [
+        _c(
+          "form",
+          { on: { submit: _vm.postComment } },
+          [
+            _vm.show_simple_form
+              ? _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.comment.content,
+                      expression: "comment.content"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: { type: "text", placeholder: "Add a comment..." },
+                  domProps: { value: _vm.comment.content },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.comment, "content", $event.target.value)
+                    }
+                  }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.show_simple_form
+              ? _c("component-trix-editor", {
+                  model: {
+                    value: _vm.comment.content,
+                    callback: function($$v) {
+                      _vm.$set(_vm.comment, "content", $$v)
+                    },
+                    expression: "comment.content"
+                  }
+                })
+              : _vm._e()
+          ],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var commentvue_type_template_id_4e199beb_staticRenderFns = []
+commentvue_type_template_id_4e199beb_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/components/forms/comment.vue?vue&type=template&id=4e199beb&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/comment.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Import modules, components and apps
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+ // · Component
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var commentvue_type_script_lang_js_ = ({
+  props: {
+    module: {
+      type: String,
+      required: true
+    }
+  },
+  components: {
+    'component-trix-editor': vue_trix_esm
+  },
+  data: function data() {
+    return {
+      show_simple_form: true,
+      comment: {
+        content: ""
+      }
+    };
+  },
+  methods: {
+    postComment: function postComment(e) {
+      var _this = this;
+
+      if (e) {
+        e.preventDefault();
+      }
+
+      this.http.post("/help/ticket/comments", {
+        ticket_comment: this.comment
+      }).then(function (result) {
+        if (result.successful) {
+          _this.comment.content = "";
+        }
+
+        _this.bus.$emit("post:components/forms/comment");
+
+        console.log(result);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/components/forms/comment.vue?vue&type=script&lang=js&
+ /* harmony default export */ var forms_commentvue_type_script_lang_js_ = (commentvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/forms/comment.vue
+
+
+
+
+
+/* normalize component */
+
+var comment_component = Object(componentNormalizer["a" /* default */])(
+  forms_commentvue_type_script_lang_js_,
+  commentvue_type_template_id_4e199beb_render,
+  commentvue_type_template_id_4e199beb_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var comment_api; }
+comment_component.options.__file = "app/vue/components/forms/comment.vue"
+/* harmony default export */ var comment = (comment_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/comment.vue?vue&type=template&id=6f958a51&
+var commentvue_type_template_id_6f958a51_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "section" },
+    _vm._l(_vm.comments, function(comment) {
+      return _c("div", { key: comment.id, staticClass: "box" }, [
+        _c("div", { staticClass: "media" }, [
+          _vm._m(0, true),
+          _vm._v(" "),
+          _c("div", { staticClass: "media-content" }, [
+            _c("div", { staticClass: "content" }, [
+              _c("p", [
+                _c("strong", [_vm._v("John Smith")]),
+                _vm._v(" "),
+                _c("small", [_vm._v(_vm._s(comment.created_at))])
+              ]),
+              _vm._v(" "),
+              _c("div", { domProps: { innerHTML: _vm._s(comment.content) } }),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis."
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(1, true)
+        ])
+      ])
+    }),
+    0
+  )
+}
+var commentvue_type_template_id_6f958a51_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "media-left" }, [
+      _c("figure", { staticClass: "image is-64x64" }, [
+        _c("img", {
+          staticClass: "is-rounded",
+          attrs: {
+            src: "https://bulma.io/images/placeholders/128x128.png",
+            alt: "Image"
+          }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "media-right" }, [
+      _c("span", { staticClass: "icon is-small" })
+    ])
+  }
+]
+commentvue_type_template_id_6f958a51_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/components/lists/comment.vue?vue&type=template&id=6f958a51&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/comment.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+/* harmony default export */ var lists_commentvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      comments: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.getComments();
+    this.bus.$on("post:components/forms/comment", function () {
+      _this.getComments();
+    });
+  },
+  methods: {
+    getComments: function getComments() {
+      var _this2 = this;
+
+      this.http.get("/help/ticket/comments").then(function (result) {
+        if (result.successful) {
+          _this2.comments = result.data;
+        }
+
+        console.log(result);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/components/lists/comment.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_lists_commentvue_type_script_lang_js_ = (lists_commentvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/lists/comment.vue
+
+
+
+
+
+/* normalize component */
+
+var lists_comment_component = Object(componentNormalizer["a" /* default */])(
+  components_lists_commentvue_type_script_lang_js_,
+  commentvue_type_template_id_6f958a51_render,
+  commentvue_type_template_id_6f958a51_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var lists_comment_api; }
+lists_comment_component.options.__file = "app/vue/components/lists/comment.vue"
+/* harmony default export */ var lists_comment = (lists_comment_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/comments.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Import modules, components and apps
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+ // · Component show
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var commentsvue_type_script_lang_js_ = ({
+  components: {
+    'component-comment-form': comment,
+    'component-comment-list': lists_comment
+  }
+});
+// CONCATENATED MODULE: ./app/vue/apps/comments.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_commentsvue_type_script_lang_js_ = (commentsvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/apps/comments.vue
+
+
+
+
+
+/* normalize component */
+
+var comments_component = Object(componentNormalizer["a" /* default */])(
+  apps_commentsvue_type_script_lang_js_,
+  commentsvue_type_template_id_8dec5bc8_render,
+  commentsvue_type_template_id_8dec5bc8_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var comments_api; }
+comments_component.options.__file = "app/vue/apps/comments.vue"
+/* harmony default export */ var comments = (comments_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=script&lang=js&
 /*
 Lesli
@@ -31001,9 +31404,15 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
-// · Component show
+// · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+ // · Component show
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
 /* harmony default export */ var showvue_type_script_lang_js_ = ({
+  components: {
+    'component-app-comment': comments
+  },
   data: function data() {
     return {
       ticket_id: null,

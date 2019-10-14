@@ -27,9 +27,19 @@ Building a better future, one line of code at a time.
 */
 
 
+
+// · Import modules, components and apps
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentAppComments from 'LesliCloud/vue/apps/comments.vue'
+
+
+
 // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
+    components: {
+        'component-app-comment': componentAppComments
+    },
     data() {
         return {
             ticket_id: null,
@@ -71,5 +81,7 @@ export default {
             <div class="card-content" v-html="ticket.description">
             </div>
         </div>
+        <component-app-comment></component-app-comment>
+        
     </section>
 </template>

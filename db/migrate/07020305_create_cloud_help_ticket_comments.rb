@@ -18,6 +18,7 @@ class CreateCloudHelpTicketComments < ActiveRecord::Migration[6.0]
             #:precision => column.precision
         end
         add_reference :cloud_help_ticket_comments, :cloud_help_ticket_comments, foreign_key: true, index: { name: "ticket_comments" }
+        add_reference :cloud_help_ticket_comments, :users, foreign_key: true
         add_reference :cloud_help_ticket_comments, :cloud_help_tickets, foreign_key: true
     end
 end
