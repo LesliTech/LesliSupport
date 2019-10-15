@@ -30100,7 +30100,7 @@ Building a better future, one line of code at a time.
     getTickets: function getTickets() {
       var _this = this;
 
-      this.http.get("/help/api/ticket").then(function (result) {
+      this.http.get("/help/tickets.json").then(function (result) {
         if (result.successful) {
           _this.tickets = result.data;
         }
@@ -30165,7 +30165,27 @@ var formvue_type_template_id_33e6a429_render = function() {
   var _c = _vm._self._c || _h
   return _c("section", { staticClass: "section" }, [
     _c("div", { staticClass: "card" }, [
-      _vm._m(0),
+      _c(
+        "div",
+        { staticClass: "card-header" },
+        [
+          _c("h2", { staticClass: "card-header-title" }, [
+            _vm._v("\n                Ticket\n            ")
+          ]),
+          _vm._v(" "),
+          _vm.ticket_id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "card-header-icon",
+                  attrs: { to: "/" + _vm.ticket.id + "/show" }
+                },
+                [_vm._v("\n                show\n            ")]
+              )
+            : _vm._e()
+        ],
+        1
+      ),
       _vm._v(" "),
       _c("div", { staticClass: "card-content" }, [
         _c(
@@ -30249,18 +30269,7 @@ var formvue_type_template_id_33e6a429_render = function() {
     ])
   ])
 }
-var formvue_type_template_id_33e6a429_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("div", { staticClass: "card-header-title" }, [
-        _vm._v("\n                Ticket\n            ")
-      ])
-    ])
-  }
-]
+var formvue_type_template_id_33e6a429_staticRenderFns = []
 formvue_type_template_id_33e6a429_render._withStripped = true
 
 
@@ -30970,7 +30979,12 @@ var showvue_type_template_id_0378ade2_render = function() {
         })
       ]),
       _vm._v(" "),
-      _c("component-app-comment")
+      _c("component-app-comment", {
+        attrs: {
+          "cloud-module": "help/ticket",
+          "cloud-owner-id": _vm.ticket_id
+        }
+      })
     ],
     1
   )
@@ -30990,9 +31004,19 @@ var commentsvue_type_template_id_8dec5bc8_render = function() {
     "section",
     { staticClass: "section" },
     [
-      _c("component-comment-form", { attrs: { module: "/help/ticket/" } }),
+      _c("component-comment-form", {
+        attrs: {
+          "cloud-module": _vm.cloudModule,
+          "cloud-owner-id": _vm.cloudOwnerId
+        }
+      }),
       _vm._v(" "),
-      _c("component-comment-list")
+      _c("component-comment-list", {
+        attrs: {
+          "cloud-module": _vm.cloudModule,
+          "cloud-owner-id": _vm.cloudOwnerId
+        }
+      })
     ],
     1
   )
@@ -31097,8 +31121,12 @@ Building a better future, one line of code at a time.
 
 /* harmony default export */ var commentvue_type_script_lang_js_ = ({
   props: {
-    module: {
+    cloudModule: {
       type: String,
+      required: true
+    },
+    cloudOwnerId: {
+      type: Number,
       required: true
     }
   },
@@ -31119,9 +31147,11 @@ Building a better future, one line of code at a time.
 
       if (e) {
         e.preventDefault();
-      }
+      } // add owner id
 
-      this.http.post("/help/ticket/comments", {
+
+      this.comment["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudOwnerId;
+      this.http.post("/".concat(this.cloudModule, "/comments"), {
         ticket_comment: this.comment
       }).then(function (result) {
         if (result.successful) {
@@ -31259,6 +31289,16 @@ Building a better future, one line of code at a time.
 // · 
 */
 /* harmony default export */ var lists_commentvue_type_script_lang_js_ = ({
+  props: {
+    cloudModule: {
+      type: String,
+      required: true
+    },
+    cloudOwnerId: {
+      type: Number,
+      required: true
+    }
+  },
   data: function data() {
     return {
       comments: []
@@ -31267,7 +31307,6 @@ Building a better future, one line of code at a time.
   mounted: function mounted() {
     var _this = this;
 
-    this.getComments();
     this.bus.$on("post:components/forms/comment", function () {
       _this.getComments();
     });
@@ -31276,15 +31315,18 @@ Building a better future, one line of code at a time.
     getComments: function getComments() {
       var _this2 = this;
 
-      this.http.get("/help/ticket/comments").then(function (result) {
+      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudOwnerId, "/comments")).then(function (result) {
         if (result.successful) {
           _this2.comments = result.data;
         }
-
-        console.log(result);
       })["catch"](function (error) {
         console.log(error);
       });
+    }
+  },
+  watch: {
+    cloudOwnerId: function cloudOwnerId(_cloudOwnerId) {
+      this.getComments();
     }
   }
 });
@@ -31347,6 +31389,16 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
 /* harmony default export */ var commentsvue_type_script_lang_js_ = ({
+  props: {
+    cloudModule: {
+      type: String,
+      required: true
+    },
+    cloudOwnerId: {
+      type: Number,
+      required: true
+    }
+  },
   components: {
     'component-comment-form': comment,
     'component-comment-list': lists_comment

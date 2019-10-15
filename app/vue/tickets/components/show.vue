@@ -81,7 +81,6 @@ export default {
             <div class="card-content" v-html="ticket.description">
             </div>
         </div>
-        <component-app-comment></component-app-comment>
-        
+        <component-app-comment cloud-module="help/ticket" :cloud-owner-id="ticket_id"></component-app-comment>
     </section>
 </template>

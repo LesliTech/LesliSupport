@@ -59,7 +59,7 @@ export default {
 
         getTickets() {
 
-            this.http.get("/help/api/ticket").then(result => {
+            this.http.get("/help/tickets.json").then(result => {
                 if (result.successful) {
                     this.tickets = result.data
                 }

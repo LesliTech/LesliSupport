@@ -78,9 +78,12 @@ export default {
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <div class="card-header-title">
+                <h2 class="card-header-title">
                     Ticket
-                </div>
+                </h2>
+                <router-link v-if="ticket_id" :to="`/${ticket.id}/show`" class="card-header-icon">
+                    show
+                </router-link>
             </div>
             <div class="card-content">
                 <form>
