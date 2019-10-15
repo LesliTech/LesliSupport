@@ -43,7 +43,7 @@ import componentNew from './components/new.vue'
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "dashboard/default", "help/tickets", [{
+app("CloudHelp", "[list|new|edit|show]", "help/tickets", [{
     path: "/",
     component: componentList,
 },{

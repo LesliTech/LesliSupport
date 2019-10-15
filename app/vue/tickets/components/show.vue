@@ -71,8 +71,8 @@ export default {
 </script>
 <template>
     <section class="section">
-        <div class="columns">
-            <div class="column is-9">
+        <b-tabs>
+            <b-tab-item label="Ticket">
                 <div class="card">
                     <div class="card-header">
                         <h2 class="card-header-title">
@@ -85,11 +85,15 @@ export default {
                     <div class="card-content" v-html="ticket.description">
                     </div>
                 </div>
+            </b-tab-item>
+            <b-tab-item label="Discussion">
                 <component-app-discussions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
-            </div>
-            <div class="column is-3">
+            </b-tab-item>
+            <b-tab-item label="Actions">
                 <component-app-actions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
-            </div>
-        </div>
+            </b-tab-item>
+            <b-tab-item label="Files"></b-tab-item>
+            <b-tab-item label="Logs"></b-tab-item>
+        </b-tabs>
     </section>
 </template>

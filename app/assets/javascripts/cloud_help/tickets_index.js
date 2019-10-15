@@ -30944,72 +30944,87 @@ var showvue_type_template_id_0378ade2_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", { staticClass: "section" }, [
-    _c("div", { staticClass: "columns" }, [
+  return _c(
+    "section",
+    { staticClass: "section" },
+    [
       _c(
-        "div",
-        { staticClass: "column is-9" },
+        "b-tabs",
         [
-          _c("div", { staticClass: "card" }, [
-            _c(
-              "div",
-              { staticClass: "card-header" },
-              [
-                _c("h2", { staticClass: "card-header-title" }, [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(_vm.ticket.subject) +
-                      "\n                    "
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "card-header-icon",
-                    attrs: { to: "/" + _vm.ticket.id + "/edit" }
-                  },
-                  [
+          _c("b-tab-item", { attrs: { label: "Ticket" } }, [
+            _c("div", { staticClass: "card" }, [
+              _c(
+                "div",
+                { staticClass: "card-header" },
+                [
+                  _c("h2", { staticClass: "card-header-title" }, [
                     _vm._v(
-                      "\n                        edit\n                    "
+                      "\n                        " +
+                        _vm._s(_vm.ticket.subject) +
+                        "\n                    "
                     )
-                  ]
-                )
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", {
-              staticClass: "card-content",
-              domProps: { innerHTML: _vm._s(_vm.ticket.description) }
-            })
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "card-header-icon",
+                      attrs: { to: "/" + _vm.ticket.id + "/edit" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        edit\n                    "
+                      )
+                    ]
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("div", {
+                staticClass: "card-content",
+                domProps: { innerHTML: _vm._s(_vm.ticket.description) }
+              })
+            ])
           ]),
           _vm._v(" "),
-          _c("component-app-discussions", {
-            attrs: {
-              "cloud-module": "help/ticket",
-              "cloud-owner-id": _vm.ticket_id
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "column is-3" },
-        [
-          _c("component-app-actions", {
-            attrs: {
-              "cloud-module": "help/ticket",
-              "cloud-owner-id": _vm.ticket_id
-            }
-          })
+          _c(
+            "b-tab-item",
+            { attrs: { label: "Discussion" } },
+            [
+              _c("component-app-discussions", {
+                attrs: {
+                  "cloud-module": "help/ticket",
+                  "cloud-owner-id": _vm.ticket_id
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-tab-item",
+            { attrs: { label: "Actions" } },
+            [
+              _c("component-app-actions", {
+                attrs: {
+                  "cloud-module": "help/ticket",
+                  "cloud-owner-id": _vm.ticket_id
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("b-tab-item", { attrs: { label: "Files" } }),
+          _vm._v(" "),
+          _c("b-tab-item", { attrs: { label: "Logs" } })
         ],
         1
       )
-    ])
-  ])
+    ],
+    1
+  )
 }
 var showvue_type_template_id_0378ade2_staticRenderFns = []
 showvue_type_template_id_0378ade2_render._withStripped = true
@@ -31586,9 +31601,7 @@ Building a better future, one line of code at a time.
           _this.action.instructions = "";
         }
 
-        _this.bus.$emit("post:components/forms/action");
-
-        console.log(result);
+        _this.bus.$emit("post:components/forms/actions");
       })["catch"](function (error) {
         console.log(error);
       });
@@ -31987,7 +32000,7 @@ Building a better future, one line of code at a time.
  // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-app_spa("CloudHelp", "dashboard/default", "help/tickets", [{
+app_spa("CloudHelp", "[list|new|edit|show]", "help/tickets", [{
   path: "/",
   component: list
 }, {
