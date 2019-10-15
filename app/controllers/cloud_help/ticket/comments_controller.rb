@@ -27,7 +27,6 @@ module CloudHelp
         def create
 
             ticket_comment = Ticket::Comment.new(ticket_comment_params)
-
             if ticket_comment.save
                 CloudBell::NotificationsController.web_notification
                 responseWithSuccessful(ticket_comment)
@@ -62,7 +61,7 @@ module CloudHelp
         # Only allow a trusted parameter "white list" through.
         def ticket_comment_params
             #params.fetch(:ticket_comment, {})
-            params.require(:ticket_comment).permit(:content)
+            params.require(:ticket_comment).permit(:content, :cloud_help_tickets_id)
         end
     end
 end

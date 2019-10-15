@@ -6,6 +6,11 @@ module CloudHelp
 
         # GET /tickets
         def index
+            tickets = current_user.account.help.ticket.joins(:detail).select(:id, :subject, :created_at, :updated_at)
+            respond_to do |format|
+                format.html
+                format.json { responseWithSuccessful(tickets) }
+            end
         end
 
         # GET /tickets/1
@@ -52,9 +57,9 @@ module CloudHelp
             redirect_to tickets_url, notice: 'Ticket was successfully destroyed.'
         end
 
-        def api_list
-            tickets = current_user.account.help.ticket.all
-            responseWithSuccessful(tickets)
+        def comments
+            ticket_comments = parent_ticket.comment
+            responseWithSuccessful(ticket_comments)
         end
 
         private
@@ -65,6 +70,10 @@ module CloudHelp
                 .joins(:detail)
                 .select(:id, :subject, :description, :created_at, :updated_at)
                 .find(params[:id])
+        end
+
+        def parent_ticket
+            current_user.account.help.ticket.find(params[:ticket_id])
         end
 
         # Only allow a trusted parameter "white list" through.
