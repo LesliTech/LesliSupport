@@ -62,6 +62,11 @@ module CloudHelp
             responseWithSuccessful(ticket_discussions)
         end
 
+        def actions
+            ticket_actions = parent_ticket.actions
+            responseWithSuccessful(ticket_actions)
+        end
+
         private
 
         # Use callbacks to share common setup or constraints between actions.

@@ -23,6 +23,7 @@ CloudHelp::Engine.routes.draw do
 
     resources :tickets do
         get '/discussions', to: 'tickets#discussions'
+        get '/actions', to: 'tickets#actions'
     end
     
 end

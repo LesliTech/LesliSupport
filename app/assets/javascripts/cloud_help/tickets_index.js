@@ -31464,6 +31464,13 @@ var actionsvue_type_template_id_a3c9b0f6_render = function() {
           "cloud-module": _vm.cloudModule,
           "cloud-owner-id": _vm.cloudOwnerId
         }
+      }),
+      _vm._v(" "),
+      _c("component-action-list", {
+        attrs: {
+          "cloud-module": _vm.cloudModule,
+          "cloud-owner-id": _vm.cloudOwnerId
+        }
       })
     ],
     1
@@ -31572,11 +31579,11 @@ Building a better future, one line of code at a time.
 
 
       this.action["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudOwnerId;
-      this.http.post("/".concat(this.cloudModule, "/comments"), {
-        action: this.comment
+      this.http.post("/".concat(this.cloudModule, "/actions"), {
+        ticket_action: this.action
       }).then(function (result) {
         if (result.successful) {
-          _this.action.content = "";
+          _this.action.instructions = "";
         }
 
         _this.bus.$emit("post:components/forms/action");
@@ -31613,6 +31620,126 @@ var action_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var action_api; }
 action_component.options.__file = "app/vue/components/forms/action.vue"
 /* harmony default export */ var action = (action_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/action.vue?vue&type=template&id=449471b4&
+var actionvue_type_template_id_449471b4_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "section" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-content" }, [
+        _c(
+          "ul",
+          _vm._l(_vm.actions, function(action) {
+            return _c("li", { key: action.id }, [
+              _vm._v(_vm._s(action.instructions))
+            ])
+          }),
+          0
+        )
+      ])
+    ])
+  ])
+}
+var actionvue_type_template_id_449471b4_staticRenderFns = []
+actionvue_type_template_id_449471b4_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/components/lists/action.vue?vue&type=template&id=449471b4&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/action.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+/* harmony default export */ var lists_actionvue_type_script_lang_js_ = ({
+  props: {
+    cloudModule: {
+      type: String,
+      required: true
+    },
+    cloudOwnerId: {
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      actions: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.bus.$on("post:components/forms/actions", function () {
+      _this.getActions();
+    });
+  },
+  methods: {
+    getActions: function getActions() {
+      var _this2 = this;
+
+      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudOwnerId, "/actions")).then(function (result) {
+        if (result.successful) {
+          _this2.actions = result.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  watch: {
+    cloudOwnerId: function cloudOwnerId(_cloudOwnerId) {
+      this.getActions();
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/components/lists/action.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_lists_actionvue_type_script_lang_js_ = (lists_actionvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/lists/action.vue
+
+
+
+
+
+/* normalize component */
+
+var lists_action_component = Object(componentNormalizer["a" /* default */])(
+  components_lists_actionvue_type_script_lang_js_,
+  actionvue_type_template_id_449471b4_render,
+  actionvue_type_template_id_449471b4_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var lists_action_api; }
+lists_action_component.options.__file = "app/vue/components/lists/action.vue"
+/* harmony default export */ var lists_action = (lists_action_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/actions.vue?vue&type=script&lang=js&
 /*
 Lesli
@@ -31642,6 +31769,7 @@ Building a better future, one line of code at a time.
 */
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
  // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
@@ -31656,7 +31784,8 @@ Building a better future, one line of code at a time.
     }
   },
   components: {
-    'component-action-form': action
+    'component-action-form': action,
+    'component-action-list': lists_action
   }
 });
 // CONCATENATED MODULE: ./app/vue/apps/actions.vue?vue&type=script&lang=js&
