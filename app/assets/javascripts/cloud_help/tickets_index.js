@@ -30944,50 +30944,72 @@ var showvue_type_template_id_0378ade2_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "section" },
-    [
-      _c("div", { staticClass: "card" }, [
-        _c(
-          "div",
-          { staticClass: "card-header" },
-          [
-            _c("h2", { staticClass: "card-header-title" }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.ticket.subject) +
-                  "\n            "
-              )
-            ]),
-            _vm._v(" "),
+  return _c("section", { staticClass: "section" }, [
+    _c("div", { staticClass: "columns" }, [
+      _c(
+        "div",
+        { staticClass: "column is-9" },
+        [
+          _c("div", { staticClass: "card" }, [
             _c(
-              "router-link",
-              {
-                staticClass: "card-header-icon",
-                attrs: { to: "/" + _vm.ticket.id + "/edit" }
-              },
-              [_vm._v("\n                edit\n            ")]
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("div", {
-          staticClass: "card-content",
-          domProps: { innerHTML: _vm._s(_vm.ticket.description) }
-        })
-      ]),
+              "div",
+              { staticClass: "card-header" },
+              [
+                _c("h2", { staticClass: "card-header-title" }, [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.ticket.subject) +
+                      "\n                    "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "card-header-icon",
+                    attrs: { to: "/" + _vm.ticket.id + "/edit" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        edit\n                    "
+                    )
+                  ]
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", {
+              staticClass: "card-content",
+              domProps: { innerHTML: _vm._s(_vm.ticket.description) }
+            })
+          ]),
+          _vm._v(" "),
+          _c("component-app-discussions", {
+            attrs: {
+              "cloud-module": "help/ticket",
+              "cloud-owner-id": _vm.ticket_id
+            }
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
-      _c("component-app-comment", {
-        attrs: {
-          "cloud-module": "help/ticket",
-          "cloud-owner-id": _vm.ticket_id
-        }
-      })
-    ],
-    1
-  )
+      _c(
+        "div",
+        { staticClass: "column is-3" },
+        [
+          _c("component-app-actions", {
+            attrs: {
+              "cloud-module": "help/ticket",
+              "cloud-owner-id": _vm.ticket_id
+            }
+          })
+        ],
+        1
+      )
+    ])
+  ])
 }
 var showvue_type_template_id_0378ade2_staticRenderFns = []
 showvue_type_template_id_0378ade2_render._withStripped = true
@@ -30995,8 +31017,8 @@ showvue_type_template_id_0378ade2_render._withStripped = true
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=template&id=0378ade2&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/comments.vue?vue&type=template&id=8dec5bc8&
-var commentsvue_type_template_id_8dec5bc8_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/discussions.vue?vue&type=template&id=47e91cd3&
+var discussionsvue_type_template_id_47e91cd3_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -31004,14 +31026,14 @@ var commentsvue_type_template_id_8dec5bc8_render = function() {
     "section",
     { staticClass: "section" },
     [
-      _c("component-comment-form", {
+      _c("component-discussion-form", {
         attrs: {
           "cloud-module": _vm.cloudModule,
           "cloud-owner-id": _vm.cloudOwnerId
         }
       }),
       _vm._v(" "),
-      _c("component-comment-list", {
+      _c("component-discussion-list", {
         attrs: {
           "cloud-module": _vm.cloudModule,
           "cloud-owner-id": _vm.cloudOwnerId
@@ -31021,14 +31043,14 @@ var commentsvue_type_template_id_8dec5bc8_render = function() {
     1
   )
 }
-var commentsvue_type_template_id_8dec5bc8_staticRenderFns = []
-commentsvue_type_template_id_8dec5bc8_render._withStripped = true
+var discussionsvue_type_template_id_47e91cd3_staticRenderFns = []
+discussionsvue_type_template_id_47e91cd3_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./app/vue/apps/comments.vue?vue&type=template&id=8dec5bc8&
+// CONCATENATED MODULE: ./app/vue/apps/discussions.vue?vue&type=template&id=47e91cd3&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/comment.vue?vue&type=template&id=4e199beb&
-var commentvue_type_template_id_4e199beb_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/discussion.vue?vue&type=template&id=24ddcfcc&
+var discussionvue_type_template_id_24ddcfcc_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
@@ -31037,7 +31059,7 @@ var commentvue_type_template_id_4e199beb_render = function() {
       _c("div", { staticClass: "card-content" }, [
         _c(
           "form",
-          { on: { submit: _vm.postComment } },
+          { on: { submit: _vm.postDiscussion } },
           [
             _vm.show_simple_form
               ? _c("input", {
@@ -31045,19 +31067,19 @@ var commentvue_type_template_id_4e199beb_render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.comment.content,
-                      expression: "comment.content"
+                      value: _vm.discussion.content,
+                      expression: "discussion.content"
                     }
                   ],
                   staticClass: "input",
                   attrs: { type: "text", placeholder: "Add a comment..." },
-                  domProps: { value: _vm.comment.content },
+                  domProps: { value: _vm.discussion.content },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.comment, "content", $event.target.value)
+                      _vm.$set(_vm.discussion, "content", $event.target.value)
                     }
                   }
                 })
@@ -31066,11 +31088,11 @@ var commentvue_type_template_id_4e199beb_render = function() {
             !_vm.show_simple_form
               ? _c("component-trix-editor", {
                   model: {
-                    value: _vm.comment.content,
+                    value: _vm.discussion.content,
                     callback: function($$v) {
-                      _vm.$set(_vm.comment, "content", $$v)
+                      _vm.$set(_vm.discussion, "content", $$v)
                     },
-                    expression: "comment.content"
+                    expression: "discussion.content"
                   }
                 })
               : _vm._e()
@@ -31081,13 +31103,13 @@ var commentvue_type_template_id_4e199beb_render = function() {
     ])
   ])
 }
-var commentvue_type_template_id_4e199beb_staticRenderFns = []
-commentvue_type_template_id_4e199beb_render._withStripped = true
+var discussionvue_type_template_id_24ddcfcc_staticRenderFns = []
+discussionvue_type_template_id_24ddcfcc_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./app/vue/components/forms/comment.vue?vue&type=template&id=4e199beb&
+// CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue?vue&type=template&id=24ddcfcc&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/comment.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/discussion.vue?vue&type=script&lang=js&
 /*
 Lesli
 
@@ -31119,14 +31141,13 @@ Building a better future, one line of code at a time.
  // · Component
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-/* harmony default export */ var commentvue_type_script_lang_js_ = ({
+/* harmony default export */ var discussionvue_type_script_lang_js_ = ({
   props: {
     cloudModule: {
       type: String,
       required: true
     },
     cloudOwnerId: {
-      type: Number,
       required: true
     }
   },
@@ -31136,13 +31157,13 @@ Building a better future, one line of code at a time.
   data: function data() {
     return {
       show_simple_form: true,
-      comment: {
+      discussion: {
         content: ""
       }
     };
   },
   methods: {
-    postComment: function postComment(e) {
+    postDiscussion: function postDiscussion(e) {
       var _this = this;
 
       if (e) {
@@ -31150,15 +31171,15 @@ Building a better future, one line of code at a time.
       } // add owner id
 
 
-      this.comment["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudOwnerId;
-      this.http.post("/".concat(this.cloudModule, "/comments"), {
-        ticket_comment: this.comment
+      this.discussion["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudOwnerId;
+      this.http.post("/".concat(this.cloudModule, "/discussions"), {
+        ticket_discussion: this.discussion
       }).then(function (result) {
         if (result.successful) {
-          _this.comment.content = "";
+          _this.discussion.content = "";
         }
 
-        _this.bus.$emit("post:components/forms/comment");
+        _this.bus.$emit("post:components/forms/discussion");
 
         console.log(result);
       })["catch"](function (error) {
@@ -31167,9 +31188,9 @@ Building a better future, one line of code at a time.
     }
   }
 });
-// CONCATENATED MODULE: ./app/vue/components/forms/comment.vue?vue&type=script&lang=js&
- /* harmony default export */ var forms_commentvue_type_script_lang_js_ = (commentvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./app/vue/components/forms/comment.vue
+// CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue?vue&type=script&lang=js&
+ /* harmony default export */ var forms_discussionvue_type_script_lang_js_ = (discussionvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue
 
 
 
@@ -31177,10 +31198,10 @@ Building a better future, one line of code at a time.
 
 /* normalize component */
 
-var comment_component = Object(componentNormalizer["a" /* default */])(
-  forms_commentvue_type_script_lang_js_,
-  commentvue_type_template_id_4e199beb_render,
-  commentvue_type_template_id_4e199beb_staticRenderFns,
+var discussion_component = Object(componentNormalizer["a" /* default */])(
+  forms_discussionvue_type_script_lang_js_,
+  discussionvue_type_template_id_24ddcfcc_render,
+  discussionvue_type_template_id_24ddcfcc_staticRenderFns,
   false,
   null,
   null,
@@ -31189,19 +31210,19 @@ var comment_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* hot reload */
-if (false) { var comment_api; }
-comment_component.options.__file = "app/vue/components/forms/comment.vue"
-/* harmony default export */ var comment = (comment_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/comment.vue?vue&type=template&id=6f958a51&
-var commentvue_type_template_id_6f958a51_render = function() {
+if (false) { var discussion_api; }
+discussion_component.options.__file = "app/vue/components/forms/discussion.vue"
+/* harmony default export */ var discussion = (discussion_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/discussion.vue?vue&type=template&id=8c3d00b4&
+var discussionvue_type_template_id_8c3d00b4_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
     "section",
     { staticClass: "section" },
-    _vm._l(_vm.comments, function(comment) {
-      return _c("div", { key: comment.id, staticClass: "box" }, [
+    _vm._l(_vm.discussions, function(discussion) {
+      return _c("div", { key: discussion.id, staticClass: "box" }, [
         _c("div", { staticClass: "media" }, [
           _vm._m(0, true),
           _vm._v(" "),
@@ -31210,10 +31231,12 @@ var commentvue_type_template_id_6f958a51_render = function() {
               _c("p", [
                 _c("strong", [_vm._v("John Smith")]),
                 _vm._v(" "),
-                _c("small", [_vm._v(_vm._s(comment.created_at))])
+                _c("small", [_vm._v(_vm._s(discussion.created_at))])
               ]),
               _vm._v(" "),
-              _c("div", { domProps: { innerHTML: _vm._s(comment.content) } }),
+              _c("div", {
+                domProps: { innerHTML: _vm._s(discussion.content) }
+              }),
               _vm._v(" "),
               _c("p", [
                 _vm._v(
@@ -31230,7 +31253,7 @@ var commentvue_type_template_id_6f958a51_render = function() {
     0
   )
 }
-var commentvue_type_template_id_6f958a51_staticRenderFns = [
+var discussionvue_type_template_id_8c3d00b4_staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -31256,12 +31279,12 @@ var commentvue_type_template_id_6f958a51_staticRenderFns = [
     ])
   }
 ]
-commentvue_type_template_id_6f958a51_render._withStripped = true
+discussionvue_type_template_id_8c3d00b4_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./app/vue/components/lists/comment.vue?vue&type=template&id=6f958a51&
+// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue?vue&type=template&id=8c3d00b4&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/comment.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/discussion.vue?vue&type=script&lang=js&
 /*
 Lesli
 
@@ -31288,36 +31311,35 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
-/* harmony default export */ var lists_commentvue_type_script_lang_js_ = ({
+/* harmony default export */ var lists_discussionvue_type_script_lang_js_ = ({
   props: {
     cloudModule: {
       type: String,
       required: true
     },
     cloudOwnerId: {
-      type: Number,
       required: true
     }
   },
   data: function data() {
     return {
-      comments: []
+      discussions: []
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    this.bus.$on("post:components/forms/comment", function () {
-      _this.getComments();
+    this.bus.$on("post:components/forms/discussion", function () {
+      _this.getDiscussions();
     });
   },
   methods: {
-    getComments: function getComments() {
+    getDiscussions: function getDiscussions() {
       var _this2 = this;
 
-      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudOwnerId, "/comments")).then(function (result) {
+      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudOwnerId, "/discussions")).then(function (result) {
         if (result.successful) {
-          _this2.comments = result.data;
+          _this2.discussions = result.data;
         }
       })["catch"](function (error) {
         console.log(error);
@@ -31326,13 +31348,13 @@ Building a better future, one line of code at a time.
   },
   watch: {
     cloudOwnerId: function cloudOwnerId(_cloudOwnerId) {
-      this.getComments();
+      this.getDiscussions();
     }
   }
 });
-// CONCATENATED MODULE: ./app/vue/components/lists/comment.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_lists_commentvue_type_script_lang_js_ = (lists_commentvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./app/vue/components/lists/comment.vue
+// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_lists_discussionvue_type_script_lang_js_ = (lists_discussionvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue
 
 
 
@@ -31340,10 +31362,10 @@ Building a better future, one line of code at a time.
 
 /* normalize component */
 
-var lists_comment_component = Object(componentNormalizer["a" /* default */])(
-  components_lists_commentvue_type_script_lang_js_,
-  commentvue_type_template_id_6f958a51_render,
-  commentvue_type_template_id_6f958a51_staticRenderFns,
+var lists_discussion_component = Object(componentNormalizer["a" /* default */])(
+  components_lists_discussionvue_type_script_lang_js_,
+  discussionvue_type_template_id_8c3d00b4_render,
+  discussionvue_type_template_id_8c3d00b4_staticRenderFns,
   false,
   null,
   null,
@@ -31352,10 +31374,10 @@ var lists_comment_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* hot reload */
-if (false) { var lists_comment_api; }
-lists_comment_component.options.__file = "app/vue/components/lists/comment.vue"
-/* harmony default export */ var lists_comment = (lists_comment_component.exports);
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/comments.vue?vue&type=script&lang=js&
+if (false) { var lists_discussion_api; }
+lists_discussion_component.options.__file = "app/vue/components/lists/discussion.vue"
+/* harmony default export */ var lists_discussion = (lists_discussion_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/discussions.vue?vue&type=script&lang=js&
 /*
 Lesli
 
@@ -31388,25 +31410,24 @@ Building a better future, one line of code at a time.
  // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-/* harmony default export */ var commentsvue_type_script_lang_js_ = ({
+/* harmony default export */ var discussionsvue_type_script_lang_js_ = ({
   props: {
     cloudModule: {
       type: String,
       required: true
     },
     cloudOwnerId: {
-      type: Number,
       required: true
     }
   },
   components: {
-    'component-comment-form': comment,
-    'component-comment-list': lists_comment
+    'component-discussion-form': discussion,
+    'component-discussion-list': lists_discussion
   }
 });
-// CONCATENATED MODULE: ./app/vue/apps/comments.vue?vue&type=script&lang=js&
- /* harmony default export */ var apps_commentsvue_type_script_lang_js_ = (commentsvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./app/vue/apps/comments.vue
+// CONCATENATED MODULE: ./app/vue/apps/discussions.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_discussionsvue_type_script_lang_js_ = (discussionsvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/apps/discussions.vue
 
 
 
@@ -31414,10 +31435,10 @@ Building a better future, one line of code at a time.
 
 /* normalize component */
 
-var comments_component = Object(componentNormalizer["a" /* default */])(
-  apps_commentsvue_type_script_lang_js_,
-  commentsvue_type_template_id_8dec5bc8_render,
-  commentsvue_type_template_id_8dec5bc8_staticRenderFns,
+var discussions_component = Object(componentNormalizer["a" /* default */])(
+  apps_discussionsvue_type_script_lang_js_,
+  discussionsvue_type_template_id_47e91cd3_render,
+  discussionsvue_type_template_id_47e91cd3_staticRenderFns,
   false,
   null,
   null,
@@ -31426,9 +31447,243 @@ var comments_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* hot reload */
-if (false) { var comments_api; }
-comments_component.options.__file = "app/vue/apps/comments.vue"
-/* harmony default export */ var comments = (comments_component.exports);
+if (false) { var discussions_api; }
+discussions_component.options.__file = "app/vue/apps/discussions.vue"
+/* harmony default export */ var discussions = (discussions_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/actions.vue?vue&type=template&id=a3c9b0f6&
+var actionsvue_type_template_id_a3c9b0f6_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    { staticClass: "section" },
+    [
+      _c("component-action-form", {
+        attrs: {
+          "cloud-module": _vm.cloudModule,
+          "cloud-owner-id": _vm.cloudOwnerId
+        }
+      })
+    ],
+    1
+  )
+}
+var actionsvue_type_template_id_a3c9b0f6_staticRenderFns = []
+actionsvue_type_template_id_a3c9b0f6_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/apps/actions.vue?vue&type=template&id=a3c9b0f6&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/action.vue?vue&type=template&id=a24a764c&
+var actionvue_type_template_id_a24a764c_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { staticClass: "section" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-content" }, [
+        _c("form", { on: { submit: _vm.postAction } }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.action.instructions,
+                expression: "action.instructions"
+              }
+            ],
+            staticClass: "input",
+            attrs: { type: "text", placeholder: "Add new action..." },
+            domProps: { value: _vm.action.instructions },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.action, "instructions", $event.target.value)
+              }
+            }
+          })
+        ])
+      ])
+    ])
+  ])
+}
+var actionvue_type_template_id_a24a764c_staticRenderFns = []
+actionvue_type_template_id_a24a764c_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/components/forms/action.vue?vue&type=template&id=a24a764c&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/action.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Component
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+/* harmony default export */ var actionvue_type_script_lang_js_ = ({
+  props: {
+    cloudModule: {
+      type: String,
+      required: true
+    },
+    cloudOwnerId: {
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      action: {
+        instructions: ""
+      }
+    };
+  },
+  methods: {
+    postAction: function postAction(e) {
+      var _this = this;
+
+      if (e) {
+        e.preventDefault();
+      } // add owner id
+
+
+      this.action["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudOwnerId;
+      this.http.post("/".concat(this.cloudModule, "/comments"), {
+        action: this.comment
+      }).then(function (result) {
+        if (result.successful) {
+          _this.action.content = "";
+        }
+
+        _this.bus.$emit("post:components/forms/action");
+
+        console.log(result);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/components/forms/action.vue?vue&type=script&lang=js&
+ /* harmony default export */ var forms_actionvue_type_script_lang_js_ = (actionvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/forms/action.vue
+
+
+
+
+
+/* normalize component */
+
+var action_component = Object(componentNormalizer["a" /* default */])(
+  forms_actionvue_type_script_lang_js_,
+  actionvue_type_template_id_a24a764c_render,
+  actionvue_type_template_id_a24a764c_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var action_api; }
+action_component.options.__file = "app/vue/components/forms/action.vue"
+/* harmony default export */ var action = (action_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/actions.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Import modules, components and apps
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+ // · Component show
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var actionsvue_type_script_lang_js_ = ({
+  props: {
+    cloudModule: {
+      type: String,
+      required: true
+    },
+    cloudOwnerId: {
+      required: true
+    }
+  },
+  components: {
+    'component-action-form': action
+  }
+});
+// CONCATENATED MODULE: ./app/vue/apps/actions.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_actionsvue_type_script_lang_js_ = (actionsvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/apps/actions.vue
+
+
+
+
+
+/* normalize component */
+
+var actions_component = Object(componentNormalizer["a" /* default */])(
+  apps_actionsvue_type_script_lang_js_,
+  actionsvue_type_template_id_a3c9b0f6_render,
+  actionsvue_type_template_id_a3c9b0f6_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var actions_api; }
+actions_component.options.__file = "app/vue/apps/actions.vue"
+/* harmony default export */ var actions = (actions_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/show.vue?vue&type=script&lang=js&
 /*
 Lesli
@@ -31458,12 +31713,14 @@ Building a better future, one line of code at a time.
 */
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
  // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
 /* harmony default export */ var showvue_type_script_lang_js_ = ({
   components: {
-    'component-app-comment': comments
+    'component-app-discussions': discussions,
+    'component-app-actions': actions
   },
   data: function data() {
     return {

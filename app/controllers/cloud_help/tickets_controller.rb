@@ -57,9 +57,9 @@ module CloudHelp
             redirect_to tickets_url, notice: 'Ticket was successfully destroyed.'
         end
 
-        def comments
-            ticket_comments = parent_ticket.comment
-            responseWithSuccessful(ticket_comments)
+        def discussions
+            ticket_discussions = parent_ticket.discussion
+            responseWithSuccessful(ticket_discussions)
         end
 
         private

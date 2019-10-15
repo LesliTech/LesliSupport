@@ -6,7 +6,7 @@ CloudHelp::Engine.routes.draw do
         resources :timelines
         resources :follows
         resources :actions
-        resources :comments
+        resources :discussions
         resources :activities
         resources :attachments
         resources :details
@@ -22,7 +22,7 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_tags
 
     resources :tickets do
-        get '/comments', to: 'tickets#comments'
+        get '/discussions', to: 'tickets#discussions'
     end
     
 end

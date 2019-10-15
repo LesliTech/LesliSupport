@@ -30,7 +30,8 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentAppComments from 'LesliCloud/vue/apps/comments.vue'
+import componentAppDiscussions from 'LesliCloud/vue/apps/discussions.vue'
+import componentAppActions from 'LesliCloud/vue/apps/actions.vue'
 
 
 
@@ -38,7 +39,8 @@ import componentAppComments from 'LesliCloud/vue/apps/comments.vue'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-app-comment': componentAppComments
+        'component-app-discussions': componentAppDiscussions,
+        'component-app-actions': componentAppActions
     },
     data() {
         return {
@@ -69,18 +71,25 @@ export default {
 </script>
 <template>
     <section class="section">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    {{ ticket.subject }}
-                </h2>
-                <router-link :to="`/${ticket.id}/edit`" class="card-header-icon">
-                    edit
-                </router-link>
+        <div class="columns">
+            <div class="column is-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-header-title">
+                            {{ ticket.subject }}
+                        </h2>
+                        <router-link :to="`/${ticket.id}/edit`" class="card-header-icon">
+                            edit
+                        </router-link>
+                    </div>
+                    <div class="card-content" v-html="ticket.description">
+                    </div>
+                </div>
+                <component-app-discussions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
             </div>
-            <div class="card-content" v-html="ticket.description">
+            <div class="column is-3">
+                <component-app-actions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
             </div>
         </div>
-        <component-app-comment cloud-module="help/ticket" :cloud-owner-id="ticket_id"></component-app-comment>
     </section>
 </template>
