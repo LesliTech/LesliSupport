@@ -34,6 +34,8 @@ import app from 'LesliCloud/vue/app-spa'
 
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentAppDiscussions from 'LesliCloud/vue/apps/discussions.vue'
+import componentAppActions from 'LesliCloud/vue/apps/actions.vue'
 import componentList from './components/list.vue'
 import componentEdit from './components/edit.vue'
 import componentShow from './components/show.vue'
@@ -50,9 +52,17 @@ app("CloudHelp", "[list|new|edit|show]", "help/tickets", [{
     path: "/new",
     component: componentNew,
 },{
-    path: "/:ticket_id/edit",
+    path: "/:id/edit",
     component: componentEdit,
 },{
-    path: "/:ticket_id/show",
+    path: "/:id/show",
     component: componentShow,
+},{
+    path: "/:id/actions",
+    component: componentAppActions,
+    props: { cloudModule:"help/ticket" }
+},{
+    path: "/:id/discussion",
+    component: componentAppDiscussions,
+    props: { cloudModule:"help/ticket" }
 }])

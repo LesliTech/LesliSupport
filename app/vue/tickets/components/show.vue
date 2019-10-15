@@ -49,7 +49,7 @@ export default {
         }
     },
     mounted() {
-        this.ticket_id = this.$route.params.ticket_id
+        this.ticket_id = this.$route.params.id
     },
     methods: {
         getTicket() {
@@ -71,29 +71,22 @@ export default {
 </script>
 <template>
     <section class="section">
-        <b-tabs>
-            <b-tab-item label="Ticket">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-header-title">
-                            {{ ticket.subject }}
-                        </h2>
-                        <router-link :to="`/${ticket.id}/edit`" class="card-header-icon">
-                            edit
-                        </router-link>
-                    </div>
-                    <div class="card-content" v-html="ticket.description">
-                    </div>
-                </div>
-            </b-tab-item>
-            <b-tab-item label="Discussion">
-                <component-app-discussions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
-            </b-tab-item>
-            <b-tab-item label="Actions">
-                <component-app-actions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
-            </b-tab-item>
-            <b-tab-item label="Files"></b-tab-item>
-            <b-tab-item label="Logs"></b-tab-item>
-        </b-tabs>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-header-title">
+                    {{ ticket.subject }}
+                </h2>
+                <router-link :to="`/${ticket.id}/edit`" class="card-header-icon">
+                    edit
+                </router-link>
+            </div>
+            <div class="card-content" v-html="ticket.description">
+            </div>
+        </div>
+<!-- 
+        <component-app-discussions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
+        <component-app-actions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
+ -->
     </section>
 </template>
