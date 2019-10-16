@@ -30134,6 +30134,7 @@ vue_default.a.use(cable["a" /* default */]); // · Vue app
       'component-layout-navigation': navigation
     },
     router: new vue_router_esm["a" /* default */]({
+      linkActiveClass: 'is-active',
       //mode: "history",
       //base: base_path,
       routes: routes
@@ -31713,6 +31714,36 @@ formvue_type_template_id_33e6a429_render._withStripped = true
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=template&id=33e6a429&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Import modules, components and apps
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+ // · Component show
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
 /* harmony default export */ var formvue_type_script_lang_js_ = ({
   components: {
@@ -31730,17 +31761,17 @@ formvue_type_template_id_33e6a429_render._withStripped = true
     };
   },
   mounted: function mounted() {
-    if (this.$route.params.ticket_id) {
-      this.ticket_id = this.$route.params.ticket_id;
+    if (this.$route.params.id) {
+      this.ticket_id = this.$route.params.id;
     }
   },
   methods: {
     putTicket: function putTicket(e) {
       if (e) {
         e.preventDefault();
-      }
+      } //delete this.ticket.cloud_help_accounts_id
 
-      delete this.ticket.cloud_help_accounts_id;
+
       this.http.put("/help/tickets/" + this.ticket_id, {
         ticket: this.ticket
       }).then(function (result) {//this.url.go("/kb/articles/"+this.article.id+"/edit")
@@ -31771,6 +31802,7 @@ formvue_type_template_id_33e6a429_render._withStripped = true
       this.http.get("/help/tickets/".concat(this.ticket_id)).then(function (result) {
         if (result.successful) {
           _this2.ticket.detail_attributes = {
+            id: result.data.id,
             subject: result.data.subject,
             description: result.data.description
           };
@@ -31856,9 +31888,9 @@ var showvue_type_template_id_0378ade2_render = function() {
         [
           _c("h2", { staticClass: "card-header-title" }, [
             _vm._v(
-              "\n                    " +
+              "\n                " +
                 _vm._s(_vm.ticket.subject) +
-                "\n                "
+                "\n            "
             )
           ]),
           _vm._v(" "),
@@ -31868,7 +31900,7 @@ var showvue_type_template_id_0378ade2_render = function() {
               staticClass: "card-header-icon",
               attrs: { to: "/" + _vm.ticket.id + "/edit" }
             },
-            [_vm._v("\n                    edit\n                ")]
+            [_vm._v("\n                edit\n            ")]
           )
         ],
         1
@@ -31878,10 +31910,36 @@ var showvue_type_template_id_0378ade2_render = function() {
         staticClass: "card-content",
         domProps: { innerHTML: _vm._s(_vm.ticket.description) }
       })
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
   ])
 }
-var showvue_type_template_id_0378ade2_staticRenderFns = []
+var showvue_type_template_id_0378ade2_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "quickview", attrs: { id: "test" } }, [
+      _c("div", { staticClass: "quickview-header" }, [
+        _c("p", { staticClass: "title" }, [_vm._v("Quickview title")]),
+        _vm._v(" "),
+        _c("span", {
+          staticClass: "delete",
+          attrs: { "data-dismiss": "quickview" }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "quickview-body" }, [
+        _c("div", { staticClass: "quickview-block" })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "quickview-footer" }, [
+        _vm._v("\n            footer\n        ")
+      ])
+    ])
+  }
+]
 showvue_type_template_id_0378ade2_render._withStripped = true
 
 

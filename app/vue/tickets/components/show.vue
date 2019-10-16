@@ -84,9 +84,21 @@ export default {
             <div class="card-content" v-html="ticket.description">
             </div>
         </div>
-<!-- 
-        <component-app-discussions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
-        <component-app-actions cloud-module="help/ticket" :cloud-owner-id="ticket_id" />
- -->
+
+
+        <div id="test" class="quickview">
+            <div class="quickview-header">
+                <p class="title">Quickview title</p>
+                <span class="delete" data-dismiss="quickview"></span>
+            </div>
+            <div class="quickview-body">
+                <div class="quickview-block">
+                </div>
+            </div>
+            <div class="quickview-footer">
+                footer
+            </div>
+        </div>
+
     </section>
 </template>

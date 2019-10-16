@@ -2,7 +2,8 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+        #before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+        before_action :set_ticket, except: [:index]
 
         # GET /tickets
         def index
@@ -15,7 +16,11 @@ module CloudHelp
 
         # GET /tickets/1
         def show
-            responseWithSuccessful(@ticket)
+            ticket =  current_user.account.help.ticket
+                .joins(:detail)
+                .select(:id, :subject, :description, :created_at, :updated_at)
+                .find(@ticket.id)
+            responseWithSuccessful(ticket)
         end
 
         # GET /tickets/new
@@ -45,7 +50,8 @@ module CloudHelp
         # PATCH/PUT /tickets/1
         def update
             if @ticket.update(ticket_params)
-                redirect_to @ticket, notice: 'Ticket was successfully updated.'
+                responseWithSuccessful(@ticket)
+                CloudBell::NotificationsController.web_notification
             else
                 render :edit
             end
@@ -58,33 +64,28 @@ module CloudHelp
         end
 
         def discussions
-            ticket_discussions = parent_ticket.discussion
+            ticket_discussions = @ticket.discussion
             responseWithSuccessful(ticket_discussions)
         end
 
         def actions
-            ticket_actions = parent_ticket.actions
+            ticket_actions = @ticket.actions
             responseWithSuccessful(ticket_actions)
         end
 
         private
 
-        # Use callbacks to share common setup or constraints between actions.
         def set_ticket
-            @ticket = current_user.account.help.ticket
-                .joins(:detail)
-                .select(:id, :subject, :description, :created_at, :updated_at)
-                .find(params[:id])
-        end
-
-        def parent_ticket
-            current_user.account.help.ticket.find(params[:ticket_id])
+            ticket_id = params[:id] unless params[:id].blank?
+            ticket_id = params[:ticket_id] unless params[:ticket_id].blank?
+            @ticket = current_user.account.help.ticket.find(ticket_id)
         end
 
         # Only allow a trusted parameter "white list" through.
         def ticket_params
             params.require(:ticket).permit(
                 detail_attributes: [
+                    :id,
                     :subject,
                     :description
                 ]
