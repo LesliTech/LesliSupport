@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 54);
+/******/ 	return __webpack_require__(__webpack_require__.s = 56);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -15994,14 +15994,21 @@ Building a better future, one line of code at a time.
 // ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 /* harmony default export */ __webpack_exports__["a"] = ({
   install: function install(Vue, options) {
-    var bus = new Vue();
+    Vue.prototype.bus = new Vue();
     document.addEventListener("keydown", function (e) {
       if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 83) {
         e.preventDefault();
-        bus.$emit("cloud-ctrl-save");
+        Vue.prototype.bus.$emit("cloud-ctrl-save");
       }
     }, false);
-    Vue.prototype.bus = bus;
+
+    Vue.prototype.notification = function (message, type) {
+      Vue.prototype.bus.$emit('component:notify#notification', message, type);
+    };
+
+    Vue.prototype.alert = function (message, type) {
+      Vue.prototype.bus.$emit('component:notify#alert', message, type);
+    };
   }
 });
 
@@ -27983,35 +27990,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "component_notify" },
-    [
-      _c(
-        "b-notification",
-        {
-          attrs: {
-            type: _vm.type,
-            duration: 4000,
-            active: _vm.isActive,
-            "auto-close": "",
-            "aria-close-label": "Close notification"
-          },
-          on: {
-            "update:active": function($event) {
-              _vm.isActive = $event
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n        Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    "
-          )
-        ]
-      )
-    ],
-    1
-  )
+  return _c("section")
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -28049,17 +28028,35 @@ Building a better future, one line of code at a time.
 // · LesliCloud component
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 /* harmony default export */ var notifyvue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      isActive: false,
-      type: "is-danger"
-    };
-  },
   mounted: function mounted() {
+    var _this = this;
+
+    this.bus.$on('component:notify#alert', function (message) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'primary';
+
+      _this.$buefy.toast.open({
+        queue: true,
+        duration: 3500,
+        position: 'is-bottom-right',
+        message: message,
+        type: "is-".concat(type)
+      });
+    });
+    this.bus.$on('component:notify#notification', function (message) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
+
+      _this.$buefy.notification.open({
+        queue: true,
+        duration: 2000,
+        position: 'is-bottom-right',
+        message: message,
+        type: "is-".concat(type)
+      });
+    });
     var self = this;
     this.cable.subscriptions.create("CloudCourier::Bell::WebNotificationChannel", {
       received: function received(data) {
-        self.isActive = true;
+        console.log(data);
       }
     });
   }
@@ -29901,45 +29898,6 @@ exports.push([module.i, "\ntable tr:hover {\n    cursor: pointer;\n}\n", ""]);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
-var vue = __webpack_require__(0);
-var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
-
-// EXTERNAL MODULE: ./node_modules/vue-router/dist/vue-router.esm.js
-var vue_router_esm = __webpack_require__(4);
-
-// EXTERNAL MODULE: ./node_modules/buefy/dist/esm/index.js + 55 modules
-var esm = __webpack_require__(22);
-
-// EXTERNAL MODULE: ./app/vue/plugins/bus.js
-var bus = __webpack_require__(14);
-
-// EXTERNAL MODULE: ./app/vue/plugins/url.js
-var url = __webpack_require__(15);
-
-// EXTERNAL MODULE: ./app/vue/plugins/http.js
-var http = __webpack_require__(16);
-
-// EXTERNAL MODULE: ./app/vue/plugins/cable.js
-var cable = __webpack_require__(18);
-
-// EXTERNAL MODULE: ./node_modules/lesli-nodejs-debug-message/browser.js
-var browser = __webpack_require__(20);
-var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
-
-// EXTERNAL MODULE: ./app/vue/functions/document.js
-var functions_document = __webpack_require__(21);
-
-// EXTERNAL MODULE: ./app/vue/layout/header.vue + 4 modules
-var header = __webpack_require__(24);
-
-// EXTERNAL MODULE: ./app/vue/layout/notify.vue + 4 modules
-var notify = __webpack_require__(25);
-
-// EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
-var chatbox = __webpack_require__(23);
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
 var render = function() {
@@ -30065,7 +30023,57 @@ var component = Object(componentNormalizer["a" /* default */])(
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "app/vue/layout/navigation.vue"
-/* harmony default export */ var navigation = (component.exports);
+/* harmony default export */ var navigation = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+/* 55 */,
+/* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
+var vue = __webpack_require__(0);
+var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
+
+// EXTERNAL MODULE: ./node_modules/vue-router/dist/vue-router.esm.js
+var vue_router_esm = __webpack_require__(4);
+
+// EXTERNAL MODULE: ./node_modules/buefy/dist/esm/index.js + 55 modules
+var esm = __webpack_require__(22);
+
+// EXTERNAL MODULE: ./app/vue/plugins/bus.js
+var bus = __webpack_require__(14);
+
+// EXTERNAL MODULE: ./app/vue/plugins/url.js
+var url = __webpack_require__(15);
+
+// EXTERNAL MODULE: ./app/vue/plugins/http.js
+var http = __webpack_require__(16);
+
+// EXTERNAL MODULE: ./app/vue/plugins/cable.js
+var cable = __webpack_require__(18);
+
+// EXTERNAL MODULE: ./node_modules/lesli-nodejs-debug-message/browser.js
+var browser = __webpack_require__(20);
+var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
+
+// EXTERNAL MODULE: ./app/vue/functions/document.js
+var functions_document = __webpack_require__(21);
+
+// EXTERNAL MODULE: ./app/vue/layout/header.vue + 4 modules
+var header = __webpack_require__(24);
+
+// EXTERNAL MODULE: ./app/vue/layout/notify.vue + 4 modules
+var notify = __webpack_require__(25);
+
+// EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
+var chatbox = __webpack_require__(23);
+
+// EXTERNAL MODULE: ./app/vue/layout/navigation.vue + 4 modules
+var navigation = __webpack_require__(54);
+
 // CONCATENATED MODULE: ./app/vue/app-spa.js
 /*
 Lesli
@@ -30131,7 +30139,7 @@ vue_default.a.use(cable["a" /* default */]); // · Vue app
       'component-layout-header': header["a" /* default */],
       'component-layout-notify': notify["a" /* default */],
       'component-layout-chatbox': chatbox["a" /* default */],
-      'component-layout-navigation': navigation
+      'component-layout-navigation': navigation["a" /* default */]
     },
     router: new vue_router_esm["a" /* default */]({
       linkActiveClass: 'is-active',
@@ -30147,13 +30155,12 @@ vue_default.a.use(cable["a" /* default */]); // · Vue app
   });
 });
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/discussions.vue?vue&type=template&id=47e91cd3&
-var discussionsvue_type_template_id_47e91cd3_render = function() {
+var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
     "section",
-    { staticClass: "section" },
     [
       _c("component-discussion-form", {
         attrs: {
@@ -30172,8 +30179,8 @@ var discussionsvue_type_template_id_47e91cd3_render = function() {
     1
   )
 }
-var discussionsvue_type_template_id_47e91cd3_staticRenderFns = []
-discussionsvue_type_template_id_47e91cd3_render._withStripped = true
+var staticRenderFns = []
+render._withStripped = true
 
 
 // CONCATENATED MODULE: ./app/vue/apps/discussions.vue?vue&type=template&id=47e91cd3&
@@ -30185,6 +30192,8 @@ var discussionvue_type_template_id_24ddcfcc_render = function() {
   var _c = _vm._self._c || _h
   return _c("section", { staticClass: "section" }, [
     _c("div", { staticClass: "card" }, [
+      _vm._m(0),
+      _vm._v(" "),
       _c("div", { staticClass: "card-content" }, [
         _c(
           "form",
@@ -30232,7 +30241,18 @@ var discussionvue_type_template_id_24ddcfcc_render = function() {
     ])
   ])
 }
-var discussionvue_type_template_id_24ddcfcc_staticRenderFns = []
+var discussionvue_type_template_id_24ddcfcc_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h4", { staticClass: "card-header-title" }, [
+        _vm._v("\n                Add new comment\n            ")
+      ])
+    ])
+  }
+]
 discussionvue_type_template_id_24ddcfcc_render._withStripped = true
 
 
@@ -30852,6 +30872,9 @@ Building a better future, one line of code at a time.
 });
 // CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue?vue&type=script&lang=js&
  /* harmony default export */ var forms_discussionvue_type_script_lang_js_ = (discussionvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(1);
+
 // CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue
 
 
@@ -30860,7 +30883,7 @@ Building a better future, one line of code at a time.
 
 /* normalize component */
 
-var discussion_component = Object(componentNormalizer["a" /* default */])(
+var component = Object(componentNormalizer["a" /* default */])(
   forms_discussionvue_type_script_lang_js_,
   discussionvue_type_template_id_24ddcfcc_render,
   discussionvue_type_template_id_24ddcfcc_staticRenderFns,
@@ -30872,9 +30895,9 @@ var discussion_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* hot reload */
-if (false) { var discussion_api; }
-discussion_component.options.__file = "app/vue/components/forms/discussion.vue"
-/* harmony default export */ var discussion = (discussion_component.exports);
+if (false) { var api; }
+component.options.__file = "app/vue/components/forms/discussion.vue"
+/* harmony default export */ var discussion = (component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/discussion.vue?vue&type=template&id=8c3d00b4&
 var discussionvue_type_template_id_8c3d00b4_render = function() {
   var _vm = this
@@ -31020,7 +31043,7 @@ Building a better future, one line of code at a time.
 
 /* normalize component */
 
-var lists_discussion_component = Object(componentNormalizer["a" /* default */])(
+var discussion_component = Object(componentNormalizer["a" /* default */])(
   components_lists_discussionvue_type_script_lang_js_,
   discussionvue_type_template_id_8c3d00b4_render,
   discussionvue_type_template_id_8c3d00b4_staticRenderFns,
@@ -31032,9 +31055,9 @@ var lists_discussion_component = Object(componentNormalizer["a" /* default */])(
 )
 
 /* hot reload */
-if (false) { var lists_discussion_api; }
-lists_discussion_component.options.__file = "app/vue/components/lists/discussion.vue"
-/* harmony default export */ var lists_discussion = (lists_discussion_component.exports);
+if (false) { var discussion_api; }
+discussion_component.options.__file = "app/vue/components/lists/discussion.vue"
+/* harmony default export */ var lists_discussion = (discussion_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/apps/discussions.vue?vue&type=script&lang=js&
 /*
 Lesli
@@ -31092,8 +31115,8 @@ Building a better future, one line of code at a time.
 
 var discussions_component = Object(componentNormalizer["a" /* default */])(
   apps_discussionsvue_type_script_lang_js_,
-  discussionsvue_type_template_id_47e91cd3_render,
-  discussionsvue_type_template_id_47e91cd3_staticRenderFns,
+  render,
+  staticRenderFns,
   false,
   null,
   null,
@@ -31767,6 +31790,8 @@ Building a better future, one line of code at a time.
   },
   methods: {
     putTicket: function putTicket(e) {
+      var _this = this;
+
       if (e) {
         e.preventDefault();
       } //delete this.ticket.cloud_help_accounts_id
@@ -31774,13 +31799,16 @@ Building a better future, one line of code at a time.
 
       this.http.put("/help/tickets/" + this.ticket_id, {
         ticket: this.ticket
-      }).then(function (result) {//this.url.go("/kb/articles/"+this.article.id+"/edit")
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("Ticket updated successfuly");
+        }
       })["catch"](function (error) {
         console.log(error);
       });
     },
     postTicket: function postTicket(e) {
-      var _this = this;
+      var _this2 = this;
 
       if (e) {
         e.preventDefault();
@@ -31789,19 +31817,19 @@ Building a better future, one line of code at a time.
       this.http.post("/help/tickets", {
         ticket: this.ticket
       }).then(function (result) {
-        _this.ticket = result.data;
+        _this2.ticket = result.data;
 
-        _this.$router.push("".concat(_this.ticket.id, "/show"));
+        _this2.$router.push("".concat(_this2.ticket.id, "/show"));
       })["catch"](function (error) {
         console.log(error);
       });
     },
     getTicket: function getTicket() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.http.get("/help/tickets/".concat(this.ticket_id)).then(function (result) {
         if (result.successful) {
-          _this2.ticket.detail_attributes = {
+          _this3.ticket.detail_attributes = {
             id: result.data.id,
             subject: result.data.subject,
             description: result.data.description
@@ -31910,36 +31938,10 @@ var showvue_type_template_id_0378ade2_render = function() {
         staticClass: "card-content",
         domProps: { innerHTML: _vm._s(_vm.ticket.description) }
       })
-    ]),
-    _vm._v(" "),
-    _vm._m(0)
+    ])
   ])
 }
-var showvue_type_template_id_0378ade2_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "quickview", attrs: { id: "test" } }, [
-      _c("div", { staticClass: "quickview-header" }, [
-        _c("p", { staticClass: "title" }, [_vm._v("Quickview title")]),
-        _vm._v(" "),
-        _c("span", {
-          staticClass: "delete",
-          attrs: { "data-dismiss": "quickview" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "quickview-body" }, [
-        _c("div", { staticClass: "quickview-block" })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "quickview-footer" }, [
-        _vm._v("\n            footer\n        ")
-      ])
-    ])
-  }
-]
+var showvue_type_template_id_0378ade2_staticRenderFns = []
 showvue_type_template_id_0378ade2_render._withStripped = true
 
 

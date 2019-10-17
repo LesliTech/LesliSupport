@@ -85,20 +85,5 @@ export default {
             </div>
         </div>
 
-
-        <div id="test" class="quickview">
-            <div class="quickview-header">
-                <p class="title">Quickview title</p>
-                <span class="delete" data-dismiss="quickview"></span>
-            </div>
-            <div class="quickview-body">
-                <div class="quickview-block">
-                </div>
-            </div>
-            <div class="quickview-footer">
-                footer
-            </div>
-        </div>
-
     </section>
 </template>

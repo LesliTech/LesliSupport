@@ -15994,14 +15994,21 @@ Building a better future, one line of code at a time.
 // ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 /* harmony default export */ __webpack_exports__["a"] = ({
   install: function install(Vue, options) {
-    var bus = new Vue();
+    Vue.prototype.bus = new Vue();
     document.addEventListener("keydown", function (e) {
       if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 83) {
         e.preventDefault();
-        bus.$emit("cloud-ctrl-save");
+        Vue.prototype.bus.$emit("cloud-ctrl-save");
       }
     }, false);
-    Vue.prototype.bus = bus;
+
+    Vue.prototype.notification = function (message, type) {
+      Vue.prototype.bus.$emit('component:notify#notification', message, type);
+    };
+
+    Vue.prototype.alert = function (message, type) {
+      Vue.prototype.bus.$emit('component:notify#alert', message, type);
+    };
   }
 });
 
@@ -27983,35 +27990,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    { staticClass: "component_notify" },
-    [
-      _c(
-        "b-notification",
-        {
-          attrs: {
-            type: _vm.type,
-            duration: 4000,
-            active: _vm.isActive,
-            "auto-close": "",
-            "aria-close-label": "Close notification"
-          },
-          on: {
-            "update:active": function($event) {
-              _vm.isActive = $event
-            }
-          }
-        },
-        [
-          _vm._v(
-            "\n        Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n    "
-          )
-        ]
-      )
-    ],
-    1
-  )
+  return _c("section")
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -28049,17 +28028,35 @@ Building a better future, one line of code at a time.
 // · LesliCloud component
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 /* harmony default export */ var notifyvue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      isActive: false,
-      type: "is-danger"
-    };
-  },
   mounted: function mounted() {
+    var _this = this;
+
+    this.bus.$on('component:notify#alert', function (message) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'primary';
+
+      _this.$buefy.toast.open({
+        queue: true,
+        duration: 3500,
+        position: 'is-bottom-right',
+        message: message,
+        type: "is-".concat(type)
+      });
+    });
+    this.bus.$on('component:notify#notification', function (message) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
+
+      _this.$buefy.notification.open({
+        queue: true,
+        duration: 2000,
+        position: 'is-bottom-right',
+        message: message,
+        type: "is-".concat(type)
+      });
+    });
     var self = this;
     this.cable.subscriptions.create("CloudCourier::Bell::WebNotificationChannel", {
       received: function received(data) {
-        self.isActive = true;
+        console.log(data);
       }
     });
   }
@@ -29418,7 +29415,138 @@ module.exports = new Utils
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */,
+/* 54 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("nav", { staticClass: "module-navigation navbar is-transparent" }, [
+    _c("div", { staticClass: "navbar-menu" }, [
+      _c("div", { staticClass: "navbar-start" }, [_vm._t("default")], 2),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "navbar-end" },
+        [
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Details")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/discussion" }
+                },
+                [_vm._v("Discussion")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/actions" }
+                },
+                [_vm._v("Actions")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Files")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Logs")]
+              )
+            : _vm._e()
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=script&lang=js&
+/* harmony default export */ var navigationvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      id: null
+    };
+  },
+  mounted: function mounted() {
+    if (this.$route.params.id) {
+      this.id = this.$route.params.id;
+    }
+  },
+  watch: {
+    '$route.params.id': function $routeParamsId(id) {
+      this.id = id;
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layout_navigationvue_type_script_lang_js_ = (navigationvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./app/vue/layout/navigation.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  layout_navigationvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/vue/layout/navigation.vue"
+/* harmony default export */ var navigation = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
 /* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -29462,6 +29590,9 @@ var notify = __webpack_require__(25);
 
 // EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
 var chatbox = __webpack_require__(23);
+
+// EXTERNAL MODULE: ./app/vue/layout/navigation.vue + 4 modules
+var navigation = __webpack_require__(54);
 
 // CONCATENATED MODULE: ./app/vue/app-single.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -29515,6 +29646,7 @@ Building a better future, one line of code at a time.
 
 
 
+
  // · Initializing frameworks, libraries and tools
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
@@ -29532,7 +29664,8 @@ vue_default.a.use(cable["a" /* default */]); // · Vue app
     components: {
       'component-layout-header': header["a" /* default */],
       'component-layout-notify': notify["a" /* default */],
-      'component-layout-chatbox': chatbox["a" /* default */]
+      'component-layout-chatbox': chatbox["a" /* default */],
+      'component-layout-navigation': navigation["a" /* default */]
     }
   });
   cloud.$options.components = _objectSpread({}, cloud.$options.components, {}, components);

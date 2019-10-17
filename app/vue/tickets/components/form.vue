@@ -67,7 +67,9 @@ export default {
             this.http.put("/help/tickets/"+this.ticket_id, {
                 ticket: this.ticket
             }).then(result => {
-                //this.url.go("/kb/articles/"+this.article.id+"/edit")
+                if (result.successful) {
+                    this.alert("Ticket updated successfuly")
+                }
             }).catch(error => {
                 console.log(error)
             })
