@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 55);
+/******/ 	return __webpack_require__(__webpack_require__.s = 56);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -12032,7 +12032,7 @@
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(26).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(27).setImmediate))
 
 /***/ }),
 /* 1 */
@@ -12143,7 +12143,7 @@ function normalizeComponent (
 
 
 var bind = __webpack_require__(5);
-var isBuffer = __webpack_require__(29);
+var isBuffer = __webpack_require__(30);
 
 /*global toString:true*/
 
@@ -15381,7 +15381,7 @@ module.exports = function isCancel(value) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(34);
+var normalizeHeaderName = __webpack_require__(35);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -15677,10 +15677,10 @@ process.umask = function() { return 0; };
 
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(35);
+var settle = __webpack_require__(36);
 var buildURL = __webpack_require__(6);
-var parseHeaders = __webpack_require__(37);
-var isURLSameOrigin = __webpack_require__(38);
+var parseHeaders = __webpack_require__(38);
+var isURLSameOrigin = __webpack_require__(39);
 var createError = __webpack_require__(11);
 
 module.exports = function xhrAdapter(config) {
@@ -15773,7 +15773,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(39);
+      var cookies = __webpack_require__(40);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -15857,7 +15857,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(36);
+var enhanceError = __webpack_require__(37);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -16159,7 +16159,7 @@ Building a better future, one line of code at a time.
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(28);
+module.exports = __webpack_require__(29);
 
 /***/ }),
 /* 18 */
@@ -16759,7 +16759,7 @@ Building a better future, one line of code at a time.
 // · 
 */
 
-module.exports = __webpack_require__(44)
+module.exports = __webpack_require__(45)
 
 
 /***/ }),
@@ -27715,6 +27715,138 @@ component.options.__file = "app/vue/layout/chatbox.vue"
 
 "use strict";
 
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("nav", { staticClass: "module-navigation navbar is-transparent" }, [
+    _c("div", { staticClass: "navbar-menu" }, [
+      _c("div", { staticClass: "navbar-start" }, [_vm._t("default")], 2),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "navbar-end" },
+        [
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Details")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/discussion" }
+                },
+                [_vm._v("Discussion")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/actions" }
+                },
+                [_vm._v("Actions")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Files")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Logs")]
+              )
+            : _vm._e()
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=script&lang=js&
+/* harmony default export */ var navigationvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      id: null
+    };
+  },
+  mounted: function mounted() {
+    if (this.$route.params.id) {
+      this.id = this.$route.params.id;
+    }
+  },
+  watch: {
+    '$route.params.id': function $routeParamsId(id) {
+      this.id = id;
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layout_navigationvue_type_script_lang_js_ = (navigationvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(1);
+
+// CONCATENATED MODULE: ./app/vue/layout/navigation.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  layout_navigationvue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "app/vue/layout/navigation.vue"
+/* harmony default export */ var navigation = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+/* 25 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/header.vue?vue&type=template&id=2c7eec86&
 var render = function() {
   var _vm = this
@@ -27980,7 +28112,7 @@ component.options.__file = "app/vue/layout/header.vue"
 /* harmony default export */ var header = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28091,7 +28223,7 @@ component.options.__file = "app/vue/layout/notify.vue"
 /* harmony default export */ var notify = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -28147,7 +28279,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(46);
+__webpack_require__(47);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -28161,8 +28293,8 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 27 */,
-/* 28 */
+/* 28 */,
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28170,7 +28302,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(5);
-var Axios = __webpack_require__(30);
+var Axios = __webpack_require__(31);
 var mergeConfig = __webpack_require__(12);
 var defaults = __webpack_require__(8);
 
@@ -28206,14 +28338,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(13);
-axios.CancelToken = __webpack_require__(42);
+axios.CancelToken = __webpack_require__(43);
 axios.isCancel = __webpack_require__(7);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(43);
+axios.spread = __webpack_require__(44);
 
 module.exports = axios;
 
@@ -28222,7 +28354,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /*!
@@ -28239,7 +28371,7 @@ module.exports = function isBuffer (obj) {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28247,8 +28379,8 @@ module.exports = function isBuffer (obj) {
 
 var utils = __webpack_require__(2);
 var buildURL = __webpack_require__(6);
-var InterceptorManager = __webpack_require__(31);
-var dispatchRequest = __webpack_require__(32);
+var InterceptorManager = __webpack_require__(32);
+var dispatchRequest = __webpack_require__(33);
 var mergeConfig = __webpack_require__(12);
 
 /**
@@ -28332,7 +28464,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28391,18 +28523,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(33);
+var transformData = __webpack_require__(34);
 var isCancel = __webpack_require__(7);
 var defaults = __webpack_require__(8);
-var isAbsoluteURL = __webpack_require__(40);
-var combineURLs = __webpack_require__(41);
+var isAbsoluteURL = __webpack_require__(41);
+var combineURLs = __webpack_require__(42);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -28484,7 +28616,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28511,7 +28643,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28530,7 +28662,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28562,7 +28694,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28611,7 +28743,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28671,7 +28803,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28746,7 +28878,7 @@ module.exports = (
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28806,7 +28938,7 @@ module.exports = (
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28827,7 +28959,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28848,7 +28980,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28912,7 +29044,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28946,7 +29078,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -28979,7 +29111,7 @@ Building a better future, one line of code at a time.
 
 // · Loading node modules
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-let utils = __webpack_require__(45)
+let utils = __webpack_require__(46)
 
 
 // · 
@@ -29045,7 +29177,7 @@ module.exports = new browserDebugService
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 /*
@@ -29215,7 +29347,7 @@ module.exports = new Utils
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -29408,146 +29540,15 @@ module.exports = new Utils
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(9)))
 
 /***/ }),
-/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("nav", { staticClass: "module-navigation navbar is-transparent" }, [
-    _c("div", { staticClass: "navbar-menu" }, [
-      _c("div", { staticClass: "navbar-start" }, [_vm._t("default")], 2),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "navbar-end" },
-        [
-          _vm.id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/show" }
-                },
-                [_vm._v("Details")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/discussion" }
-                },
-                [_vm._v("Discussion")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/actions" }
-                },
-                [_vm._v("Actions")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/show" }
-                },
-                [_vm._v("Files")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/show" }
-                },
-                [_vm._v("Logs")]
-              )
-            : _vm._e()
-        ],
-        1
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=script&lang=js&
-/* harmony default export */ var navigationvue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      id: null
-    };
-  },
-  mounted: function mounted() {
-    if (this.$route.params.id) {
-      this.id = this.$route.params.id;
-    }
-  },
-  watch: {
-    '$route.params.id': function $routeParamsId(id) {
-      this.id = id;
-    }
-  }
-});
-// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=script&lang=js&
- /* harmony default export */ var layout_navigationvue_type_script_lang_js_ = (navigationvue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(1);
-
-// CONCATENATED MODULE: ./app/vue/layout/navigation.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  layout_navigationvue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "app/vue/layout/navigation.vue"
-/* harmony default export */ var navigation = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-/* 55 */
+/* 54 */,
+/* 55 */,
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29583,16 +29584,16 @@ var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 var functions_document = __webpack_require__(21);
 
 // EXTERNAL MODULE: ./app/vue/layout/header.vue + 4 modules
-var header = __webpack_require__(24);
+var header = __webpack_require__(25);
 
 // EXTERNAL MODULE: ./app/vue/layout/notify.vue + 4 modules
-var notify = __webpack_require__(25);
+var notify = __webpack_require__(26);
 
 // EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
 var chatbox = __webpack_require__(23);
 
 // EXTERNAL MODULE: ./app/vue/layout/navigation.vue + 4 modules
-var navigation = __webpack_require__(54);
+var navigation = __webpack_require__(24);
 
 // CONCATENATED MODULE: ./app/vue/app-single.js
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }

@@ -51,7 +51,6 @@ module CloudHelp
         def update
             if @ticket.update(ticket_params)
                 responseWithSuccessful(@ticket)
-                #CloudBell::NotificationsController.web_notification
             else
                 render :edit
             end

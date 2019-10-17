@@ -26,7 +26,6 @@ module CloudHelp
         def create
             ticket_action = Ticket::Action.new(ticket_action_params)
             if ticket_action.save
-                CloudBell::NotificationsController.web_notification
                 responseWithSuccessful(ticket_action)
             else
                 responseWithError("Action not created")
@@ -36,9 +35,9 @@ module CloudHelp
         # PATCH/PUT /ticket/actions/1
         def update
             if @ticket_action.update(ticket_action_params)
-                redirect_to @ticket_action, notice: 'Action was successfully updated.'
+                responseWithSuccessful(@ticket_action)
             else
-                render :edit
+                responseWithError("Action not updated")
             end
         end
 
@@ -57,7 +56,7 @@ module CloudHelp
 
         # Only allow a trusted parameter "white list" through.
         def ticket_action_params
-            params.require(:ticket_action).permit(:instructions, :cloud_help_tickets_id)
+            params.require(:ticket_action).permit(:id, :type, :instructions, :deadline, :complete, :tags, :cloud_help_tickets_id)
         end
 
     end
