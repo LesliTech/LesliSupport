@@ -72,6 +72,14 @@ module CloudHelp
             responseWithSuccessful(ticket_actions)
         end
 
+        def files
+            responseWithSuccessful([])
+        end
+
+        def activities
+            responseWithSuccessful([])
+        end
+
         private
 
         def set_ticket

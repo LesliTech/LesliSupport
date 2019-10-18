@@ -31980,39 +31980,236 @@ var showvue_type_template_id_0378ade2_render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("section", { staticClass: "section" }, [
-    _c("div", { staticClass: "card" }, [
-      _c(
-        "div",
-        { staticClass: "card-header" },
-        [
-          _c("h2", { staticClass: "card-header-title" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.ticket.subject) +
-                "\n            "
-            )
-          ]),
+    _c("div", { staticClass: "columns" }, [
+      _c("div", { staticClass: "column is-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _c(
+            "div",
+            { staticClass: "card-header" },
+            [
+              _c("h2", { staticClass: "card-header-title" }, [
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(_vm.ticket.subject) +
+                    "\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "card-header-icon",
+                  attrs: { to: "/" + _vm.ticket.id + "/edit" }
+                },
+                [_vm._v("\n                        edit\n                    ")]
+              )
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
-            "router-link",
-            {
-              staticClass: "card-header-icon",
-              attrs: { to: "/" + _vm.ticket.id + "/edit" }
-            },
-            [_vm._v("\n                edit\n            ")]
-          )
-        ],
-        1
-      ),
+            "div",
+            { staticClass: "card-content" },
+            [
+              _c(
+                "b-field",
+                { attrs: { label: "" } },
+                [
+                  _c(
+                    "b-autocomplete",
+                    {
+                      attrs: {
+                        data: ["Luis Donis", "Jorge Santos"],
+                        placeholder: "Search and assign employee",
+                        icon: "magnify"
+                      }
+                    },
+                    [
+                      _c("template", { slot: "empty" }, [
+                        _vm._v("No results found")
+                      ])
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "card-content",
+            domProps: { innerHTML: _vm._s(_vm.ticket.description) }
+          })
+        ])
+      ]),
       _vm._v(" "),
-      _c("div", {
-        staticClass: "card-content",
-        domProps: { innerHTML: _vm._s(_vm.ticket.description) }
-      })
+      _c("div", { staticClass: "column is-4" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "card" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-content" },
+            [
+              _c("b-field", { attrs: { label: "Tags" } }, [
+                _c("input", { staticClass: "input", attrs: { type: "text" } })
+              ]),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "b-field",
+                { attrs: { label: "Type" } },
+                [
+                  _c(
+                    "b-select",
+                    { attrs: { placeholder: "Select a name", expanded: "" } },
+                    _vm._l([0, 0, 0, 0, 0], function(option, index) {
+                      return _c(
+                        "option",
+                        { key: index, domProps: { value: index } },
+                        [
+                          _vm._v(
+                            "\n                                type " +
+                              _vm._s(index) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-field",
+                { attrs: { label: "Status" } },
+                [
+                  _c(
+                    "b-select",
+                    { attrs: { placeholder: "Select a name", expanded: "" } },
+                    _vm._l([0, 0, 0, 0, 0], function(option, index) {
+                      return _c(
+                        "option",
+                        { key: index, domProps: { value: index } },
+                        [
+                          _vm._v(
+                            "\n                                status " +
+                              _vm._s(index) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-field",
+                { attrs: { label: "Priority" } },
+                [
+                  _c(
+                    "b-select",
+                    { attrs: { placeholder: "Select a name", expanded: "" } },
+                    _vm._l([0, 0, 0, 0, 0], function(option, index) {
+                      return _c(
+                        "option",
+                        { key: index, domProps: { value: index } },
+                        [
+                          _vm._v(
+                            "\n                                priority " +
+                              _vm._s(index) +
+                              "\n                            "
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ])
+      ])
     ])
   ])
 }
-var showvue_type_template_id_0378ade2_staticRenderFns = []
+var showvue_type_template_id_0378ade2_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _c("h4", { staticClass: "card-header-title" }, [
+          _vm._v("\n                        Open\n                    ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-content" }, [
+        _c("div", { staticClass: "field" }, [
+          _c("input", {
+            staticClass: "is-checkradio is-success",
+            attrs: { type: "radio", checked: "checked" }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("first response due")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("input", {
+            staticClass: "is-checkradio",
+            attrs: { type: "radio", checked: "checked" }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("resolution due")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h4", { staticClass: "card-header-title" }, [
+        _vm._v("\n                        Properties\n                    ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "field" }, [
+      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 1")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 2")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 3")]),
+      _vm._v(" "),
+      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 4")])
+    ])
+  }
+]
 showvue_type_template_id_0378ade2_render._withStripped = true
 
 
@@ -32059,7 +32256,8 @@ Building a better future, one line of code at a time.
   data: function data() {
     return {
       ticket_id: null,
-      ticket: {}
+      ticket: {},
+      test: 0
     };
   },
   mounted: function mounted() {

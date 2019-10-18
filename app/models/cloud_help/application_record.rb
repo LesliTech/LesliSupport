@@ -1,5 +1,5 @@
 module CloudHelp
-  class ApplicationRecord < ActiveRecord::Base
-    self.abstract_class = true
-  end
+    class ApplicationRecord < ApplicationLesliRecord
+        self.abstract_class = true
+    end
 end
