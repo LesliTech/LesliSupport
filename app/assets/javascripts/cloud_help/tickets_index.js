@@ -31316,7 +31316,7 @@ var actionvue_type_template_id_449471b4_render = function() {
                   }
                 ],
                 staticClass: "is-checkradio",
-                attrs: { type: "checkbox" },
+                attrs: { id: action.id, type: "checkbox" },
                 domProps: {
                   checked: Array.isArray(action.complete)
                     ? _vm._i(action.complete, null) > -1
@@ -31352,11 +31352,10 @@ var actionvue_type_template_id_449471b4_render = function() {
                   ]
                 }
               }),
-              _vm._v(
-                "\n                    " +
-                  _vm._s(action.instructions) +
-                  "\n                    "
-              )
+              _vm._v(" "),
+              _c("label", { attrs: { for: action.id } }, [
+                _vm._v(_vm._s(action.instructions))
+              ])
             ])
           }),
           0
