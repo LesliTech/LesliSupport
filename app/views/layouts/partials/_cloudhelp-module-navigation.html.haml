@@ -1,3 +1,6 @@
 %component-layout-navigation
-    = link_to "Dashboards", root_path, class: "navbar-item"
-    = link_to "Tickets", tickets_path, class: "navbar-item"
+    %template(v-slot:right)
+        = link_to "Dashboards", root_path, class: "navbar-item"
+        = link_to "Tickets", tickets_path, class: "navbar-item"
+    %template(v-slot:left)
+        %router-link.navbar-item{":to" => "'/new'"} New ticket

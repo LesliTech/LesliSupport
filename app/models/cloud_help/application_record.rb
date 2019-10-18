@@ -1,5 +1,6 @@
 module CloudHelp
-    class ApplicationRecord < ApplicationLesliRecord
+    class ApplicationRecord < ApplicationRecord
         self.abstract_class = true
+        audited
     end
 end

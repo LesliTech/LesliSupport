@@ -27722,12 +27722,14 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("nav", { staticClass: "module-navigation navbar is-transparent" }, [
     _c("div", { staticClass: "navbar-menu" }, [
-      _c("div", { staticClass: "navbar-start" }, [_vm._t("default")], 2),
+      _c("div", { staticClass: "navbar-start" }, [_vm._t("right")], 2),
       _vm._v(" "),
       _c(
         "div",
         { staticClass: "navbar-end" },
         [
+          _vm._t("left"),
+          _vm._v(" "),
           _vm.id
             ? _c(
                 "router-link",
@@ -27779,11 +27781,11 @@ var render = function() {
                   staticClass: "navbar-item",
                   attrs: { to: "/" + _vm.id + "/show" }
                 },
-                [_vm._v("Logs")]
+                [_vm._v("Activities")]
               )
             : _vm._e()
         ],
-        1
+        2
       )
     ])
   ])
@@ -27802,7 +27804,7 @@ render._withStripped = true
     };
   },
   mounted: function mounted() {
-    if (this.$route.params.id) {
+    if (this.$route && this.$route.params.id) {
       this.id = this.$route.params.id;
     }
   },

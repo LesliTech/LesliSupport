@@ -1,5 +1,11 @@
 CloudHelp::Engine.routes.draw do
 
+  namespace :ticket do
+    resources :followers
+  end
+  namespace :ticket do
+    resources :files
+  end
     root to: 'dashboards#default'
     
     namespace :ticket do

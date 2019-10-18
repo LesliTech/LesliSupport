@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module CloudHelp
-  class Ticket::AttachmentTest < ActiveSupport::TestCase
+  class Ticket::FileTest < ActiveSupport::TestCase
     # test "the truth" do
     #   assert true
     # end
