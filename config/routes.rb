@@ -28,9 +28,13 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_tags
 
     resources :tickets do
-        get '/discussions', to: 'tickets#discussions'
         get '/actions', to: 'tickets#actions'
         get '/activities', to: 'tickets#activities'
+        get '/discussions', to: 'tickets#discussions'
+    end
+
+    scope :api do
+        get '/tickets/options', to: 'tickets#api_options'
     end
     
 end

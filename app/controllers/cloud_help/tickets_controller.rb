@@ -2,8 +2,8 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        #before_action :set_ticket, only: [:show, :edit, :update, :destroy]
-        before_action :set_ticket, except: [:index, :create]
+        before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+        #before_action :set_ticket, except: [:index, :create, :api_options]
 
         # GET /tickets
         def index
@@ -18,9 +18,20 @@ module CloudHelp
         def show
             ticket =  current_user.account.help.ticket
                 .joins(:detail)
-                .select(:id, :subject, :description, :created_at, :updated_at)
+                .select(:id, :subject, :description, :cloud_help_ticket_types_id, :created_at, :updated_at)
                 .find(@ticket.id)
-            responseWithSuccessful(ticket)
+            responseWithSuccessful({
+                ticket: {
+                    detail_attributes: {
+                        id: ticket['id'],
+                        subject: ticket['subject'],
+                        description: ticket['description'],
+                        cloud_help_ticket_types_id: ticket['cloud_help_ticket_types_id'],
+                        created_at: ticket['created_at'], 
+                        updated_at: ticket['updated_at']
+                    }
+                }
+            })
         end
 
         # GET /tickets/new
@@ -52,7 +63,7 @@ module CloudHelp
             if @ticket.update(ticket_params)
                 responseWithSuccessful(@ticket)
             else
-                render :edit
+                responseWithError("error on update ticket", @ticket.errors.full_messages)
             end
         end
 
@@ -61,6 +72,8 @@ module CloudHelp
             @ticket.destroy
             redirect_to tickets_url, notice: 'Ticket was successfully destroyed.'
         end
+
+
 
         def discussions
             ticket_discussions = @ticket.discussion
@@ -80,6 +93,12 @@ module CloudHelp
             responseWithSuccessful([])
         end
 
+        def api_options
+            responseWithSuccessful({
+                types: TicketType.all
+            })
+        end
+
         private
 
         def set_ticket
@@ -94,7 +113,8 @@ module CloudHelp
                 detail_attributes: [
                     :id,
                     :subject,
-                    :description
+                    :description,
+                    :cloud_help_ticket_types_id
                 ]
             )
         end

@@ -42,11 +42,13 @@ export default {
     },
     data() {
         return {
+            ticket_options: {},
             ticket_id: null,
             ticket: {
                 detail_attributes: {
                     subject: "",
-                    description: ""
+                    description: "",
+                    cloud_help_ticket_types_id: null
                 }
             }
         }
@@ -55,8 +57,21 @@ export default {
         if (this.$route.params.id) {
             this.ticket_id = this.$route.params.id
         }
+        this.getTicketOptions()
     },
     methods: {
+
+        getTicketOptions() {
+
+            this.http.get('/help/api/tickets/options').then(result => {
+                if (result.successful) {
+                    this.ticket_options = result.data
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+
+        },
 
         putTicket(e) {
 
@@ -94,11 +109,24 @@ export default {
         getTicket() {
             this.http.get(`/help/tickets/${this.ticket_id}`).then(result => {
                 if (result.successful) {
-                    this.ticket.detail_attributes = {
-                        id: result.data.id,
-                        subject: result.data.subject,
-                        description: result.data.description
+                    this.ticket = result.data.ticket
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        putTicketType() {
+            this.http.patch("/help/tickets/"+this.ticket_id, {
+                ticket: {
+                    detail_attributes: {
+                        id: this.ticket.detail_attributes.id,
+                        cloud_help_ticket_types_id: this.ticket.detail_attributes.cloud_help_ticket_types_id
                     }
+                }
+            }).then(result => {
+                if (result.successful) {
+                    this.alert("Ticket updated successfuly")
                 }
             }).catch(error => {
                 console.log(error)
@@ -115,33 +143,113 @@ export default {
 </script>
 <template>
     <section class="section">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    Ticket
-                </h2>
-                <router-link v-if="ticket_id" :to="`/${ticket.id}/show`" class="card-header-icon">
-                    show
-                </router-link>
+        <div class="columns">
+            <div class="column is-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-header-title">
+                            Ticket
+                        </h2>
+                        <router-link v-if="ticket_id" :to="`/${ticket.id}/show`" class="card-header-icon">
+                            show
+                        </router-link>
+                    </div>
+                    <div class="card-content">
+                        <form>
+                            <b-field label="Subject">
+                                <b-input v-model="ticket.detail_attributes.subject"></b-input>
+                            </b-field>
+                            <div class="field">
+                                <label for="article.content" class="label">Content</label>
+                                <div class="control">
+                                    <component-trix-editor v-model="ticket.detail_attributes.description"></component-trix-editor>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <p>
+                                    Created at: {{ ticket.detail_attributes.created_at }}, 
+                                    updated at: {{ ticket.detail_attributes.updated_at }}
+                                </p>
+                            </div>
+                            <div class="field">
+                                <div class="actions">
+                                    <button class="button is-primary" v-if="!ticket_id" @click="postTicket">Create ticket</button>
+                                    <button class="button is-primary" v-if="ticket_id" @click="putTicket">Update ticket</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="card-content">
-                <form>
-                    <b-field label="Subject">
-                        <b-input v-model="ticket.detail_attributes.subject"></b-input>
-                    </b-field>
-                    <div class="field">
-                        <label for="article.content" class="label">Content</label>
-                        <div class="control">
-                            <component-trix-editor v-model="ticket.detail_attributes.description"></component-trix-editor>
+            <div class="column is-4">
+                <div class="card card-status">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Open
+                        </h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="field">
+                            <i class="fas fa-info-circle has-text-link"></i>
+                            <label for="">first response due</label>
+                            <p>by Thu, 26 Sep 2019, 12:00 PM</p>
+                        </div>
+                        <div class="field">
+                            <i class="fas fa-info-circle has-text-link"></i>
+                            <label for="">resolution due</label>
+                            <p>by Thu, 26 Sep 2019, 12:00 PM</p>
                         </div>
                     </div>
-                    <div class="field">
-                        <div class="actions">
-                            <button class="button is-primary" v-if="!ticket_id" @click="postTicket">Create ticket</button>
-                            <button class="button is-primary" v-if="ticket_id" @click="putTicket">Update ticket</button>
-                        </div>
+                </div>
+                <br>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            Properties
+                        </h4>
                     </div>
-                </form>
+                    <div class="card-content">
+                        <b-field label="Tags">
+                            <input type="text" class="input">
+                        </b-field>
+                        <div class="field">
+                            <span class="tag is-link">Tag 1</span>
+                            <span class="tag is-link">Tag 2</span>
+                            <span class="tag is-link">Tag 3</span>
+                            <span class="tag is-link">Tag 4</span>
+                        </div>
+                        <b-field label="Type">
+                            <div class="control">
+                                <div class="select">
+                                    <select 
+                                        @change="putTicketType()" 
+                                        v-model="ticket.detail_attributes.cloud_help_ticket_types_id">
+                                        <option 
+                                            v-for="(option, index) in ticket_options.types"
+                                            :key="index" 
+                                            :value="option.id">
+                                            {{ option.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </b-field>
+                        <b-field label="Status">
+                            <b-select placeholder="Select a name" expanded>
+                                <option v-for="(option, index) in [0,0,0,0,0]" :key="index" :value="index">
+                                    status {{ index }}
+                                </option>
+                            </b-select>
+                        </b-field>
+                        <b-field label="Priority">
+                            <b-select placeholder="Select a name" expanded>
+                                <option v-for="(option, index) in [0,0,0,0,0]" :key="index" :value="index">
+                                    priority {{ index }}
+                                </option>
+                            </b-select>
+                        </b-field>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

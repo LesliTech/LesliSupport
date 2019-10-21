@@ -29560,11 +29560,11 @@ __webpack_require__.r(__webpack_exports__);
 var vue = __webpack_require__(0);
 var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
 
-// EXTERNAL MODULE: ./node_modules/vue-router/dist/vue-router.esm.js
-var vue_router_esm = __webpack_require__(4);
-
 // EXTERNAL MODULE: ./node_modules/buefy/dist/esm/index.js + 55 modules
 var esm = __webpack_require__(22);
+
+// EXTERNAL MODULE: ./node_modules/vue-router/dist/vue-router.esm.js
+var vue_router_esm = __webpack_require__(4);
 
 // EXTERNAL MODULE: ./app/vue/plugins/bus.js
 var bus = __webpack_require__(14);
