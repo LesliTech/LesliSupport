@@ -22,6 +22,7 @@ module CloudHelp
                     :id, :subject, :description, 
                     :cloud_help_ticket_types_id, 
                     :cloud_help_ticket_states_id, 
+                    :cloud_help_ticket_priorities_id,
                     :created_at, :updated_at)
                 .find(@ticket.id)
             responseWithSuccessful({
@@ -32,6 +33,7 @@ module CloudHelp
                         description: ticket['description'],
                         cloud_help_ticket_types_id: ticket['cloud_help_ticket_types_id'],
                         cloud_help_ticket_states_id: ticket['cloud_help_ticket_states_id'],
+                        cloud_help_ticket_priorities_id: ticket['cloud_help_ticket_priorities_id'],
                         created_at: ticket['created_at'], 
                         updated_at: ticket['updated_at']
                     }
@@ -78,7 +80,7 @@ module CloudHelp
             redirect_to tickets_url, notice: 'Ticket was successfully destroyed.'
         end
 
-
+        # 
 
         def discussions
             ticket_discussions = @ticket.discussion
@@ -101,7 +103,8 @@ module CloudHelp
         def api_options
             responseWithSuccessful({
                 types: TicketType.all.select(:id, :name),
-                states: TicketState.all.select(:id, :name)
+                states: TicketState.all.select(:id, :name),
+                priorities: TicketPriority.all.select(:id, :name)
             })
         end
 
@@ -121,7 +124,8 @@ module CloudHelp
                     :subject,
                     :description,
                     :cloud_help_ticket_types_id,
-                    :cloud_help_ticket_states_id
+                    :cloud_help_ticket_states_id,
+                    :cloud_help_ticket_priorities_id
                 ]
             )
         end

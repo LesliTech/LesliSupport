@@ -31963,31 +31963,69 @@ var formvue_type_template_id_33e6a429_render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c(
-                "b-field",
-                { attrs: { label: "Priority" } },
-                [
-                  _c(
-                    "b-select",
-                    { attrs: { placeholder: "Select a name", expanded: "" } },
-                    _vm._l([0, 0, 0, 0, 0], function(option, index) {
-                      return _c(
-                        "option",
-                        { key: index, domProps: { value: index } },
-                        [
-                          _vm._v(
-                            "\n                                priority " +
-                              _vm._s(index) +
-                              "\n                            "
-                          )
-                        ]
-                      )
-                    }),
-                    0
-                  )
-                ],
-                1
-              )
+              _c("b-field", { attrs: { label: "Priority" } }, [
+                _c("div", { staticClass: "control" }, [
+                  _c("div", { staticClass: "select" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value:
+                              _vm.ticket.detail_attributes
+                                .cloud_help_ticket_priorities_id,
+                            expression:
+                              "ticket.detail_attributes.cloud_help_ticket_priorities_id"
+                          }
+                        ],
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.ticket.detail_attributes,
+                                "cloud_help_ticket_priorities_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                            function($event) {
+                              return _vm.putTicketPriorities()
+                            }
+                          ]
+                        }
+                      },
+                      _vm._l(_vm.ticket_options.priorities, function(
+                        option,
+                        index
+                      ) {
+                        return _c(
+                          "option",
+                          { key: index, domProps: { value: option.id } },
+                          [
+                            _vm._v(
+                              "\n                                        " +
+                                _vm._s(option.name) +
+                                "\n                                    "
+                            )
+                          ]
+                        )
+                      }),
+                      0
+                    )
+                  ])
+                ])
+              ])
             ],
             1
           )
@@ -32202,6 +32240,24 @@ Building a better future, one line of code at a time.
       }).then(function (result) {
         if (result.successful) {
           _this6.alert("Ticket state updated successfuly");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    putTicketPriorities: function putTicketPriorities() {
+      var _this7 = this;
+
+      this.http.patch("/help/tickets/" + this.ticket_id, {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket.detail_attributes.id,
+            cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this7.alert("Ticket priority updated successfuly");
         }
       })["catch"](function (error) {
         console.log(error);

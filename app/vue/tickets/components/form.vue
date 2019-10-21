@@ -148,6 +148,23 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        putTicketPriorities() {
+            this.http.patch("/help/tickets/"+this.ticket_id, {
+                ticket: {
+                    detail_attributes: {
+                        id: this.ticket.detail_attributes.id,
+                        cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
+                    }
+                }
+            }).then(result => {
+                if (result.successful) {
+                    this.alert("Ticket priority updated successfuly")
+                }
+            }).catch(error => {
+                console.log(error)
+            })
         }
 
     },
@@ -268,11 +285,20 @@ export default {
                             </div>
                         </b-field>
                         <b-field label="Priority">
-                            <b-select placeholder="Select a name" expanded>
-                                <option v-for="(option, index) in [0,0,0,0,0]" :key="index" :value="index">
-                                    priority {{ index }}
-                                </option>
-                            </b-select>
+                            <div class="control">
+                                <div class="select">
+                                    <select 
+                                        @change="putTicketPriorities()" 
+                                        v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id">
+                                        <option 
+                                            v-for="(option, index) in ticket_options.priorities"
+                                            :key="index" 
+                                            :value="option.id">
+                                            {{ option.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </b-field>
                     </div>
                 </div>
