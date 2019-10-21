@@ -18,7 +18,11 @@ module CloudHelp
         def show
             ticket =  current_user.account.help.ticket
                 .joins(:detail)
-                .select(:id, :subject, :description, :cloud_help_ticket_types_id, :created_at, :updated_at)
+                .select(
+                    :id, :subject, :description, 
+                    :cloud_help_ticket_types_id, 
+                    :cloud_help_ticket_states_id, 
+                    :created_at, :updated_at)
                 .find(@ticket.id)
             responseWithSuccessful({
                 ticket: {
@@ -27,6 +31,7 @@ module CloudHelp
                         subject: ticket['subject'],
                         description: ticket['description'],
                         cloud_help_ticket_types_id: ticket['cloud_help_ticket_types_id'],
+                        cloud_help_ticket_states_id: ticket['cloud_help_ticket_states_id'],
                         created_at: ticket['created_at'], 
                         updated_at: ticket['updated_at']
                     }
@@ -95,7 +100,8 @@ module CloudHelp
 
         def api_options
             responseWithSuccessful({
-                types: TicketType.all
+                types: TicketType.all.select(:id, :name),
+                states: TicketState.all.select(:id, :name)
             })
         end
 
@@ -114,7 +120,8 @@ module CloudHelp
                     :id,
                     :subject,
                     :description,
-                    :cloud_help_ticket_types_id
+                    :cloud_help_ticket_types_id,
+                    :cloud_help_ticket_states_id
                 ]
             )
         end
