@@ -93,6 +93,8 @@ export default {
 
         postTicket(e) {
 
+            console.log(JSON.parse(JSON.stringify(this.ticket)))
+
             if (e) { e.preventDefault() }
 
             this.http.post("/help/tickets", {

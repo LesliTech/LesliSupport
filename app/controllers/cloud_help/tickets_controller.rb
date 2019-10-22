@@ -2,8 +2,8 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, only: [:show, :edit, :update, :destroy]
-        #before_action :set_ticket, except: [:index, :create, :api_options]
+        #before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+        before_action :set_ticket, except: [:index, :create, :api_options]
 
         # GET /tickets
         def index
@@ -69,6 +69,7 @@ module CloudHelp
         def update
             if @ticket.update(ticket_params)
                 responseWithSuccessful(@ticket)
+                CloudCourier::Bell::NotificationJob.perform_now
             else
                 responseWithError("error on update ticket", @ticket.errors.full_messages)
             end
@@ -83,7 +84,7 @@ module CloudHelp
         # 
 
         def discussions
-            ticket_discussions = @ticket.discussion
+            ticket_discussions = @ticket.discussions
             responseWithSuccessful(ticket_discussions)
         end
 

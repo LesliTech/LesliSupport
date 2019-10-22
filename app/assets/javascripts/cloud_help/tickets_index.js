@@ -16003,11 +16003,11 @@ Building a better future, one line of code at a time.
     }, false);
 
     Vue.prototype.notification = function (message, type) {
-      Vue.prototype.bus.$emit('component:notify#notification', message, type);
+      Vue.prototype.bus.$emit('cloud/layout/notify/notification', message, type);
     };
 
     Vue.prototype.alert = function (message, type) {
-      Vue.prototype.bus.$emit('component:notify#alert', message, type);
+      Vue.prototype.bus.$emit('cloud/layout/notify/alert', message, type);
     };
   }
 });
@@ -16202,6 +16202,13 @@ Building a better future, one line of code at a time.
 /* harmony default export */ __webpack_exports__["a"] = ({
   install: function install(Vue, options) {
     Vue.prototype.cable = Object(_rails_actioncable__WEBPACK_IMPORTED_MODULE_0__["createConsumer"])('/courier/cable');
+    /*
+    this.cable.subscriptions.create("CloudCourier::Bell::WebNotificationChannel", {
+        received(data) {
+            console.log(data)
+        }
+    })
+    */
   }
 });
 
@@ -27415,7 +27422,7 @@ use(Buefy);
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/chatbox.vue?vue&type=template&id=20e92c73&
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/chatbox.vue?vue&type=template&id=1e258058&
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -27622,9 +27629,9 @@ var staticRenderFns = [
 render._withStripped = true
 
 
-// CONCATENATED MODULE: ./app/vue/layout/chatbox.vue?vue&type=template&id=20e92c73&
+// CONCATENATED MODULE: ./app/vue/layouts/chatbox.vue?vue&type=template&id=1e258058&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/chatbox.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/chatbox.vue?vue&type=script&lang=js&
 /* harmony default export */ var chatboxvue_type_script_lang_js_ = ({
   data: function data() {
     return {
@@ -27680,12 +27687,12 @@ render._withStripped = true
     }
   }
 });
-// CONCATENATED MODULE: ./app/vue/layout/chatbox.vue?vue&type=script&lang=js&
- /* harmony default export */ var layout_chatboxvue_type_script_lang_js_ = (chatboxvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/layouts/chatbox.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layouts_chatboxvue_type_script_lang_js_ = (chatboxvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./app/vue/layout/chatbox.vue
+// CONCATENATED MODULE: ./app/vue/layouts/chatbox.vue
 
 
 
@@ -27694,7 +27701,7 @@ var componentNormalizer = __webpack_require__(1);
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  layout_chatboxvue_type_script_lang_js_,
+  layouts_chatboxvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -27706,7 +27713,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "app/vue/layout/chatbox.vue"
+component.options.__file = "app/vue/layouts/chatbox.vue"
 /* harmony default export */ var chatbox = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
@@ -27715,7 +27722,7 @@ component.options.__file = "app/vue/layout/chatbox.vue"
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/navigation.vue?vue&type=template&id=70d7a082&
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -27794,9 +27801,9 @@ var staticRenderFns = []
 render._withStripped = true
 
 
-// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=template&id=782d49c4&
+// CONCATENATED MODULE: ./app/vue/layouts/navigation.vue?vue&type=template&id=70d7a082&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/navigation.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/navigation.vue?vue&type=script&lang=js&
 /* harmony default export */ var navigationvue_type_script_lang_js_ = ({
   data: function data() {
     return {
@@ -27814,12 +27821,12 @@ render._withStripped = true
     }
   }
 });
-// CONCATENATED MODULE: ./app/vue/layout/navigation.vue?vue&type=script&lang=js&
- /* harmony default export */ var layout_navigationvue_type_script_lang_js_ = (navigationvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/layouts/navigation.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layouts_navigationvue_type_script_lang_js_ = (navigationvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./app/vue/layout/navigation.vue
+// CONCATENATED MODULE: ./app/vue/layouts/navigation.vue
 
 
 
@@ -27828,7 +27835,7 @@ var componentNormalizer = __webpack_require__(1);
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  layout_navigationvue_type_script_lang_js_,
+  layouts_navigationvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -27840,7 +27847,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "app/vue/layout/navigation.vue"
+component.options.__file = "app/vue/layouts/navigation.vue"
 /* harmony default export */ var navigation = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
@@ -27849,7 +27856,7 @@ component.options.__file = "app/vue/layout/navigation.vue"
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/header.vue?vue&type=template&id=2c7eec86&
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/header.vue?vue&type=template&id=3d30b590&
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -27866,7 +27873,7 @@ var render = function() {
               {
                 staticClass: "button is-white",
                 attrs: { type: "button" },
-                on: { click: _vm.emitSidenavShow }
+                on: { click: _vm.showAside }
               },
               [_c("i", { staticClass: "fas fa-bars" })]
             ),
@@ -27930,7 +27937,44 @@ var render = function() {
           _vm._v(" "),
           _vm._m(0),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "navbar-end" }, [
+            _c("div", { staticClass: "navbar-item" }, [
+              _c(
+                "a",
+                { staticClass: "navbar-item", on: { click: _vm.emitNotify } },
+                [
+                  _vm.notification.count > 0
+                    ? _c("i", { staticClass: "fas fa-bell has-text-link" })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.notification.count == 0
+                    ? _c("i", { staticClass: "far fa-bell" })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.notification.count > 0
+                    ? _c(
+                        "span",
+                        {
+                          staticClass: "has-text-danger",
+                          attrs: { id: "notification_total" }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(_vm.notification.count) +
+                              "\n                        "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ]
+              ),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _vm._m(2)
+            ])
+          ])
         ]
       )
     ])
@@ -27956,100 +28000,60 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "navbar-end" }, [
-      _c("div", { staticClass: "navbar-item" }, [
-        _c("div", { staticClass: "navbar-item has-dropdown is-hoverable" }, [
-          _c("a", { staticClass: "navbar-link is-arrowless" }, [
-            _c("i", { staticClass: "fas fa-bell" })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "navbar-dropdown is-boxed" }, [
-            _c(
-              "a",
-              {
-                staticClass: "navbar-item",
-                attrs: {
-                  href: "https://bulma.io/documentation/overview/start/"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                Notification\n                            "
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "navbar-item has-dropdown is-hoverable" }, [
-          _c(
-            "a",
-            {
-              staticClass: "navbar-link is-arrowless",
-              attrs: { href: "https://bulma.io/documentation/overview/start/" }
-            },
-            [
-              _c("figure", { staticClass: "image" }, [
-                _c("img", {
-                  staticClass: "is-rounded",
-                  attrs: {
-                    src: "https://placekitten.com/g/30/30",
-                    alt: "profile thumbnail"
-                  }
-                })
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "navbar-dropdown is-boxed" }, [
-            _c(
-              "a",
-              {
-                staticClass: "navbar-item",
-                attrs: {
-                  href: "https://bulma.io/documentation/overview/start/"
-                }
-              },
-              [
-                _vm._v(
-                  "\n                                Profile\n                            "
-                )
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("a", { staticClass: "navbar-item", attrs: { href: "/logout" } }, [
-          _c("i", { staticClass: "fas fa-sign-out-alt" })
-        ])
+    return _c("a", { staticClass: "navbar-item", attrs: { href: "/logout" } }, [
+      _c("figure", { staticClass: "image" }, [
+        _c("img", {
+          staticClass: "is-rounded",
+          attrs: {
+            src: "https://placekitten.com/g/30/30",
+            alt: "profile thumbnail"
+          }
+        })
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "navbar-item", attrs: { href: "/logout" } }, [
+      _c("i", { staticClass: "fas fa-sign-out-alt" })
     ])
   }
 ]
 render._withStripped = true
 
 
-// CONCATENATED MODULE: ./app/vue/layout/header.vue?vue&type=template&id=2c7eec86&
+// CONCATENATED MODULE: ./app/vue/layouts/header.vue?vue&type=template&id=3d30b590&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/header.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/header.vue?vue&type=script&lang=js&
 /* harmony default export */ var headervue_type_script_lang_js_ = ({
   data: function data() {
     return {
+      aside: {
+        timer: null
+      },
+      notification: {
+        count: 0
+      },
       chatbotIntent: '',
-      microphone: true,
-      timer: null
+      microphone: true
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     this.checkIfMicrophoneWorks();
+    this.bus.$on('cloud/layout/header/notification', function (total) {
+      _this.notification.count = total || 0;
+    });
   },
   methods: {
     checkIfMicrophoneWorks: function checkIfMicrophoneWorks() {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 
       if (window.SpeechRecognition) {
-        this.microphone = true;
-        return;
+        return this.microphone = true;
       }
 
       this.microphone = false;
@@ -28070,26 +28074,29 @@ render._withStripped = true
         recognition.start();
       }
     },
-    emitSidenavShow: function emitSidenavShow() {
+    showAside: function showAside() {
       clearTimeout(this.timer);
       var el = document.getElementsByTagName('aside')[0];
       el.classList.toggle('show');
-      this.timer = setTimeout(function () {
+      this.aside.timer = setTimeout(function () {
         return el.classList.remove('show');
       }, 4000);
     },
     emitChatbotIntent: function emitChatbotIntent() {
-      this.bus.$emit('lesli.component.chatbox.postIntent', this.chatbotIntent);
+      this.bus.$emit('component/chatbox/intent', this.chatbotIntent);
       this.chatbotIntent = "";
+    },
+    emitNotify: function emitNotify() {
+      this.bus.$emit('cloud/layout/notify/notification#show');
     }
   }
 });
-// CONCATENATED MODULE: ./app/vue/layout/header.vue?vue&type=script&lang=js&
- /* harmony default export */ var layout_headervue_type_script_lang_js_ = (headervue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/layouts/header.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layouts_headervue_type_script_lang_js_ = (headervue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./app/vue/layout/header.vue
+// CONCATENATED MODULE: ./app/vue/layouts/header.vue
 
 
 
@@ -28098,7 +28105,7 @@ var componentNormalizer = __webpack_require__(1);
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  layout_headervue_type_script_lang_js_,
+  layouts_headervue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -28110,7 +28117,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "app/vue/layout/header.vue"
+component.options.__file = "app/vue/layouts/header.vue"
 /* harmony default export */ var header = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
@@ -28119,20 +28126,67 @@ component.options.__file = "app/vue/layout/header.vue"
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/notify.vue?vue&type=template&id=2e728079&
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/notify.vue?vue&type=template&id=26199bf4&
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section")
+  return _c("section", [
+    _c(
+      "div",
+      {
+        class: [{ "is-active": _vm.notification.show }, "quickview"],
+        attrs: { id: "quickviewDefault" }
+      },
+      [
+        _c(
+          "header",
+          {
+            staticClass: "quickview-header",
+            on: {
+              click: function($event) {
+                _vm.notification.show = false
+              }
+            }
+          },
+          [
+            _c("p", { staticClass: "title" }, [_vm._v("Notifications")]),
+            _vm._v(" "),
+            _c("i", { staticClass: "fas fa-chevron-right" })
+          ]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "quickview-body" }, [
+          _c("div", { staticClass: "quickview-block" }, [
+            _c("div", { staticClass: "section" }, [
+              _c(
+                "ul",
+                { staticClass: "menu-list" },
+                _vm._l(_vm.notification.list, function(notification, index) {
+                  return _c("li", { key: index }, [
+                    _c("a", { attrs: { href: notification.href } }, [
+                      _vm._v(_vm._s(notification.content))
+                    ])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("footer", { staticClass: "quickview-footer" })
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
 
 
-// CONCATENATED MODULE: ./app/vue/layout/notify.vue?vue&type=template&id=2e728079&
+// CONCATENATED MODULE: ./app/vue/layouts/notify.vue?vue&type=template&id=26199bf4&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layout/notify.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/notify.vue?vue&type=script&lang=js&
 /*
 Lesli
 
@@ -28162,10 +28216,19 @@ Building a better future, one line of code at a time.
 // · LesliCloud component
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 /* harmony default export */ var notifyvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      notification: {
+        show: false,
+        timer: null,
+        list: []
+      }
+    };
+  },
   mounted: function mounted() {
     var _this = this;
 
-    this.bus.$on('component:notify#alert', function (message) {
+    this.bus.$on('cloud/layout/notify/alert', function (message) {
       var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'primary';
 
       _this.$buefy.toast.open({
@@ -28176,7 +28239,7 @@ Building a better future, one line of code at a time.
         type: "is-".concat(type)
       });
     });
-    this.bus.$on('component:notify#notification', function (message) {
+    this.bus.$on('cloud/layout/notify/notification', function (message) {
       var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
 
       _this.$buefy.notification.open({
@@ -28187,20 +28250,69 @@ Building a better future, one line of code at a time.
         type: "is-".concat(type)
       });
     });
-    var self = this;
-    this.cable.subscriptions.create("CloudCourier::Bell::WebNotificationChannel", {
-      received: function received(data) {
-        console.log(data);
-      }
+    this.bus.$on('cloud/layout/notify/notification#show', function () {
+      _this.showNotifications();
     });
+    this.getNotifications();
+  },
+  methods: {
+    getNotifications: function getNotifications() {
+      var _this2 = this;
+
+      this.http.get('/bell/notifications.json').then(function (result) {
+        if (result.successful) {
+          _this2.notification.list = result.data;
+
+          _this2.emitNotifications();
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    showNotifications: function showNotifications() {
+      var _this3 = this;
+
+      console.log("showing notifications");
+      this.getNotifications();
+      this.notification.show = true;
+      this.notification.timer = setTimeout(function () {
+        return _this3.notification.show = false;
+      }, 250000);
+    },
+    emitNotifications: function emitNotifications() {
+      this.bus.$emit('cloud/layout/header/notification', this.notification.list.length); //this.bus.$emit('cloud/layout/header/notification', 0)
+    },
+    prepareDesktopNotification: function prepareDesktopNotification() {
+      if (!("Notification" in window)) {
+        console.log("This browser does not support desktop notification");
+        return;
+      } // Let's check whether notification permissions have already been granted
+
+
+      if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        var notification = new Notification("Hi there!");
+        return;
+      } // Otherwise, we need to ask the user for permission
+
+
+      if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function (permission) {
+          // If the user accepts, let's create a notification
+          if (permission === "granted") {
+            var notification = new Notification("Hi there!");
+          }
+        });
+      }
+    }
   }
 });
-// CONCATENATED MODULE: ./app/vue/layout/notify.vue?vue&type=script&lang=js&
- /* harmony default export */ var layout_notifyvue_type_script_lang_js_ = (notifyvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/layouts/notify.vue?vue&type=script&lang=js&
+ /* harmony default export */ var layouts_notifyvue_type_script_lang_js_ = (notifyvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(1);
 
-// CONCATENATED MODULE: ./app/vue/layout/notify.vue
+// CONCATENATED MODULE: ./app/vue/layouts/notify.vue
 
 
 
@@ -28209,7 +28321,7 @@ var componentNormalizer = __webpack_require__(1);
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  layout_notifyvue_type_script_lang_js_,
+  layouts_notifyvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -28221,7 +28333,7 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "app/vue/layout/notify.vue"
+component.options.__file = "app/vue/layouts/notify.vue"
 /* harmony default export */ var notify = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
@@ -30063,16 +30175,16 @@ var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 // EXTERNAL MODULE: ./app/vue/functions/document.js
 var functions_document = __webpack_require__(21);
 
-// EXTERNAL MODULE: ./app/vue/layout/header.vue + 4 modules
-var header = __webpack_require__(25);
-
-// EXTERNAL MODULE: ./app/vue/layout/notify.vue + 4 modules
+// EXTERNAL MODULE: ./app/vue/layouts/notify.vue + 4 modules
 var notify = __webpack_require__(26);
 
-// EXTERNAL MODULE: ./app/vue/layout/chatbox.vue + 4 modules
+// EXTERNAL MODULE: ./app/vue/layouts/header.vue + 4 modules
+var header = __webpack_require__(25);
+
+// EXTERNAL MODULE: ./app/vue/layouts/chatbox.vue + 4 modules
 var chatbox = __webpack_require__(23);
 
-// EXTERNAL MODULE: ./app/vue/layout/navigation.vue + 4 modules
+// EXTERNAL MODULE: ./app/vue/layouts/navigation.vue + 4 modules
 var navigation = __webpack_require__(24);
 
 // CONCATENATED MODULE: ./app/vue/app-spa.js
@@ -30137,8 +30249,8 @@ vue_default.a.use(cable["a" /* default */]); // · Vue app
   var routes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
   var cloud = new vue_default.a({
     components: {
-      'component-layout-header': header["a" /* default */],
       'component-layout-notify': notify["a" /* default */],
+      'component-layout-header': header["a" /* default */],
       'component-layout-chatbox': chatbox["a" /* default */],
       'component-layout-navigation': navigation["a" /* default */]
     },
@@ -32183,6 +32295,8 @@ Building a better future, one line of code at a time.
     },
     postTicket: function postTicket(e) {
       var _this3 = this;
+
+      console.log(JSON.parse(JSON.stringify(this.ticket)));
 
       if (e) {
         e.preventDefault();
