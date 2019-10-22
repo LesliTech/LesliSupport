@@ -1,4 +1,3 @@
-<script>
 /*
 Lesli
 
@@ -20,28 +19,8 @@ Building a better future, one line of code at a time.
 @dev      Luis Donis <ldonis@lesli.tech>
 @author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
-@version  0.1.0-alpha
+@version  GIT: 0.1.0 alpha
 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 */
-
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentForm from './form.vue'
-
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-export default {
-    components: {
-        'component-form': componentForm
-    }
-}
-</script>
-<template>
-    <component-form></component-form>
-</template>

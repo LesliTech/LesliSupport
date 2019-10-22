@@ -77,8 +77,6 @@ export default {
 
             if (e) { e.preventDefault() }
 
-            //delete this.ticket.cloud_help_accounts_id
-
             this.http.put("/help/tickets/"+this.ticket_id, {
                 ticket: this.ticket
             }).then(result => {
@@ -92,8 +90,6 @@ export default {
         },
 
         postTicket(e) {
-
-            console.log(JSON.parse(JSON.stringify(this.ticket)))
 
             if (e) { e.preventDefault() }
 
@@ -186,11 +182,12 @@ export default {
                         <h2 class="card-header-title">
                             Ticket
                         </h2>
-                        <router-link v-if="ticket_id" :to="`/${ticket.id}/show`" class="card-header-icon">
+                        <router-link v-if="ticket_id" :to="`/${ticket_id}/show`" class="card-header-icon">
                             show
                         </router-link>
                     </div>
                     <div class="card-content">
+                        <div v-html="ticket.description"></div>
                         <form>
                             <b-field label="Subject">
                                 <b-input v-model="ticket.detail_attributes.subject"></b-input>

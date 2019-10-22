@@ -6,7 +6,7 @@ module CloudHelp
 
         # GET /ticket/discussions
         def index
-            @ticket_discussions = Ticket::Discussion.all
+            @ticket_discussions = Ticket::Discussion.all.order(:id, :desc)
         end
 
         # GET /ticket/discussions/1

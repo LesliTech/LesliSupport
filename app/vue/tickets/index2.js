@@ -25,7 +25,7 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 */
 
-
+/*
 // · Import main app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import app from 'LesliCloud/vue/app'
@@ -38,7 +38,7 @@ import componentAppDiscussions from 'LesliCloud/vue/apps/discussions.vue'
 import componentAppActions from 'LesliCloud/vue/apps/actions.vue'
 import componentList from './components/list.vue'
 import componentEdit from './components/edit.vue'
-import componentShow from './apps/show.vue'
+import componentShow from './components/show.vue'
 import componentNew from './components/new.vue'
 
 
@@ -49,6 +49,14 @@ app("CloudHelp", "[list|new|edit|show]", "help/tickets", null, [{
     path: "/",
     component: componentList,
 },{
+    path: "/new",
+    component: componentNew,
+},{
+    path: "/:id/edit",
+    component: componentEdit,
+},{
     path: "/:id/show",
     component: componentShow,
+    props: { cloudModule:"help/ticket" }
 }])
+*/

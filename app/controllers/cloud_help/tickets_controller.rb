@@ -9,7 +9,7 @@ module CloudHelp
         def index
             tickets = current_user.account.help.ticket.joins(:detail).select(:id, :subject, :created_at, :updated_at)
             respond_to do |format|
-                format.html
+                format.html { @tickets = tickets }
                 format.json { responseWithSuccessful(tickets) }
             end
         end
@@ -25,6 +25,13 @@ module CloudHelp
                     :cloud_help_ticket_priorities_id,
                     :created_at, :updated_at)
                 .find(@ticket.id)
+
+            respond_to do |format|
+                format.html 
+                format.json { responseWithSuccessful(ticket) }
+            end
+
+=begin
             responseWithSuccessful({
                 ticket: {
                     detail_attributes: {
@@ -39,6 +46,7 @@ module CloudHelp
                     }
                 }
             })
+=end
         end
 
         # GET /tickets/new
@@ -84,7 +92,7 @@ module CloudHelp
         # 
 
         def discussions
-            ticket_discussions = @ticket.discussions
+            ticket_discussions = @ticket.discussions.order(id: :desc)
             responseWithSuccessful(ticket_discussions)
         end
 
