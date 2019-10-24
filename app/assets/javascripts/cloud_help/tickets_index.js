@@ -27947,7 +27947,69 @@ var render = function() {
     _c("div", { staticClass: "navbar-menu" }, [
       _c("div", { staticClass: "navbar-start" }, [_vm._t("right")], 2),
       _vm._v(" "),
-      _c("div", { staticClass: "navbar-end" }, [_vm._t("left")], 2)
+      _c(
+        "div",
+        { staticClass: "navbar-end" },
+        [
+          _vm._t("left"),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Details")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/discussion" }
+                },
+                [_vm._v("Discussion")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/actions" }
+                },
+                [_vm._v("Actions")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Files")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Activities")]
+              )
+            : _vm._e()
+        ],
+        2
+      )
     ])
   ])
 }
@@ -31772,403 +31834,126 @@ var formvue_type_template_id_33e6a429_render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("section", { staticClass: "section" }, [
-    _c("div", { staticClass: "columns" }, [
-      _c("div", { staticClass: "column is-8" }, [
-        _c("div", { staticClass: "card" }, [
-          _c(
-            "div",
-            { staticClass: "card-header" },
-            [
-              _c("h2", { staticClass: "card-header-title" }, [
-                _vm._v("\n                        Ticket\n                    ")
-              ]),
-              _vm._v(" "),
-              _vm.ticket_id
-                ? _c(
-                    "router-link",
-                    {
-                      staticClass: "card-header-icon",
-                      attrs: { to: "/" + _vm.ticket_id + "/show" }
-                    },
-                    [
-                      _vm._v(
-                        "\n                        show\n                    "
-                      )
-                    ]
-                  )
-                : _vm._e()
-            ],
-            1
-          ),
+    _c("div", { staticClass: "card" }, [
+      _c(
+        "div",
+        { staticClass: "card-header" },
+        [
+          _c("h2", { staticClass: "card-header-title" }, [
+            _vm._v("\n                Ticket\n            ")
+          ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-content" }, [
-            _c("div", {
-              domProps: { innerHTML: _vm._s(_vm.ticket.description) }
-            }),
-            _vm._v(" "),
+          _vm.ticket_id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "card-header-icon",
+                  attrs: { to: "/" + _vm.ticket_id + "/show" }
+                },
+                [_vm._v("\n                show\n            ")]
+              )
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-content" }, [
+        _c("div", { domProps: { innerHTML: _vm._s(_vm.ticket.description) } }),
+        _vm._v(" "),
+        _c(
+          "form",
+          [
             _c(
-              "form",
+              "b-field",
+              { attrs: { label: "Subject" } },
               [
-                _c(
-                  "b-field",
-                  { attrs: { label: "Subject" } },
-                  [
-                    _c("b-input", {
-                      model: {
-                        value: _vm.ticket.detail_attributes.subject,
-                        callback: function($$v) {
-                          _vm.$set(_vm.ticket.detail_attributes, "subject", $$v)
-                        },
-                        expression: "ticket.detail_attributes.subject"
-                      }
-                    })
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "field" }, [
-                  _c(
-                    "label",
-                    { staticClass: "label", attrs: { for: "article.content" } },
-                    [_vm._v("Content")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "control" },
-                    [
-                      _c("component-trix-editor", {
-                        model: {
-                          value: _vm.ticket.detail_attributes.description,
-                          callback: function($$v) {
-                            _vm.$set(
-                              _vm.ticket.detail_attributes,
-                              "description",
-                              $$v
-                            )
-                          },
-                          expression: "ticket.detail_attributes.description"
-                        }
-                      })
-                    ],
-                    1
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "field" }, [
-                  _c("p", [
-                    _vm._v(
-                      "\n                                Created at: " +
-                        _vm._s(_vm.ticket.detail_attributes.created_at) +
-                        ", \n                                updated at: " +
-                        _vm._s(_vm.ticket.detail_attributes.updated_at) +
-                        "\n                            "
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "field" }, [
-                  _c("div", { staticClass: "actions" }, [
-                    !_vm.ticket_id
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "button is-primary",
-                            on: { click: _vm.postTicket }
-                          },
-                          [_vm._v("Create ticket")]
-                        )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.ticket_id
-                      ? _c(
-                          "button",
-                          {
-                            staticClass: "button is-primary",
-                            on: { click: _vm.putTicket }
-                          },
-                          [_vm._v("Update ticket")]
-                        )
-                      : _vm._e()
-                  ])
-                ])
+                _c("b-input", {
+                  model: {
+                    value: _vm.ticket.detail_attributes.subject,
+                    callback: function($$v) {
+                      _vm.$set(_vm.ticket.detail_attributes, "subject", $$v)
+                    },
+                    expression: "ticket.detail_attributes.subject"
+                  }
+                })
               ],
               1
-            )
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "column is-4" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("br"),
-        _vm._v(" "),
-        _c("div", { staticClass: "card" }, [
-          _vm._m(1),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "card-content" },
-            [
-              _c("b-field", { attrs: { label: "Tags" } }, [
-                _c("input", { staticClass: "input", attrs: { type: "text" } })
-              ]),
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c(
+                "label",
+                { staticClass: "label", attrs: { for: "article.content" } },
+                [_vm._v("Content")]
+              ),
               _vm._v(" "),
-              _vm._m(2),
-              _vm._v(" "),
-              _c("b-field", { attrs: { label: "Type" } }, [
-                _c("div", { staticClass: "control" }, [
-                  _c("div", { staticClass: "select" }, [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value:
-                              _vm.ticket.detail_attributes
-                                .cloud_help_ticket_types_id,
-                            expression:
-                              "ticket.detail_attributes.cloud_help_ticket_types_id"
-                          }
-                        ],
-                        on: {
-                          change: [
-                            function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.ticket.detail_attributes,
-                                "cloud_help_ticket_types_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            },
-                            function($event) {
-                              return _vm.putTicketType()
-                            }
-                          ]
-                        }
-                      },
-                      _vm._l(_vm.ticket_options.types, function(option, index) {
-                        return _c(
-                          "option",
-                          { key: index, domProps: { value: option.id } },
-                          [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(option.name) +
-                                "\n                                    "
-                            )
-                          ]
+              _c(
+                "div",
+                { staticClass: "control" },
+                [
+                  _c("component-trix-editor", {
+                    model: {
+                      value: _vm.ticket.detail_attributes.description,
+                      callback: function($$v) {
+                        _vm.$set(
+                          _vm.ticket.detail_attributes,
+                          "description",
+                          $$v
                         )
-                      }),
-                      0
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("b-field", { attrs: { label: "Status" } }, [
-                _c("div", { staticClass: "control" }, [
-                  _c("div", { staticClass: "select" }, [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value:
-                              _vm.ticket.detail_attributes
-                                .cloud_help_ticket_states_id,
-                            expression:
-                              "ticket.detail_attributes.cloud_help_ticket_states_id"
-                          }
-                        ],
-                        on: {
-                          change: [
-                            function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.ticket.detail_attributes,
-                                "cloud_help_ticket_states_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            },
-                            function($event) {
-                              return _vm.putTicketState()
-                            }
-                          ]
-                        }
                       },
-                      _vm._l(_vm.ticket_options.states, function(
-                        option,
-                        index
-                      ) {
-                        return _c(
-                          "option",
-                          { key: index, domProps: { value: option.id } },
-                          [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(option.name) +
-                                "\n                                    "
-                            )
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("b-field", { attrs: { label: "Priority" } }, [
-                _c("div", { staticClass: "control" }, [
-                  _c("div", { staticClass: "select" }, [
-                    _c(
-                      "select",
-                      {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value:
-                              _vm.ticket.detail_attributes
-                                .cloud_help_ticket_priorities_id,
-                            expression:
-                              "ticket.detail_attributes.cloud_help_ticket_priorities_id"
-                          }
-                        ],
-                        on: {
-                          change: [
-                            function($event) {
-                              var $$selectedVal = Array.prototype.filter
-                                .call($event.target.options, function(o) {
-                                  return o.selected
-                                })
-                                .map(function(o) {
-                                  var val = "_value" in o ? o._value : o.value
-                                  return val
-                                })
-                              _vm.$set(
-                                _vm.ticket.detail_attributes,
-                                "cloud_help_ticket_priorities_id",
-                                $event.target.multiple
-                                  ? $$selectedVal
-                                  : $$selectedVal[0]
-                              )
-                            },
-                            function($event) {
-                              return _vm.putTicketPriorities()
-                            }
-                          ]
-                        }
-                      },
-                      _vm._l(_vm.ticket_options.priorities, function(
-                        option,
-                        index
-                      ) {
-                        return _c(
-                          "option",
-                          { key: index, domProps: { value: option.id } },
-                          [
-                            _vm._v(
-                              "\n                                        " +
-                                _vm._s(option.name) +
-                                "\n                                    "
-                            )
-                          ]
-                        )
-                      }),
-                      0
-                    )
-                  ])
-                ])
+                      expression: "ticket.detail_attributes.description"
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("p", [
+                _vm._v(
+                  "\n                        Created at: " +
+                    _vm._s(_vm.ticket.detail_attributes.created_at) +
+                    ", \n                        updated at: " +
+                    _vm._s(_vm.ticket.detail_attributes.updated_at) +
+                    "\n                    "
+                )
               ])
-            ],
-            1
-          )
-        ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("div", { staticClass: "actions" }, [
+                !_vm.ticket_id
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "button is-primary",
+                        on: { click: _vm.postTicket }
+                      },
+                      [_vm._v("Create ticket")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ticket_id
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "button is-primary",
+                        on: { click: _vm.putTicket }
+                      },
+                      [_vm._v("Update ticket")]
+                    )
+                  : _vm._e()
+              ])
+            ])
+          ],
+          1
+        )
       ])
     ])
   ])
 }
-var formvue_type_template_id_33e6a429_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-status" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("h4", { staticClass: "card-header-title" }, [
-          _vm._v("\n                        Open\n                    ")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-content" }, [
-        _c("div", { staticClass: "field" }, [
-          _c("i", { staticClass: "fas fa-info-circle has-text-link" }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "" } }, [_vm._v("first response due")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "field" }, [
-          _c("i", { staticClass: "fas fa-info-circle has-text-link" }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "" } }, [_vm._v("resolution due")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n                        Properties\n                    ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "field" }, [
-      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 1")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 2")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 3")]),
-      _vm._v(" "),
-      _c("span", { staticClass: "tag is-link" }, [_vm._v("Tag 4")])
-    ])
-  }
-]
+var formvue_type_template_id_33e6a429_staticRenderFns = []
 formvue_type_template_id_33e6a429_render._withStripped = true
 
 
@@ -32215,11 +32000,7 @@ Building a better future, one line of code at a time.
       ticket_options: {},
       ticket_id: null,
       ticket: {
-        detail_attributes: {
-          subject: "",
-          description: "",
-          cloud_help_ticket_types_id: null
-        }
+        detail_attributes: {}
       }
     };
   },
@@ -32231,19 +32012,8 @@ Building a better future, one line of code at a time.
     this.getTicketOptions();
   },
   methods: {
-    getTicketOptions: function getTicketOptions() {
-      var _this = this;
-
-      this.http.get('/help/api/tickets/options').then(function (result) {
-        if (result.successful) {
-          _this.ticket_options = result.data;
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
     putTicket: function putTicket(e) {
-      var _this2 = this;
+      var _this = this;
 
       if (e) {
         e.preventDefault();
@@ -32253,14 +32023,14 @@ Building a better future, one line of code at a time.
         ticket: this.ticket
       }).then(function (result) {
         if (result.successful) {
-          _this2.alert("Ticket updated successfuly");
+          _this.alert("Ticket updated successfuly");
         }
       })["catch"](function (error) {
         console.log(error);
       });
     },
     postTicket: function postTicket(e) {
-      var _this3 = this;
+      var _this2 = this;
 
       if (e) {
         e.preventDefault();
@@ -32269,73 +32039,30 @@ Building a better future, one line of code at a time.
       this.http.post("/help/tickets", {
         ticket: this.ticket
       }).then(function (result) {
-        _this3.ticket = result.data;
+        _this2.ticket = result.data;
 
-        _this3.$router.push("".concat(_this3.ticket.id, "/show"));
+        _this2.$router.push("".concat(_this2.ticket.id, "/show"));
       })["catch"](function (error) {
         console.log(error);
       });
     },
     getTicket: function getTicket() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.http.get("/help/tickets/".concat(this.ticket_id)).then(function (result) {
         if (result.successful) {
-          _this4.ticket = result.data.ticket;
+          _this3.ticket = result.data.ticket;
         }
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    putTicketType: function putTicketType() {
-      var _this5 = this;
+    getTicketOptions: function getTicketOptions() {
+      var _this4 = this;
 
-      this.http.patch("/help/tickets/" + this.ticket_id, {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.detail_attributes.id,
-            cloud_help_ticket_types_id: this.ticket.detail_attributes.cloud_help_ticket_types_id
-          }
-        }
-      }).then(function (result) {
+      this.http.get('/help/api/tickets/options').then(function (result) {
         if (result.successful) {
-          _this5.alert("Ticket type updated successfuly");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    putTicketState: function putTicketState() {
-      var _this6 = this;
-
-      this.http.patch("/help/tickets/" + this.ticket_id, {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.detail_attributes.id,
-            cloud_help_ticket_states_id: this.ticket.detail_attributes.cloud_help_ticket_states_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this6.alert("Ticket state updated successfuly");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    putTicketPriorities: function putTicketPriorities() {
-      var _this7 = this;
-
-      this.http.patch("/help/tickets/" + this.ticket_id, {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.detail_attributes.id,
-            cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this7.alert("Ticket priority updated successfuly");
+          _this4.ticket_options = result.data;
         }
       })["catch"](function (error) {
         console.log(error);
@@ -33246,29 +32973,29 @@ var show_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var show_api; }
 show_component.options.__file = "engines/CloudHelp/app/vue/tickets/apps/show.vue"
 /* harmony default export */ var show = (show_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=template&id=34e017cb&
-var newvue_type_template_id_34e017cb_render = function() {
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/new.vue?vue&type=template&id=09dd5c27&
+var newvue_type_template_id_09dd5c27_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("component-form")
 }
-var newvue_type_template_id_34e017cb_staticRenderFns = []
-newvue_type_template_id_34e017cb_render._withStripped = true
+var newvue_type_template_id_09dd5c27_staticRenderFns = []
+newvue_type_template_id_09dd5c27_render._withStripped = true
 
 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=template&id=34e017cb&
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/new.vue?vue&type=template&id=09dd5c27&
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/new.vue?vue&type=script&lang=js&
 
 /* harmony default export */ var newvue_type_script_lang_js_ = ({
   components: {
     'component-form': components_form
   }
 });
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/new.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_newvue_type_script_lang_js_ = (newvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/new.vue
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/new.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_newvue_type_script_lang_js_ = (newvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/new.vue
 
 
 
@@ -33277,9 +33004,9 @@ newvue_type_template_id_34e017cb_render._withStripped = true
 /* normalize component */
 
 var new_component = Object(componentNormalizer["a" /* default */])(
-  components_newvue_type_script_lang_js_,
-  newvue_type_template_id_34e017cb_render,
-  newvue_type_template_id_34e017cb_staticRenderFns,
+  apps_newvue_type_script_lang_js_,
+  newvue_type_template_id_09dd5c27_render,
+  newvue_type_template_id_09dd5c27_staticRenderFns,
   false,
   null,
   null,
@@ -33289,8 +33016,8 @@ var new_component = Object(componentNormalizer["a" /* default */])(
 
 /* hot reload */
 if (false) { var new_api; }
-new_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/new.vue"
-/* harmony default export */ var components_new = (new_component.exports);
+new_component.options.__file = "engines/CloudHelp/app/vue/tickets/apps/new.vue"
+/* harmony default export */ var apps_new = (new_component.exports);
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/index.js
 /*
 Lesli
@@ -33337,6 +33064,9 @@ vue_app("CloudHelp", "[list|new|edit|show]", "help/tickets", null, [{
 }, {
   path: "/:id/show",
   component: show
+}, {
+  path: "/new",
+  component: apps_new
 }]);
 
 /***/ })

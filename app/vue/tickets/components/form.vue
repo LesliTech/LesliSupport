@@ -45,11 +45,7 @@ export default {
             ticket_options: {},
             ticket_id: null,
             ticket: {
-                detail_attributes: {
-                    subject: "",
-                    description: "",
-                    cloud_help_ticket_types_id: null
-                }
+                detail_attributes: {}
             }
         }
     },
@@ -60,18 +56,6 @@ export default {
         this.getTicketOptions()
     },
     methods: {
-
-        getTicketOptions() {
-
-            this.http.get('/help/api/tickets/options').then(result => {
-                if (result.successful) {
-                    this.ticket_options = result.data
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-
-        },
 
         putTicket(e) {
 
@@ -114,51 +98,10 @@ export default {
             })
         },
 
-        putTicketType() {
-            this.http.patch("/help/tickets/"+this.ticket_id, {
-                ticket: {
-                    detail_attributes: {
-                        id: this.ticket.detail_attributes.id,
-                        cloud_help_ticket_types_id: this.ticket.detail_attributes.cloud_help_ticket_types_id
-                    }
-                }
-            }).then(result => {
+        getTicketOptions() {
+            this.http.get('/help/api/tickets/options').then(result => {
                 if (result.successful) {
-                    this.alert("Ticket type updated successfuly")
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
-        putTicketState() {
-            this.http.patch("/help/tickets/"+this.ticket_id, {
-                ticket: {
-                    detail_attributes: {
-                        id: this.ticket.detail_attributes.id,
-                        cloud_help_ticket_states_id: this.ticket.detail_attributes.cloud_help_ticket_states_id
-                    }
-                }
-            }).then(result => {
-                if (result.successful) {
-                    this.alert("Ticket state updated successfuly")
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
-        putTicketPriorities() {
-            this.http.patch("/help/tickets/"+this.ticket_id, {
-                ticket: {
-                    detail_attributes: {
-                        id: this.ticket.detail_attributes.id,
-                        cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
-                    }
-                }
-            }).then(result => {
-                if (result.successful) {
-                    this.alert("Ticket priority updated successfuly")
+                    this.ticket_options = result.data
                 }
             }).catch(error => {
                 console.log(error)
@@ -175,132 +118,40 @@ export default {
 </script>
 <template>
     <section class="section">
-        <div class="columns">
-            <div class="column is-8">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-header-title">
-                            Ticket
-                        </h2>
-                        <router-link v-if="ticket_id" :to="`/${ticket_id}/show`" class="card-header-icon">
-                            show
-                        </router-link>
-                    </div>
-                    <div class="card-content">
-                        <div v-html="ticket.description"></div>
-                        <form>
-                            <b-field label="Subject">
-                                <b-input v-model="ticket.detail_attributes.subject"></b-input>
-                            </b-field>
-                            <div class="field">
-                                <label for="article.content" class="label">Content</label>
-                                <div class="control">
-                                    <component-trix-editor v-model="ticket.detail_attributes.description"></component-trix-editor>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <p>
-                                    Created at: {{ ticket.detail_attributes.created_at }}, 
-                                    updated at: {{ ticket.detail_attributes.updated_at }}
-                                </p>
-                            </div>
-                            <div class="field">
-                                <div class="actions">
-                                    <button class="button is-primary" v-if="!ticket_id" @click="postTicket">Create ticket</button>
-                                    <button class="button is-primary" v-if="ticket_id" @click="putTicket">Update ticket</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-header-title">
+                    Ticket
+                </h2>
+                <router-link v-if="ticket_id" :to="`/${ticket_id}/show`" class="card-header-icon">
+                    show
+                </router-link>
             </div>
-            <div class="column is-4">
-                <div class="card card-status">
-                    <div class="card-header">
-                        <h4 class="card-header-title">
-                            Open
-                        </h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="field">
-                            <i class="fas fa-info-circle has-text-link"></i>
-                            <label for="">first response due</label>
-                            <p>by Thu, 26 Sep 2019, 12:00 PM</p>
-                        </div>
-                        <div class="field">
-                            <i class="fas fa-info-circle has-text-link"></i>
-                            <label for="">resolution due</label>
-                            <p>by Thu, 26 Sep 2019, 12:00 PM</p>
+            <div class="card-content">
+                <div v-html="ticket.description"></div>
+                <form>
+                    <b-field label="Subject">
+                        <b-input v-model="ticket.detail_attributes.subject"></b-input>
+                    </b-field>
+                    <div class="field">
+                        <label for="article.content" class="label">Content</label>
+                        <div class="control">
+                            <component-trix-editor v-model="ticket.detail_attributes.description"></component-trix-editor>
                         </div>
                     </div>
-                </div>
-                <br>
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-header-title">
-                            Properties
-                        </h4>
+                    <div class="field">
+                        <p>
+                            Created at: {{ ticket.detail_attributes.created_at }}, 
+                            updated at: {{ ticket.detail_attributes.updated_at }}
+                        </p>
                     </div>
-                    <div class="card-content">
-                        <b-field label="Tags">
-                            <input type="text" class="input">
-                        </b-field>
-                        <div class="field">
-                            <span class="tag is-link">Tag 1</span>
-                            <span class="tag is-link">Tag 2</span>
-                            <span class="tag is-link">Tag 3</span>
-                            <span class="tag is-link">Tag 4</span>
+                    <div class="field">
+                        <div class="actions">
+                            <button class="button is-primary" v-if="!ticket_id" @click="postTicket">Create ticket</button>
+                            <button class="button is-primary" v-if="ticket_id" @click="putTicket">Update ticket</button>
                         </div>
-                        <b-field label="Type">
-                            <div class="control">
-                                <div class="select">
-                                    <select 
-                                        @change="putTicketType()" 
-                                        v-model="ticket.detail_attributes.cloud_help_ticket_types_id">
-                                        <option 
-                                            v-for="(option, index) in ticket_options.types"
-                                            :key="index" 
-                                            :value="option.id">
-                                            {{ option.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </b-field>
-                        <b-field label="Status">
-                            <div class="control">
-                                <div class="select">
-                                    <select 
-                                        @change="putTicketState()" 
-                                        v-model="ticket.detail_attributes.cloud_help_ticket_states_id">
-                                        <option 
-                                            v-for="(option, index) in ticket_options.states"
-                                            :key="index" 
-                                            :value="option.id">
-                                            {{ option.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </b-field>
-                        <b-field label="Priority">
-                            <div class="control">
-                                <div class="select">
-                                    <select 
-                                        @change="putTicketPriorities()" 
-                                        v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id">
-                                        <option 
-                                            v-for="(option, index) in ticket_options.priorities"
-                                            :key="index" 
-                                            :value="option.id">
-                                            {{ option.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </b-field>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </section>

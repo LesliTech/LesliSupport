@@ -27947,7 +27947,69 @@ var render = function() {
     _c("div", { staticClass: "navbar-menu" }, [
       _c("div", { staticClass: "navbar-start" }, [_vm._t("right")], 2),
       _vm._v(" "),
-      _c("div", { staticClass: "navbar-end" }, [_vm._t("left")], 2)
+      _c(
+        "div",
+        { staticClass: "navbar-end" },
+        [
+          _vm._t("left"),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Details")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/discussion" }
+                },
+                [_vm._v("Discussion")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/actions" }
+                },
+                [_vm._v("Actions")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Files")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "navbar-item",
+                  attrs: { to: "/" + _vm.id + "/show" }
+                },
+                [_vm._v("Activities")]
+              )
+            : _vm._e()
+        ],
+        2
+      )
     ])
   ])
 }
