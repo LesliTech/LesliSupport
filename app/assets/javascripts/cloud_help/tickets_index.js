@@ -32537,7 +32537,9 @@ tagvue_type_template_id_6a90a0c5_render._withStripped = true
       }
     },
     ticket_tags: function ticket_tags(_ticket_tags) {
-      this.tags = _ticket_tags.split(',');
+      if (_ticket_tags) {
+        this.tags = _ticket_tags.split(',');
+      }
     }
   }
 });

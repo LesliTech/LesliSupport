@@ -33,7 +33,9 @@ export default {
             }
         },
         ticket_tags(ticket_tags) {
-            this.tags = ticket_tags.split(',')
+            if (ticket_tags) {
+                this.tags = ticket_tags.split(',') 
+            }
         }
     }
 }
