@@ -1,23 +1,37 @@
 <script>
 export default {
+    props: ['ticket_id', 'ticket_priority', 'options'],
     data() {
         return {
-            ticket_options: {
-                priorities: null
-            },
-            ticket: {
-                detail_attributes: {
-                    cloud_help_ticket_priorities_id: null
-                }
-            }
+            priority: null,
+            ticket_priorities: []
         }
     },
     methods: {
-
-        putTicketPriorities() {
-            
+        patchTicket() {
+            this.http.patch(`/help/tickets/${this.ticket_id}`, {
+                ticket: {
+                    detail_attributes: {
+                        id: this.ticket_id,
+                        cloud_help_ticket_priorities_id: this.priority
+                    }
+                }
+            }).then(result => {
+                if (result.successful) {
+                    this.alert("Priority succesfuly updated")
+                }
+            }).catch(error => {
+                console.log(error)
+            })
         }
-
+    },
+    watch: {
+        ticket_priority(ticket_priority) {
+            this.priority = ticket_priority
+        },
+        options(options) {
+            this.ticket_priorities = options
+        }
     }
 }
 </script>
@@ -25,17 +39,17 @@ export default {
     <div class="card">
         <div class="card-header">
             <h4 class="card-header-title">
-                Priority
+                Priority 
             </h4>
         </div>
         <div class="card-content">
             <div class="control is-expanded">
                 <div class="select is-fullwidth">
                     <select 
-                        @change="putTicketPriorities()" 
-                        v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id">
+                        @change="patchTicket" 
+                        v-model="priority">
                         <option 
-                            v-for="(option, index) in ticket_options.priorities"
+                            v-for="(option, index) in ticket_priorities"
                             :key="index" 
                             :value="option.id">
                             {{ option.name }}

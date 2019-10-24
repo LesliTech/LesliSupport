@@ -32469,11 +32469,41 @@ var showvue_type_template_id_63b815f4_render = function() {
             })
           : _vm._e(),
         _vm._v(" "),
-        _c("component-form-type", { staticClass: "box" }),
+        _vm.ticket.detail_attributes
+          ? _c("component-form-type", {
+              staticClass: "box",
+              attrs: {
+                ticket_id: _vm.ticket_id,
+                ticket_type:
+                  _vm.ticket.detail_attributes.cloud_help_ticket_types_id,
+                options: _vm.ticket_options.types
+              }
+            })
+          : _vm._e(),
         _vm._v(" "),
-        _c("component-form-state", { staticClass: "box" }),
+        _vm.ticket.detail_attributes
+          ? _c("component-form-state", {
+              staticClass: "box",
+              attrs: {
+                ticket_id: _vm.ticket_id,
+                ticket_state:
+                  _vm.ticket.detail_attributes.cloud_help_ticket_states_id,
+                options: _vm.ticket_options.states
+              }
+            })
+          : _vm._e(),
         _vm._v(" "),
-        _c("component-form-priority", { staticClass: "box" })
+        _vm.ticket.detail_attributes
+          ? _c("component-form-priority", {
+              staticClass: "box",
+              attrs: {
+                ticket_id: _vm.ticket_id,
+                ticket_priority:
+                  _vm.ticket.detail_attributes.cloud_help_ticket_priorities_id,
+                options: _vm.ticket_options.priorities
+              }
+            })
+          : _vm._e()
       ],
       1
     )
@@ -32574,10 +32604,8 @@ var statevue_type_template_id_635bb97c_render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes.cloud_help_ticket_states_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_states_id"
+                  value: _vm.state,
+                  expression: "state"
                 }
               ],
               on: {
@@ -32591,19 +32619,17 @@ var statevue_type_template_id_635bb97c_render = function() {
                         var val = "_value" in o ? o._value : o.value
                         return val
                       })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_states_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
+                    _vm.state = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
                   },
                   function($event) {
-                    return _vm.putTicketState()
+                    return _vm.patchTicket()
                   }
                 ]
               }
             },
-            _vm._l(_vm.ticket_options.states, function(option, index) {
+            _vm._l(_vm.ticket_states, function(option, index) {
               return _c(
                 "option",
                 { key: index, domProps: { value: option.id } },
@@ -32630,7 +32656,7 @@ var statevue_type_template_id_635bb97c_staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            State\n        ")
+        _vm._v("\n            State \n        ")
       ])
     ])
   }
@@ -32642,18 +32668,40 @@ statevue_type_template_id_635bb97c_render._withStripped = true
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
 /* harmony default export */ var statevue_type_script_lang_js_ = ({
+  props: ['ticket_id', 'ticket_state', 'options'],
   data: function data() {
     return {
-      ticket_options: [],
-      ticket: {
-        detail_attributes: {
-          cloud_help_ticket_states_id: null
-        }
-      }
+      state: null,
+      ticket_states: []
     };
   },
   methods: {
-    putTicketState: function putTicketState() {}
+    patchTicket: function patchTicket() {
+      var _this = this;
+
+      this.http.patch("/help/tickets/".concat(this.ticket_id), {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket_id,
+            cloud_help_ticket_states_id: this.state
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("State succesfuly updated");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  watch: {
+    ticket_state: function ticket_state(_ticket_state) {
+      this.state = _ticket_state;
+    },
+    options: function options(_options) {
+      this.ticket_states = _options;
+    }
   }
 });
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
@@ -32809,10 +32857,8 @@ var typevue_type_template_id_214a08c2_render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes.cloud_help_ticket_types_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_types_id"
+                  value: _vm.type,
+                  expression: "type"
                 }
               ],
               on: {
@@ -32826,19 +32872,17 @@ var typevue_type_template_id_214a08c2_render = function() {
                         var val = "_value" in o ? o._value : o.value
                         return val
                       })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_types_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
+                    _vm.type = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
                   },
                   function($event) {
-                    return _vm.putTicketType()
+                    return _vm.patchTicket()
                   }
                 ]
               }
             },
-            _vm._l(_vm.ticket_options.types, function(option, index) {
+            _vm._l(_vm.ticket_types, function(option, index) {
               return _c(
                 "option",
                 { key: index, domProps: { value: option.id } },
@@ -32877,20 +32921,40 @@ typevue_type_template_id_214a08c2_render._withStripped = true
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
 /* harmony default export */ var typevue_type_script_lang_js_ = ({
+  props: ['ticket_id', 'ticket_type', 'options'],
   data: function data() {
     return {
-      ticket_options: {
-        types: []
-      },
-      ticket: {
-        detail_attributes: {
-          cloud_help_ticket_types_id: null
-        }
-      }
+      type: null,
+      ticket_types: []
     };
   },
   methods: {
-    patchTicketType: function patchTicketType() {}
+    patchTicket: function patchTicket() {
+      var _this = this;
+
+      this.http.patch("/help/tickets/".concat(this.ticket_id), {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket_id,
+            cloud_help_ticket_types_id: this.type
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("Tags succesfuly updated");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  watch: {
+    ticket_type: function ticket_type(_ticket_type) {
+      this.type = _ticket_type;
+    },
+    options: function options(_options) {
+      this.ticket_types = _options;
+    }
   }
 });
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
@@ -32936,11 +33000,8 @@ var priorityvue_type_template_id_5f637289_render = function() {
                 {
                   name: "model",
                   rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes
-                      .cloud_help_ticket_priorities_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_priorities_id"
+                  value: _vm.priority,
+                  expression: "priority"
                 }
               ],
               on: {
@@ -32954,19 +33015,15 @@ var priorityvue_type_template_id_5f637289_render = function() {
                         var val = "_value" in o ? o._value : o.value
                         return val
                       })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_priorities_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
+                    _vm.priority = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
                   },
-                  function($event) {
-                    return _vm.putTicketPriorities()
-                  }
+                  _vm.patchTicket
                 ]
               }
             },
-            _vm._l(_vm.ticket_options.priorities, function(option, index) {
+            _vm._l(_vm.ticket_priorities, function(option, index) {
               return _c(
                 "option",
                 { key: index, domProps: { value: option.id } },
@@ -32993,7 +33050,7 @@ var priorityvue_type_template_id_5f637289_staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            Priority\n        ")
+        _vm._v("\n            Priority \n        ")
       ])
     ])
   }
@@ -33005,20 +33062,40 @@ priorityvue_type_template_id_5f637289_render._withStripped = true
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&
 /* harmony default export */ var priorityvue_type_script_lang_js_ = ({
+  props: ['ticket_id', 'ticket_priority', 'options'],
   data: function data() {
     return {
-      ticket_options: {
-        priorities: null
-      },
-      ticket: {
-        detail_attributes: {
-          cloud_help_ticket_priorities_id: null
-        }
-      }
+      priority: null,
+      ticket_priorities: []
     };
   },
   methods: {
-    putTicketPriorities: function putTicketPriorities() {}
+    patchTicket: function patchTicket() {
+      var _this = this;
+
+      this.http.patch("/help/tickets/".concat(this.ticket_id), {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket_id,
+            cloud_help_ticket_priorities_id: this.priority
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("Priority succesfuly updated");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  watch: {
+    ticket_priority: function ticket_priority(_ticket_priority) {
+      this.priority = _ticket_priority;
+    },
+    options: function options(_options) {
+      this.ticket_priorities = _options;
+    }
   }
 });
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&

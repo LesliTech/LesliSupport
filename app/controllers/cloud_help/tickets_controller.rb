@@ -35,7 +35,9 @@ module CloudHelp
                             subject: ticket[:subject],
                             description: ticket[:description],
                             tags: ticket[:tags],
-                            cloud_help_ticket_types_id: ticket[:cloud_help_ticket_types_id]
+                            cloud_help_ticket_types_id: ticket[:cloud_help_ticket_types_id],
+                            cloud_help_ticket_states_id: ticket[:cloud_help_ticket_states_id],
+                            cloud_help_ticket_priorities_id: ticket[:cloud_help_ticket_priorities_id]
                         }
                     }) 
                 }

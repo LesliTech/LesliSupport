@@ -1,23 +1,37 @@
 <script>
 export default {
-    
+    props: ['ticket_id', 'ticket_state', 'options'],
     data() {
         return {
-            ticket_options: [],
-            ticket: {
-                detail_attributes: {
-                    cloud_help_ticket_states_id: null
-                }
-            }
+            state: null,
+            ticket_states: []
         }
     },
-
     methods: {
-
-        putTicketState() {
-
+        patchTicket() {
+            this.http.patch(`/help/tickets/${this.ticket_id}`, {
+                ticket: {
+                    detail_attributes: {
+                        id: this.ticket_id,
+                        cloud_help_ticket_states_id: this.state
+                    }
+                }
+            }).then(result => {
+                if (result.successful) {
+                    this.alert("State succesfuly updated")
+                }
+            }).catch(error => {
+                console.log(error)
+            })
         }
-
+    },
+    watch: {
+        ticket_state(ticket_state) {
+            this.state = ticket_state
+        },
+        options(options) {
+            this.ticket_states = options
+        }
     }
 }
 </script>
@@ -25,17 +39,17 @@ export default {
     <div class="card">
         <div class="card-header">
             <h4 class="card-header-title">
-                State
+                State 
             </h4>
         </div>
         <div class="card-content">
             <div class="control is-expanded">
                 <div class="select is-fullwidth">
                     <select 
-                        @change="putTicketState()" 
-                        v-model="ticket.detail_attributes.cloud_help_ticket_states_id">
+                        @change="patchTicket()" 
+                        v-model="state">
                         <option 
-                            v-for="(option, index) in ticket_options.states"
+                            v-for="(option, index) in ticket_states"
                             :key="index" 
                             :value="option.id">
                             {{ option.name }}

@@ -80,7 +80,6 @@ export default {
     methods: {
 
         getTicketOptions() {
-
             this.http.get('/help/api/tickets/options').then(result => {
                 if (result.successful) {
                     this.ticket_options = result.data
@@ -88,7 +87,6 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-
         },
 
         getTicket() {
@@ -123,9 +121,9 @@ export default {
         <div class="column is-4">
             <component-form-status class="box" />
             <component-form-tag v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_tags="ticket.detail_attributes.tags" class="box" />
-            <component-form-type class="box" />
-            <component-form-state class="box" />
-            <component-form-priority class="box" />
+            <component-form-type v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_type="ticket.detail_attributes.cloud_help_ticket_types_id" :options="ticket_options.types" class="box" />
+            <component-form-state v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_state="ticket.detail_attributes.cloud_help_ticket_states_id" :options="ticket_options.states" class="box" />
+            <component-form-priority v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_priority="ticket.detail_attributes.cloud_help_ticket_priorities_id" :options="ticket_options.priorities" class="box" />
         </div>
     </div>
 </template>
