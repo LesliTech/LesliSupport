@@ -52,16 +52,15 @@ export default {
     mounted() {
         if (this.$route.params.id) {
             this.ticket_id = this.$route.params.id
+            this.getTicket()
         }
         this.getTicketOptions()
     },
     methods: {
 
         putTicket(e) {
-
             if (e) { e.preventDefault() }
-
-            this.http.put("/help/tickets/"+this.ticket_id, {
+            this.http.put(`/help/tickets/${this.ticket_id}`, {
                 ticket: this.ticket
             }).then(result => {
                 if (result.successful) {
@@ -89,9 +88,9 @@ export default {
         },
 
         getTicket() {
-            this.http.get(`/help/tickets/${this.ticket_id}`).then(result => {
+            this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket = result.data.ticket
+                    this.ticket = result.data
                 }
             }).catch(error => {
                 console.log(error)
@@ -108,20 +107,15 @@ export default {
             })
         }
 
-    },
-    watch: {
-        ticket_id(ticket_id) {
-            this.getTicket()
-        }
     }
 }
 </script>
 <template>
-    <section class="section">
+    <section>
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
-                    Ticket
+                    Ticket 
                 </h2>
                 <router-link v-if="ticket_id" :to="`/${ticket_id}/show`" class="card-header-icon">
                     show

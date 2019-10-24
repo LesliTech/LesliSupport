@@ -32,6 +32,7 @@ module CloudHelp
                     responseWithSuccessful({
                         ticket: ticket[:id],
                         detail_attributes: {
+                            id: ticket[:id],
                             subject: ticket[:subject],
                             description: ticket[:description],
                             tags: ticket[:tags],

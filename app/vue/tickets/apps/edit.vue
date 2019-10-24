@@ -1,4 +1,3 @@
-
 <script>
 /*
 Lesli
@@ -39,7 +38,6 @@ import componentFormState from '../components/state.vue'
 import componentFormTag from '../components/tag.vue'
 import componentFormType from '../components/type.vue'
 import componentFormPriority from '../components/priority.vue'
-
 import componentForm from '../components/form.vue'
 
 
@@ -105,19 +103,7 @@ export default {
 <template>
     <div class="columns">
         <div class="column is-8">
-            <div class="card box">
-                <div class="card-header">
-                    <h4 class="card-header-title">
-                        {{ ticket.detail_attributes.subject }}
-                    </h4>
-                    <router-link :to="`/${ticket_id}/edit`" class="card-header-icon">
-                        edit
-                    </router-link>
-                </div>
-                <div class="card-content">
-                    <div v-html="ticket.detail_attributes.description"></div>
-                </div>
-            </div>
+            <component-form />
             <component-discussion-form class="box" cloud-module="help/ticket" :cloud-object-id="ticket_id" />
             <component-discussion-list cloud-module="help/ticket" :cloud-object-id="ticket_id" />
         </div>

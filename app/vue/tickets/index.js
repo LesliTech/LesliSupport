@@ -37,7 +37,7 @@ import app from 'LesliCloud/vue/app'
 import componentAppDiscussions from 'LesliCloud/vue/apps/discussions.vue'
 import componentAppActions from 'LesliCloud/vue/apps/actions.vue'
 import componentList from './components/list.vue'
-import componentEdit from './components/edit.vue'
+import componentEdit from './apps/edit.vue'
 import componentShow from './apps/show.vue'
 import componentNew from './apps/new.vue'
 
@@ -51,6 +51,9 @@ app("CloudHelp", "[list|new|edit|show]", "help/tickets", null, [{
 },{
     path: "/:id/show",
     component: componentShow,
+},{
+    path: "/:id/edit",
+    component: componentEdit,
 },{
     path: "/new",
     component: componentNew,
