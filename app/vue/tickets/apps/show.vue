@@ -34,13 +34,12 @@ Building a better future, one line of code at a time.
 import VueTrix from "vue-trix"
 import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.vue'
 import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
+import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
 import componentFormStatus from '../components/status.vue'
 import componentFormState from '../components/state.vue'
 import componentFormTag from '../components/tag.vue'
 import componentFormType from '../components/type.vue'
 import componentFormPriority from '../components/priority.vue'
-
-import componentForm from '../components/form.vue'
 
 
 
@@ -51,12 +50,12 @@ export default {
         'component-trix-editor': VueTrix,
         'component-discussion-form': componentDiscussionForm,
         'component-discussion-list': componentDiscussionList,
+        'component-action-list': componentActionList,
         'component-form-status': componentFormStatus,
         'component-form-state': componentFormState,
         'component-form-tag': componentFormTag,
         'component-form-type': componentFormType,
-        'component-form-priority': componentFormPriority,
-        'component-form': componentForm
+        'component-form-priority': componentFormPriority
     },
     data() {
         return {
@@ -110,6 +109,9 @@ export default {
                     <h4 class="card-header-title">
                         {{ ticket.detail_attributes.subject }}
                     </h4>
+                    <a class="card-header-icon" @click="bus.$emit('show:/help/ticket/actions')">
+                        actions
+                    </a>
                     <router-link :to="`/${ticket_id}/edit`" class="card-header-icon">
                         edit
                     </router-link>
@@ -128,5 +130,6 @@ export default {
             <component-form-state v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_state="ticket.detail_attributes.cloud_help_ticket_states_id" :options="ticket_options.states" class="box" />
             <component-form-priority v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_priority="ticket.detail_attributes.cloud_help_ticket_priorities_id" :options="ticket_options.priorities" class="box" />
         </div>
+        <component-action-list v-if="ticket_id" cloud-module="help/ticket" :cloud-id="ticket_id" />
     </div>
 </template>

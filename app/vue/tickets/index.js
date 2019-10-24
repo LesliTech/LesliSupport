@@ -34,12 +34,10 @@ import app from 'LesliCloud/vue/app'
 
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentAppDiscussions from 'LesliCloud/vue/apps/discussions.vue'
-import componentAppActions from 'LesliCloud/vue/apps/actions.vue'
-import componentList from './components/list.vue'
-import componentEdit from './apps/edit.vue'
-import componentShow from './apps/show.vue'
-import componentNew from './apps/new.vue'
+import appList from './apps/list.vue'
+import appEdit from './apps/edit.vue'
+import appShow from './apps/show.vue'
+import appNew from './apps/new.vue'
 
 
 
@@ -47,14 +45,14 @@ import componentNew from './apps/new.vue'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 app("CloudHelp", "[list|new|edit|show]", "help/tickets", null, [{
     path: "/",
-    component: componentList,
+    component: appList,
 },{
     path: "/:id/show",
-    component: componentShow,
+    component: appShow,
 },{
     path: "/:id/edit",
-    component: componentEdit,
+    component: appEdit,
 },{
     path: "/new",
-    component: componentNew,
+    component: appNew,
 }])

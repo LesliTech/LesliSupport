@@ -2,7 +2,6 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        #before_action :set_ticket, only: [:show, :edit, :update, :destroy]
         before_action :set_ticket, except: [:index, :create, :api_options]
 
         # GET /tickets
