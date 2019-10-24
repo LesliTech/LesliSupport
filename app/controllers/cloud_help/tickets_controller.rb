@@ -19,7 +19,7 @@ module CloudHelp
             ticket =  current_user.account.help.ticket
                 .joins(:detail)
                 .select(
-                    :id, :subject, :description, 
+                    :id, :subject, :description, :tags,
                     :cloud_help_ticket_types_id, 
                     :cloud_help_ticket_states_id, 
                     :cloud_help_ticket_priorities_id,
@@ -28,25 +28,18 @@ module CloudHelp
 
             respond_to do |format|
                 format.html 
-                format.json { responseWithSuccessful(ticket) }
-            end
-
-=begin
-            responseWithSuccessful({
-                ticket: {
-                    detail_attributes: {
-                        id: ticket['id'],
-                        subject: ticket['subject'],
-                        description: ticket['description'],
-                        cloud_help_ticket_types_id: ticket['cloud_help_ticket_types_id'],
-                        cloud_help_ticket_states_id: ticket['cloud_help_ticket_states_id'],
-                        cloud_help_ticket_priorities_id: ticket['cloud_help_ticket_priorities_id'],
-                        created_at: ticket['created_at'], 
-                        updated_at: ticket['updated_at']
-                    }
+                format.json { 
+                    responseWithSuccessful({
+                        ticket: ticket[:id],
+                        detail_attributes: {
+                            subject: ticket[:subject],
+                            description: ticket[:description],
+                            tags: ticket[:tags],
+                            cloud_help_ticket_types_id: ticket[:cloud_help_ticket_types_id]
+                        }
+                    }) 
                 }
-            })
-=end
+            end
         end
 
         # GET /tickets/new
@@ -132,6 +125,7 @@ module CloudHelp
                     :id,
                     :subject,
                     :description,
+                    :tags,
                     :cloud_help_ticket_types_id,
                     :cloud_help_ticket_states_id,
                     :cloud_help_ticket_priorities_id

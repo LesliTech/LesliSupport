@@ -40,6 +40,8 @@ import componentFormTag from '../components/tag.vue'
 import componentFormType from '../components/type.vue'
 import componentFormPriority from '../components/priority.vue'
 
+import componentForm from '../components/form.vue'
+
 
 
 // · Component show
@@ -53,7 +55,8 @@ export default {
         'component-form-state': componentFormState,
         'component-form-tag': componentFormTag,
         'component-form-type': componentFormType,
-        'component-form-priority': componentFormPriority
+        'component-form-priority': componentFormPriority,
+        'component-form': componentForm
     },
     data() {
         return {
@@ -63,6 +66,7 @@ export default {
                 detail_attributes: {
                     subject: "",
                     description: "",
+                    tags: "",
                     cloud_help_ticket_types_id: null
                 }
             }
@@ -106,11 +110,11 @@ export default {
             <div class="card box">
                 <div class="card-header">
                     <h4 class="card-header-title">
-                        {{ ticket.subject }}
+                        {{ ticket.detail_attributes.subject }}
                     </h4>
                 </div>
                 <div class="card-content">
-                    <div v-html="ticket.description"></div>
+                    <div v-html="ticket.detail_attributes.description"></div>
                 </div>
             </div>
             <component-discussion-form class="box" cloud-module="help/ticket" :cloud-object-id="ticket_id" />
@@ -118,7 +122,7 @@ export default {
         </div>
         <div class="column is-4">
             <component-form-status class="box" />
-            <component-form-tag class="box" />
+            <component-form-tag v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_tags="ticket.detail_attributes.tags" class="box" />
             <component-form-type class="box" />
             <component-form-state class="box" />
             <component-form-priority class="box" />
