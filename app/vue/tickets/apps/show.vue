@@ -59,9 +59,10 @@ export default {
     },
     data() {
         return {
-            ticket_options: {},
+            ticket_options: null,
             ticket_id: null,
-            ticket: {
+            ticket: null,
+            ticket2: {
                 detail_attributes: {
                     subject: "",
                     description: "",
@@ -102,16 +103,13 @@ export default {
 }
 </script>
 <template>
-    <div class="columns">
+    <div class="columns" v-if="ticket && ticket_options">
         <div class="column is-8">
             <div class="card box">
                 <div class="card-header">
                     <h4 class="card-header-title">
                         {{ ticket.detail_attributes.subject }}
                     </h4>
-                    <a class="card-header-icon" @click="bus.$emit('show:/help/ticket/actions')">
-                        actions
-                    </a>
                     <router-link :to="`/${ticket_id}/edit`" class="card-header-icon">
                         edit
                     </router-link>
@@ -125,11 +123,11 @@ export default {
         </div>
         <div class="column is-4">
             <component-form-status class="box" />
-            <component-form-tag v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_tags="ticket.detail_attributes.tags" class="box" />
-            <component-form-type v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_type="ticket.detail_attributes.cloud_help_ticket_types_id" :options="ticket_options.types" class="box" />
-            <component-form-state v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_state="ticket.detail_attributes.cloud_help_ticket_states_id" :options="ticket_options.states" class="box" />
-            <component-form-priority v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_priority="ticket.detail_attributes.cloud_help_ticket_priorities_id" :options="ticket_options.priorities" class="box" />
+            <component-form-tag class="box" :ticket="ticket" :options="ticket_options" />
+            <component-form-type class="box" :ticket="ticket" :options="ticket_options" />
+            <component-form-state class="box" :ticket="ticket" :options="ticket_options" />
+            <component-form-priority class="box" :ticket="ticket" :options="ticket_options" />
         </div>
-        <component-action-list v-if="ticket_id" cloud-module="help/ticket" :cloud-id="ticket_id" />
+        <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
     </div>
 </template>

@@ -1,17 +1,24 @@
 <script>
 export default {
-    props: ['ticket_id', 'ticket_tags'],
+    props: {
+        ticket: {
+            required: true
+        }
+    },
     data() {
         return {
             tags: null
         }
     },
+    mounted() {
+        this.tags = this.ticket.detail_attributes.tags.split(',')
+    },
     methods: {
         patchTicket() {
-            this.http.patch(`/help/tickets/${this.ticket_id}`, {
+            this.http.patch(`/help/tickets/${this.ticket.id}`, {
                 ticket: {
                     detail_attributes: {
-                        id: this.ticket_id,
+                        id: this.ticket.id,
                         tags: this.tags.join(',')
                     }
                 }
@@ -30,11 +37,6 @@ export default {
             // through this way we can avoid to send tags on the very first load
             if (current_tags) {
                 this.patchTicket()
-            }
-        },
-        ticket_tags(ticket_tags) {
-            if (ticket_tags) {
-                this.tags = ticket_tags.split(',') 
             }
         }
     }

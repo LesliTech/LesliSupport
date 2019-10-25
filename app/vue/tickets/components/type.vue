@@ -1,19 +1,20 @@
 <script>
 export default {
-    props: ['ticket_id', 'ticket_type', 'options'],
-    data() {
-        return {
-            type: null,
-            ticket_types: []
+    props: {
+        ticket: {
+            required: true
+        },
+        options: {
+            required: true
         }
     },
     methods: {
         patchTicket() {
-            this.http.patch(`/help/tickets/${this.ticket_id}`, {
+            this.http.patch(`/help/tickets/${this.ticket.id}`, {
                 ticket: {
                     detail_attributes: {
-                        id: this.ticket_id,
-                        cloud_help_ticket_types_id: this.type
+                        id: this.ticket.id,
+                        cloud_help_ticket_types_id: this.ticket.detail_attributes.cloud_help_ticket_types_id
                     }
                 }
             }).then(result => {
@@ -23,14 +24,6 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-        }
-    },
-    watch: {
-        ticket_type(ticket_type) {
-            this.type = ticket_type
-        },
-        options(options) {
-            this.ticket_types = options
         }
     }
 }
@@ -46,10 +39,10 @@ export default {
             <div class="control is-expanded">
                 <div class="select is-fullwidth">
                     <select 
-                        @change="patchTicket()" 
-                        v-model="type">
+                        @change="patchTicket" 
+                        v-model="ticket.detail_attributes.cloud_help_ticket_types_id">
                         <option 
-                            v-for="(option, index) in ticket_types"
+                            v-for="(option, index) in options.types"
                             :key="index" 
                             :value="option.id">
                             {{ option.name }}

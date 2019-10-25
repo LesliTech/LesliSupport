@@ -28132,33 +28132,16 @@ var navigationvue_type_template_id_70d7a082_render = function() {
           _vm._v(" "),
           _vm.id
             ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/actions" }
-                },
-                [_vm._v("Actions")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/show" }
-                },
+                "a",
+                { staticClass: "navbar-item", on: { click: _vm.showActions } },
                 [_vm._v("Files")]
               )
             : _vm._e(),
           _vm._v(" "),
           _vm.id
             ? _c(
-                "router-link",
-                {
-                  staticClass: "navbar-item",
-                  attrs: { to: "/" + _vm.id + "/show" }
-                },
+                "a",
+                { staticClass: "navbar-item", on: { click: _vm.showActions } },
                 [_vm._v("Activities")]
               )
             : _vm._e()
@@ -28188,7 +28171,7 @@ navigationvue_type_template_id_70d7a082_render._withStripped = true
   },
   methods: {
     showActions: function showActions() {
-      this.bus.$emit('cloud/layout/actions');
+      this.bus.$emit("show:/module/app/actions");
     }
   },
   watch: {

@@ -1,19 +1,20 @@
 <script>
 export default {
-    props: ['ticket_id', 'ticket_priority', 'options'],
-    data() {
-        return {
-            priority: null,
-            ticket_priorities: []
+    props: {
+        ticket: {
+            required: true
+        },
+        options: {
+            required: true
         }
     },
     methods: {
         patchTicket() {
-            this.http.patch(`/help/tickets/${this.ticket_id}`, {
+            this.http.patch(`/help/tickets/${this.ticket.id}`, {
                 ticket: {
                     detail_attributes: {
-                        id: this.ticket_id,
-                        cloud_help_ticket_priorities_id: this.priority
+                        id: this.ticket.id,
+                        cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
                     }
                 }
             }).then(result => {
@@ -23,14 +24,6 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-        }
-    },
-    watch: {
-        ticket_priority(ticket_priority) {
-            this.priority = ticket_priority
-        },
-        options(options) {
-            this.ticket_priorities = options
         }
     }
 }
@@ -47,9 +40,9 @@ export default {
                 <div class="select is-fullwidth">
                     <select 
                         @change="patchTicket" 
-                        v-model="priority">
+                        v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id">
                         <option 
-                            v-for="(option, index) in ticket_priorities"
+                            v-for="(option, index) in options.priorities"
                             :key="index" 
                             :value="option.id">
                             {{ option.name }}
