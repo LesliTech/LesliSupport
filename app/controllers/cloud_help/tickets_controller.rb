@@ -29,12 +29,12 @@ module CloudHelp
                 format.html 
                 format.json { 
                     responseWithSuccessful({
-                        ticket: ticket[:id],
+                        id: ticket[:id],
                         detail_attributes: {
                             id: ticket[:id],
+                            tags: ticket[:tags],
                             subject: ticket[:subject],
                             description: ticket[:description],
-                            tags: ticket[:tags],
                             cloud_help_ticket_types_id: ticket[:cloud_help_ticket_types_id],
                             cloud_help_ticket_states_id: ticket[:cloud_help_ticket_states_id],
                             cloud_help_ticket_priorities_id: ticket[:cloud_help_ticket_priorities_id]
