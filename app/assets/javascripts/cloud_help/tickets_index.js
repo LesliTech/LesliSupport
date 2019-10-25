@@ -32065,6 +32065,7 @@ var tagvue_type_template_id_6a90a0c5_render = function() {
       [
         _c("b-taginput", {
           attrs: { ellipsis: "" },
+          on: { input: _vm.patchTicket },
           model: {
             value: _vm.tags,
             callback: function($$v) {
@@ -32108,7 +32109,9 @@ tagvue_type_template_id_6a90a0c5_render._withStripped = true
     };
   },
   mounted: function mounted() {
-    this.tags = this.ticket.detail_attributes.tags.split(',');
+    if (this.ticket.detail_attributes.tags) {
+      this.tags = this.ticket.detail_attributes.tags.split(',');
+    }
   },
   methods: {
     patchTicket: function patchTicket() {
@@ -32134,8 +32137,8 @@ tagvue_type_template_id_6a90a0c5_render._withStripped = true
     tags: function tags(database_tags, current_tags) {
       // current tags are null on the first load
       // through this way we can avoid to send tags on the very first load
-      if (current_tags) {
-        this.patchTicket();
+      //this.patchTicket()
+      if (current_tags) {//this.patchTicket()
       }
     }
   }

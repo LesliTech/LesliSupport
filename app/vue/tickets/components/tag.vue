@@ -11,7 +11,9 @@ export default {
         }
     },
     mounted() {
-        this.tags = this.ticket.detail_attributes.tags.split(',')
+        if (this.ticket.detail_attributes.tags) {
+            this.tags = this.ticket.detail_attributes.tags.split(',')
+        }
     },
     methods: {
         patchTicket() {
@@ -35,8 +37,9 @@ export default {
         tags(database_tags, current_tags) {
             // current tags are null on the first load
             // through this way we can avoid to send tags on the very first load
+            //this.patchTicket()
             if (current_tags) {
-                this.patchTicket()
+                //this.patchTicket()
             }
         }
     }
@@ -50,10 +53,7 @@ export default {
             </h4>
         </div>
         <div class="card-content">
-            <b-taginput
-                v-model="tags"
-                ellipsis>
-            </b-taginput>
+            <b-taginput v-model="tags" ellipsis @input="patchTicket" />
         </div>
     </div>
 </template>
