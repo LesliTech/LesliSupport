@@ -30,15 +30,16 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import VueTrix from "vue-trix"
 import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.vue'
 import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
+import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
+import componentFormPriority from '../components/priority.vue'
 import componentFormStatus from '../components/status.vue'
 import componentFormState from '../components/state.vue'
-import componentFormTag from '../components/tag.vue'
 import componentFormType from '../components/type.vue'
-import componentFormPriority from '../components/priority.vue'
+import componentFormTag from '../components/tag.vue'
 import componentForm from '../components/form.vue'
+import VueTrix from "vue-trix"
 
 
 
@@ -46,28 +47,22 @@ import componentForm from '../components/form.vue'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-trix-editor': VueTrix,
         'component-discussion-form': componentDiscussionForm,
         'component-discussion-list': componentDiscussionList,
+        'component-form-priority': componentFormPriority,
+        'component-action-list': componentActionList,
         'component-form-status': componentFormStatus,
         'component-form-state': componentFormState,
-        'component-form-tag': componentFormTag,
         'component-form-type': componentFormType,
-        'component-form-priority': componentFormPriority,
-        'component-form': componentForm
+        'component-form-tag': componentFormTag,
+        'component-form': componentForm,
+        'component-trix-editor': VueTrix
     },
     data() {
         return {
-            ticket_options: {},
+            ticket_options: null,
             ticket_id: null,
-            ticket: {
-                detail_attributes: {
-                    subject: "",
-                    description: "",
-                    tags: "",
-                    cloud_help_ticket_types_id: null
-                }
-            }
+            ticket: null
         }
     },
     mounted() {
@@ -101,7 +96,7 @@ export default {
 }
 </script>
 <template>
-    <div class="columns">
+    <div class="columns" v-if="ticket && ticket_options">
         <div class="column is-8">
             <component-form />
             <component-discussion-form class="box" cloud-module="help/ticket" :cloud-object-id="ticket_id" />
@@ -109,10 +104,11 @@ export default {
         </div>
         <div class="column is-4">
             <component-form-status class="box" />
-            <component-form-tag v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_tags="ticket.detail_attributes.tags" class="box" />
-            <component-form-type v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_type="ticket.detail_attributes.cloud_help_ticket_types_id" :options="ticket_options.types" class="box" />
-            <component-form-state v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_state="ticket.detail_attributes.cloud_help_ticket_states_id" :options="ticket_options.states" class="box" />
-            <component-form-priority v-if="ticket.detail_attributes" :ticket_id="ticket_id" :ticket_priority="ticket.detail_attributes.cloud_help_ticket_priorities_id" :options="ticket_options.priorities" class="box" />
+            <component-form-tag class="box" :ticket="ticket" :options="ticket_options" />
+            <component-form-type class="box" :ticket="ticket" :options="ticket_options" />
+            <component-form-state class="box" :ticket="ticket" :options="ticket_options" />
+            <component-form-priority class="box" :ticket="ticket" :options="ticket_options" />
         </div>
+        <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
     </div>
 </template>

@@ -30248,92 +30248,312 @@ var editvue_type_template_id_41d33993_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "columns" }, [
-    _c(
-      "div",
-      { staticClass: "column is-8" },
-      [
-        _c("component-form"),
-        _vm._v(" "),
-        _c("component-discussion-form", {
-          staticClass: "box",
-          attrs: {
-            "cloud-module": "help/ticket",
-            "cloud-object-id": _vm.ticket_id
-          }
-        }),
-        _vm._v(" "),
-        _c("component-discussion-list", {
-          attrs: {
-            "cloud-module": "help/ticket",
-            "cloud-object-id": _vm.ticket_id
-          }
-        })
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "column is-4" },
-      [
-        _c("component-form-status", { staticClass: "box" }),
-        _vm._v(" "),
-        _vm.ticket.detail_attributes
-          ? _c("component-form-tag", {
-              staticClass: "box",
-              attrs: {
-                ticket_id: _vm.ticket_id,
-                ticket_tags: _vm.ticket.detail_attributes.tags
-              }
-            })
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.ticket.detail_attributes
-          ? _c("component-form-type", {
-              staticClass: "box",
-              attrs: {
-                ticket_id: _vm.ticket_id,
-                ticket_type:
-                  _vm.ticket.detail_attributes.cloud_help_ticket_types_id,
-                options: _vm.ticket_options.types
-              }
-            })
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.ticket.detail_attributes
-          ? _c("component-form-state", {
-              staticClass: "box",
-              attrs: {
-                ticket_id: _vm.ticket_id,
-                ticket_state:
-                  _vm.ticket.detail_attributes.cloud_help_ticket_states_id,
-                options: _vm.ticket_options.states
-              }
-            })
-          : _vm._e(),
-        _vm._v(" "),
-        _vm.ticket.detail_attributes
-          ? _c("component-form-priority", {
-              staticClass: "box",
-              attrs: {
-                ticket_id: _vm.ticket_id,
-                ticket_priority:
-                  _vm.ticket.detail_attributes.cloud_help_ticket_priorities_id,
-                options: _vm.ticket_options.priorities
-              }
-            })
-          : _vm._e()
-      ],
-      1
-    )
-  ])
+  return _vm.ticket && _vm.ticket_options
+    ? _c(
+        "div",
+        { staticClass: "columns" },
+        [
+          _c(
+            "div",
+            { staticClass: "column is-8" },
+            [
+              _c("component-form"),
+              _vm._v(" "),
+              _c("component-discussion-form", {
+                staticClass: "box",
+                attrs: {
+                  "cloud-module": "help/ticket",
+                  "cloud-object-id": _vm.ticket_id
+                }
+              }),
+              _vm._v(" "),
+              _c("component-discussion-list", {
+                attrs: {
+                  "cloud-module": "help/ticket",
+                  "cloud-object-id": _vm.ticket_id
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "column is-4" },
+            [
+              _c("component-form-status", { staticClass: "box" }),
+              _vm._v(" "),
+              _c("component-form-tag", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              }),
+              _vm._v(" "),
+              _c("component-form-type", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              }),
+              _vm._v(" "),
+              _c("component-form-state", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              }),
+              _vm._v(" "),
+              _c("component-form-priority", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("component-action-list", {
+            attrs: { "cloud-module": "help/ticket", "cloud-id": _vm.ticket_id }
+          })
+        ],
+        1
+      )
+    : _vm._e()
 }
 var editvue_type_template_id_41d33993_staticRenderFns = []
 editvue_type_template_id_41d33993_render._withStripped = true
 
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/edit.vue?vue&type=template&id=41d33993&
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/discussion.vue?vue&type=template&id=8c3d00b4&
+var discussionvue_type_template_id_8c3d00b4_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    _vm._l(_vm.discussions, function(discussion) {
+      return _c("div", { key: discussion.id, staticClass: "box" }, [
+        _c("div", { staticClass: "media" }, [
+          _vm._m(0, true),
+          _vm._v(" "),
+          _c("div", { staticClass: "media-content" }, [
+            _c("div", { staticClass: "content" }, [
+              _c("p", [
+                _c("strong", [_vm._v("John Smith")]),
+                _vm._v(" "),
+                _c("small", [_vm._v(_vm._s(discussion.created_at))])
+              ]),
+              _vm._v(" "),
+              _c("div", {
+                domProps: { innerHTML: _vm._s(discussion.content) }
+              }),
+              _vm._v(" "),
+              _c("p", [
+                _vm._v(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis."
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(1, true)
+        ])
+      ])
+    }),
+    0
+  )
+}
+var discussionvue_type_template_id_8c3d00b4_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "media-left" }, [
+      _c("figure", { staticClass: "image is-64x64" }, [
+        _c("img", {
+          staticClass: "is-rounded",
+          attrs: {
+            src: "https://bulma.io/images/placeholders/128x128.png",
+            alt: "Image"
+          }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "media-right" }, [
+      _c("span", { staticClass: "icon is-small" })
+    ])
+  }
+]
+discussionvue_type_template_id_8c3d00b4_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue?vue&type=template&id=8c3d00b4&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/discussion.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+/* harmony default export */ var discussionvue_type_script_lang_js_ = ({
+  props: {
+    cloudModule: {
+      type: String,
+      required: true
+    },
+    cloudObjectId: {
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      discussions: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.getDiscussions();
+    this.bus.$on("post:components/forms/discussion", function () {
+      _this.getDiscussions();
+    });
+  },
+  methods: {
+    getDiscussions: function getDiscussions() {
+      var _this2 = this;
+
+      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudObjectId, "/discussions")).then(function (result) {
+        if (result.successful) {
+          _this2.discussions = result.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  watch: {
+    cloudObjectId: function cloudObjectId() {
+      this.getDiscussions();
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue?vue&type=script&lang=js&
+ /* harmony default export */ var lists_discussionvue_type_script_lang_js_ = (discussionvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue
+
+
+
+
+
+/* normalize component */
+
+var discussion_component = Object(componentNormalizer["a" /* default */])(
+  lists_discussionvue_type_script_lang_js_,
+  discussionvue_type_template_id_8c3d00b4_render,
+  discussionvue_type_template_id_8c3d00b4_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var discussion_api; }
+discussion_component.options.__file = "app/vue/components/lists/discussion.vue"
+/* harmony default export */ var discussion = (discussion_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/discussion.vue?vue&type=template&id=24ddcfcc&
+var discussionvue_type_template_id_24ddcfcc_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-content" }, [
+      _c(
+        "form",
+        { on: { submit: _vm.postDiscussion } },
+        [
+          _vm.show_simple_form
+            ? _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.discussion.content,
+                    expression: "discussion.content"
+                  }
+                ],
+                staticClass: "input",
+                attrs: { type: "text", placeholder: "Add a comment..." },
+                domProps: { value: _vm.discussion.content },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.discussion, "content", $event.target.value)
+                  }
+                }
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.show_simple_form
+            ? _c("component-trix-editor", {
+                model: {
+                  value: _vm.discussion.content,
+                  callback: function($$v) {
+                    _vm.$set(_vm.discussion, "content", $$v)
+                  },
+                  expression: "discussion.content"
+                }
+              })
+            : _vm._e()
+        ],
+        1
+      )
+    ])
+  ])
+}
+var discussionvue_type_template_id_24ddcfcc_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h4", { staticClass: "card-header-title" }, [
+        _vm._v("\n            Add new comment\n        ")
+      ])
+    ])
+  }
+]
+discussionvue_type_template_id_24ddcfcc_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue?vue&type=template&id=24ddcfcc&
 
 // EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
 var vue = __webpack_require__(0);
@@ -30872,241 +31092,6 @@ vue_default.a.component(VueTrix.name, VueTrix);
 /* harmony default export */ var vue_trix_esm = (VueTrix);
 //# sourceMappingURL=vue-trix.esm.js.map
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/discussion.vue?vue&type=template&id=8c3d00b4&
-var discussionvue_type_template_id_8c3d00b4_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    _vm._l(_vm.discussions, function(discussion) {
-      return _c("div", { key: discussion.id, staticClass: "box" }, [
-        _c("div", { staticClass: "media" }, [
-          _vm._m(0, true),
-          _vm._v(" "),
-          _c("div", { staticClass: "media-content" }, [
-            _c("div", { staticClass: "content" }, [
-              _c("p", [
-                _c("strong", [_vm._v("John Smith")]),
-                _vm._v(" "),
-                _c("small", [_vm._v(_vm._s(discussion.created_at))])
-              ]),
-              _vm._v(" "),
-              _c("div", {
-                domProps: { innerHTML: _vm._s(discussion.content) }
-              }),
-              _vm._v(" "),
-              _c("p", [
-                _vm._v(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis."
-                )
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _vm._m(1, true)
-        ])
-      ])
-    }),
-    0
-  )
-}
-var discussionvue_type_template_id_8c3d00b4_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "media-left" }, [
-      _c("figure", { staticClass: "image is-64x64" }, [
-        _c("img", {
-          staticClass: "is-rounded",
-          attrs: {
-            src: "https://bulma.io/images/placeholders/128x128.png",
-            alt: "Image"
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "media-right" }, [
-      _c("span", { staticClass: "icon is-small" })
-    ])
-  }
-]
-discussionvue_type_template_id_8c3d00b4_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue?vue&type=template&id=8c3d00b4&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/discussion.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-/* harmony default export */ var discussionvue_type_script_lang_js_ = ({
-  props: {
-    cloudModule: {
-      type: String,
-      required: true
-    },
-    cloudObjectId: {
-      required: true
-    }
-  },
-  data: function data() {
-    return {
-      discussions: []
-    };
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    this.getDiscussions();
-    this.bus.$on("post:components/forms/discussion", function () {
-      _this.getDiscussions();
-    });
-  },
-  methods: {
-    getDiscussions: function getDiscussions() {
-      var _this2 = this;
-
-      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudObjectId, "/discussions")).then(function (result) {
-        if (result.successful) {
-          _this2.discussions = result.data;
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  },
-  watch: {
-    cloudObjectId: function cloudObjectId() {
-      this.getDiscussions();
-    }
-  }
-});
-// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue?vue&type=script&lang=js&
- /* harmony default export */ var lists_discussionvue_type_script_lang_js_ = (discussionvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./app/vue/components/lists/discussion.vue
-
-
-
-
-
-/* normalize component */
-
-var discussion_component = Object(componentNormalizer["a" /* default */])(
-  lists_discussionvue_type_script_lang_js_,
-  discussionvue_type_template_id_8c3d00b4_render,
-  discussionvue_type_template_id_8c3d00b4_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var discussion_api; }
-discussion_component.options.__file = "app/vue/components/lists/discussion.vue"
-/* harmony default export */ var discussion = (discussion_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/discussion.vue?vue&type=template&id=24ddcfcc&
-var discussionvue_type_template_id_24ddcfcc_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c(
-        "form",
-        { on: { submit: _vm.postDiscussion } },
-        [
-          _vm.show_simple_form
-            ? _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.discussion.content,
-                    expression: "discussion.content"
-                  }
-                ],
-                staticClass: "input",
-                attrs: { type: "text", placeholder: "Add a comment..." },
-                domProps: { value: _vm.discussion.content },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.discussion, "content", $event.target.value)
-                  }
-                }
-              })
-            : _vm._e(),
-          _vm._v(" "),
-          !_vm.show_simple_form
-            ? _c("component-trix-editor", {
-                model: {
-                  value: _vm.discussion.content,
-                  callback: function($$v) {
-                    _vm.$set(_vm.discussion, "content", $$v)
-                  },
-                  expression: "discussion.content"
-                }
-              })
-            : _vm._e()
-        ],
-        1
-      )
-    ])
-  ])
-}
-var discussionvue_type_template_id_24ddcfcc_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            Add new comment\n        ")
-      ])
-    ])
-  }
-]
-discussionvue_type_template_id_24ddcfcc_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue?vue&type=template&id=24ddcfcc&
-
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/discussion.vue?vue&type=script&lang=js&
 /*
 Lesli
@@ -31209,1106 +31194,6 @@ var forms_discussion_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var forms_discussion_api; }
 forms_discussion_component.options.__file = "app/vue/components/forms/discussion.vue"
 /* harmony default export */ var forms_discussion = (forms_discussion_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=template&id=2714a117&
-var statusvue_type_template_id_2714a117_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var statusvue_type_template_id_2714a117_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("h4", { staticClass: "card-header-title" }, [
-          _vm._v("\n            Open\n        ")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-content" }, [
-        _c("div", { staticClass: "field" }, [
-          _c("i", { staticClass: "fas fa-info-circle has-text-link" }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "" } }, [_vm._v("first response due")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "field" }, [
-          _c("i", { staticClass: "fas fa-info-circle has-text-link" }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "" } }, [_vm._v("resolution due")]),
-          _vm._v(" "),
-          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
-        ])
-      ])
-    ])
-  }
-]
-statusvue_type_template_id_2714a117_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=template&id=2714a117&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=script&lang=js&
-/* harmony default export */ var statusvue_type_script_lang_js_ = ({});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_statusvue_type_script_lang_js_ = (statusvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/status.vue
-
-
-
-
-
-/* normalize component */
-
-var status_component = Object(componentNormalizer["a" /* default */])(
-  components_statusvue_type_script_lang_js_,
-  statusvue_type_template_id_2714a117_render,
-  statusvue_type_template_id_2714a117_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var status_api; }
-status_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/status.vue"
-/* harmony default export */ var components_status = (status_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=template&id=635bb97c&
-var statevue_type_template_id_635bb97c_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("div", { staticClass: "control is-expanded" }, [
-        _c("div", { staticClass: "select is-fullwidth" }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes.cloud_help_ticket_states_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_states_id"
-                }
-              ],
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_states_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.patchTicket
-                ]
-              }
-            },
-            _vm._l(_vm.options.states, function(option, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: option.id } },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(option.name) +
-                      "\n                    "
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var statevue_type_template_id_635bb97c_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            State \n        ")
-      ])
-    ])
-  }
-]
-statevue_type_template_id_635bb97c_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=template&id=635bb97c&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
-/* harmony default export */ var statevue_type_script_lang_js_ = ({
-  props: {
-    ticket: {
-      required: true
-    },
-    options: {
-      required: true
-    }
-  },
-  methods: {
-    patchTicket: function patchTicket() {
-      var _this = this;
-
-      this.http.patch("/help/tickets/".concat(this.ticket.id), {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.id,
-            cloud_help_ticket_states_id: this.ticket.detail_attributes.cloud_help_ticket_states_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("State succesfuly updated");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_statevue_type_script_lang_js_ = (statevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue
-
-
-
-
-
-/* normalize component */
-
-var state_component = Object(componentNormalizer["a" /* default */])(
-  components_statevue_type_script_lang_js_,
-  statevue_type_template_id_635bb97c_render,
-  statevue_type_template_id_635bb97c_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var state_api; }
-state_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/state.vue"
-/* harmony default export */ var state = (state_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=template&id=6a90a0c5&
-var tagvue_type_template_id_6a90a0c5_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "card-content" },
-      [
-        _c("b-taginput", {
-          attrs: { ellipsis: "" },
-          model: {
-            value: _vm.tags,
-            callback: function($$v) {
-              _vm.tags = $$v
-            },
-            expression: "tags"
-          }
-        })
-      ],
-      1
-    )
-  ])
-}
-var tagvue_type_template_id_6a90a0c5_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            Tags\n        ")
-      ])
-    ])
-  }
-]
-tagvue_type_template_id_6a90a0c5_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=template&id=6a90a0c5&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=script&lang=js&
-/* harmony default export */ var tagvue_type_script_lang_js_ = ({
-  props: {
-    ticket: {
-      required: true
-    }
-  },
-  data: function data() {
-    return {
-      tags: null
-    };
-  },
-  mounted: function mounted() {
-    this.tags = this.ticket.detail_attributes.tags.split(',');
-  },
-  methods: {
-    patchTicket: function patchTicket() {
-      var _this = this;
-
-      this.http.patch("/help/tickets/".concat(this.ticket.id), {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.id,
-            tags: this.tags.join(',')
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("Tags succesfuly updated");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  },
-  watch: {
-    tags: function tags(database_tags, current_tags) {
-      // current tags are null on the first load
-      // through this way we can avoid to send tags on the very first load
-      if (current_tags) {
-        this.patchTicket();
-      }
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_tagvue_type_script_lang_js_ = (tagvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/tag.vue
-
-
-
-
-
-/* normalize component */
-
-var tag_component = Object(componentNormalizer["a" /* default */])(
-  components_tagvue_type_script_lang_js_,
-  tagvue_type_template_id_6a90a0c5_render,
-  tagvue_type_template_id_6a90a0c5_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var tag_api; }
-tag_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/tag.vue"
-/* harmony default export */ var tag = (tag_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=template&id=214a08c2&
-var typevue_type_template_id_214a08c2_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("div", { staticClass: "control is-expanded" }, [
-        _c("div", { staticClass: "select is-fullwidth" }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes.cloud_help_ticket_types_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_types_id"
-                }
-              ],
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_types_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.patchTicket
-                ]
-              }
-            },
-            _vm._l(_vm.options.types, function(option, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: option.id } },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(option.name) +
-                      "\n                    "
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var typevue_type_template_id_214a08c2_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            Type\n        ")
-      ])
-    ])
-  }
-]
-typevue_type_template_id_214a08c2_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=template&id=214a08c2&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
-/* harmony default export */ var typevue_type_script_lang_js_ = ({
-  props: {
-    ticket: {
-      required: true
-    },
-    options: {
-      required: true
-    }
-  },
-  methods: {
-    patchTicket: function patchTicket() {
-      var _this = this;
-
-      this.http.patch("/help/tickets/".concat(this.ticket.id), {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.id,
-            cloud_help_ticket_types_id: this.ticket.detail_attributes.cloud_help_ticket_types_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("Tags succesfuly updated");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_typevue_type_script_lang_js_ = (typevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue
-
-
-
-
-
-/* normalize component */
-
-var type_component = Object(componentNormalizer["a" /* default */])(
-  components_typevue_type_script_lang_js_,
-  typevue_type_template_id_214a08c2_render,
-  typevue_type_template_id_214a08c2_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var type_api; }
-type_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/type.vue"
-/* harmony default export */ var type = (type_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=template&id=5f637289&
-var priorityvue_type_template_id_5f637289_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("div", { staticClass: "control is-expanded" }, [
-        _c("div", { staticClass: "select is-fullwidth" }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes
-                      .cloud_help_ticket_priorities_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_priorities_id"
-                }
-              ],
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_priorities_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.patchTicket
-                ]
-              }
-            },
-            _vm._l(_vm.options.priorities, function(option, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: option.id } },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(option.name) +
-                      "\n                    "
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var priorityvue_type_template_id_5f637289_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            Priority \n        ")
-      ])
-    ])
-  }
-]
-priorityvue_type_template_id_5f637289_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=template&id=5f637289&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&
-/* harmony default export */ var priorityvue_type_script_lang_js_ = ({
-  props: {
-    ticket: {
-      required: true
-    },
-    options: {
-      required: true
-    }
-  },
-  methods: {
-    patchTicket: function patchTicket() {
-      var _this = this;
-
-      this.http.patch("/help/tickets/".concat(this.ticket.id), {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.id,
-            cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("Priority succesfuly updated");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_priorityvue_type_script_lang_js_ = (priorityvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue
-
-
-
-
-
-/* normalize component */
-
-var priority_component = Object(componentNormalizer["a" /* default */])(
-  components_priorityvue_type_script_lang_js_,
-  priorityvue_type_template_id_5f637289_render,
-  priorityvue_type_template_id_5f637289_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var priority_api; }
-priority_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/priority.vue"
-/* harmony default export */ var priority = (priority_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=template&id=33e6a429&
-var formvue_type_template_id_33e6a429_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("section", [
-    _c("div", { staticClass: "card" }, [
-      _c(
-        "div",
-        { staticClass: "card-header" },
-        [
-          _c("h2", { staticClass: "card-header-title" }, [
-            _vm._v("\n                Ticket \n            ")
-          ]),
-          _vm._v(" "),
-          _vm.ticket_id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "card-header-icon",
-                  attrs: { to: "/" + _vm.ticket_id + "/show" }
-                },
-                [_vm._v("\n                show\n            ")]
-              )
-            : _vm._e()
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-content" }, [
-        _c("div", { domProps: { innerHTML: _vm._s(_vm.ticket.description) } }),
-        _vm._v(" "),
-        _c(
-          "form",
-          [
-            _c(
-              "b-field",
-              { attrs: { label: "Subject" } },
-              [
-                _c("b-input", {
-                  model: {
-                    value: _vm.ticket.detail_attributes.subject,
-                    callback: function($$v) {
-                      _vm.$set(_vm.ticket.detail_attributes, "subject", $$v)
-                    },
-                    expression: "ticket.detail_attributes.subject"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c(
-                "label",
-                { staticClass: "label", attrs: { for: "article.content" } },
-                [_vm._v("Content")]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "control" },
-                [
-                  _c("component-trix-editor", {
-                    model: {
-                      value: _vm.ticket.detail_attributes.description,
-                      callback: function($$v) {
-                        _vm.$set(
-                          _vm.ticket.detail_attributes,
-                          "description",
-                          $$v
-                        )
-                      },
-                      expression: "ticket.detail_attributes.description"
-                    }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("p", [
-                _vm._v(
-                  "\n                        Created at: " +
-                    _vm._s(_vm.ticket.detail_attributes.created_at) +
-                    ", \n                        updated at: " +
-                    _vm._s(_vm.ticket.detail_attributes.updated_at) +
-                    "\n                    "
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("div", { staticClass: "actions" }, [
-                !_vm.ticket_id
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "button is-primary",
-                        on: { click: _vm.postTicket }
-                      },
-                      [_vm._v("Create ticket")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.ticket_id
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "button is-primary",
-                        on: { click: _vm.putTicket }
-                      },
-                      [_vm._v("Update ticket")]
-                    )
-                  : _vm._e()
-              ])
-            ])
-          ],
-          1
-        )
-      ])
-    ])
-  ])
-}
-var formvue_type_template_id_33e6a429_staticRenderFns = []
-formvue_type_template_id_33e6a429_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=template&id=33e6a429&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-// · Import modules, components and apps
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
- // · Component show
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-/* harmony default export */ var formvue_type_script_lang_js_ = ({
-  components: {
-    'component-trix-editor': vue_trix_esm
-  },
-  data: function data() {
-    return {
-      ticket_options: {},
-      ticket_id: null,
-      ticket: {
-        detail_attributes: {}
-      }
-    };
-  },
-  mounted: function mounted() {
-    if (this.$route.params.id) {
-      this.ticket_id = this.$route.params.id;
-      this.getTicket();
-    }
-
-    this.getTicketOptions();
-  },
-  methods: {
-    putTicket: function putTicket(e) {
-      var _this = this;
-
-      if (e) {
-        e.preventDefault();
-      }
-
-      this.http.put("/help/tickets/".concat(this.ticket_id), {
-        ticket: this.ticket
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("Ticket updated successfuly");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    postTicket: function postTicket(e) {
-      var _this2 = this;
-
-      if (e) {
-        e.preventDefault();
-      }
-
-      this.http.post("/help/tickets", {
-        ticket: this.ticket
-      }).then(function (result) {
-        _this2.ticket = result.data;
-
-        _this2.$router.push("".concat(_this2.ticket.id, "/show"));
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    getTicket: function getTicket() {
-      var _this3 = this;
-
-      this.http.get("/help/tickets/".concat(this.ticket_id, ".json")).then(function (result) {
-        if (result.successful) {
-          _this3.ticket = result.data;
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    getTicketOptions: function getTicketOptions() {
-      var _this4 = this;
-
-      this.http.get('/help/api/tickets/options').then(function (result) {
-        if (result.successful) {
-          _this4.ticket_options = result.data;
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_formvue_type_script_lang_js_ = (formvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/form.vue
-
-
-
-
-
-/* normalize component */
-
-var form_component = Object(componentNormalizer["a" /* default */])(
-  components_formvue_type_script_lang_js_,
-  formvue_type_template_id_33e6a429_render,
-  formvue_type_template_id_33e6a429_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var form_api; }
-form_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/form.vue"
-/* harmony default export */ var components_form = (form_component.exports);
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/edit.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-// · Import modules, components and apps
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
-
-
-
-
-
-
- // · Component show
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-/* harmony default export */ var editvue_type_script_lang_js_ = ({
-  components: {
-    'component-trix-editor': vue_trix_esm,
-    'component-discussion-form': forms_discussion,
-    'component-discussion-list': discussion,
-    'component-form-status': components_status,
-    'component-form-state': state,
-    'component-form-tag': tag,
-    'component-form-type': type,
-    'component-form-priority': priority,
-    'component-form': components_form
-  },
-  data: function data() {
-    return {
-      ticket_options: {},
-      ticket_id: null,
-      ticket: {
-        detail_attributes: {
-          subject: "",
-          description: "",
-          tags: "",
-          cloud_help_ticket_types_id: null
-        }
-      }
-    };
-  },
-  mounted: function mounted() {
-    this.ticket_id = this.$route.params.id;
-    this.getTicket();
-    this.getTicketOptions();
-  },
-  methods: {
-    getTicketOptions: function getTicketOptions() {
-      var _this = this;
-
-      this.http.get('/help/api/tickets/options').then(function (result) {
-        if (result.successful) {
-          _this.ticket_options = result.data;
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    getTicket: function getTicket() {
-      var _this2 = this;
-
-      this.http.get("/help/tickets/".concat(this.ticket_id, ".json")).then(function (result) {
-        if (result.successful) {
-          _this2.ticket = result.data;
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/edit.vue?vue&type=script&lang=js&
- /* harmony default export */ var apps_editvue_type_script_lang_js_ = (editvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/edit.vue
-
-
-
-
-
-/* normalize component */
-
-var edit_component = Object(componentNormalizer["a" /* default */])(
-  apps_editvue_type_script_lang_js_,
-  editvue_type_template_id_41d33993_render,
-  editvue_type_template_id_41d33993_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var edit_api; }
-edit_component.options.__file = "engines/CloudHelp/app/vue/tickets/apps/edit.vue"
-/* harmony default export */ var edit = (edit_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/show.vue?vue&type=template&id=63b815f4&
-var showvue_type_template_id_63b815f4_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.ticket && _vm.ticket_options
-    ? _c(
-        "div",
-        { staticClass: "columns" },
-        [
-          _c(
-            "div",
-            { staticClass: "column is-8" },
-            [
-              _c("div", { staticClass: "card box" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-header" },
-                  [
-                    _c("h4", { staticClass: "card-header-title" }, [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(_vm.ticket.detail_attributes.subject) +
-                          "\n                "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "card-header-icon",
-                        attrs: { to: "/" + _vm.ticket_id + "/edit" }
-                      },
-                      [_vm._v("\n                    edit\n                ")]
-                    )
-                  ],
-                  1
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-content" }, [
-                  _c("div", {
-                    domProps: {
-                      innerHTML: _vm._s(
-                        _vm.ticket.detail_attributes.description
-                      )
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _c("component-discussion-form", {
-                staticClass: "box",
-                attrs: {
-                  "cloud-module": "help/ticket",
-                  "cloud-object-id": _vm.ticket_id
-                }
-              }),
-              _vm._v(" "),
-              _c("component-discussion-list", {
-                attrs: {
-                  "cloud-module": "help/ticket",
-                  "cloud-object-id": _vm.ticket_id
-                }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "column is-4" },
-            [
-              _c("component-form-status", { staticClass: "box" }),
-              _vm._v(" "),
-              _c("component-form-tag", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-type", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-state", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-priority", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("component-action-list", {
-            attrs: { "cloud-module": "help/ticket", "cloud-id": _vm.ticket_id }
-          })
-        ],
-        1
-      )
-    : _vm._e()
-}
-var showvue_type_template_id_63b815f4_staticRenderFns = []
-showvue_type_template_id_63b815f4_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/show.vue?vue&type=template&id=63b815f4&
-
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/lists/action.vue?vue&type=template&id=449471b4&
 var actionvue_type_template_id_449471b4_render = function() {
   var _vm = this
@@ -32680,6 +31565,1101 @@ var lists_action_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var lists_action_api; }
 lists_action_component.options.__file = "app/vue/components/lists/action.vue"
 /* harmony default export */ var lists_action = (lists_action_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=template&id=5f637289&
+var priorityvue_type_template_id_5f637289_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-content" }, [
+      _c("div", { staticClass: "control is-expanded" }, [
+        _c("div", { staticClass: "select is-fullwidth" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value:
+                    _vm.ticket.detail_attributes
+                      .cloud_help_ticket_priorities_id,
+                  expression:
+                    "ticket.detail_attributes.cloud_help_ticket_priorities_id"
+                }
+              ],
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.ticket.detail_attributes,
+                      "cloud_help_ticket_priorities_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  },
+                  _vm.patchTicket
+                ]
+              }
+            },
+            _vm._l(_vm.options.priorities, function(option, index) {
+              return _c(
+                "option",
+                { key: index, domProps: { value: option.id } },
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(option.name) +
+                      "\n                    "
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var priorityvue_type_template_id_5f637289_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h4", { staticClass: "card-header-title" }, [
+        _vm._v("\n            Priority \n        ")
+      ])
+    ])
+  }
+]
+priorityvue_type_template_id_5f637289_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=template&id=5f637289&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&
+/* harmony default export */ var priorityvue_type_script_lang_js_ = ({
+  props: {
+    ticket: {
+      required: true
+    },
+    options: {
+      required: true
+    }
+  },
+  methods: {
+    patchTicket: function patchTicket() {
+      var _this = this;
+
+      this.http.patch("/help/tickets/".concat(this.ticket.id), {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket.id,
+            cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("Priority succesfuly updated");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_priorityvue_type_script_lang_js_ = (priorityvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue
+
+
+
+
+
+/* normalize component */
+
+var priority_component = Object(componentNormalizer["a" /* default */])(
+  components_priorityvue_type_script_lang_js_,
+  priorityvue_type_template_id_5f637289_render,
+  priorityvue_type_template_id_5f637289_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var priority_api; }
+priority_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/priority.vue"
+/* harmony default export */ var priority = (priority_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=template&id=2714a117&
+var statusvue_type_template_id_2714a117_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var statusvue_type_template_id_2714a117_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _c("h4", { staticClass: "card-header-title" }, [
+          _vm._v("\n            Open\n        ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-content" }, [
+        _c("div", { staticClass: "field" }, [
+          _c("i", { staticClass: "fas fa-info-circle has-text-link" }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("first response due")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "field" }, [
+          _c("i", { staticClass: "fas fa-info-circle has-text-link" }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "" } }, [_vm._v("resolution due")]),
+          _vm._v(" "),
+          _c("p", [_vm._v("by Thu, 26 Sep 2019, 12:00 PM")])
+        ])
+      ])
+    ])
+  }
+]
+statusvue_type_template_id_2714a117_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=template&id=2714a117&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=script&lang=js&
+/* harmony default export */ var statusvue_type_script_lang_js_ = ({});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_statusvue_type_script_lang_js_ = (statusvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/status.vue
+
+
+
+
+
+/* normalize component */
+
+var status_component = Object(componentNormalizer["a" /* default */])(
+  components_statusvue_type_script_lang_js_,
+  statusvue_type_template_id_2714a117_render,
+  statusvue_type_template_id_2714a117_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var status_api; }
+status_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/status.vue"
+/* harmony default export */ var components_status = (status_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=template&id=635bb97c&
+var statevue_type_template_id_635bb97c_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-content" }, [
+      _c("div", { staticClass: "control is-expanded" }, [
+        _c("div", { staticClass: "select is-fullwidth" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value:
+                    _vm.ticket.detail_attributes.cloud_help_ticket_states_id,
+                  expression:
+                    "ticket.detail_attributes.cloud_help_ticket_states_id"
+                }
+              ],
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.ticket.detail_attributes,
+                      "cloud_help_ticket_states_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  },
+                  _vm.patchTicket
+                ]
+              }
+            },
+            _vm._l(_vm.options.states, function(option, index) {
+              return _c(
+                "option",
+                { key: index, domProps: { value: option.id } },
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(option.name) +
+                      "\n                    "
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var statevue_type_template_id_635bb97c_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h4", { staticClass: "card-header-title" }, [
+        _vm._v("\n            State \n        ")
+      ])
+    ])
+  }
+]
+statevue_type_template_id_635bb97c_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=template&id=635bb97c&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
+/* harmony default export */ var statevue_type_script_lang_js_ = ({
+  props: {
+    ticket: {
+      required: true
+    },
+    options: {
+      required: true
+    }
+  },
+  methods: {
+    patchTicket: function patchTicket() {
+      var _this = this;
+
+      this.http.patch("/help/tickets/".concat(this.ticket.id), {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket.id,
+            cloud_help_ticket_states_id: this.ticket.detail_attributes.cloud_help_ticket_states_id
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("State succesfuly updated");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_statevue_type_script_lang_js_ = (statevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue
+
+
+
+
+
+/* normalize component */
+
+var state_component = Object(componentNormalizer["a" /* default */])(
+  components_statevue_type_script_lang_js_,
+  statevue_type_template_id_635bb97c_render,
+  statevue_type_template_id_635bb97c_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var state_api; }
+state_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/state.vue"
+/* harmony default export */ var state = (state_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=template&id=214a08c2&
+var typevue_type_template_id_214a08c2_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-content" }, [
+      _c("div", { staticClass: "control is-expanded" }, [
+        _c("div", { staticClass: "select is-fullwidth" }, [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value:
+                    _vm.ticket.detail_attributes.cloud_help_ticket_types_id,
+                  expression:
+                    "ticket.detail_attributes.cloud_help_ticket_types_id"
+                }
+              ],
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.ticket.detail_attributes,
+                      "cloud_help_ticket_types_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  },
+                  _vm.patchTicket
+                ]
+              }
+            },
+            _vm._l(_vm.options.types, function(option, index) {
+              return _c(
+                "option",
+                { key: index, domProps: { value: option.id } },
+                [
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(option.name) +
+                      "\n                    "
+                  )
+                ]
+              )
+            }),
+            0
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var typevue_type_template_id_214a08c2_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h4", { staticClass: "card-header-title" }, [
+        _vm._v("\n            Type\n        ")
+      ])
+    ])
+  }
+]
+typevue_type_template_id_214a08c2_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=template&id=214a08c2&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
+/* harmony default export */ var typevue_type_script_lang_js_ = ({
+  props: {
+    ticket: {
+      required: true
+    },
+    options: {
+      required: true
+    }
+  },
+  methods: {
+    patchTicket: function patchTicket() {
+      var _this = this;
+
+      this.http.patch("/help/tickets/".concat(this.ticket.id), {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket.id,
+            cloud_help_ticket_types_id: this.ticket.detail_attributes.cloud_help_ticket_types_id
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("Tags succesfuly updated");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_typevue_type_script_lang_js_ = (typevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue
+
+
+
+
+
+/* normalize component */
+
+var type_component = Object(componentNormalizer["a" /* default */])(
+  components_typevue_type_script_lang_js_,
+  typevue_type_template_id_214a08c2_render,
+  typevue_type_template_id_214a08c2_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var type_api; }
+type_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/type.vue"
+/* harmony default export */ var type = (type_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=template&id=6a90a0c5&
+var tagvue_type_template_id_6a90a0c5_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "card-content" },
+      [
+        _c("b-taginput", {
+          attrs: { ellipsis: "" },
+          model: {
+            value: _vm.tags,
+            callback: function($$v) {
+              _vm.tags = $$v
+            },
+            expression: "tags"
+          }
+        })
+      ],
+      1
+    )
+  ])
+}
+var tagvue_type_template_id_6a90a0c5_staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h4", { staticClass: "card-header-title" }, [
+        _vm._v("\n            Tags\n        ")
+      ])
+    ])
+  }
+]
+tagvue_type_template_id_6a90a0c5_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=template&id=6a90a0c5&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=script&lang=js&
+/* harmony default export */ var tagvue_type_script_lang_js_ = ({
+  props: {
+    ticket: {
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      tags: null
+    };
+  },
+  mounted: function mounted() {
+    this.tags = this.ticket.detail_attributes.tags.split(',');
+  },
+  methods: {
+    patchTicket: function patchTicket() {
+      var _this = this;
+
+      this.http.patch("/help/tickets/".concat(this.ticket.id), {
+        ticket: {
+          detail_attributes: {
+            id: this.ticket.id,
+            tags: this.tags.join(',')
+          }
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("Tags succesfuly updated");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  watch: {
+    tags: function tags(database_tags, current_tags) {
+      // current tags are null on the first load
+      // through this way we can avoid to send tags on the very first load
+      if (current_tags) {
+        this.patchTicket();
+      }
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_tagvue_type_script_lang_js_ = (tagvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/tag.vue
+
+
+
+
+
+/* normalize component */
+
+var tag_component = Object(componentNormalizer["a" /* default */])(
+  components_tagvue_type_script_lang_js_,
+  tagvue_type_template_id_6a90a0c5_render,
+  tagvue_type_template_id_6a90a0c5_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var tag_api; }
+tag_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/tag.vue"
+/* harmony default export */ var tag = (tag_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=template&id=33e6a429&
+var formvue_type_template_id_33e6a429_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", [
+    _c("div", { staticClass: "card" }, [
+      _c(
+        "div",
+        { staticClass: "card-header" },
+        [
+          _c("h2", { staticClass: "card-header-title" }, [
+            _vm._v("\n                Ticket \n            ")
+          ]),
+          _vm._v(" "),
+          _vm.ticket_id
+            ? _c(
+                "router-link",
+                {
+                  staticClass: "card-header-icon",
+                  attrs: { to: "/" + _vm.ticket_id + "/show" }
+                },
+                [_vm._v("\n                show\n            ")]
+              )
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-content" }, [
+        _c("div", { domProps: { innerHTML: _vm._s(_vm.ticket.description) } }),
+        _vm._v(" "),
+        _c(
+          "form",
+          [
+            _c(
+              "b-field",
+              { attrs: { label: "Subject" } },
+              [
+                _c("b-input", {
+                  model: {
+                    value: _vm.ticket.detail_attributes.subject,
+                    callback: function($$v) {
+                      _vm.$set(_vm.ticket.detail_attributes, "subject", $$v)
+                    },
+                    expression: "ticket.detail_attributes.subject"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c(
+                "label",
+                { staticClass: "label", attrs: { for: "article.content" } },
+                [_vm._v("Content")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "control" },
+                [
+                  _c("component-trix-editor", {
+                    model: {
+                      value: _vm.ticket.detail_attributes.description,
+                      callback: function($$v) {
+                        _vm.$set(
+                          _vm.ticket.detail_attributes,
+                          "description",
+                          $$v
+                        )
+                      },
+                      expression: "ticket.detail_attributes.description"
+                    }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("p", [
+                _vm._v(
+                  "\n                        Created at: " +
+                    _vm._s(_vm.ticket.detail_attributes.created_at) +
+                    ", \n                        updated at: " +
+                    _vm._s(_vm.ticket.detail_attributes.updated_at) +
+                    "\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("div", { staticClass: "actions" }, [
+                !_vm.ticket_id
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "button is-primary",
+                        on: { click: _vm.postTicket }
+                      },
+                      [_vm._v("Create ticket")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.ticket_id
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "button is-primary",
+                        on: { click: _vm.putTicket }
+                      },
+                      [_vm._v("Update ticket")]
+                    )
+                  : _vm._e()
+              ])
+            ])
+          ],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var formvue_type_template_id_33e6a429_staticRenderFns = []
+formvue_type_template_id_33e6a429_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=template&id=33e6a429&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Import modules, components and apps
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+ // · Component show
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var formvue_type_script_lang_js_ = ({
+  components: {
+    'component-trix-editor': vue_trix_esm
+  },
+  data: function data() {
+    return {
+      ticket_options: {},
+      ticket_id: null,
+      ticket: {
+        detail_attributes: {}
+      }
+    };
+  },
+  mounted: function mounted() {
+    if (this.$route.params.id) {
+      this.ticket_id = this.$route.params.id;
+      this.getTicket();
+    }
+
+    this.getTicketOptions();
+  },
+  methods: {
+    putTicket: function putTicket(e) {
+      var _this = this;
+
+      if (e) {
+        e.preventDefault();
+      }
+
+      this.http.put("/help/tickets/".concat(this.ticket_id), {
+        ticket: this.ticket
+      }).then(function (result) {
+        if (result.successful) {
+          _this.alert("Ticket updated successfuly");
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    postTicket: function postTicket(e) {
+      var _this2 = this;
+
+      if (e) {
+        e.preventDefault();
+      }
+
+      this.http.post("/help/tickets", {
+        ticket: this.ticket
+      }).then(function (result) {
+        _this2.ticket = result.data;
+
+        _this2.$router.push("".concat(_this2.ticket.id, "/show"));
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getTicket: function getTicket() {
+      var _this3 = this;
+
+      this.http.get("/help/tickets/".concat(this.ticket_id, ".json")).then(function (result) {
+        if (result.successful) {
+          _this3.ticket = result.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getTicketOptions: function getTicketOptions() {
+      var _this4 = this;
+
+      this.http.get('/help/api/tickets/options').then(function (result) {
+        if (result.successful) {
+          _this4.ticket_options = result.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/form.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_formvue_type_script_lang_js_ = (formvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/form.vue
+
+
+
+
+
+/* normalize component */
+
+var form_component = Object(componentNormalizer["a" /* default */])(
+  components_formvue_type_script_lang_js_,
+  formvue_type_template_id_33e6a429_render,
+  formvue_type_template_id_33e6a429_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var form_api; }
+form_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/form.vue"
+/* harmony default export */ var components_form = (form_component.exports);
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/edit.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Import modules, components and apps
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+
+
+
+
+
+
+
+
+ // · Component show
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var editvue_type_script_lang_js_ = ({
+  components: {
+    'component-discussion-form': forms_discussion,
+    'component-discussion-list': discussion,
+    'component-form-priority': priority,
+    'component-action-list': lists_action,
+    'component-form-status': components_status,
+    'component-form-state': state,
+    'component-form-type': type,
+    'component-form-tag': tag,
+    'component-form': components_form,
+    'component-trix-editor': vue_trix_esm
+  },
+  data: function data() {
+    return {
+      ticket_options: null,
+      ticket_id: null,
+      ticket: null
+    };
+  },
+  mounted: function mounted() {
+    this.ticket_id = this.$route.params.id;
+    this.getTicket();
+    this.getTicketOptions();
+  },
+  methods: {
+    getTicketOptions: function getTicketOptions() {
+      var _this = this;
+
+      this.http.get('/help/api/tickets/options').then(function (result) {
+        if (result.successful) {
+          _this.ticket_options = result.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getTicket: function getTicket() {
+      var _this2 = this;
+
+      this.http.get("/help/tickets/".concat(this.ticket_id, ".json")).then(function (result) {
+        if (result.successful) {
+          _this2.ticket = result.data;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/edit.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_editvue_type_script_lang_js_ = (editvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/edit.vue
+
+
+
+
+
+/* normalize component */
+
+var edit_component = Object(componentNormalizer["a" /* default */])(
+  apps_editvue_type_script_lang_js_,
+  editvue_type_template_id_41d33993_render,
+  editvue_type_template_id_41d33993_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var edit_api; }
+edit_component.options.__file = "engines/CloudHelp/app/vue/tickets/apps/edit.vue"
+/* harmony default export */ var edit = (edit_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/show.vue?vue&type=template&id=63b815f4&
+var showvue_type_template_id_63b815f4_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.ticket && _vm.ticket_options
+    ? _c(
+        "div",
+        { staticClass: "columns" },
+        [
+          _c(
+            "div",
+            { staticClass: "column is-8" },
+            [
+              _c("div", { staticClass: "card box" }, [
+                _c(
+                  "div",
+                  { staticClass: "card-header" },
+                  [
+                    _c("h4", { staticClass: "card-header-title" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.ticket.detail_attributes.subject) +
+                          "\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "card-header-icon",
+                        attrs: { to: "/" + _vm.ticket_id + "/edit" }
+                      },
+                      [_vm._v("\n                    edit\n                ")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-content" }, [
+                  _c("div", {
+                    domProps: {
+                      innerHTML: _vm._s(
+                        _vm.ticket.detail_attributes.description
+                      )
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("component-discussion-form", {
+                staticClass: "box",
+                attrs: {
+                  "cloud-module": "help/ticket",
+                  "cloud-object-id": _vm.ticket_id
+                }
+              }),
+              _vm._v(" "),
+              _c("component-discussion-list", {
+                attrs: {
+                  "cloud-module": "help/ticket",
+                  "cloud-object-id": _vm.ticket_id
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "column is-4" },
+            [
+              _c("component-form-status", { staticClass: "box" }),
+              _vm._v(" "),
+              _c("component-form-tag", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              }),
+              _vm._v(" "),
+              _c("component-form-type", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              }),
+              _vm._v(" "),
+              _c("component-form-state", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              }),
+              _vm._v(" "),
+              _c("component-form-priority", {
+                staticClass: "box",
+                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("component-action-list", {
+            attrs: { "cloud-module": "help/ticket", "cloud-id": _vm.ticket_id }
+          })
+        ],
+        1
+      )
+    : _vm._e()
+}
+var showvue_type_template_id_63b815f4_staticRenderFns = []
+showvue_type_template_id_63b815f4_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/show.vue?vue&type=template&id=63b815f4&
+
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/show.vue?vue&type=script&lang=js&
 //
 
@@ -32718,35 +32698,25 @@ Building a better future, one line of code at a time.
 
 
 
-
  // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
 /* harmony default export */ var showvue_type_script_lang_js_ = ({
   components: {
-    'component-trix-editor': vue_trix_esm,
     'component-discussion-form': forms_discussion,
     'component-discussion-list': discussion,
+    'component-form-priority': priority,
     'component-action-list': lists_action,
     'component-form-status': components_status,
     'component-form-state': state,
-    'component-form-tag': tag,
     'component-form-type': type,
-    'component-form-priority': priority
+    'component-form-tag': tag
   },
   data: function data() {
     return {
       ticket_options: null,
       ticket_id: null,
-      ticket: null,
-      ticket2: {
-        detail_attributes: {
-          subject: "",
-          description: "",
-          tags: "",
-          cloud_help_ticket_types_id: null
-        }
-      }
+      ticket: null
     };
   },
   mounted: function mounted() {

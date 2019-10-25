@@ -31,15 +31,15 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import VueTrix from "vue-trix"
 import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.vue'
 import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
 import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
+import componentFormPriority from '../components/priority.vue'
 import componentFormStatus from '../components/status.vue'
 import componentFormState from '../components/state.vue'
-import componentFormTag from '../components/tag.vue'
 import componentFormType from '../components/type.vue'
-import componentFormPriority from '../components/priority.vue'
+import componentFormTag from '../components/tag.vue'
+
 
 
 
@@ -47,29 +47,20 @@ import componentFormPriority from '../components/priority.vue'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-trix-editor': VueTrix,
         'component-discussion-form': componentDiscussionForm,
         'component-discussion-list': componentDiscussionList,
+        'component-form-priority': componentFormPriority,
         'component-action-list': componentActionList,
         'component-form-status': componentFormStatus,
         'component-form-state': componentFormState,
-        'component-form-tag': componentFormTag,
         'component-form-type': componentFormType,
-        'component-form-priority': componentFormPriority
+        'component-form-tag': componentFormTag
     },
     data() {
         return {
             ticket_options: null,
             ticket_id: null,
-            ticket: null,
-            ticket2: {
-                detail_attributes: {
-                    subject: "",
-                    description: "",
-                    tags: "",
-                    cloud_help_ticket_types_id: null
-                }
-            }
+            ticket: null
         }
     },
     mounted() {
