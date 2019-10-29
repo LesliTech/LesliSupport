@@ -27114,42 +27114,56 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Luis Donis <ldonis@lesli.tech>
 @author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
+@version  0.1.0-alpha
 
-// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-//  · 
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 // · Loading core framework and libraries
 // · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
- //  · Plugin initializing 
-// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+ // · Plugin initializing 
+// · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
 
 /* harmony default export */ var bus = ({
   install: function install(Vue, options) {
-    Vue.prototype.bus = new Vue();
+    // new vue instance as bus
+    Vue.prototype.bus = new Vue(); // Vue bus aliases
+
+    Object.defineProperties(Vue.prototype.bus, {
+      subscribe: {
+        get: function get() {
+          return this.$on.bind(this);
+        }
+      },
+      publish: {
+        get: function get() {
+          return this.$emit.bind(this);
+        }
+      }
+    }); // · Global event helpers
+
+    Vue.prototype.notification = function (message, type) {
+      Vue.prototype.bus.publish('show:/cloud/layout/notify#notification', message, type);
+    };
+
+    Vue.prototype.alert = function (message, type) {
+      Vue.prototype.bus.publish('show:/cloud/layout/notify#alert', message, type);
+    }; // · Global DOM event listeners
+    // emit when ctrl + s is pressed
+
+
     document.addEventListener("keydown", function (e) {
       if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 83) {
         e.preventDefault();
         Vue.prototype.bus.$emit("cloud-ctrl-save");
       }
     }, false);
-
-    Vue.prototype.notification = function (message, type) {
-      Vue.prototype.bus.$emit('cloud/layout/notify/notification', message, type);
-    };
-
-    Vue.prototype.alert = function (message, type) {
-      Vue.prototype.bus.$emit('cloud/layout/notify/alert', message, type);
-    };
-
     var cable = Object(action_cable["createConsumer"])('/courier/cable');
-    cable.subscriptions.create("CloudCourier::Bell::WebNotificationChannel", {
+    cable.subscriptions.create("CloudCourier::LesliChannel", {
       received: function received(data) {
-        Vue.prototype.bus.$emit('cloud/layout/notify/notification#get');
-        console.log(data);
+        Vue.prototype.bus.publish(data.channel, data);
       }
     });
   }
@@ -27466,64 +27480,61 @@ Building a better future, one line of code at a time.
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
-    this.bus.$on('cloud/layout/notify/alert', function (message) {
-      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'primary';
-
-      _this.$buefy.toast.open({
-        queue: true,
-        duration: 3500,
-        position: 'is-bottom-right',
-        message: message,
-        type: "is-".concat(type)
-      });
-    });
-    this.bus.$on('cloud/layout/notify/notification', function (message) {
-      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
-
-      _this.$buefy.notification.open({
-        queue: true,
-        duration: 2000,
-        position: 'is-bottom-right',
-        message: message,
-        type: "is-".concat(type)
-      });
-    });
-    this.bus.$on('cloud/layout/notify/notification#show', function () {
-      _this.showNotifications();
-    });
-    this.bus.$on('cloud/layout/notify/notification#get', function () {
-      _this.getNotifications();
-    });
+    this.mountListeners();
     this.getNotifications();
   },
   methods: {
+    mountListeners: function mountListeners() {
+      var _this = this;
+
+      this.bus.subscribe('show:/cloud/layout/notify#alert', function (message) {
+        var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'primary';
+
+        _this.$buefy.toast.open({
+          queue: true,
+          duration: 3500,
+          position: 'is-bottom-right',
+          message: message,
+          type: "is-".concat(type)
+        });
+      });
+      this.bus.subscribe('show:/cloud/layout/notify#notification', function (message) {
+        var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'success';
+
+        _this.$buefy.notification.open({
+          queue: true,
+          duration: 2000,
+          position: 'is-bottom-right',
+          message: message,
+          type: "is-".concat(type)
+        });
+      });
+      this.bus.subscribe('get:/cloud/layout/notify#notification', function () {
+        _this.getNotifications();
+      });
+      this.bus.subscribe('open:/cloud/layout/notify#notification', function () {
+        _this.openNotificationsPanel();
+      });
+    },
     getNotifications: function getNotifications() {
       var _this2 = this;
 
       this.http.get('/bell/notifications.json').then(function (result) {
         if (result.successful) {
           _this2.notification.list = result.data;
-
-          _this2.emitNotifications();
         }
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    showNotifications: function showNotifications() {
+    openNotificationsPanel: function openNotificationsPanel() {
       var _this3 = this;
 
-      console.log("showing notifications");
       this.getNotifications();
       this.notification.show = true;
       this.notification.timer = setTimeout(function () {
         return _this3.notification.show = false;
-      }, 250000);
-    },
-    emitNotifications: function emitNotifications() {
-      this.bus.$emit('cloud/layout/header/notification', this.notification.list.length); //this.bus.$emit('cloud/layout/header/notification', 0)
+      }, 25000);
     },
     prepareDesktopNotification: function prepareDesktopNotification() {
       if (!("Notification" in window)) {
@@ -27595,7 +27606,7 @@ var headervue_type_template_id_3d30b590_render = function() {
               {
                 staticClass: "button is-white",
                 attrs: { type: "button" },
-                on: { click: _vm.showAside }
+                on: { click: _vm.openAside }
               },
               [_c("i", { staticClass: "fas fa-bars" })]
             ),
@@ -27657,37 +27668,40 @@ var headervue_type_template_id_3d30b590_render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "navbar-brand" }, [
+            _c(
+              "a",
+              { staticClass: "navbar-item", attrs: { href: "/" } },
+              [_vm._t("logo")],
+              2
+            )
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "navbar-end" }, [
             _c("div", { staticClass: "navbar-item" }, [
-              _c(
-                "a",
-                { staticClass: "navbar-item", on: { click: _vm.emitNotify } },
-                [
-                  _vm.notification.count > 0
-                    ? _c("i", { staticClass: "fas fa-bell has-text-link" })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.notification.count == 0
-                    ? _c("i", { staticClass: "far fa-bell" })
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.notification.count > 0
-                    ? _c("span", { attrs: { id: "notification_total" } }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.notification.count) +
-                            "\n                        "
-                        )
-                      ])
-                    : _vm._e()
-                ]
-              ),
+              _c("a", { staticClass: "navbar-item" }, [
+                _vm.notification.count > 0
+                  ? _c("i", { staticClass: "fas fa-bell has-text-link" })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.notification.count == 0
+                  ? _c("i", { staticClass: "far fa-bell" })
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.notification.count > 0
+                  ? _c("span", { attrs: { id: "notification_total" } }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.notification.count) +
+                          "\n                        "
+                      )
+                    ])
+                  : _vm._e()
+              ]),
               _vm._v(" "),
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
-              _vm._m(2)
+              _vm._m(1)
             ])
           ])
         ]
@@ -27696,21 +27710,6 @@ var headervue_type_template_id_3d30b590_render = function() {
   ])
 }
 var headervue_type_template_id_3d30b590_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "navbar-brand" }, [
-      _c("a", { staticClass: "navbar-item", attrs: { href: "/" } }, [
-        _c("img", {
-          attrs: {
-            alt: "LesliCloud logo",
-            src: "/assets/brand/leslicloud-logo.svg"
-          }
-        })
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -27745,25 +27744,48 @@ headervue_type_template_id_3d30b590_render._withStripped = true
 /* harmony default export */ var headervue_type_script_lang_js_ = ({
   data: function data() {
     return {
-      aside: {
-        timer: null
-      },
       notification: {
         count: 0
+      },
+      aside: {
+        timer: null
       },
       chatbotIntent: '',
       microphone: true
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
+    this.mountListeners();
+    this.getNotificationsCounter();
     this.checkIfMicrophoneWorks();
-    this.bus.$on('cloud/layout/header/notification', function (total) {
-      _this.notification.count = total || 0;
-    });
   },
   methods: {
+    mountListeners: function mountListeners() {
+      var _this = this;
+
+      this.bus.subscribe('/cloud/layout/header/notification#getNotificationsCounter', function () {
+        _this.getNotificationsCounter();
+      });
+    },
+    getNotificationsCounter: function getNotificationsCounter() {
+      var _this2 = this;
+
+      this.http.get('/bell/notifications.json').then(function (result) {
+        if (result.successful) {
+          _this2.notification.count = result.data.length;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    openAside: function openAside() {
+      clearTimeout(this.timer);
+      var el = document.getElementsByTagName('aside')[0];
+      el.classList.toggle('show');
+      this.aside.timer = setTimeout(function () {
+        return el.classList.remove('show');
+      }, 4000);
+    },
     checkIfMicrophoneWorks: function checkIfMicrophoneWorks() {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
 
@@ -27789,20 +27811,9 @@ headervue_type_template_id_3d30b590_render._withStripped = true
         recognition.start();
       }
     },
-    showAside: function showAside() {
-      clearTimeout(this.timer);
-      var el = document.getElementsByTagName('aside')[0];
-      el.classList.toggle('show');
-      this.aside.timer = setTimeout(function () {
-        return el.classList.remove('show');
-      }, 4000);
-    },
     emitChatbotIntent: function emitChatbotIntent() {
       this.bus.$emit('component/chatbox/intent', this.chatbotIntent);
       this.chatbotIntent = "";
-    },
-    emitNotify: function emitNotify() {
-      this.bus.$emit('cloud/layout/notify/notification#show');
     }
   }
 });
@@ -29668,9 +29679,7 @@ Building a better future, one line of code at a time.
 */
 // · Import main app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
- // · Import apps and components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+ // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
 Object(LesliCloud_vue_app__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])("CloudHelp", "dashboard/default");

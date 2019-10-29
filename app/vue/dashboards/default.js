@@ -31,11 +31,6 @@ import app from 'LesliCloud/vue/app'
 
 
 
-// · Import apps and components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
-
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 app("CloudHelp", "dashboard/default")
