@@ -27629,43 +27629,41 @@ var headervue_type_template_id_3d30b590_render = function() {
               ]
             ),
             _vm._v(" "),
-            _c(
-              "form",
-              {
+            _c("div", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.chatbotIntent,
+                    expression: "chatbotIntent"
+                  }
+                ],
+                staticClass: "input",
+                attrs: {
+                  type: "text",
+                  placeholder: "Hello, how can I help you today? :)"
+                },
+                domProps: { value: _vm.chatbotIntent },
                 on: {
-                  submit: function($event) {
-                    $event.preventDefault()
-                    return _vm.emitChatbotIntent()
+                  keyup: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.publishChatbotIntent()
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.chatbotIntent = $event.target.value
                   }
                 }
-              },
-              [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.chatbotIntent,
-                      expression: "chatbotIntent"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: {
-                    type: "text",
-                    placeholder: "Hello, how can I help you today? :)"
-                  },
-                  domProps: { value: _vm.chatbotIntent },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.chatbotIntent = $event.target.value
-                    }
-                  }
-                })
-              ]
-            )
+              })
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "navbar-brand" }, [
@@ -27795,6 +27793,10 @@ headervue_type_template_id_3d30b590_render._withStripped = true
 
       this.microphone = false;
     },
+    publishChatbotIntent: function publishChatbotIntent() {
+      this.bus.publish('/cloud/layout/chatbox#postIntent', this.chatbotIntent);
+      this.chatbotIntent = '';
+    },
     talk: function talk() {//var msg = new SpeechSynthesisUtterance('Hello World');
       //window.speechSynthesis.speak(msg);
     },
@@ -27810,10 +27812,6 @@ headervue_type_template_id_3d30b590_render._withStripped = true
 
         recognition.start();
       }
-    },
-    emitChatbotIntent: function emitChatbotIntent() {
-      this.bus.$emit('component/chatbox/intent', this.chatbotIntent);
-      this.chatbotIntent = "";
     }
   }
 });
@@ -27981,43 +27979,41 @@ var chatboxvue_type_template_id_1e258058_render = function() {
           staticClass: "chat-footer"
         },
         [
-          _c(
-            "form",
-            {
+          _c("div", [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.intent,
+                  expression: "intent"
+                }
+              ],
+              attrs: {
+                disabled: _vm.loading,
+                type: "text",
+                placeholder: "How can I help you?"
+              },
+              domProps: { value: _vm.intent },
               on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.postIntent()
+                keyup: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.postIntent($event)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.intent = $event.target.value
                 }
               }
-            },
-            [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.intent,
-                    expression: "intent"
-                  }
-                ],
-                attrs: {
-                  disabled: _vm.loading,
-                  type: "text",
-                  placeholder: "How can I help you?"
-                },
-                domProps: { value: _vm.intent },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.intent = $event.target.value
-                  }
-                }
-              })
-            ]
-          )
+            })
+          ])
         ]
       )
     ]
@@ -28059,32 +28055,26 @@ chatboxvue_type_template_id_1e258058_render._withStripped = true
       intents: [],
       loading: false,
       openchat: false,
-      showchat: false
+      showchat: true
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    this.bus.$on('lesli.component.chatbox.postIntent', function (intent) {
+    this.bus.subscribe('/cloud/layout/chatbox#postIntent', function (intent) {
       _this.showchat = true;
       _this.openchat = true;
+      _this.intent = intent;
 
-      _this.postIntent(intent);
+      _this.postIntent();
     });
   },
   methods: {
     postIntent: function postIntent() {
       var _this2 = this;
 
-      var intent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
-
-      // postIntent can be called as function
-      if (intent) {
-        this.intent = intent;
-      } // do not process intent if intent is empty
-
-
-      if (intent == '') {
+      // do not process intent if intent is empty
+      if (this.intent == '') {
         return;
       }
 
