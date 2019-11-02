@@ -27419,7 +27419,7 @@ var render = function() {
                 _vm._l(_vm.notification.list, function(notification, index) {
                   return _c("li", { key: index }, [
                     _c("a", { attrs: { href: notification.href } }, [
-                      _vm._v(_vm._s(notification.content))
+                      _vm._v(_vm._s(notification.subject))
                     ])
                   ])
                 }),
@@ -27677,25 +27677,38 @@ var headervue_type_template_id_3d30b590_render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "navbar-end" }, [
             _c("div", { staticClass: "navbar-item" }, [
-              _c("a", { staticClass: "navbar-item" }, [
-                _vm.notification.count > 0
-                  ? _c("i", { staticClass: "fas fa-bell has-text-link" })
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.notification.count == 0
-                  ? _c("i", { staticClass: "far fa-bell" })
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.notification.count > 0
-                  ? _c("span", { attrs: { id: "notification_total" } }, [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.notification.count) +
-                          "\n                        "
+              _c(
+                "a",
+                {
+                  staticClass: "navbar-item",
+                  on: {
+                    click: function($event) {
+                      return _vm.bus.publish(
+                        "open:/cloud/layout/notify#notification"
                       )
-                    ])
-                  : _vm._e()
-              ]),
+                    }
+                  }
+                },
+                [
+                  _vm.notification.count > 0
+                    ? _c("i", { staticClass: "fas fa-bell has-text-link" })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.notification.count == 0
+                    ? _c("i", { staticClass: "far fa-bell" })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.notification.count > 0
+                    ? _c("span", { attrs: { id: "notification_total" } }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(_vm.notification.count) +
+                            "\n                        "
+                        )
+                      ])
+                    : _vm._e()
+                ]
+              ),
               _vm._v(" "),
               _vm._m(0),
               _vm._v(" "),
