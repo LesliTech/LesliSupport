@@ -99,7 +99,7 @@ export default {
     <div class="columns" v-if="ticket && ticket_options">
         <div class="column is-8">
             <component-form />
-            <component-discussion-form class="box" cloud-module="help/ticket" :cloud-object-id="ticket_id" />
+            <component-discussion-form cloud-module="help/ticket" :cloud-object-id="ticket_id" class="box"/>
             <component-discussion-list cloud-module="help/ticket" :cloud-object-id="ticket_id" />
         </div>
         <div class="column is-4">

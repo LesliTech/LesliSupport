@@ -3,7 +3,6 @@ module CloudHelp
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         
-
         has_many :discussions, foreign_key: 'cloud_help_tickets_id'
         has_many :actions, foreign_key: 'cloud_help_tickets_id'
 

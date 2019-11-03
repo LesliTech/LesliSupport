@@ -24,7 +24,6 @@ module CloudHelp
                     :cloud_help_ticket_priorities_id,
                     :created_at, :updated_at)
                 .find(@ticket.id)
-
             respond_to do |format|
                 format.html 
                 format.json { 
@@ -39,7 +38,7 @@ module CloudHelp
                             cloud_help_ticket_states_id: ticket[:cloud_help_ticket_states_id],
                             cloud_help_ticket_priorities_id: ticket[:cloud_help_ticket_priorities_id]
                         }
-                    }) 
+                    })
                 }
             end
         end
@@ -57,7 +56,6 @@ module CloudHelp
         def create
 
             ticket = Ticket.new(ticket_params)
-
             ticket.cloud_help_accounts_id = current_user.account.id
 
             if ticket.save

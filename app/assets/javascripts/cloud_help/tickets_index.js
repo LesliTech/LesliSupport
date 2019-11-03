@@ -28296,6 +28296,10 @@ vue_default.a.use(url);
 vue_default.a.use(plugins_http);
 vue_default.a.use(plugins_cable); // · Vue app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · module: Main module
+// · app: List of individual apps loaded
+// · base_path: for vue router
+// · example: app("CloudHelp", "[list|new|edit|show]", "help/tickets", {}, [])
 
 /* harmony default export */ var vue_app = __webpack_exports__["a"] = (function (module, app, base_path) {
   var components = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
@@ -28313,8 +28317,8 @@ vue_default.a.use(plugins_cable); // · Vue app
   if (routes) {
     cloud_builder['router'] = new vue_router_esm({
       linkActiveClass: 'is-active',
-      //mode: "history",
-      //base: base_path,
+      mode: "history",
+      base: base_path,
       routes: routes
     });
   } // · Building Vue cloud app
@@ -30368,15 +30372,7 @@ var discussionvue_type_template_id_8c3d00b4_render = function() {
                 _c("small", [_vm._v(_vm._s(discussion.created_at))])
               ]),
               _vm._v(" "),
-              _c("div", {
-                domProps: { innerHTML: _vm._s(discussion.content) }
-              }),
-              _vm._v(" "),
-              _c("p", [
-                _vm._v(
-                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis."
-                )
-              ])
+              _c("div", { domProps: { innerHTML: _vm._s(discussion.content) } })
             ])
           ]),
           _vm._v(" "),
@@ -30451,7 +30447,7 @@ Building a better future, one line of code at a time.
       type: String,
       required: true
     },
-    cloudObjectId: {
+    cloudId: {
       required: true
     }
   },
@@ -30472,7 +30468,7 @@ Building a better future, one line of code at a time.
     getDiscussions: function getDiscussions() {
       var _this2 = this;
 
-      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudObjectId, "/discussions")).then(function (result) {
+      this.http.get("/".concat(this.cloudModule, "s/").concat(this.cloudId, "/discussions")).then(function (result) {
         if (result.successful) {
           _this2.discussions = result.data;
         }
@@ -31158,7 +31154,7 @@ Building a better future, one line of code at a time.
       type: String,
       required: true
     },
-    cloudObjectId: {
+    cloudId: {
       required: true
     }
   },
@@ -31182,10 +31178,12 @@ Building a better future, one line of code at a time.
       } // add owner id
 
 
-      this.discussion["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudObjectId;
-      this.http.post("/".concat(this.cloudModule, "/discussions"), {
-        ticket_discussion: this.discussion
-      }).then(function (result) {
+      this.discussion["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudId;
+      var request_data = {};
+      request_data["".concat(this.cloudModule.split('/')[1], "_discussion")] = this.discussion; //{"  ticket_discussion":{"content":"hola","cloud_help_tickets_id"  :"2"}}
+      //{"employee_discussion":{"content":"hola","cloud_team_employees_id":"1"}}
+
+      this.http.post("/".concat(this.cloudModule, "/discussions"), request_data).then(function (result) {
         if (result.successful) {
           _this.discussion.content = "";
         }
@@ -31254,10 +31252,7 @@ var actionvue_type_template_id_449471b4_render = function() {
             [
               _c("component-form-action", {
                 staticClass: "box",
-                attrs: {
-                  cloudModule: _vm.cloudModule,
-                  cloudOwnerId: _vm.cloudId
-                }
+                attrs: { cloudModule: _vm.cloudModule, cloudId: _vm.cloudId }
               }),
               _vm._v(" "),
               _c(
@@ -31413,7 +31408,7 @@ Building a better future, one line of code at a time.
       type: String,
       required: true
     },
-    cloudOwnerId: {
+    cloudId: {
       required: true
     }
   },
@@ -31433,10 +31428,11 @@ Building a better future, one line of code at a time.
       } // add owner id
 
 
-      this.action["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudOwnerId;
-      this.http.post("/".concat(this.cloudModule, "/actions"), {
-        ticket_action: this.action
-      }).then(function (result) {
+      this.action["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudId;
+      console.log(JSON.stringify(this.action));
+      var request_data = {};
+      request_data["".concat(this.cloudModule.split('/')[1], "_action")] = this.action;
+      this.http.post("/".concat(this.cloudModule, "/actions"), request_data).then(function (result) {
         if (result.successful) {
           _this.action.instructions = "";
         }
@@ -32634,14 +32630,14 @@ var showvue_type_template_id_63b815f4_render = function() {
                 staticClass: "box",
                 attrs: {
                   "cloud-module": "help/ticket",
-                  "cloud-object-id": _vm.ticket_id
+                  "cloud-id": _vm.ticket_id
                 }
               }),
               _vm._v(" "),
               _c("component-discussion-list", {
                 attrs: {
                   "cloud-module": "help/ticket",
-                  "cloud-object-id": _vm.ticket_id
+                  "cloud-id": _vm.ticket_id
                 }
               })
             ],

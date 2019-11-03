@@ -28296,6 +28296,10 @@ vue_default.a.use(url);
 vue_default.a.use(plugins_http);
 vue_default.a.use(plugins_cable); // · Vue app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · module: Main module
+// · app: List of individual apps loaded
+// · base_path: for vue router
+// · example: app("CloudHelp", "[list|new|edit|show]", "help/tickets", {}, [])
 
 /* harmony default export */ var vue_app = __webpack_exports__["a"] = (function (module, app, base_path) {
   var components = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
@@ -28313,8 +28317,8 @@ vue_default.a.use(plugins_cable); // · Vue app
   if (routes) {
     cloud_builder['router'] = new vue_router_esm({
       linkActiveClass: 'is-active',
-      //mode: "history",
-      //base: base_path,
+      mode: "history",
+      base: base_path,
       routes: routes
     });
   } // · Building Vue cloud app

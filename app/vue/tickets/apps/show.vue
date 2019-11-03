@@ -109,8 +109,8 @@ export default {
                     <div v-html="ticket.detail_attributes.description"></div>
                 </div>
             </div>
-            <component-discussion-form class="box" cloud-module="help/ticket" :cloud-object-id="ticket_id" />
-            <component-discussion-list cloud-module="help/ticket" :cloud-object-id="ticket_id" />
+            <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
+            <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
         <div class="column is-4">
             <component-form-status class="box" />

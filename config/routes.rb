@@ -1,24 +1,7 @@
 CloudHelp::Engine.routes.draw do
 
-  namespace :ticket do
-    resources :followers
-  end
-  namespace :ticket do
-    resources :files
-  end
     root to: 'dashboards#default'
     
-    namespace :ticket do
-        resources :timelines
-        resources :follows
-        resources :actions
-        resources :discussions
-        resources :activities
-        resources :attachments
-        resources :details
-    end
-
-    resources :tickets
     resources :slas
     resources :ticket_types
     resources :ticket_sources
@@ -27,10 +10,20 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_categories
     resources :ticket_tags
 
+    resources :tickets
     resources :tickets do
         get '/actions', to: 'tickets#actions'
         get '/activities', to: 'tickets#activities'
         get '/discussions', to: 'tickets#discussions'
+    end
+    namespace :ticket do
+        resources :timelines
+        resources :followers
+        resources :actions
+        resources :discussions
+        resources :activities
+        resources :files
+        resources :details
     end
 
     scope :api do
