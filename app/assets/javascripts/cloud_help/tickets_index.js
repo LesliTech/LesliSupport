@@ -86,6 +86,107 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, setImmediate) {/*!
@@ -12035,107 +12136,6 @@
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4), __webpack_require__(17).setImmediate))
 
 /***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode /* vue-cli only */
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -13766,7 +13766,7 @@ module.exports = __webpack_require__(35)
 "use strict";
 
 // EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
-var vue = __webpack_require__(0);
+var vue = __webpack_require__(1);
 var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
 
 // CONCATENATED MODULE: ./node_modules/buefy/dist/esm/chunk-9e3207cc.js
@@ -27564,7 +27564,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./app/vue/layouts/notify.vue?vue&type=script&lang=js&
  /* harmony default export */ var layouts_notifyvue_type_script_lang_js_ = (notifyvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(1);
+var componentNormalizer = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./app/vue/layouts/notify.vue
 
@@ -28317,8 +28317,8 @@ vue_default.a.use(plugins_cable); // · Vue app
   if (routes) {
     cloud_builder['router'] = new vue_router_esm({
       linkActiveClass: 'is-active',
-      mode: "history",
-      base: base_path,
+      //mode: "history",
+      //base: base_path,
       routes: routes
     });
   } // · Building Vue cloud app
@@ -30249,7 +30249,7 @@ Building a better future, one line of code at a time.
 var listvue_type_style_index_0_lang_css_ = __webpack_require__(41);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(1);
+var componentNormalizer = __webpack_require__(0);
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/list.vue
 
@@ -30580,7 +30580,7 @@ discussionvue_type_template_id_24ddcfcc_render._withStripped = true
 // CONCATENATED MODULE: ./app/vue/components/forms/discussion.vue?vue&type=template&id=24ddcfcc&
 
 // EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
-var vue = __webpack_require__(0);
+var vue = __webpack_require__(1);
 var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
 
 // EXTERNAL MODULE: ./node_modules/trix/dist/trix.js
@@ -32626,6 +32626,13 @@ var showvue_type_template_id_63b815f4_render = function() {
                 ])
               ]),
               _vm._v(" "),
+              _c("component-form-file", {
+                attrs: {
+                  "cloud-module": "help/ticket",
+                  "cloud-id": _vm.ticket_id
+                }
+              }),
+              _vm._v(" "),
               _c("component-discussion-form", {
                 staticClass: "box",
                 attrs: {
@@ -32687,6 +32694,205 @@ showvue_type_template_id_63b815f4_render._withStripped = true
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/show.vue?vue&type=template&id=63b815f4&
 
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/file.vue?vue&type=template&id=38967c20&
+var filevue_type_template_id_38967c20_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "card" }, [
+    _vm._v("\n    " + _vm._s(_vm.file) + "\n    "),
+    _c("div", { staticClass: "card-content" }, [
+      _c(
+        "form",
+        { on: { submit: _vm.postFile } },
+        [
+          _c(
+            "b-field",
+            { staticClass: "file" },
+            [
+              _c(
+                "b-upload",
+                {
+                  model: {
+                    value: _vm.file.file,
+                    callback: function($$v) {
+                      _vm.$set(_vm.file, "file", $$v)
+                    },
+                    expression: "file.file"
+                  }
+                },
+                [
+                  _c(
+                    "a",
+                    { staticClass: "button is-primary" },
+                    [
+                      _c("b-icon", { attrs: { icon: "upload" } }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Click to upload")])
+                    ],
+                    1
+                  )
+                ]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("input", {
+            attrs: { type: "file" },
+            on: {
+              change: function($event) {
+                return _vm.handleFileUpload(
+                  $event.target.name,
+                  $event.target.files
+                )
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.file.name,
+                expression: "file.name"
+              }
+            ],
+            staticClass: "input",
+            attrs: { type: "text", placeholder: "Add new file..." },
+            domProps: { value: _vm.file.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.file, "name", $event.target.value)
+              }
+            }
+          })
+        ],
+        1
+      )
+    ])
+  ])
+}
+var filevue_type_template_id_38967c20_staticRenderFns = []
+filevue_type_template_id_38967c20_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./app/vue/components/forms/file.vue?vue&type=template&id=38967c20&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/components/forms/file.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Component
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+/* harmony default export */ var filevue_type_script_lang_js_ = ({
+  props: {
+    cloudModule: {
+      type: String,
+      required: true
+    },
+    cloudId: {
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      file: {
+        name: "test",
+        file: null
+      }
+    };
+  },
+  methods: {
+    postFile: function postFile(e) {
+      var _this = this;
+
+      if (e) {
+        e.preventDefault();
+      } // add owner id
+
+
+      this.file["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudId;
+      console.log(JSON.stringify(this.file));
+      var request_data = {};
+      request_data["".concat(this.cloudModule.split('/')[1], "_file")] = this.file;
+      var formData = new FormData();
+      formData.append('ticket_file[name]', this.file.name);
+      formData.append('ticket_file[file]', this.file.file);
+      formData.append('ticket_file[cloud_help_tickets_id]', 1);
+      this.http.post("/".concat(this.cloudModule, "/files"), formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(function (result) {
+        if (result.successful) {
+          _this.file.name = "";
+        }
+
+        _this.bus.$emit("post:/".concat(_this.cloudModule, "/files"));
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    handleFileUpload: function handleFileUpload(test, files) {
+      console.log(test);
+      console.log(files[0]);
+      this.file.file = files[0];
+    }
+  }
+});
+// CONCATENATED MODULE: ./app/vue/components/forms/file.vue?vue&type=script&lang=js&
+ /* harmony default export */ var forms_filevue_type_script_lang_js_ = (filevue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./app/vue/components/forms/file.vue
+
+
+
+
+
+/* normalize component */
+
+var file_component = Object(componentNormalizer["a" /* default */])(
+  forms_filevue_type_script_lang_js_,
+  filevue_type_template_id_38967c20_render,
+  filevue_type_template_id_38967c20_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var file_api; }
+file_component.options.__file = "app/vue/components/forms/file.vue"
+/* harmony default export */ var file = (file_component.exports);
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/show.vue?vue&type=script&lang=js&
 //
 
@@ -32725,6 +32931,7 @@ Building a better future, one line of code at a time.
 
 
 
+
  // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
@@ -32734,6 +32941,7 @@ Building a better future, one line of code at a time.
     'component-discussion-list': discussion,
     'component-form-priority': priority,
     'component-action-list': lists_action,
+    'component-form-file': file,
     'component-form-status': components_status,
     'component-form-state': state,
     'component-form-type': type,

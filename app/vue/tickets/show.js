@@ -24,3 +24,5 @@ Building a better future, one line of code at a time.
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 */
+
+import './index'
