@@ -1,4 +1,3 @@
-
 <script>
 /*
 Lesli
@@ -34,7 +33,7 @@ Building a better future, one line of code at a time.
 import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.vue'
 import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
 import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
-import componentFileForm from 'LesliCloud/vue/components/forms/file.vue'
+import componentFileList from 'LesliCloud/vue/components/lists/file.vue'
 import componentFormPriority from '../components/priority.vue'
 import componentFormStatus from '../components/status.vue'
 import componentFormState from '../components/state.vue'
@@ -52,7 +51,7 @@ export default {
         'component-discussion-list': componentDiscussionList,
         'component-form-priority': componentFormPriority,
         'component-action-list': componentActionList,
-        'component-form-file': componentFileForm,
+        'component-file-list': componentFileList,
         'component-form-status': componentFormStatus,
         'component-form-state': componentFormState,
         'component-form-type': componentFormType,
@@ -111,7 +110,6 @@ export default {
                     <div v-html="ticket.detail_attributes.description"></div>
                 </div>
             </div>
-            <component-form-file cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
             <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
@@ -123,5 +121,6 @@ export default {
             <component-form-priority class="box" :ticket="ticket" :options="ticket_options" />
         </div>
         <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+        <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
     </div>
 </template>

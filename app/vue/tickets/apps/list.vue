@@ -70,7 +70,7 @@ export default {
         },
 
         clickTicket(ticket) {
-            this.$router.push(`${ticket.id}/show`)
+            this.$router.push(`${ticket.id}`)
         }
 
     }

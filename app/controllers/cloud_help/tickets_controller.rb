@@ -99,7 +99,8 @@ module CloudHelp
         end
 
         def files
-            responseWithSuccessful([])
+            ticket_files = @ticket.files #.map{|img| ({ image: url_for(img) })}
+            responseWithSuccessful(ticket_files)
         end
 
         def activities
