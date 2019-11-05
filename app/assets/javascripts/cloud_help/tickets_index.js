@@ -28183,14 +28183,7 @@ var navigationvue_type_template_id_70d7a082_render = function() {
           _vm.id
             ? _c(
                 "a",
-                {
-                  staticClass: "navbar-item",
-                  on: {
-                    click: function($event) {
-                      return _vm.showFiles()
-                    }
-                  }
-                },
+                { staticClass: "navbar-item", on: { click: _vm.showFiles } },
                 [_vm._v("Files")]
               )
             : _vm._e(),
@@ -28228,11 +28221,10 @@ navigationvue_type_template_id_70d7a082_render._withStripped = true
   },
   methods: {
     showActions: function showActions() {
-      this.bus.$emit("show:/module/app/actions");
+      this.bus.publish("show:/module/app/actions");
     },
     showFiles: function showFiles() {
-      console.log('emiting....');
-      this.bus.$emit("show:/module/app/files");
+      this.bus.publish("show:/module/app/files");
     }
   },
   watch: {
@@ -31771,16 +31763,14 @@ Building a better future, one line of code at a time.
 
       if (e) {
         e.preventDefault();
-      } // add owner id
+      }
 
-
-      this.file["cloud_".concat(this.cloudModule.replace('/', '_'), "s_id")] = this.cloudId;
-      var request_data = {};
-      request_data["".concat(this.cloudModule.split('/')[1], "_file")] = this.file;
+      var foreign_key = this.cloudModule.replace('/', '_');
+      var field_key = this.cloudModule.split('/')[1];
       var formData = new FormData();
-      formData.append('ticket_file[name]', this.file.name);
-      formData.append('ticket_file[file]', this.file.file);
-      formData.append('ticket_file[cloud_help_tickets_id]', this.cloudId);
+      formData.append("".concat(field_key, "_file[cloud_").concat(foreign_key, "s_id]"), this.cloudId);
+      formData.append("".concat(field_key, "_file[name]"), this.file.name);
+      formData.append("".concat(field_key, "_file[file]"), this.file.file);
       this.http.post("/".concat(this.cloudModule, "/files"), formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -31884,7 +31874,7 @@ Building a better future, one line of code at a time.
       return _this.show = !_this.show;
     });
     this.bus.subscribe("post:/".concat(this.cloudModule, "/files"), function () {
-      _this.getFiles();
+      return _this.getFiles();
     });
   },
   methods: {

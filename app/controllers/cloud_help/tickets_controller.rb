@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, except: [:index, :create, :api_options]
+        before_action :set_ticket, except: [:index, :new, :create, :api_options]
 
         # GET /tickets
         def index
@@ -99,7 +99,7 @@ module CloudHelp
         end
 
         def files
-            ticket_files = @ticket.files #.map{|img| ({ image: url_for(img) })}
+            ticket_files = @ticket.files
             responseWithSuccessful(ticket_files)
         end
 

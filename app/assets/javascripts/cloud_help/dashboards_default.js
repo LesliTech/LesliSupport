@@ -28162,14 +28162,7 @@ var navigationvue_type_template_id_70d7a082_render = function() {
           _vm.id
             ? _c(
                 "a",
-                {
-                  staticClass: "navbar-item",
-                  on: {
-                    click: function($event) {
-                      return _vm.showFiles()
-                    }
-                  }
-                },
+                { staticClass: "navbar-item", on: { click: _vm.showFiles } },
                 [_vm._v("Files")]
               )
             : _vm._e(),
@@ -28207,11 +28200,10 @@ navigationvue_type_template_id_70d7a082_render._withStripped = true
   },
   methods: {
     showActions: function showActions() {
-      this.bus.$emit("show:/module/app/actions");
+      this.bus.publish("show:/module/app/actions");
     },
     showFiles: function showFiles() {
-      console.log('emiting....');
-      this.bus.$emit("show:/module/app/files");
+      this.bus.publish("show:/module/app/files");
     }
   },
   watch: {
