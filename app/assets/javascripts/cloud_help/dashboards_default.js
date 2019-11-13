@@ -24273,7 +24273,7 @@ use(upload_Plugin);
 
 
 
-var esm_components = /*#__PURE__*/Object.freeze({
+var components = /*#__PURE__*/Object.freeze({
     Autocomplete: autocomplete,
     Button: esm_button,
     Checkbox: esm_checkbox,
@@ -24318,8 +24318,8 @@ var Buefy = {
     setOptions(Object.assign(config$1, options)); // Components
 
 
-    for (var componentKey in esm_components) {
-      Vue.use(esm_components[componentKey]);
+    for (var componentKey in components) {
+      Vue.use(components[componentKey]);
     } // Config component
 
 
@@ -27158,7 +27158,7 @@ Building a better future, one line of code at a time.
     document.addEventListener("keydown", function (e) {
       if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 83) {
         e.preventDefault();
-        Vue.prototype.bus.$emit("cloud-ctrl-save");
+        Vue.prototype.bus.publish("keyboard-ctrl-save");
       }
     }, false);
     var cable = Object(action_cable["createConsumer"])('/courier/cable');
@@ -27204,6 +27204,7 @@ Building a better future, one line of code at a time.
       // · Redirect to specific url
       go: function go() {
         var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+        // · defined in /app/views/layouts/partials/_application-data.html.haml
         url = new URL(url, leslicloud_request.root_url);
         window.location.href = url.href; //console.log(url)
       },
@@ -27212,6 +27213,7 @@ Building a better future, one line of code at a time.
         var engine = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
         var module = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
         var app = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+        //  · Filter allows to ignore null values
         return new URL([engine, module, app].filter(function (item) {
           return item;
         }).join('/'), leslicloud_request.root_url);
@@ -27375,9 +27377,18 @@ var render = function() {
                 { staticClass: "menu-list" },
                 _vm._l(_vm.notification.list, function(notification, index) {
                   return _c("li", { key: index }, [
-                    _c("a", { attrs: { href: notification.href } }, [
-                      _vm._v(_vm._s(notification.subject))
-                    ])
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.readNotification(index)
+                          }
+                        }
+                      },
+                      [_vm._v(_vm._s(notification.subject))]
+                    )
                   ])
                 }),
                 0
@@ -27515,6 +27526,14 @@ Building a better future, one line of code at a time.
           }
         });
       }
+    },
+    readNotification: function readNotification(index) {
+      var notification = this.notification.list[index]; // In this case, there is no need to wait for a response
+
+      this.http.put("/bell/api/notifications/".concat(notification.id, "/read"))["catch"](function (error) {
+        console.log(error);
+      });
+      window.location.href = notification.href;
     }
   }
 });
@@ -28274,12 +28293,6 @@ if (false) { var navigation_api; }
 navigation_component.options.__file = "app/vue/layouts/navigation.vue"
 /* harmony default export */ var navigation = (navigation_component.exports);
 // CONCATENATED MODULE: ./app/vue/app.js
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { app_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function app_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 /*
 Lesli
 
@@ -28298,13 +28311,12 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Luis Donis <ldonis@lesli.tech>
 @author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
+@version  0.1.0-alpha
 
-// · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 // · Loading core framework and libraries
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -28327,11 +28339,12 @@ Building a better future, one line of code at a time.
 
 
  // · Initializing frameworks, libraries and tools
+// · If the file is public accessible, and no extra components no websockets are created
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-vue_default.a.use(esm);
+vue_default.a.use(esm); //Vue.use(pluginBus)
+
 vue_default.a.use(vue_router_esm);
-vue_default.a.use(bus);
 vue_default.a.use(url);
 vue_default.a.use(plugins_http);
 vue_default.a.component('component-layout-empty-data', empty_data); // · Vue app
@@ -28339,42 +28352,43 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 // · module: Main module
 // · app: List of individual apps loaded
 // · base_path: for vue router
-// · example: app("CloudHelp", "[list|new|edit|show]", "help/tickets", {}, [])
+// · example: app("CloudHelp", "[list|new|edit|show]", "help/tickets", [])
 
-/* harmony default export */ var vue_app = __webpack_exports__["a"] = (function (module, app, base_path) {
-  var components = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-  var routes = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
-  // · Vue app configuration container
-  var cloud_builder = {}; // · Default and custom components
+/* harmony default export */ var app = __webpack_exports__["a"] = (function (module, apps, base_path) {
+  var routes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
+  var public_accessibility = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
-  cloud_builder['components'] = {
-    'component-layout-notify': notify,
-    'component-layout-header': header,
-    'component-layout-chatbox': chatbox,
-    'component-layout-navigation': navigation
-  }; // · Merge core and app components
+  if (!public_accessibility) {
+    vue_default.a.use(bus);
+  } // · Vue app configuration container
 
-  if (components) {
-    cloud_builder.components = _objectSpread({}, cloud_builder.components, {}, components);
+
+  var cloud_builder = {}; // · Default and custom components for logged users
+
+  if (!public_accessibility) {
+    cloud_builder['components'] = {
+      'component-layout-notify': notify,
+      'component-layout-header': header,
+      'component-layout-chatbox': chatbox,
+      'component-layout-navigation': navigation
+    };
   } // · Routes for SPAs
 
 
-  if (routes) {
-    cloud_builder['router'] = new vue_router_esm({
-      linkActiveClass: 'is-active',
-      base: base_path,
-      mode: "history",
-      routes: routes
-    });
-  } // · Building Vue cloud app
-
+  cloud_builder['router'] = new vue_router_esm({
+    linkActiveClass: 'is-active',
+    base: base_path,
+    mode: "history",
+    routes: routes
+  }); // · Building Vue cloud app
 
   var cloud = new vue_default.a(cloud_builder); // · Mount app once DOM is ready
 
   functions_document.ready(function () {
-    cloud.$mount("#lesli-cloud-app");
+    cloud.$mount("#lesli-cloud-app"); // · Defined in webpack.config.js
+
     if (false) {}
-    if (true) browser_default.a.info("".concat(base_path, " ").concat(app), module);
+    if (true) browser_default.a.info("".concat(base_path, " ").concat(apps), module);
   });
 });
 
