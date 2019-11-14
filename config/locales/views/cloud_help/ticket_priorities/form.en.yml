@@ -1,0 +1,10 @@
+en:
+    cloud_help:
+        ticket_priorities:
+            form:
+                messages:
+                    update:
+                        successful: Ticket priority updated successfuly
+                actions:
+                    update: Update priority
+                    create: Create priority

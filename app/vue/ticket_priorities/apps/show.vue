@@ -35,7 +35,10 @@ import componentForm from '../components/form.vue'
 export default {
     data() {
         return {
-            translations: I18n.t('cloud_help.ticket_priorities.shared'),
+            translations: {
+                show: I18n.t('cloud_help.ticket_priorities.show'),
+                shared: I18n.t('cloud_help.ticket_priorities.shared'),
+            },
             ticket_priority: {},
             ticket_priority_id: null,
             modal:{
@@ -74,7 +77,7 @@ export default {
         deleteTicketPriority(){
             this.http.delete(`/help/ticket_priorities/${this.ticket_priority_id}`).then(result => {
                 if(result.successful){
-                    this.alert('Ticket priority was successfuly deleted')
+                    this.alert(this.translations.show.messages.delete.successful)
                     this.$router.push('/')
                 }else{
                     this.alert(result.error,'danger')
@@ -98,18 +101,18 @@ export default {
             <div class="card">
                 <div class="card-header is-danger">
                     <h2 class="card-header-title">
-                        Are you sure you want to delete this priority?
+                        {{ translations.show.modal.title }}
                     </h2>
                 </div>
                 <div class="card-content">
-                    You will only be able to do this if there are no tickets currenty in this priority.
+                    {{ translations.show.modal.body }}
                 </div>
                 <div class="card-footer has-text-right">
                     <button class="card-footer-item button is-danger" @click="deleteTicketPriority">
-                        Yes, delete it
+                        {{ translations.show.modal.actions.delete }}
                     </button>
                     <button class="card-footer-item button is-secondary" @click="modal.active=false">
-                        Cancel
+                        {{ translations.show.modal.actions.cancel }}
                     </button>
                 </div>
             </div>
@@ -117,17 +120,17 @@ export default {
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
-                    Ticket Priority
+                    {{ translations.shared.name }}
                 </h2>
                 <div class="card-header-icon">
                     <router-link :to="`/${ticket_priority_id}/edit`">
                         <i class="fas fa-edit"></i>
-                        Edit Priority
+                        {{ translations.shared.actions.edit }}
                     </router-link>
                     <router-link :to="`/`">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-undo"></i>
-                        Return
+                        {{ translations.shared.actions.return }}
                     </router-link>
                 </div>
             </div>
@@ -136,11 +139,11 @@ export default {
                     <div class="column">
                         <p>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.fields.name}:` }}
+                                {{ `${translations.shared.fields.name}:` }}
                             </span>
                             {{ ticket_priority.name }},
                             <span class="has-text-weight-bold">
-                                {{ `${translations.fields.weight}:` }}
+                                {{ `${translations.shared.fields.weight}:` }}
                             </span>
                             {{ ticket_priority.weight }}
                         </p>
@@ -150,12 +153,12 @@ export default {
                     <div class="column">
                         <small>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.fields.created_at}:` }}
+                                {{ `${translations.shared.fields.created_at}:` }}
                             </span>
                             {{ ticket_priority.created_at }}
                             <br>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.fields.updated_at}:` }}
+                                {{ `${translations.shared.fields.updated_at}:` }}
                             </span>
                             {{ ticket_priority.updated_at }}
                         </small>
@@ -164,7 +167,7 @@ export default {
                         <div class="field">
                             <div class="actions has-text-right">
                                 <button class="button is-danger" @click="modal.active = true">
-                                    Delete Priority
+                                    {{ translations.shared.actions.delete }}
                                 </button>
                             </div>
                         </div>

@@ -33,7 +33,7 @@ export default {
     data() {
         return {
             translations:{
-                list: I18n.t('cloud_help.ticket_priorities.list')
+                shared: I18n.t('cloud_help.ticket_priorities.shared')
             },
             tickets: [],
             columns: []
@@ -48,20 +48,21 @@ export default {
         setColumns(){
             this.columns = [{
                 field: 'id',
-                label: this.translations.list.table.headers.id,
+                label: this.translations.shared.fields.id,
                 centered: true,
-                numeric: true,
-                width: '40'
+                numeric: true
             }, {
                 field: 'name',
-                label: this.translations.list.table.headers.name
+                label: this.translations.shared.fields.name
             }, {
                 field: 'weight',
-                label: this.translations.list.table.headers.weight
+                label: this.translations.shared.fields.weight,
             }, {
                 field: 'created_at',
-                label: this.translations.list.table.headers.created_at,
-                centered: true
+                label: this.translations.shared.fields.created_at
+            }, {
+                field: 'updated_at',
+                label: this.translations.shared.fields.updated_at
             }];
         },
 
@@ -77,7 +78,7 @@ export default {
             })
         },
         
-        clickPriority(ticket_priority) {
+        showPriority(ticket_priority) {
             this.$router.push(`${ticket_priority.id}`)
         }
 
@@ -86,7 +87,7 @@ export default {
 </script>
 <template>
     <section class="section">
-        <b-table :data="tickets" :columns="columns" @click="clickPriority" :hoverable="true">
+        <b-table :data="tickets" :columns="columns" @click="showPriority" :hoverable="true">
         </b-table>
     </section>
 </template>

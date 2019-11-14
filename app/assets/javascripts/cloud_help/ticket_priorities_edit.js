@@ -30203,7 +30203,7 @@ var render = function() {
     [
       _c("b-table", {
         attrs: { data: _vm.tickets, columns: _vm.columns, hoverable: true },
-        on: { click: _vm.clickPriority }
+        on: { click: _vm.showPriority }
       })
     ],
     1
@@ -30248,7 +30248,7 @@ Building a better future, one line of code at a time.
   data: function data() {
     return {
       translations: {
-        list: I18n.t('cloud_help.ticket_priorities.list')
+        shared: I18n.t('cloud_help.ticket_priorities.shared')
       },
       tickets: [],
       columns: []
@@ -30262,20 +30262,21 @@ Building a better future, one line of code at a time.
     setColumns: function setColumns() {
       this.columns = [{
         field: 'id',
-        label: this.translations.list.table.headers.id,
+        label: this.translations.shared.fields.id,
         centered: true,
-        numeric: true,
-        width: '40'
+        numeric: true
       }, {
         field: 'name',
-        label: this.translations.list.table.headers.name
+        label: this.translations.shared.fields.name
       }, {
         field: 'weight',
-        label: this.translations.list.table.headers.weight
+        label: this.translations.shared.fields.weight
       }, {
         field: 'created_at',
-        label: this.translations.list.table.headers.created_at,
-        centered: true
+        label: this.translations.shared.fields.created_at
+      }, {
+        field: 'updated_at',
+        label: this.translations.shared.fields.updated_at
       }];
     },
     getPriorities: function getPriorities() {
@@ -30291,7 +30292,7 @@ Building a better future, one line of code at a time.
         console.log(error);
       });
     },
-    clickPriority: function clickPriority(ticket_priority) {
+    showPriority: function showPriority(ticket_priority) {
       this.$router.push("".concat(ticket_priority.id));
     }
   }
@@ -30350,7 +30351,11 @@ var formvue_type_template_id_0cb2b397_render = function() {
     _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header" }, [
         _c("h2", { staticClass: "card-header-title" }, [
-          _vm._v("\n                Ticket Priority\n            ")
+          _vm._v(
+            "\n                " +
+              _vm._s(_vm.translations.shared.name) +
+              "\n            "
+          )
         ]),
         _vm._v(" "),
         _c(
@@ -30363,7 +30368,11 @@ var formvue_type_template_id_0cb2b397_render = function() {
                   { attrs: { to: "/" + _vm.ticket_priority_id } },
                   [
                     _c("i", { staticClass: "fas fa-eye" }),
-                    _vm._v("\n                    Show\n                ")
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.translations.shared.actions.show) +
+                        "\n                "
+                    )
                   ]
                 )
               : _vm._e(),
@@ -30372,7 +30381,11 @@ var formvue_type_template_id_0cb2b397_render = function() {
               ? _c("router-link", { attrs: { to: "/" } }, [
                   _vm._v("\n                       \n                    "),
                   _c("i", { staticClass: "fas fa-undo" }),
-                  _vm._v("\n                    Return\n                ")
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.translations.shared.actions.return) +
+                      "\n                "
+                  )
                 ])
               : _vm._e()
           ],
@@ -30389,7 +30402,7 @@ var formvue_type_template_id_0cb2b397_render = function() {
               [
                 _c(
                   "b-field",
-                  { attrs: { label: "Name" } },
+                  { attrs: { label: _vm.translations.shared.fields.name } },
                   [
                     _c("b-input", {
                       attrs: { required: "true" },
@@ -30414,7 +30427,7 @@ var formvue_type_template_id_0cb2b397_render = function() {
               [
                 _c(
                   "b-field",
-                  { attrs: { label: "Weight" } },
+                  { attrs: { label: _vm.translations.shared.fields.weight } },
                   [
                     _c("b-input", {
                       attrs: {
@@ -30447,7 +30460,9 @@ var formvue_type_template_id_0cb2b397_render = function() {
                       _c("span", { staticClass: "has-text-weight-bold" }, [
                         _vm._v(
                           "\n                                    " +
-                            _vm._s("Created at:") +
+                            _vm._s(
+                              _vm.translations.shared.fields.created_at + ":"
+                            ) +
                             "\n                                "
                         )
                       ]),
@@ -30461,7 +30476,9 @@ var formvue_type_template_id_0cb2b397_render = function() {
                       _c("span", { staticClass: "has-text-weight-bold" }, [
                         _vm._v(
                           "\n                                    " +
-                            _vm._s("Updated at:") +
+                            _vm._s(
+                              _vm.translations.shared.fields.updated_at + ":"
+                            ) +
                             "\n                                "
                         )
                       ]),
@@ -30486,8 +30503,12 @@ var formvue_type_template_id_0cb2b397_render = function() {
                     },
                     [
                       _vm.ticket_priority_id
-                        ? _c("span", [_vm._v("Update Priority")])
-                        : _c("span", [_vm._v("Create Priority")])
+                        ? _c("span", [
+                            _vm._v(_vm._s(_vm.translations.form.actions.update))
+                          ])
+                        : _c("span", [
+                            _vm._v(_vm._s(_vm.translations.form.actions.create))
+                          ])
                     ]
                   )
                 ])
@@ -30535,6 +30556,10 @@ Building a better future, one line of code at a time.
 /* harmony default export */ var formvue_type_script_lang_js_ = ({
   data: function data() {
     return {
+      translations: {
+        form: I18n.t('cloud_help.ticket_priorities.form'),
+        shared: I18n.t('cloud_help.ticket_priorities.shared')
+      },
       ticket_priority_id: null,
       ticket_priority: {}
     };
@@ -30563,12 +30588,11 @@ Building a better future, one line of code at a time.
     putTicketPriority: function putTicketPriority() {
       var _this = this;
 
-      console.log('hola mundp');
       this.http.put("/help/ticket_priorities/".concat(this.ticket_priority_id), {
         ticket_priority: this.ticket_priority
       }).then(function (result) {
         if (result.successful) {
-          _this.alert("Ticket updated successfuly");
+          _this.alert(_this.translations.form.messages.update.successful);
         }
       })["catch"](function (error) {
         console.log(error);
@@ -30583,7 +30607,7 @@ Building a better future, one line of code at a time.
         if (result.successful) {
           _this2.ticket_priority = result.data;
 
-          _this2.$router.push("".concat(_this2.ticket_priority.id, "/show"));
+          _this2.$router.push("".concat(_this2.ticket_priority.id));
         } else {
           _this2.alert(result.error, 'danger');
         }
@@ -30720,14 +30744,18 @@ var showvue_type_template_id_1158a218_render = function() {
             _c("div", { staticClass: "card-header is-danger" }, [
               _c("h2", { staticClass: "card-header-title" }, [
                 _vm._v(
-                  "\n                    Are you sure you want to delete this priority?\n                "
+                  "\n                    " +
+                    _vm._s(_vm.translations.show.modal.title) +
+                    "\n                "
                 )
               ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-content" }, [
               _vm._v(
-                "\n                You will only be able to do this if there are no tickets currenty in this priority.\n            "
+                "\n                " +
+                  _vm._s(_vm.translations.show.modal.body) +
+                  "\n            "
               )
             ]),
             _vm._v(" "),
@@ -30740,7 +30768,9 @@ var showvue_type_template_id_1158a218_render = function() {
                 },
                 [
                   _vm._v(
-                    "\n                    Yes, delete it\n                "
+                    "\n                    " +
+                      _vm._s(_vm.translations.show.modal.actions.delete) +
+                      "\n                "
                   )
                 ]
               ),
@@ -30755,7 +30785,13 @@ var showvue_type_template_id_1158a218_render = function() {
                     }
                   }
                 },
-                [_vm._v("\n                    Cancel\n                ")]
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.translations.show.modal.actions.cancel) +
+                      "\n                "
+                  )
+                ]
               )
             ])
           ])
@@ -30765,7 +30801,11 @@ var showvue_type_template_id_1158a218_render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("h2", { staticClass: "card-header-title" }, [
-            _vm._v("\n                Ticket Priority\n            ")
+            _vm._v(
+              "\n                " +
+                _vm._s(_vm.translations.shared.name) +
+                "\n            "
+            )
           ]),
           _vm._v(" "),
           _c(
@@ -30778,7 +30818,9 @@ var showvue_type_template_id_1158a218_render = function() {
                 [
                   _c("i", { staticClass: "fas fa-edit" }),
                   _vm._v(
-                    "\n                    Edit Priority\n                "
+                    "\n                    " +
+                      _vm._s(_vm.translations.shared.actions.edit) +
+                      "\n                "
                   )
                 ]
               ),
@@ -30786,7 +30828,11 @@ var showvue_type_template_id_1158a218_render = function() {
               _c("router-link", { attrs: { to: "/" } }, [
                 _vm._v("\n                       \n                    "),
                 _c("i", { staticClass: "fas fa-undo" }),
-                _vm._v("\n                    Return\n                ")
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.translations.shared.actions.return) +
+                    "\n                "
+                )
               ])
             ],
             1
@@ -30800,7 +30846,7 @@ var showvue_type_template_id_1158a218_render = function() {
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
                     "\n                            " +
-                      _vm._s(_vm.translations.fields.name + ":") +
+                      _vm._s(_vm.translations.shared.fields.name + ":") +
                       "\n                        "
                   )
                 ]),
@@ -30812,7 +30858,7 @@ var showvue_type_template_id_1158a218_render = function() {
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
                     "\n                            " +
-                      _vm._s(_vm.translations.fields.weight + ":") +
+                      _vm._s(_vm.translations.shared.fields.weight + ":") +
                       "\n                        "
                   )
                 ]),
@@ -30831,7 +30877,7 @@ var showvue_type_template_id_1158a218_render = function() {
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
                     "\n                            " +
-                      _vm._s(_vm.translations.fields.created_at + ":") +
+                      _vm._s(_vm.translations.shared.fields.created_at + ":") +
                       "\n                        "
                   )
                 ]),
@@ -30845,7 +30891,7 @@ var showvue_type_template_id_1158a218_render = function() {
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
                     "\n                            " +
-                      _vm._s(_vm.translations.fields.updated_at + ":") +
+                      _vm._s(_vm.translations.shared.fields.updated_at + ":") +
                       "\n                        "
                   )
                 ]),
@@ -30872,7 +30918,9 @@ var showvue_type_template_id_1158a218_render = function() {
                     },
                     [
                       _vm._v(
-                        "\n                                Delete Priority\n                            "
+                        "\n                                " +
+                          _vm._s(_vm.translations.shared.actions.delete) +
+                          "\n                            "
                       )
                     ]
                   )
@@ -30925,7 +30973,10 @@ Building a better future, one line of code at a time.
 /* harmony default export */ var showvue_type_script_lang_js_ = ({
   data: function data() {
     return {
-      translations: I18n.t('cloud_help.ticket_priorities.shared'),
+      translations: {
+        show: I18n.t('cloud_help.ticket_priorities.show'),
+        shared: I18n.t('cloud_help.ticket_priorities.shared')
+      },
       ticket_priority: {},
       ticket_priority_id: null,
       modal: {
@@ -30965,7 +31016,7 @@ Building a better future, one line of code at a time.
 
       this.http["delete"]("/help/ticket_priorities/".concat(this.ticket_priority_id)).then(function (result) {
         if (result.successful) {
-          _this2.alert('Ticket priority was successfuly deleted');
+          _this2.alert(_this2.translations.show.messages["delete"].successful);
 
           _this2.$router.push('/');
         } else {

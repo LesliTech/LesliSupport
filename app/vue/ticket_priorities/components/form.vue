@@ -28,6 +28,10 @@ Building a better future, one line of code at a time.
 export default {
     data() {
         return {
+            translations: {
+                form: I18n.t('cloud_help.ticket_priorities.form'),
+                shared: I18n.t('cloud_help.ticket_priorities.shared'),
+            },
             ticket_priority_id: null,
             ticket_priority: {}
         }
@@ -54,12 +58,11 @@ export default {
         },
 
         putTicketPriority() {
-            console.log('hola mundp');
             this.http.put(`/help/ticket_priorities/${this.ticket_priority_id}`, {
                 ticket_priority: this.ticket_priority
             }).then(result => {
                 if (result.successful) {
-                    this.alert("Ticket updated successfuly")
+                    this.alert(this.translations.form.messages.update.successful)
                 }
             }).catch(error => {
                 console.log(error)
@@ -73,7 +76,7 @@ export default {
             }).then(result => {
                 if (result.successful) {
                     this.ticket_priority = result.data
-                    this.$router.push(`${this.ticket_priority.id}/show`)
+                    this.$router.push(`${this.ticket_priority.id}`)
                 }else{
                     this.alert(result.error,'danger')
                 }
@@ -103,17 +106,17 @@ export default {
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
-                    Ticket Priority
+                    {{translations.shared.name}}
                 </h2>
                 <div class="card-header-icon">
                     <router-link v-if="ticket_priority_id" :to="`/${ticket_priority_id}`">
                         <i class="fas fa-eye"></i>
-                        Show
+                        {{translations.shared.actions.show}}
                     </router-link>
                     <router-link v-if="ticket_priority_id" :to="`/`">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-undo"></i>
-                        Return
+                        {{translations.shared.actions.return}}
                     </router-link>
                 </div>
             </div>
@@ -121,12 +124,12 @@ export default {
                 <form @submit="submitTicketPriority">
                     <div class="columns">
                         <div class="column">
-                            <b-field label="Name">
+                            <b-field :label="translations.shared.fields.name">
                                 <b-input v-model="ticket_priority.name" required="true"></b-input>
                             </b-field>
                         </div>
                         <div class="column">
-                            <b-field label="Weight">
+                            <b-field :label="translations.shared.fields.weight">
                                 <b-input max="1000000" min="0" v-model="ticket_priority.weight" type="number" required="true" >
                                 </b-input>
                             </b-field>
@@ -137,12 +140,12 @@ export default {
                             <div class="field">
                                 <small>
                                     <span class="has-text-weight-bold">
-                                        {{ `Created at:` }}
+                                        {{ `${translations.shared.fields.created_at}:` }}
                                     </span>
                                     {{ ticket_priority.created_at }}
                                     <br>
                                     <span class="has-text-weight-bold">
-                                        {{ `Updated at:` }}
+                                        {{ `${translations.shared.fields.updated_at}:` }}
                                     </span>
                                     {{ ticket_priority.updated_at }}
                                 </small>
@@ -152,8 +155,8 @@ export default {
                             <div class="field">
                                 <div class="actions has-text-right">
                                     <button class="button is-primary" type="submit">
-                                        <span v-if="ticket_priority_id">Update Priority</span>
-                                        <span v-else>Create Priority</span>
+                                        <span v-if="ticket_priority_id">{{translations.form.actions.update}}</span>
+                                        <span v-else>{{translations.form.actions.create}}</span>
                                     </button>
                                 </div>
                             </div>
