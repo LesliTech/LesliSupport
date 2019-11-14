@@ -4,6 +4,7 @@ en:
             shared:
                 name: Ticket Priority
                 actions:
+                    new: New Priority
                     edit: Edit Priority
                     show: Show Priority
                     return: Return

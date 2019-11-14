@@ -62,7 +62,7 @@ export default {
                 ticket_priority: this.ticket_priority
             }).then(result => {
                 if (result.successful) {
-                    this.alert(this.translations.form.messages.update.successful)
+                    this.alert(this.translations.form.messages.update.successful,'success')
                 }
             }).catch(error => {
                 console.log(error)
@@ -113,7 +113,7 @@ export default {
                         <i class="fas fa-eye"></i>
                         {{translations.shared.actions.show}}
                     </router-link>
-                    <router-link v-if="ticket_priority_id" :to="`/`">
+                    <router-link :to="`/`">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-undo"></i>
                         {{translations.shared.actions.return}}

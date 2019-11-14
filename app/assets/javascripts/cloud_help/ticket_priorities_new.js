@@ -30377,17 +30377,15 @@ var formvue_type_template_id_0cb2b397_render = function() {
                 )
               : _vm._e(),
             _vm._v(" "),
-            _vm.ticket_priority_id
-              ? _c("router-link", { attrs: { to: "/" } }, [
-                  _vm._v("\n                       \n                    "),
-                  _c("i", { staticClass: "fas fa-undo" }),
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(_vm.translations.shared.actions.return) +
-                      "\n                "
-                  )
-                ])
-              : _vm._e()
+            _c("router-link", { attrs: { to: "/" } }, [
+              _vm._v("\n                       \n                    "),
+              _c("i", { staticClass: "fas fa-undo" }),
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.translations.shared.actions.return) +
+                  "\n                "
+              )
+            ])
           ],
           1
         )
@@ -30592,7 +30590,7 @@ Building a better future, one line of code at a time.
         ticket_priority: this.ticket_priority
       }).then(function (result) {
         if (result.successful) {
-          _this.alert(_this.translations.form.messages.update.successful);
+          _this.alert(_this.translations.form.messages.update.successful, 'success');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -31016,7 +31014,7 @@ Building a better future, one line of code at a time.
 
       this.http["delete"]("/help/ticket_priorities/".concat(this.ticket_priority_id)).then(function (result) {
         if (result.successful) {
-          _this2.alert(_this2.translations.show.messages["delete"].successful);
+          _this2.alert(_this2.translations.show.messages["delete"].successful, 'success');
 
           _this2.$router.push('/');
         } else {
