@@ -24,7 +24,6 @@ module CloudHelp
 
     # GET /ticket_priorities/new
     def new
-      @ticket_priority = TicketPriority.new
     end
 
     # GET /ticket_priorities/1/edit
@@ -33,40 +32,46 @@ module CloudHelp
 
     # POST /ticket_priorities
     def create
-      ticket_priority = TicketPriority.new(ticket_priority_params)
-      ticket_priority.cloud_help_accounts_id = current_user.account.id
+        ticket_priority = TicketPriority.new(ticket_priority_params)
+        ticket_priority.cloud_help_accounts_id = current_user.account.id
 
-      if ticket_priority.save
-        responseWithSuccessful(ticket_priority)
-      else
-        responseWithError(ticket_priority.errors.full_messages.to_sentence)
-      end
+        if ticket_priority.save
+            responseWithSuccessful(ticket_priority)
+        else
+            responseWithError(ticket_priority.errors.full_messages.to_sentence)
+        end
     end
 
     # PATCH/PUT /ticket_priorities/1
     def update
-      if @ticket_priority.update(ticket_priority_params)
-        responseWithSuccessful(@ticket_priority)
-      else
-        responseWithError(@ticket_priority.errors.full_messages.to_sentence)
-      end
+        if @ticket_priority.update(ticket_priority_params)
+            responseWithSuccessful(@ticket_priority)
+        else
+            responseWithError(@ticket_priority.errors.full_messages.to_sentence)
+        end
     end
 
     # DELETE /ticket_priorities/1
     def destroy
-      @ticket_priority.destroy
-      redirect_to ticket_priorities_url, notice: 'Ticket priority was successfully destroyed.'
+      if @ticket_priority.destroy
+            responseWithSuccessful
+        else
+            responseWithError(@ticket_priority.errors.full_messages.to_sentence)
+        end
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_ticket_priority
-        @ticket_priority = TicketPriority.find(params[:id])
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_ticket_priority
+        @ticket_priority = TicketPriority.find_by(
+            id: params[:id],
+            cloud_help_accounts_id: current_user.account.id
+        )
+    end
 
-      # Only allow a trusted parameter "white list" through.
-      def ticket_priority_params
+    # Only allow a trusted parameter "white list" through.
+    def ticket_priority_params
         params.fetch(:ticket_priority, {}).permit(:name, :weight)
-      end
+    end
   end
 end

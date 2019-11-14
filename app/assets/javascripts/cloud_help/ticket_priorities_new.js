@@ -30696,64 +30696,130 @@ var showvue_type_template_id_1158a218_render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("section", [
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("h2", { staticClass: "card-header-title" }, [
-          _vm._v("\n                Ticket Priority\n            ")
+  return _c(
+    "section",
+    [
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            active: _vm.modal.active,
+            "has-modal-card": "",
+            "trap-focus": "",
+            "aria-role": "dialog",
+            "aria-modal": ""
+          },
+          on: {
+            "update:active": function($event) {
+              return _vm.$set(_vm.modal, "active", $event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "card" }, [
+            _c("div", { staticClass: "card-header is-danger" }, [
+              _c("h2", { staticClass: "card-header-title" }, [
+                _vm._v(
+                  "\n                    Are you sure you want to delete this priority?\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-content" }, [
+              _vm._v(
+                "\n                You will only be able to do this if there are no tickets currenty in this priority.\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer has-text-right" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "card-footer-item button is-danger",
+                  on: { click: _vm.deleteTicketPriority }
+                },
+                [
+                  _vm._v(
+                    "\n                    Yes, delete it\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "card-footer-item button is-secondary",
+                  on: {
+                    click: function($event) {
+                      _vm.modal.active = false
+                    }
+                  }
+                },
+                [_vm._v("\n                    Cancel\n                ")]
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("h2", { staticClass: "card-header-title" }, [
+            _vm._v("\n                Ticket Priority\n            ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-header-icon" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: "/" + _vm.ticket_priority_id + "/edit" } },
+                [
+                  _c("i", { staticClass: "fas fa-edit" }),
+                  _vm._v(
+                    "\n                    Edit Priority\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("router-link", { attrs: { to: "/" } }, [
+                _vm._v("\n                       \n                    "),
+                _c("i", { staticClass: "fas fa-undo" }),
+                _vm._v("\n                    Return\n                ")
+              ])
+            ],
+            1
+          )
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "card-header-icon" },
-          [
-            _c(
-              "router-link",
-              { attrs: { to: "/" + _vm.ticket_priority_id + "/edit" } },
-              [
-                _c("i", { staticClass: "fas fa-edit" }),
-                _vm._v("\n                    Edit Priority\n                ")
-              ]
-            ),
-            _vm._v(" "),
-            _c("router-link", { attrs: { to: "/" } }, [
-              _vm._v("\n                       \n                    "),
-              _c("i", { staticClass: "fas fa-undo" }),
-              _vm._v("\n                    Return\n                ")
-            ])
-          ],
-          1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-content" }, [
-        _c("form", [
+        _c("div", { staticClass: "card-content" }, [
           _c("div", { staticClass: "columns" }, [
             _c("div", { staticClass: "column" }, [
               _c("p", [
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
-                    "\n                                " +
+                    "\n                            " +
                       _vm._s(_vm.translations.fields.name + ":") +
-                      "\n                            "
+                      "\n                        "
                   )
                 ]),
                 _vm._v(
-                  "\n                            " +
+                  "\n                        " +
                     _vm._s(_vm.ticket_priority.name) +
-                    ",\n                            "
+                    ",\n                        "
                 ),
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
-                    "\n                                " +
+                    "\n                            " +
                       _vm._s(_vm.translations.fields.weight + ":") +
-                      "\n                            "
+                      "\n                        "
                   )
                 ]),
                 _vm._v(
-                  "\n                            " +
+                  "\n                        " +
                     _vm._s(_vm.ticket_priority.weight) +
-                    "\n                        "
+                    "\n                    "
                 )
               ])
             ])
@@ -30764,37 +30830,61 @@ var showvue_type_template_id_1158a218_render = function() {
               _c("small", [
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
-                    "\n                                " +
+                    "\n                            " +
                       _vm._s(_vm.translations.fields.created_at + ":") +
-                      "\n                            "
+                      "\n                        "
                   )
                 ]),
                 _vm._v(
-                  "\n                            " +
+                  "\n                        " +
                     _vm._s(_vm.ticket_priority.created_at) +
-                    "\n                            "
+                    "\n                        "
                 ),
                 _c("br"),
                 _vm._v(" "),
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
-                    "\n                                " +
+                    "\n                            " +
                       _vm._s(_vm.translations.fields.updated_at + ":") +
-                      "\n                            "
+                      "\n                        "
                   )
                 ]),
                 _vm._v(
-                  "\n                            " +
+                  "\n                        " +
                     _vm._s(_vm.ticket_priority.updated_at) +
-                    "\n                        "
+                    "\n                    "
                 )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("div", { staticClass: "actions has-text-right" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-danger",
+                      on: {
+                        click: function($event) {
+                          _vm.modal.active = true
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                                Delete Priority\n                            "
+                      )
+                    ]
+                  )
+                ])
               ])
             ])
           ])
         ])
       ])
-    ])
-  ])
+    ],
+    1
+  )
 }
 var showvue_type_template_id_1158a218_staticRenderFns = []
 showvue_type_template_id_1158a218_render._withStripped = true
@@ -30837,7 +30927,10 @@ Building a better future, one line of code at a time.
     return {
       translations: I18n.t('cloud_help.ticket_priorities.shared'),
       ticket_priority: {},
-      ticket_priority_id: null
+      ticket_priority_id: null,
+      modal: {
+        active: false
+      }
     };
   },
   components: {
@@ -30862,6 +30955,21 @@ Building a better future, one line of code at a time.
           _this.ticket_priority = result.data;
         } else {
           _this.alert(result.error, 'danger');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    deleteTicketPriority: function deleteTicketPriority() {
+      var _this2 = this;
+
+      this.http["delete"]("/help/ticket_priorities/".concat(this.ticket_priority_id)).then(function (result) {
+        if (result.successful) {
+          _this2.alert('Ticket priority was successfuly deleted');
+
+          _this2.$router.push('/');
+        } else {
+          _this2.alert(result.error, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);

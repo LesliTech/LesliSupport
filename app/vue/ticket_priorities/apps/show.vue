@@ -37,7 +37,10 @@ export default {
         return {
             translations: I18n.t('cloud_help.ticket_priorities.shared'),
             ticket_priority: {},
-            ticket_priority_id: null
+            ticket_priority_id: null,
+            modal:{
+                active: false
+            }
         }
     },
     components: {
@@ -66,12 +69,51 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        deleteTicketPriority(){
+            this.http.delete(`/help/ticket_priorities/${this.ticket_priority_id}`).then(result => {
+                if(result.successful){
+                    this.alert('Ticket priority was successfuly deleted')
+                    this.$router.push('/')
+                }else{
+                    this.alert(result.error,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
         }
     }
 }
 </script>
 <template>
     <section>
+        <b-modal 
+            :active.sync="modal.active"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-modal
+        >
+            <div class="card">
+                <div class="card-header is-danger">
+                    <h2 class="card-header-title">
+                        Are you sure you want to delete this priority?
+                    </h2>
+                </div>
+                <div class="card-content">
+                    You will only be able to do this if there are no tickets currenty in this priority.
+                </div>
+                <div class="card-footer has-text-right">
+                    <button class="card-footer-item button is-danger" @click="deleteTicketPriority">
+                        Yes, delete it
+                    </button>
+                    <button class="card-footer-item button is-secondary" @click="modal.active=false">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </b-modal>
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
@@ -90,37 +132,44 @@ export default {
                 </div>
             </div>
             <div class="card-content">
-                <form>
-                    <div class="columns">
-                        <div class="column">
-                            <p>
-                                <span class="has-text-weight-bold">
-                                    {{ `${translations.fields.name}:` }}
-                                </span>
-                                {{ ticket_priority.name }},
-                                <span class="has-text-weight-bold">
-                                    {{ `${translations.fields.weight}:` }}
-                                </span>
-                                {{ ticket_priority.weight }}
-                            </p>
+                <div class="columns">
+                    <div class="column">
+                        <p>
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.fields.name}:` }}
+                            </span>
+                            {{ ticket_priority.name }},
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.fields.weight}:` }}
+                            </span>
+                            {{ ticket_priority.weight }}
+                        </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <small>
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.fields.created_at}:` }}
+                            </span>
+                            {{ ticket_priority.created_at }}
+                            <br>
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.fields.updated_at}:` }}
+                            </span>
+                            {{ ticket_priority.updated_at }}
+                        </small>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <div class="actions has-text-right">
+                                <button class="button is-danger" @click="modal.active = true">
+                                    Delete Priority
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="columns">
-                        <div class="column">
-                            <small>
-                                <span class="has-text-weight-bold">
-                                    {{ `${translations.fields.created_at}:` }}
-                                </span>
-                                {{ ticket_priority.created_at }}
-                                <br>
-                                <span class="has-text-weight-bold">
-                                    {{ `${translations.fields.updated_at}:` }}
-                                </span>
-                                {{ ticket_priority.updated_at }}
-                            </small>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </section>
