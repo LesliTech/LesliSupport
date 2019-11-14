@@ -27305,53 +27305,6 @@ Building a better future, one line of code at a time.
     Vue.prototype.http = http;
   }
 });
-// CONCATENATED MODULE: ./app/vue/plugins/date.js
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { date_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function date_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/* harmony default export */ var plugins_date = ({
-  install: function install(Vue, options) {
-    //date will be returned in standard format YYYY-MM-DD
-    var today = function today() {
-      var date = new Date(); //We do not use time so date type inputs will accept the value
-
-      return date.toISOString().substr(0, 10);
-    };
-
-    var date_options = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      timeZone: 'UTC'
-    };
-
-    var datetime_options = _objectSpread({}, date_options, {}, {
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric'
-    }); //date should be given in standard format YYYY-MM-DD
-
-
-    var toLocalFormat = function toLocalFormat(date) {
-      var include_time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      date = new Date(date);
-
-      if (include_time) {
-        return date.toLocaleDateString(I18n.currentLocale(), datetime_options);
-      } else {
-        return date.toLocaleDateString(I18n.currentLocale(), date_options);
-      }
-    };
-
-    Vue.prototype.date = {
-      today: today,
-      toLocalFormat: toLocalFormat
-    };
-  }
-});
 // EXTERNAL MODULE: ./node_modules/lesli-nodejs-debug-message/browser.js
 var browser = __webpack_require__(15);
 var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
@@ -28373,7 +28326,6 @@ Building a better future, one line of code at a time.
 
 
 
-
  // · Loading app functions
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
@@ -28389,12 +28341,11 @@ Building a better future, one line of code at a time.
 // · If the file is public accessible, and no extra components no websockets are created
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-vue_default.a.use(esm); //Vue.use(pluginBus)
-
+vue_default.a.use(esm);
+vue_default.a.use(bus);
 vue_default.a.use(vue_router_esm);
 vue_default.a.use(url);
 vue_default.a.use(plugins_http);
-vue_default.a.use(plugins_date);
 vue_default.a.component('component-layout-empty-data', empty_data); // · Vue app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · module: Main module
@@ -28404,24 +28355,15 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 
 /* harmony default export */ var app = __webpack_exports__["a"] = (function (module, apps, base_path) {
   var routes = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : [];
-  var public_accessibility = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
-
-  if (!public_accessibility) {
-    vue_default.a.use(bus);
-  } // · Vue app configuration container
-
-
+  // · Vue app configuration container
   var cloud_builder = {}; // · Default and custom components for logged users
 
-  if (!public_accessibility) {
-    cloud_builder['components'] = {
-      'component-layout-notify': notify,
-      'component-layout-header': header,
-      'component-layout-chatbox': chatbox,
-      'component-layout-navigation': navigation
-    };
-  } // · Routes for SPAs
-
+  cloud_builder['components'] = {
+    'component-layout-notify': notify,
+    'component-layout-header': header,
+    'component-layout-chatbox': chatbox,
+    'component-layout-navigation': navigation
+  }; // · Routes for SPAs
 
   cloud_builder['router'] = new vue_router_esm({
     linkActiveClass: 'is-active',
@@ -30254,7 +30196,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n/*\nTrix 1.2.1\nCopyright © 2019 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// EXTERNAL MODULE: ./app/vue/app.js + 87 modules
+// EXTERNAL MODULE: ./app/vue/app.js + 86 modules
 var app = __webpack_require__(16);
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/list.vue?vue&type=template&id=328b1227&
