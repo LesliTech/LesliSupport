@@ -33,15 +33,15 @@ export default {
     data() {
         return {
             translations:{
-                shared: I18n.t('cloud_help.ticket_priorities.shared')
+                shared: I18n.t('cloud_help.ticket_types.shared')
             },
-            ticket_priorities: [],
+            ticket_types: [],
             columns: []
         }
     },
     mounted() {
         this.setColumns()
-        this.getTicketPriorities()
+        this.getTicketTypes()
     },
     methods: {
 
@@ -49,15 +49,12 @@ export default {
             this.columns = [{
                 field: 'id',
                 label: this.translations.shared.fields.id,
-                centered: true,
                 width: 40,
+                centered: true,
                 numeric: true
             }, {
                 field: 'name',
                 label: this.translations.shared.fields.name
-            }, {
-                field: 'weight',
-                label: this.translations.shared.fields.weight,
             }, {
                 field: 'created_at',
                 label: this.translations.shared.fields.created_at
@@ -67,10 +64,10 @@ export default {
             }];
         },
 
-        getTicketPriorities() {
-            this.http.get("/help/ticket_priorities.json").then(result => {
+        getTicketTypes() {
+            this.http.get("/help/ticket_types.json").then(result => {
                 if (result.successful) {
-                    this.ticket_priorities = result.data
+                    this.ticket_types = result.data
                 }else{
                     this.alert(result.error,'danger')
                 }
@@ -79,7 +76,7 @@ export default {
             })
         },
         
-        showTicketPriorities(ticket_priority) {
+        showTicketType(ticket_priority) {
             this.$router.push(`${ticket_priority.id}`)
         }
 
@@ -88,7 +85,7 @@ export default {
 </script>
 <template>
     <section class="section">
-        <b-table :data="ticket_priorities" :columns="columns" @click="showTicketPriorities" :hoverable="true">
+        <b-table :data="ticket_types" :columns="columns" @click="showTicketType" :hoverable="true">
         </b-table>
     </section>
 </template>

@@ -1,0 +1,10 @@
+en:
+    cloud_help:
+        ticket_types:
+            form:
+                messages:
+                    update:
+                        successful: Ticket type updated successfuly
+                actions:
+                    update: Update type
+                    create: Create type
