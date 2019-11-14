@@ -1,0 +1,16 @@
+en:
+    cloud_help:
+        ticket_types:
+            shared:
+                name: Ticket Type
+                actions:
+                    new: New Type
+                    edit: Edit Type
+                    show: Show Type
+                    return: Return
+                    delete: Delete Type
+                fields:
+                    id: Number
+                    name: Name
+                    created_at: Created at
+                    updated_at: Updated at
