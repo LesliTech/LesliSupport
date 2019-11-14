@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
   class TicketPrioritiesController < ApplicationController
-    before_action :set_ticket_priority, only: [:show, :edit, :update, :destroy]
+    before_action :set_ticket_priority, only: [:show, :edit, :update, :destroy, :api_show]
 
     # GET /ticket_priorities
     def index
@@ -17,6 +17,11 @@ module CloudHelp
     def show
     end
 
+    # GET /api/ticket_priorities/1
+    def api_show
+        responseWithSuccessful(@ticket_priority)
+    end
+
     # GET /ticket_priorities/new
     def new
       @ticket_priority = TicketPriority.new
@@ -28,12 +33,13 @@ module CloudHelp
 
     # POST /ticket_priorities
     def create
-      @ticket_priority = TicketPriority.new(ticket_priority_params)
+      ticket_priority = TicketPriority.new(ticket_priority_params)
+      ticket_priority.cloud_help_accounts_id = current_user.account.id
 
-      if @ticket_priority.save
-        redirect_to @ticket_priority, notice: 'Ticket priority was successfully created.'
+      if ticket_priority.save
+        responseWithSuccessful(ticket_priority)
       else
-        render :new
+        responseWithError(ticket_priority.errors.full_messages.to_sentence)
       end
     end
 
@@ -60,7 +66,7 @@ module CloudHelp
 
       # Only allow a trusted parameter "white list" through.
       def ticket_priority_params
-        params.fetch(:ticket_priority, {})
+        params.fetch(:ticket_priority, {}).permit(:name, :weight)
       end
   end
 end

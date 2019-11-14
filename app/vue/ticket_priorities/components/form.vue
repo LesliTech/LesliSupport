@@ -44,8 +44,16 @@ export default {
             }
         },
 
-        putTicket(e) {
-            if (e) { e.preventDefault() }
+        submitTicketPriority(event){
+            if (event) { event.preventDefault() }
+            if(this.ticket_priority_id){
+                this.putTicketPriority()
+            }else{
+                this.postTicketPriority()
+            }
+        },
+
+        putTicketPriority() {
             this.http.put(`/help/ticket_priorities/${this.ticket_priority_id}`, {
                 ticket_priority: this.ticket_priority
             }).then(result => {
@@ -58,15 +66,12 @@ export default {
 
         },
 
-        postTicketPriority(e) {
-
-            if (e) { e.preventDefault() }
-
+        postTicketPriority() {
             this.http.post("/help/ticket_priorities", {
                 ticket_priority: this.ticket_priority
             }).then(result => {
                 if (result.successful) {
-                    this.ticket = result.data
+                    this.ticket_priority = result.data
                     this.$router.push(`${this.ticket_priority.id}/show`)
                 }else{
                     this.alert(result.error,'danger')
@@ -77,14 +82,20 @@ export default {
 
         },
 
-        getTicket() {
-            this.http.get(`/help/tickets/${this.ticket_priority_id}.json`).then(result => {
+        getTicketPriority() {
+            this.http.get(`/help/ticket_priorities/${this.ticket_priority_id}/edit`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
+                }else{
+                    this.alert(result.error,'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
+        },
+        
+        goToList(){
+            this.$router.push(`/`)
         }
 
     }
@@ -97,21 +108,27 @@ export default {
                 <h2 class="card-header-title">
                     Ticket Priority
                 </h2>
+                <h2 class="card-header-options">
+                    <a @click="goToList">
+                        <i class="fas fa-undo"></i>
+                        Return
+                    </a>
+                </h2>
                 <router-link v-if="ticket_priority_id" :to="`/${ticket_priority_id}/show`" class="card-header-icon">
                     Show
                 </router-link>
             </div>
             <div class="card-content">
-                <form @submit="postTicketPriority">
+                <form @submit="submitTicketPriority">
                     <div class="columns">
                         <div class="column">
                             <b-field label="Name">
-                                <b-input v-model="ticket_priority.name"></b-input>
+                                <b-input v-model="ticket_priority.name" required="true"></b-input>
                             </b-field>
                         </div>
                         <div class="column">
                             <b-field label="Weight">
-                                <b-input v-model="ticket_priority.weight" type="number" required="true" min="0" max="1000000">
+                                <b-input max="1000000" min="0" v-model="ticket_priority.weight" type="number" required="true" >
                                 </b-input>
                             </b-field>
                         </div>
@@ -125,8 +142,8 @@ export default {
                     </div>
                     <div class="field">
                         <div class="actions">
-                            <button class="button is-primary" v-if="!ticket_priority_id" @click="postTicketPriority">Create Priority</button>
-                            <button class="button is-primary" v-if="ticket_priority_id" @click="putTicketPriority">Update Priority</button>
+                            <button class="button is-primary" v-if="!ticket_priority_id" type="submit">Create Priority</button>
+                            <button class="button is-primary" v-if="ticket_priority_id" type="submit">Update Priority</button>
                         </div>
                     </div>
                 </form>

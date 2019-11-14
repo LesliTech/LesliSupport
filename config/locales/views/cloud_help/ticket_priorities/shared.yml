@@ -1,0 +1,9 @@
+en:
+    cloud_help:
+        ticket_priorities:
+            shared:
+                fields:
+                    name: Name
+                    weight: Weight
+                    created_at: Created at
+                    updated_at: Updated at

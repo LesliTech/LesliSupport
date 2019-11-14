@@ -12143,7 +12143,7 @@ function normalizeComponent (
 
 
 var bind = __webpack_require__(4);
-var isBuffer = __webpack_require__(22);
+var isBuffer = __webpack_require__(23);
 
 /*global toString:true*/
 
@@ -12618,7 +12618,7 @@ module.exports = function isCancel(value) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(27);
+var normalizeHeaderName = __webpack_require__(28);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -12914,10 +12914,10 @@ process.umask = function() { return 0; };
 
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(28);
+var settle = __webpack_require__(29);
 var buildURL = __webpack_require__(5);
-var parseHeaders = __webpack_require__(30);
-var isURLSameOrigin = __webpack_require__(31);
+var parseHeaders = __webpack_require__(31);
+var isURLSameOrigin = __webpack_require__(32);
 var createError = __webpack_require__(10);
 
 module.exports = function xhrAdapter(config) {
@@ -13010,7 +13010,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(32);
+      var cookies = __webpack_require__(33);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -13094,7 +13094,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(29);
+var enhanceError = __webpack_require__(30);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -13723,40 +13723,40 @@ module.exports = Cancel;
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(21);
+module.exports = __webpack_require__(22);
 
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-Lesli Debug Message 
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-
-module.exports = __webpack_require__(37)
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+Lesli Debug Message 
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  GIT: 0.1.0 alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+
+module.exports = __webpack_require__(38)
 
 
 /***/ }),
@@ -13971,8 +13971,8 @@ function _nonIterableSpread() {
 
 
 // CONCATENATED MODULE: ./node_modules/buefy/dist/esm/chunk-e5fce48f.js
-/**
- * Get value of an object property/path even if it's nested
+/**
+ * Get value of an object property/path even if it's nested
  */
 function getValueByPath(obj, path) {
   var value = path.split('.').reduce(function (o, i) {
@@ -13980,8 +13980,8 @@ function getValueByPath(obj, path) {
   }, obj);
   return value;
 }
-/**
- * Extension of indexOf method by equality function if specified
+/**
+ * Extension of indexOf method by equality function if specified
  */
 
 function indexOf(array, obj, fn) {
@@ -13996,9 +13996,9 @@ function indexOf(array, obj, fn) {
 
   return -1;
 }
-/**
- * Mobile detection
- * https://www.abeautifulsite.net/detecting-mobile-devices-with-javascript
+/**
+ * Mobile detection
+ * https://www.abeautifulsite.net/detecting-mobile-devices-with-javascript
  */
 
 var isMobile = {
@@ -14061,8 +14061,8 @@ var FormElementMixin = {
     };
   },
   computed: {
-    /**
-     * Find parent Field, max 3 levels deep.
+    /**
+     * Find parent Field, max 3 levels deep.
      */
     parentField: function parentField() {
       var parent = this.$parent;
@@ -14076,8 +14076,8 @@ var FormElementMixin = {
       return parent;
     },
 
-    /**
-     * Get the type prop from parent if it's a Field.
+    /**
+     * Get the type prop from parent if it's a Field.
      */
     statusType: function statusType() {
       if (!this.parentField) return;
@@ -14094,16 +14094,16 @@ var FormElementMixin = {
       }
     },
 
-    /**
-     * Get the message prop from parent if it's a Field.
+    /**
+     * Get the message prop from parent if it's a Field.
      */
     statusMessage: function statusMessage() {
       if (!this.parentField) return;
       return this.parentField.newMessage;
     },
 
-    /**
-     * Fix icon size for inputs, large was too big
+    /**
+     * Fix icon size for inputs, large was too big
      */
     iconSize: function iconSize() {
       switch (this.size) {
@@ -14119,8 +14119,8 @@ var FormElementMixin = {
     }
   },
   methods: {
-    /**
-     * Focus method that work dynamically depending on the component.
+    /**
+     * Focus method that work dynamically depending on the component.
      */
     focus: function focus() {
       var _this = this;
@@ -14142,10 +14142,10 @@ var FormElementMixin = {
       this.$emit('focus', $event);
     },
 
-    /**
-     * Check HTML5 validation, set isValid property.
-     * If validation fail, send 'is-danger' type,
-     * and error message to parent if it's a Field.
+    /**
+     * Check HTML5 validation, set isValid property.
+     * If validation fail, send 'is-danger' type,
+     * and error message to parent if it's a Field.
      */
     checkHtml5Validity: function checkHtml5Validity() {
       var _this2 = this;
@@ -14202,10 +14202,10 @@ var script = {
 
   },
   computed: {
-    /**
-    * Internal icon name based on the pack.
-    * If pack is 'fa', gets the equivalent FA icon name of the MDI,
-    * internal icons are always MDI.
+    /**
+    * Internal icon name based on the pack.
+    * If pack is 'fa', gets the equivalent FA icon name of the MDI,
+    * internal icons are always MDI.
     */
     newIcon: function newIcon() {
       return this.newPack === 'mdi' ? "".concat(this.newPack, "-").concat(this.icon) : this.addFAPrefix(this.getEquivalentIconOf(this.icon));
@@ -14266,8 +14266,8 @@ var script = {
       return "fa-".concat(value);
     },
 
-    /**
-    * Equivalent FA icon name of the MDI.
+    /**
+    * Equivalent FA icon name of the MDI.
     */
     getEquivalentIconOf: function getEquivalentIconOf(value) {
       // Only transform the class if the both prop is set to true
@@ -14422,8 +14422,8 @@ var chunk_98e86f40_script = {
       return this.passwordReveal || this.loading || this.statusTypeIcon;
     },
 
-    /**
-    * Position of the icon or if it's both sides.
+    /**
+    * Position of the icon or if it's both sides.
     */
     iconPosition: function iconPosition() {
       if (this.icon && this.hasIconRight) {
@@ -14435,8 +14435,8 @@ var chunk_98e86f40_script = {
       }
     },
 
-    /**
-    * Icon name (MDI) based on the type.
+    /**
+    * Icon name (MDI) based on the type.
     */
     statusTypeIcon: function statusTypeIcon() {
       switch (this.statusType) {
@@ -14454,22 +14454,22 @@ var chunk_98e86f40_script = {
       }
     },
 
-    /**
-    * Check if have any message prop from parent if it's a Field.
+    /**
+    * Check if have any message prop from parent if it's a Field.
     */
     hasMessage: function hasMessage() {
       return !!this.statusMessage;
     },
 
-    /**
-    * Current password-reveal icon name.
+    /**
+    * Current password-reveal icon name.
     */
     passwordVisibleIcon: function passwordVisibleIcon() {
       return !this.isPasswordVisible ? 'eye' : 'eye-off';
     },
 
-    /**
-    * Get value length
+    /**
+    * Get value length
     */
     valueLength: function valueLength() {
       if (typeof this.computedValue === 'string') {
@@ -14482,18 +14482,18 @@ var chunk_98e86f40_script = {
     }
   },
   watch: {
-    /**
-    * When v-model is changed:
-    *   1. Set internal value.
+    /**
+    * When v-model is changed:
+    *   1. Set internal value.
     */
     value: function value(_value) {
       this.newValue = _value;
     }
   },
   methods: {
-    /**
-    * Toggle the visibility of a password-reveal input
-    * by changing the type and focus the input right away.
+    /**
+    * Toggle the visibility of a password-reveal input
+    * by changing the type and focus the input right away.
     */
     togglePasswordVisibility: function togglePasswordVisibility() {
       var _this = this;
@@ -14505,9 +14505,9 @@ var chunk_98e86f40_script = {
       });
     },
 
-    /**
-    * Input's 'input' event listener, 'nextTick' is used to prevent event firing
-    * before ui update, helps when using masks (Cleavejs and potentially others).
+    /**
+    * Input's 'input' event listener, 'nextTick' is used to prevent event firing
+    * before ui update, helps when using masks (Cleavejs and potentially others).
     */
     onInput: function onInput(event) {
       var _this2 = this;
@@ -14598,9 +14598,9 @@ var chunk_92acc21f_script = {
     };
   },
   computed: {
-    /**
-     * White-listed items to not close when clicked.
-     * Add input, dropdown and all children.
+    /**
+     * White-listed items to not close when clicked.
+     * Add input, dropdown and all children.
      */
     whiteList: function whiteList() {
       var whiteList = [];
@@ -14637,38 +14637,38 @@ var chunk_92acc21f_script = {
       return whiteList;
     },
 
-    /**
-     * Check if exists default slot
+    /**
+     * Check if exists default slot
      */
     hasDefaultSlot: function hasDefaultSlot() {
       return !!this.$scopedSlots.default;
     },
 
-    /**
-     * Check if exists "empty" slot
+    /**
+     * Check if exists "empty" slot
      */
     hasEmptySlot: function hasEmptySlot() {
       return !!this.$slots.empty;
     },
 
-    /**
-     * Check if exists "header" slot
+    /**
+     * Check if exists "header" slot
      */
     hasHeaderSlot: function hasHeaderSlot() {
       return !!this.$slots.header;
     },
 
-    /**
-     * Check if exists "footer" slot
+    /**
+     * Check if exists "footer" slot
      */
     hasFooterSlot: function hasFooterSlot() {
       return !!this.$slots.footer;
     }
   },
   watch: {
-    /**
-     * When dropdown is toggled, check the visibility to know when
-     * to open upwards.
+    /**
+     * When dropdown is toggled, check the visibility to know when
+     * to open upwards.
      */
     isActive: function isActive(active) {
       var _this = this;
@@ -14686,11 +14686,11 @@ var chunk_92acc21f_script = {
       }
     },
 
-    /**
-     * When updating input's value
-     *   1. Emit changes
-     *   2. If value isn't the same as selected, set null
-     *   3. Close dropdown if value is clear or else open it
+    /**
+     * When updating input's value
+     *   1. Emit changes
+     *   2. If value isn't the same as selected, set null
+     *   3. Close dropdown if value is clear or else open it
      */
     newValue: function newValue(value) {
       this.$emit('input', value); // Check if selected is invalid
@@ -14707,18 +14707,18 @@ var chunk_92acc21f_script = {
       }
     },
 
-    /**
-     * When v-model is changed:
-     *   1. Update internal value.
-     *   2. If it's invalid, validate again.
+    /**
+     * When v-model is changed:
+     *   1. Update internal value.
+     *   2. If it's invalid, validate again.
      */
     value: function value(_value) {
       this.newValue = _value;
       !this.isValid && this.$refs.input.checkHtml5Validity();
     },
 
-    /**
-     * Select first option if "keep-first
+    /**
+     * Select first option if "keep-first
      */
     data: function data(value) {
       // Keep first option always pre-selected
@@ -14728,17 +14728,17 @@ var chunk_92acc21f_script = {
     }
   },
   methods: {
-    /**
-     * Set which option is currently hovered.
+    /**
+     * Set which option is currently hovered.
      */
     setHovered: function setHovered(option) {
       if (option === undefined) return;
       this.hovered = option;
     },
 
-    /**
-     * Set which option is currently selected, update v-model,
-     * update input value and close dropdown.
+    /**
+     * Set which option is currently selected, update v-model,
+     * update input value and close dropdown.
      */
     setSelected: function setSelected(option) {
       var _this2 = this;
@@ -14757,8 +14757,8 @@ var chunk_92acc21f_script = {
       });
     },
 
-    /**
-     * Select first option
+    /**
+     * Select first option
      */
     selectFirstOption: function selectFirstOption(options) {
       var _this3 = this;
@@ -14775,19 +14775,19 @@ var chunk_92acc21f_script = {
       });
     },
 
-    /**
-     * Enter key listener.
-     * Select the hovered option.
+    /**
+     * Enter key listener.
+     * Select the hovered option.
      */
     enterPressed: function enterPressed() {
       if (this.hovered === null) return;
       this.setSelected(this.hovered);
     },
 
-    /**
-     * Tab key listener.
-     * Select hovered option if it exists, close dropdown, then allow
-     * native handling to move to next tabbable element.
+    /**
+     * Tab key listener.
+     * Select hovered option if it exists, close dropdown, then allow
+     * native handling to move to next tabbable element.
      */
     tabPressed: function tabPressed() {
       if (this.hovered === null) {
@@ -14798,16 +14798,16 @@ var chunk_92acc21f_script = {
       this.setSelected(this.hovered);
     },
 
-    /**
-     * Close dropdown if clicked outside.
+    /**
+     * Close dropdown if clicked outside.
      */
     clickedOutside: function clickedOutside(event) {
       if (this.whiteList.indexOf(event.target) < 0) this.isActive = false;
     },
 
-    /**
-     * Return display text for the input.
-     * If object, get value from path, or else just the value.
+    /**
+     * Return display text for the input.
+     * If object, get value from path, or else just the value.
      */
     getValue: function getValue(option) {
       if (!option) return;
@@ -14819,17 +14819,17 @@ var chunk_92acc21f_script = {
       return _typeof(option) === 'object' ? getValueByPath(option, this.field) : option;
     },
 
-    /**
-     * Calculate if the dropdown is vertically visible when activated,
-     * otherwise it is openened upwards.
+    /**
+     * Calculate if the dropdown is vertically visible when activated,
+     * otherwise it is openened upwards.
      */
     calcDropdownInViewportVertical: function calcDropdownInViewportVertical() {
       var _this4 = this;
 
       this.$nextTick(function () {
-        /**
-        * this.$refs.dropdown may be undefined
-        * when Autocomplete is conditional rendered
+        /**
+        * this.$refs.dropdown may be undefined
+        * when Autocomplete is conditional rendered
         */
         if (_this4.$refs.dropdown === undefined) return;
 
@@ -14839,9 +14839,9 @@ var chunk_92acc21f_script = {
       });
     },
 
-    /**
-     * Arrows keys listener.
-     * If dropdown is active, set hovered option, or else just open.
+    /**
+     * Arrows keys listener.
+     * If dropdown is active, set hovered option, or else just open.
      */
     keyArrows: function keyArrows(direction) {
       var sum = direction === 'down' ? 1 : -1;
@@ -14867,9 +14867,9 @@ var chunk_92acc21f_script = {
       }
     },
 
-    /**
-     * Focus listener.
-     * If value is the same as selected, select all text.
+    /**
+     * Focus listener.
+     * If value is the same as selected, select all text.
      */
     focused: function focused(event) {
       if (this.getValue(this.selected) === this.newValue) {
@@ -14888,8 +14888,8 @@ var chunk_92acc21f_script = {
       this.$emit('focus', event);
     },
 
-    /**
-    * Blur listener.
+    /**
+    * Blur listener.
     */
     onBlur: function onBlur(event) {
       this.hasFocus = false;
@@ -15138,8 +15138,8 @@ var chunk_9a776697_script = {
     }
   },
   watch: {
-    /**
-     * When v-model change, set internal value.
+    /**
+     * When v-model change, set internal value.
      */
     value: function value(_value) {
       this.newValue = _value;
@@ -15259,8 +15259,8 @@ var checkbox_script = {
     }
   },
   watch: {
-    /**
-     * When v-model change, set internal value.
+    /**
+     * When v-model change, set internal value.
      */
     value: function value(_value) {
       this.newValue = _value;
@@ -15367,8 +15367,8 @@ var collapse_script = {
     }
   },
   methods: {
-    /**
-    * Toggle and emit events
+    /**
+    * Toggle and emit events
     */
     toggle: function toggle() {
       this.isOpen = !this.isOpen;
@@ -15650,10 +15650,10 @@ var TimepickerMixin = {
       }
     },
 
-    /**
-     * When v-model is changed:
-     *   1. Update internal value.
-     *   2. If it's invalid, validate again.
+    /**
+     * When v-model is changed:
+     *   1. Update internal value.
+     *   2. If it's invalid, validate again.
      */
     value: {
       handler: function handler(value) {
@@ -15841,8 +15841,8 @@ var TimepickerMixin = {
       return disabled;
     },
 
-    /*
-    * Parse string into date
+    /*
+    * Parse string into date
     */
     onChange: function onChange(value) {
       var date = this.timeParser(value, this);
@@ -15857,8 +15857,8 @@ var TimepickerMixin = {
       }
     },
 
-    /*
-    * Toggle timepicker
+    /*
+    * Toggle timepicker
     */
     toggle: function toggle(active) {
       if (this.$refs.dropdown) {
@@ -15866,15 +15866,15 @@ var TimepickerMixin = {
       }
     },
 
-    /*
-    * Close timepicker
+    /*
+    * Close timepicker
     */
     close: function close() {
       this.toggle(false);
     },
 
-    /*
-    * Call default onFocus method and show timepicker
+    /*
+    * Call default onFocus method and show timepicker
     */
     handleOnFocus: function handleOnFocus() {
       this.onFocus();
@@ -15884,8 +15884,8 @@ var TimepickerMixin = {
       }
     },
 
-    /*
-    * Format date into string 'HH-MM-SS'
+    /*
+    * Format date into string 'HH-MM-SS'
     */
     formatHHMMSS: function formatHHMMSS(value) {
       var date = new Date(value);
@@ -15900,8 +15900,8 @@ var TimepickerMixin = {
       return '';
     },
 
-    /*
-    * Parse time from string
+    /*
+    * Parse time from string
     */
     onChangeNativePicker: function onChangeNativePicker(event) {
       var date = event.target.value;
@@ -15932,8 +15932,8 @@ var TimepickerMixin = {
       return (value < 10 ? '0' : '') + value;
     },
 
-    /*
-    * Format date into string
+    /*
+    * Format date into string
     */
     formatValue: function formatValue(date) {
       if (date && !isNaN(date)) {
@@ -15943,8 +15943,8 @@ var TimepickerMixin = {
       }
     },
 
-    /**
-     * Keypress event that is bound to the document.
+    /**
+     * Keypress event that is bound to the document.
      */
     keyPress: function keyPress(event) {
       // Esc key
@@ -16035,26 +16035,26 @@ var chunk_00e3e67f_script = {
     }
   },
   watch: {
-    /**
-    * When v-model is changed set the new selected item.
+    /**
+    * When v-model is changed set the new selected item.
     */
     value: function value(_value) {
       this.selected = _value;
     },
 
-    /**
-    * Emit event when isActive value is changed.
+    /**
+    * Emit event when isActive value is changed.
     */
     isActive: function isActive(value) {
       this.$emit('active-change', value);
     }
   },
   methods: {
-    /**
-    * Click listener from DropdownItem.
-    *   1. Set new selected item.
-    *   2. Emit input event to update the user v-model.
-    *   3. Close the dropdown.
+    /**
+    * Click listener from DropdownItem.
+    *   1. Set new selected item.
+    *   2. Emit input event to update the user v-model.
+    *   3. Close the dropdown.
     */
     selectItem: function selectItem(value) {
       var _this = this;
@@ -16095,8 +16095,8 @@ var chunk_00e3e67f_script = {
       }
     },
 
-    /**
-    * White-listed items to not close when clicked.
+    /**
+    * White-listed items to not close when clicked.
     */
     isInWhiteList: function isInWhiteList(el) {
       if (el === this.$refs.dropdownMenu) return true;
@@ -16167,16 +16167,16 @@ var chunk_00e3e67f_script = {
       return false;
     },
 
-    /**
-    * Close dropdown if clicked outside.
+    /**
+    * Close dropdown if clicked outside.
     */
     clickedOutside: function clickedOutside(event) {
       if (this.inline) return;
       if (!this.isInWhiteList(event.target)) this.isActive = false;
     },
 
-    /**
-    * Toggle dropdown if it's not disabled.
+    /**
+    * Toggle dropdown if it's not disabled.
     */
     toggle: function toggle() {
       var _this2 = this;
@@ -16306,8 +16306,8 @@ var script$1 = {
       return this.ariaRole === 'menuitem' || this.ariaRole === 'listitem' ? this.ariaRole : null;
     },
 
-    /**
-    * Check if item can be clickable.
+    /**
+    * Check if item can be clickable.
     */
     isClickable: function isClickable() {
       return !this.$parent.disabled && !this.separator && !this.disabled && !this.custom;
@@ -16319,8 +16319,8 @@ var script$1 = {
     }
   },
   methods: {
-    /**
-    * Click listener, select the item.
+    /**
+    * Click listener, select the item.
     */
     selectItem: function selectItem() {
       if (!this.isClickable) return;
@@ -16491,12 +16491,12 @@ var chunk_531b8274_script$1 = {
       }, this.numberInputClasses];
     },
 
-    /**
-    * Correct Bulma class for the side of the addon or group.
-    *
-    * This is not kept like the others (is-small, etc.),
-    * because since 'has-addons' is set automatically it
-    * doesn't make sense to teach users what addons are exactly.
+    /**
+    * Correct Bulma class for the side of the addon or group.
+    *
+    * This is not kept like the others (is-small, etc.),
+    * because since 'has-addons' is set automatically it
+    * doesn't make sense to teach users what addons are exactly.
     */
     newPosition: function newPosition() {
       if (this.position === undefined) return;
@@ -16506,9 +16506,9 @@ var chunk_531b8274_script$1 = {
       if (this.position) return prefix + position[1];
     },
 
-    /**
-    * Formatted message in case it's an array
-    * (each element is separated by <br> tag)
+    /**
+    * Formatted message in case it's an array
+    * (each element is separated by <br> tag)
     */
     formattedMessage: function formattedMessage() {
       if (typeof this.newMessage === 'string') {
@@ -16571,26 +16571,26 @@ var chunk_531b8274_script$1 = {
     }
   },
   watch: {
-    /**
-    * Set internal type when prop change.
+    /**
+    * Set internal type when prop change.
     */
     type: function type(value) {
       this.newType = value;
     },
 
-    /**
-    * Set internal message when prop change.
+    /**
+    * Set internal message when prop change.
     */
     message: function message(value) {
       this.newMessage = value;
     }
   },
   methods: {
-    /**
-    * Field has addons if there are more than one slot
-    * (element / component) in the Field.
-    * Or is grouped when prop is set.
-    * Is a method to be called when component re-render.
+    /**
+    * Field has addons if there are more than one slot
+    * (element / component) in the Field.
+    * Or is grouped when prop is set.
+    * Is a method to be called when component re-render.
     */
     fieldType: function fieldType() {
       if (this.grouped) return 'is-grouped';
@@ -16714,59 +16714,59 @@ var clockpicker_script = {
     };
   },
   computed: {
-    /**
-    * How many number indicators are shown on the face
+    /**
+    * How many number indicators are shown on the face
     */
     count: function count() {
       return this.max - this.min + 1;
     },
 
-    /**
-    * How many number indicators are shown per ring on the face
+    /**
+    * How many number indicators are shown per ring on the face
     */
     countPerRing: function countPerRing() {
       return this.double ? this.count / 2 : this.count;
     },
 
-    /**
-    * Radius of the clock face
+    /**
+    * Radius of the clock face
     */
     radius: function radius() {
       return this.pickerSize / 2;
     },
 
-    /**
-    * Radius of the outer ring of number indicators
+    /**
+    * Radius of the outer ring of number indicators
     */
     outerRadius: function outerRadius() {
       return this.radius - paddingInner - indicatorSize / 2;
     },
 
-    /**
-    * Radius of the inner ring of number indicators
+    /**
+    * Radius of the inner ring of number indicators
     */
     innerRadius: function innerRadius() {
       return Math.max(this.outerRadius * 0.6, this.outerRadius - paddingInner - indicatorSize); // 48px gives enough room for the outer ring of numbers
     },
 
-    /**
-    * The angle for each selectable value
-    * For hours this ends up being 30 degrees, for minutes 6 degrees
+    /**
+    * The angle for each selectable value
+    * For hours this ends up being 30 degrees, for minutes 6 degrees
     */
     degreesPerUnit: function degreesPerUnit() {
       return 360 / this.countPerRing;
     },
 
-    /**
-    * Used for calculating x/y grid location based on degrees
+    /**
+    * Used for calculating x/y grid location based on degrees
     */
     degrees: function degrees() {
       return this.degreesPerUnit * Math.PI / 180;
     },
 
-    /**
-    * Calculates the angle the clock hand should be rotated for the
-    * selected value
+    /**
+    * Calculates the angle the clock hand should be rotated for the
+    * selected value
     */
     handRotateAngle: function handRotateAngle() {
       var currentAngle = this.prevAngle;
@@ -16781,9 +16781,9 @@ var clockpicker_script = {
       return angle;
     },
 
-    /**
-    * Determines how long the selector hand is based on if the
-    * selected value is located along the outer or inner ring
+    /**
+    * Determines how long the selector hand is based on if the
+    * selected value is located along the outer or inner ring
     */
     handScale: function handScale() {
       return this.calcHandScale(this.displayedValue);
@@ -16795,8 +16795,8 @@ var clockpicker_script = {
       };
     },
 
-    /**
-    * The value the hand should be pointing at
+    /**
+    * The value the hand should be pointing at
     */
     displayedValue: function displayedValue() {
       return this.inputValue == null ? this.min : this.inputValue;
@@ -16816,8 +16816,8 @@ var clockpicker_script = {
       return this.disabledValues && this.disabledValues(value);
     },
 
-    /**
-    * Calculates the distance between two points
+    /**
+    * Calculates the distance between two points
     */
     euclidean: function euclidean(p0, p1) {
       var dx = p1.x - p0.x;
@@ -16830,19 +16830,19 @@ var clockpicker_script = {
       return (modDiff + 360) % 360 < 180 ? shortestDistance * 1 : shortestDistance * -1;
     },
 
-    /**
-    * Calculates the angle of the line from the center point
-    * to the given point.
+    /**
+    * Calculates the angle of the line from the center point
+    * to the given point.
     */
     coordToAngle: function coordToAngle(center, p1) {
       var value = 2 * Math.atan2(p1.y - center.y - this.euclidean(center, p1), p1.x - center.x);
       return Math.abs(value * 180 / Math.PI);
     },
 
-    /**
-    * Generates the inline style translate() property for a
-    * number indicator, which determines it's location on the
-    * clock face
+    /**
+    * Generates the inline style translate() property for a
+    * number indicator, which determines it's location on the
+    * clock face
     */
     getNumberTranslate: function getNumberTranslate(value) {
       var _this$getNumberCoords = this.getNumberCoords(value),
@@ -16852,9 +16852,9 @@ var clockpicker_script = {
       return "translate(".concat(x, "px, ").concat(y, "px)");
     },
 
-    /***
-    * Calculates the coordinates on the clock face for a number
-    * indicator value
+    /***
+    * Calculates the coordinates on the clock face for a number
+    * indicator value
     */
     getNumberCoords: function getNumberCoords(value) {
       var radius = this.isInnerRing(value) ? this.innerRadius : this.outerRadius;
@@ -16870,8 +16870,8 @@ var clockpicker_script = {
       };
     },
 
-    /**
-    * Determines if a value resides on the inner ring
+    /**
+    * Determines if a value resides on the inner ring
     */
     isInnerRing: function isInnerRing(value) {
       return this.double && value - this.min >= this.countPerRing;
@@ -17146,10 +17146,10 @@ var chunk_912ed715_script = {
     }
   },
   watch: {
-    /**
-    * When v-model is changed:
-    *   1. Set the selected option.
-    *   2. If it's invalid, validate again.
+    /**
+    * When v-model is changed:
+    *   1. Set the selected option.
+    *   2. If it's invalid, validate again.
     */
     value: function value(_value) {
       this.selected = _value;
@@ -17330,9 +17330,9 @@ var datepicker_script = {
       return resWeek;
     },
 
-    /*
-    * Check that selected day is within earliest/latest params and
-    * is within this month
+    /*
+    * Check that selected day is within earliest/latest params and
+    * is within this month
     */
     selectableDate: function selectableDate(day) {
       var validity = [];
@@ -17378,8 +17378,8 @@ var datepicker_script = {
       return validity.indexOf(false) < 0;
     },
 
-    /*
-    * Emit select event with chosen date as payload
+    /*
+    * Emit select event with chosen date as payload
     */
     emitChosenDate: function emitChosenDate(day) {
       if (this.disabled) return;
@@ -17405,8 +17405,8 @@ var datepicker_script = {
       return dayEvents;
     },
 
-    /*
-    * Build classObject for cell using validations
+    /*
+    * Build classObject for cell using validations
     */
     classObject: function classObject(day) {
       function dateMatch(dateOne, dateTwo) {
@@ -17555,8 +17555,8 @@ var datepicker_script$1 = {
       return this.events && this.events.length;
     },
 
-    /*
-    * Return array of all events in the specified month
+    /*
+    * Return array of all events in the specified month
     */
     eventsInThisMonth: function eventsInThisMonth() {
       if (!this.events) return [];
@@ -17583,8 +17583,8 @@ var datepicker_script$1 = {
       return monthEvents;
     },
 
-    /*
-    * Return array of all weeks in the specified month
+    /*
+    * Return array of all weeks in the specified month
     */
     weeksInThisMonth: function weeksInThisMonth() {
       var month = this.focused.month;
@@ -17628,8 +17628,8 @@ var datepicker_script$1 = {
     }
   },
   methods: {
-    /*
-    * Emit input event with selected date as payload for v-model in parent
+    /*
+    * Emit input event with selected date as payload for v-model in parent
     */
     updateSelectedDate: function updateSelectedDate(date) {
       if (!this.range) {
@@ -17639,10 +17639,10 @@ var datepicker_script$1 = {
       }
     },
 
-    /*
-    * If both begin and end dates are set, reset the end date and set the begin date.
-    * If only begin date is selected, emit an array of the begin date and the new date.
-    * If not set, only set the begin date.
+    /*
+    * If both begin and end dates are set, reset the end date and set the begin date.
+    * If only begin date is selected, emit an array of the begin date and the new date.
+    * If not set, only set the begin date.
     */
     handleSelectRangeDate: function handleSelectRangeDate(date) {
       if (this.selectedBeginDate && this.selectedEndDate) {
@@ -17662,8 +17662,8 @@ var datepicker_script$1 = {
       }
     },
 
-    /*
-    * Return array of all days in the week that the startingDate is within
+    /*
+    * Return array of all days in the week that the startingDate is within
     */
     weekBuilder: function weekBuilder(startingDate, month, year) {
       var thisMonth = new Date(year, month);
@@ -17801,8 +17801,8 @@ var script$2 = {
       return this.events && this.events.length;
     },
 
-    /*
-    * Return array of all events in the specified month
+    /*
+    * Return array of all events in the specified month
     */
     eventsInThisYear: function eventsInThisYear() {
       if (!this.events) return [];
@@ -17900,8 +17900,8 @@ var script$2 = {
       return monthEvents;
     },
 
-    /*
-    * Build classObject for cell using validations
+    /*
+    * Build classObject for cell using validations
     */
     classObject: function classObject(day) {
       function dateMatch(dateOne, dateTwo) {
@@ -17921,8 +17921,8 @@ var script$2 = {
       };
     },
 
-    /*
-    * Emit select event with chosen date as payload
+    /*
+    * Emit select event with chosen date as payload
     */
     emitChosenDate: function emitChosenDate(day) {
       if (this.disabled) return;
@@ -18162,9 +18162,9 @@ var script$3 = {
       }
     },
 
-    /*
-    * Returns an array of years for the year dropdown. If earliest/latest
-    * dates are set by props, range of years will fall within those dates.
+    /*
+    * Returns an array of years for the year dropdown. If earliest/latest
+    * dates are set by props, range of years will fall within those dates.
     */
     listOfYears: function listOfYears() {
       var latestYear = this.focusedDateData.year + this.yearsRange[1];
@@ -18217,10 +18217,10 @@ var script$3 = {
     }
   },
   watch: {
-    /**
-    * When v-model is changed:
-    *   1. Update internal value.
-    *   2. If it's invalid, validate again.
+    /**
+    * When v-model is changed:
+    *   1. Update internal value.
+    *   2. If it's invalid, validate again.
     */
     value: function value(_value) {
       this.updateInternalState(_value);
@@ -18236,8 +18236,8 @@ var script$3 = {
       }
     },
 
-    /*
-    * Emit input event on month and/or year change
+    /*
+    * Emit input event on month and/or year change
     */
     'focusedDateData.month': function focusedDateDataMonth(value) {
       this.$emit('change-month', value);
@@ -18247,8 +18247,8 @@ var script$3 = {
     }
   },
   methods: {
-    /*
-    * Parse string into date
+    /*
+    * Parse string into date
     */
     onChange: function onChange(value) {
       var date = this.dateParser(value, this);
@@ -18262,8 +18262,8 @@ var script$3 = {
       }
     },
 
-    /*
-    * Format date into string
+    /*
+    * Format date into string
     */
     formatValue: function formatValue(value) {
       if (Array.isArray(value)) {
@@ -18276,9 +18276,9 @@ var script$3 = {
       return value && !isNaN(value) ? this.dateFormatter(value, this) : null;
     },
 
-    /*
-    * Either decrement month by 1 if not January or decrement year by 1
-    * and set month to 11 (December) or decrement year when 'month'
+    /*
+    * Either decrement month by 1 if not January or decrement year by 1
+    * and set month to 11 (December) or decrement year when 'month'
     */
     prev: function prev() {
       if (this.disabled) return;
@@ -18295,9 +18295,9 @@ var script$3 = {
       }
     },
 
-    /*
-    * Either increment month by 1 if not December or increment year by 1
-    * and set month to 0 (January) or increment year when 'month'
+    /*
+    * Either increment month by 1 if not December or increment year by 1
+    * and set month to 0 (January) or increment year when 'month'
     */
     next: function next() {
       if (this.disabled) return;
@@ -18317,8 +18317,8 @@ var script$3 = {
       return this.isTypeMonth ? this.formatYYYYMM(value) : this.formatYYYYMMDD(value);
     },
 
-    /*
-    * Format date into string 'YYYY-MM-DD'
+    /*
+    * Format date into string 'YYYY-MM-DD'
     */
     formatYYYYMMDD: function formatYYYYMMDD(value) {
       var date = new Date(value);
@@ -18333,8 +18333,8 @@ var script$3 = {
       return '';
     },
 
-    /*
-    * Format date into string 'YYYY-MM'
+    /*
+    * Format date into string 'YYYY-MM'
     */
     formatYYYYMM: function formatYYYYMM(value) {
       var date = new Date(value);
@@ -18348,8 +18348,8 @@ var script$3 = {
       return '';
     },
 
-    /*
-    * Parse date from string
+    /*
+    * Parse date from string
     */
     onChangeNativePicker: function onChangeNativePicker(event) {
       var date = event.target.value;
@@ -18364,8 +18364,8 @@ var script$3 = {
       this.dateSelected = value;
     },
 
-    /*
-    * Toggle datepicker
+    /*
+    * Toggle datepicker
     */
     togglePicker: function togglePicker(active) {
       if (this.$refs.dropdown) {
@@ -18373,8 +18373,8 @@ var script$3 = {
       }
     },
 
-    /*
-    * Call default onFocus method and show datepicker
+    /*
+    * Call default onFocus method and show datepicker
     */
     handleOnFocus: function handleOnFocus(event) {
       this.onFocus(event);
@@ -18384,8 +18384,8 @@ var script$3 = {
       }
     },
 
-    /*
-    * Toggle dropdown
+    /*
+    * Toggle dropdown
     */
     toggle: function toggle() {
       if (this.mobileNative && this.isMobile) {
@@ -18398,8 +18398,8 @@ var script$3 = {
       this.$refs.dropdown.toggle();
     },
 
-    /*
-    * Avoid dropdown toggle when is already visible
+    /*
+    * Avoid dropdown toggle when is already visible
     */
     onInputClick: function onInputClick(event) {
       if (this.$refs.dropdown.isActive) {
@@ -18407,8 +18407,8 @@ var script$3 = {
       }
     },
 
-    /**
-     * Keypress event that is bound to the document.
+    /**
+     * Keypress event that is bound to the document.
      */
     keyPress: function keyPress(event) {
       // Esc key
@@ -18581,8 +18581,8 @@ var chunk_a5ea70d0_script = {
       this.savedScrollTop = null;
     },
 
-    /**
-    * Close the Modal if canCancel and call the onCancel prop (function).
+    /**
+    * Close the Modal if canCancel and call the onCancel prop (function).
     */
     cancel: function cancel(method) {
       if (this.cancelOptions.indexOf(method) < 0) return;
@@ -18590,9 +18590,9 @@ var chunk_a5ea70d0_script = {
       this.close();
     },
 
-    /**
-    * Call the onCancel prop (function).
-    * Emit events, and destroy modal if it's programmatic.
+    /**
+    * Call the onCancel prop (function).
+    * Emit events, and destroy modal if it's programmatic.
     */
     close: function close() {
       var _this = this;
@@ -18610,8 +18610,8 @@ var chunk_a5ea70d0_script = {
       }
     },
 
-    /**
-    * Keypress event that is bound to the document.
+    /**
+    * Keypress event that is bound to the document.
     */
     keyPress: function keyPress(event) {
       // Esc key
@@ -18740,8 +18740,8 @@ var dialog_script = {
     };
   },
   computed: {
-    /**
-    * Icon name (MDI) based on the type.
+    /**
+    * Icon name (MDI) based on the type.
     */
     iconByType: function iconByType() {
       switch (this.type) {
@@ -18766,9 +18766,9 @@ var dialog_script = {
     }
   },
   methods: {
-    /**
-    * If it's a prompt Dialog, validate the input.
-    * Call the onConfirm prop (function) and close the Dialog.
+    /**
+    * If it's a prompt Dialog, validate the input.
+    * Call the onConfirm prop (function) and close the Dialog.
     */
     confirm: function confirm() {
       var _this = this;
@@ -18787,8 +18787,8 @@ var dialog_script = {
       this.close();
     },
 
-    /**
-    * Close the Dialog.
+    /**
+    * Close the Dialog.
     */
     close: function close() {
       var _this2 = this;
@@ -19025,16 +19025,16 @@ var loading_script = {
     }
   },
   methods: {
-    /**
-    * Close the Modal if canCancel.
+    /**
+    * Close the Modal if canCancel.
     */
     cancel: function cancel() {
       if (!this.canCancel || !this.isActive) return;
       this.close();
     },
 
-    /**
-    * Emit events, and destroy modal if it's programmatic.
+    /**
+    * Emit events, and destroy modal if it's programmatic.
     */
     close: function close() {
       var _this = this;
@@ -19053,8 +19053,8 @@ var loading_script = {
       }
     },
 
-    /**
-    * Keypress event that is bound to the document.
+    /**
+    * Keypress event that is bound to the document.
     */
     keyPress: function keyPress(event) {
       // Esc key
@@ -19423,8 +19423,8 @@ var MessageMixin = {
     }
   },
   computed: {
-    /**
-     * Icon name (MDI) based on type.
+    /**
+     * Icon name (MDI) based on type.
      */
     icon: function icon() {
       switch (this.type) {
@@ -19446,8 +19446,8 @@ var MessageMixin = {
     }
   },
   methods: {
-    /**
-     * Close the Message and emit events.
+    /**
+     * Close the Message and emit events.
      */
     close: function close() {
       this.isActive = false;
@@ -19455,8 +19455,8 @@ var MessageMixin = {
       this.$emit('update:active', false);
     },
 
-    /**
-     * Set timer to auto close message
+    /**
+     * Set timer to auto close message
      */
     setAutoClose: function setAutoClose() {
       var _this = this;
@@ -20213,9 +20213,9 @@ var numberinput_script = {
     }
   },
   watch: {
-    /**
-    * When v-model is changed:
-    *   1. Set internal value.
+    /**
+    * When v-model is changed:
+    *   1. Set internal value.
     */
     value: function value(_value) {
       this.newValue = _value;
@@ -20355,66 +20355,66 @@ var chunk_cc718c15_script = {
       return parseInt(this.rangeAfter);
     },
 
-    /**
-    * Total page size (count).
+    /**
+    * Total page size (count).
     */
     pageCount: function pageCount() {
       return Math.ceil(this.total / this.perPage);
     },
 
-    /**
-    * First item of the page (count).
+    /**
+    * First item of the page (count).
     */
     firstItem: function firstItem() {
       var firstItem = this.current * this.perPage - this.perPage + 1;
       return firstItem >= 0 ? firstItem : 0;
     },
 
-    /**
-    * Check if previous button is available.
+    /**
+    * Check if previous button is available.
     */
     hasPrev: function hasPrev() {
       return this.current > 1;
     },
 
-    /**
-    * Check if first page button should be visible.
+    /**
+    * Check if first page button should be visible.
     */
     hasFirst: function hasFirst() {
       return this.current >= 2 + this.beforeCurrent;
     },
 
-    /**
-    * Check if first ellipsis should be visible.
+    /**
+    * Check if first ellipsis should be visible.
     */
     hasFirstEllipsis: function hasFirstEllipsis() {
       return this.current >= this.beforeCurrent + 4;
     },
 
-    /**
-    * Check if last page button should be visible.
+    /**
+    * Check if last page button should be visible.
     */
     hasLast: function hasLast() {
       return this.current <= this.pageCount - (1 + this.afterCurrent);
     },
 
-    /**
-    * Check if last ellipsis should be visible.
+    /**
+    * Check if last ellipsis should be visible.
     */
     hasLastEllipsis: function hasLastEllipsis() {
       return this.current < this.pageCount - (2 + this.afterCurrent);
     },
 
-    /**
-    * Check if next button is available.
+    /**
+    * Check if next button is available.
     */
     hasNext: function hasNext() {
       return this.current < this.pageCount;
     },
 
-    /**
-    * Get near pages, 1 before and 1 after the current.
-    * Also add the click event to the array.
+    /**
+    * Get near pages, 1 before and 1 after the current.
+    * Also add the click event to the array.
     */
     pagesInRange: function pagesInRange() {
       var _this = this;
@@ -20461,16 +20461,16 @@ var chunk_cc718c15_script = {
     }
   },
   watch: {
-    /**
-    * If current page is trying to be greater than page count, set to last.
+    /**
+    * If current page is trying to be greater than page count, set to last.
     */
     pageCount: function pageCount(value) {
       if (this.current > value) this.last();
     }
   },
   methods: {
-    /**
-    * Previous button click listener.
+    /**
+    * Previous button click listener.
     */
     prev: function prev() {
       if (!this.hasPrev) return;
@@ -20478,24 +20478,24 @@ var chunk_cc718c15_script = {
       this.$emit('update:current', this.current - 1);
     },
 
-    /**
-    * First button click listener.
+    /**
+    * First button click listener.
     */
     first: function first() {
       this.$emit('change', 1);
       this.$emit('update:current', 1);
     },
 
-    /**
-    * Last button click listener.
+    /**
+    * Last button click listener.
     */
     last: function last() {
       this.$emit('change', this.pageCount);
       this.$emit('update:current', this.pageCount);
     },
 
-    /**
-    * Next button click listener.
+    /**
+    * Next button click listener.
     */
     next: function next() {
       if (!this.hasNext) return;
@@ -20503,8 +20503,8 @@ var chunk_cc718c15_script = {
       this.$emit('update:current', this.current + 1);
     },
 
-    /**
-    * Get text for aria-label according to page number.
+    /**
+    * Get text for aria-label according to page number.
     */
     getAriaPageLabel: function getAriaPageLabel(pageNumber, isCurrent) {
       if (this.ariaPageLabel && (!isCurrent || !this.ariaCurrentLabel)) {
@@ -20649,9 +20649,9 @@ var progress_script = {
     }
   },
   methods: {
-    /**
-    * When value is changed back to undefined, value of native progress get reset to 0.
-    * Need to add and remove the value attribute to have the indeterminate or not.
+    /**
+    * When value is changed back to undefined, value of native progress get reset to 0.
+    * Need to add and remove the value attribute to have the indeterminate or not.
     */
     setValue: function setValue(value) {
       if (this.isIndeterminate) {
@@ -20771,8 +20771,8 @@ var radio_script = {
     }
   },
   watch: {
-    /**
-    * When v-model change, set internal value.
+    /**
+    * When v-model change, set internal value.
     */
     value: function value(_value) {
       this.newValue = _value;
@@ -20878,8 +20878,8 @@ var radio_script$1 = {
     }
   },
   watch: {
-    /**
-    * When v-model change, set internal value.
+    /**
+    * When v-model change, set internal value.
     */
     value: function value(_value) {
       this.newValue = _value;
@@ -21428,8 +21428,8 @@ var slider_script$2 = {
     }
   },
   watch: {
-    /**
-    * When v-model is changed set the new active step.
+    /**
+    * When v-model is changed set the new active step.
     */
     value: function value(_value) {
       this.setValues(_value);
@@ -21582,9 +21582,9 @@ var snackbar_script = {
     };
   },
   methods: {
-    /**
-    * Click listener.
-    * Call action prop before closing (from Mixin).
+    /**
+    * Click listener.
+    * Call action prop before closing (from Mixin).
     */
     action: function action() {
       this.onAction();
@@ -21764,8 +21764,8 @@ var steps_script = {
       return this.stepItems.slice().reverse();
     },
 
-    /**
-        * Check the first visible step index.
+    /**
+        * Check the first visible step index.
         */
     firstVisibleStepIndex: function firstVisibleStepIndex() {
       return this.stepItems.findIndex(function (step, idx) {
@@ -21773,15 +21773,15 @@ var steps_script = {
       });
     },
 
-    /**
-        * Check if previous button is available.
+    /**
+        * Check if previous button is available.
         */
     hasPrev: function hasPrev() {
       return this.firstVisibleStepIndex >= 0 && this.activeStep > this.firstVisibleStepIndex;
     },
 
-    /**
-        * Check the last visible step index.
+    /**
+        * Check the last visible step index.
         */
     lastVisibleStepIndex: function lastVisibleStepIndex() {
       var idx = this.reversedStepItems.findIndex(function (step, idx) {
@@ -21795,23 +21795,23 @@ var steps_script = {
       return idx;
     },
 
-    /**
-        * Check if next button is available.
+    /**
+        * Check if next button is available.
         */
     hasNext: function hasNext() {
       return this.lastVisibleStepIndex >= 0 && this.activeStep < this.lastVisibleStepIndex;
     }
   },
   watch: {
-    /**
-    * When v-model is changed set the new active step.
+    /**
+    * When v-model is changed set the new active step.
     */
     value: function value(_value) {
       this.changeStep(_value);
     },
 
-    /**
-    * When step-items are updated, set active one.
+    /**
+    * When step-items are updated, set active one.
     */
     stepItems: function stepItems() {
       if (this.activeStep < this.stepItems.length) {
@@ -21820,8 +21820,8 @@ var steps_script = {
     }
   },
   methods: {
-    /**
-    * Change the active step and emit change event.
+    /**
+    * Change the active step and emit change event.
     */
     changeStep: function changeStep(newIndex) {
       if (this.activeStep === newIndex) return;
@@ -21835,8 +21835,8 @@ var steps_script = {
       this.$emit('change', newIndex);
     },
 
-    /**
-        * Return if the step should be clickable or not.
+    /**
+        * Return if the step should be clickable or not.
         */
     isItemClickable: function isItemClickable(stepItem, index) {
       if (stepItem.clickable === undefined) {
@@ -21846,16 +21846,16 @@ var steps_script = {
       return stepItem.clickable;
     },
 
-    /**
-    * Step click listener, emit input event and change active step.
+    /**
+    * Step click listener, emit input event and change active step.
     */
     stepClick: function stepClick(value) {
       this.$emit('input', value);
       this.changeStep(value);
     },
 
-    /**
-        * Previous button click listener.
+    /**
+        * Previous button click listener.
         */
     prev: function prev() {
       var _this = this;
@@ -21873,8 +21873,8 @@ var steps_script = {
       this.changeStep(prevItemIdx);
     },
 
-    /**
-        * Previous button click listener.
+    /**
+        * Previous button click listener.
         */
     next: function next() {
       var _this2 = this;
@@ -21952,16 +21952,16 @@ var steps_script$1 = {
     };
   },
   methods: {
-    /**
-    * Activate step, alter animation name based on the index.
+    /**
+    * Activate step, alter animation name based on the index.
     */
     activate: function activate(oldIndex, index) {
       this.transitionName = index < oldIndex ? 'slide-next' : 'slide-prev';
       this.isActive = true;
     },
 
-    /**
-    * Deactivate step, alter animation name based on the index.
+    /**
+    * Deactivate step, alter animation name based on the index.
     */
     deactivate: function deactivate(oldIndex, index) {
       this.transitionName = index < oldIndex ? 'slide-next' : 'slide-prev';
@@ -22149,8 +22149,8 @@ var switch_script = {
     }
   },
   watch: {
-    /**
-    * When v-model change, set internal value.
+    /**
+    * When v-model change, set internal value.
     */
     value: function value(_value) {
       this.newValue = _value;
@@ -22549,9 +22549,9 @@ var table_script$2 = {
     };
   },
   computed: {
-    /**
-    * return if detailed row tabled
-    * will be with chevron column & icon or not
+    /**
+    * return if detailed row tabled
+    * will be with chevron column & icon or not
     */
     showDetailRowIcon: function showDetailRowIcon() {
       return this.detailed && this.showDetailIcon;
@@ -22566,8 +22566,8 @@ var table_script$2 = {
       };
     },
 
-    /**
-    * Splitted data based on the pagination.
+    /**
+    * Splitted data based on the pagination.
     */
     visibleData: function visibleData() {
       if (!this.paginated) return this.newData;
@@ -22589,8 +22589,8 @@ var table_script$2 = {
       });
     },
 
-    /**
-    * Check if all rows in the page are checked.
+    /**
+    * Check if all rows in the page are checked.
     */
     isAllChecked: function isAllChecked() {
       var _this = this;
@@ -22605,8 +22605,8 @@ var table_script$2 = {
       return !isAllChecked;
     },
 
-    /**
-    * Check if all rows in the page are checkable.
+    /**
+    * Check if all rows in the page are checkable.
     */
     isAllUncheckable: function isAllUncheckable() {
       var _this2 = this;
@@ -22617,8 +22617,8 @@ var table_script$2 = {
       return validVisibleData.length === 0;
     },
 
-    /**
-    * Check if has any sortable column.
+    /**
+    * Check if has any sortable column.
     */
     hasSortablenewColumns: function hasSortablenewColumns() {
       return this.newColumns.some(function (column) {
@@ -22626,8 +22626,8 @@ var table_script$2 = {
       });
     },
 
-    /**
-    * Return total column count based if it's checkable or expanded
+    /**
+    * Return total column count based if it's checkable or expanded
     */
     columnCount: function columnCount() {
       var count = this.newColumns.length;
@@ -22637,12 +22637,12 @@ var table_script$2 = {
     }
   },
   watch: {
-    /**
-    * When data prop change:
-    *   1. Update internal value.
-    *   2. Reset newColumns (thead), in case it's on a v-for loop.
-    *   3. Sort again if it's not backend-sort.
-    *   4. Set new total if it's not backend-paginated.
+    /**
+    * When data prop change:
+    *   1. Update internal value.
+    *   2. Reset newColumns (thead), in case it's on a v-for loop.
+    *   3. Sort again if it's not backend-sort.
+    *   4. Set new total if it's not backend-paginated.
     */
     data: function data(value) {
       var _this3 = this;
@@ -22666,18 +22666,18 @@ var table_script$2 = {
       }
     },
 
-    /**
-    * When Pagination total change, update internal total
-    * only if it's backend-paginated.
+    /**
+    * When Pagination total change, update internal total
+    * only if it's backend-paginated.
     */
     total: function total(newTotal) {
       if (!this.backendPagination) return;
       this.newDataTotal = newTotal;
     },
 
-    /**
-    * When checkedRows prop change, update internal value without
-    * mutating original data.
+    /**
+    * When checkedRows prop change, update internal value without
+    * mutating original data.
     */
     checkedRows: function checkedRows(rows) {
       this.newCheckedRows = _toConsumableArray(rows);
@@ -22689,9 +22689,9 @@ var table_script$2 = {
       this.checkSort();
     },
 
-    /**
-        * When the user wants to control the detailed rows via props.
-        * Or wants to open the details of certain row with the router for example.
+    /**
+        * When the user wants to control the detailed rows via props.
+        * Or wants to open the details of certain row with the router for example.
         */
     openedDetailed: function openedDetailed(expandedRows) {
       this.visibleDetailRows = expandedRows;
@@ -22701,9 +22701,9 @@ var table_script$2 = {
     }
   },
   methods: {
-    /**
-    * Sort an array by key without mutating original data.
-    * Call the user sort function if it was passed.
+    /**
+    * Sort an array by key without mutating original data.
+    * Call the user sort function if it was passed.
     */
     sortBy: function sortBy(array, key, fn, isAsc) {
       var sorted = []; // Sorting without mutating original data
@@ -22734,10 +22734,10 @@ var table_script$2 = {
       return sorted;
     },
 
-    /**
-    * Sort the column.
-    * Toggle current direction on column if it's sortable
-    * and not just updating the prop.
+    /**
+    * Sort the column.
+    * Toggle current direction on column if it's sortable
+    * and not just updating the prop.
     */
     sort: function sort(column) {
       var updatingData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
@@ -22758,15 +22758,15 @@ var table_script$2 = {
       this.currentSortColumn = column;
     },
 
-    /**
-    * Check if the row is checked (is added to the array).
+    /**
+    * Check if the row is checked (is added to the array).
     */
     isRowChecked: function isRowChecked(row) {
       return indexOf(this.newCheckedRows, row, this.customIsChecked) >= 0;
     },
 
-    /**
-    * Remove a checked row from the array.
+    /**
+    * Remove a checked row from the array.
     */
     removeCheckedRow: function removeCheckedRow(row) {
       var index = indexOf(this.newCheckedRows, row, this.customIsChecked);
@@ -22776,9 +22776,9 @@ var table_script$2 = {
       }
     },
 
-    /**
-    * Header checkbox click listener.
-    * Add or remove all rows in current page.
+    /**
+    * Header checkbox click listener.
+    * Add or remove all rows in current page.
     */
     checkAll: function checkAll() {
       var _this4 = this;
@@ -22799,9 +22799,9 @@ var table_script$2 = {
       this.$emit('update:checkedRows', this.newCheckedRows);
     },
 
-    /**
-    * Row checkbox click listener.
-    * Add or remove a single row.
+    /**
+    * Row checkbox click listener.
+    * Add or remove a single row.
     */
     checkRow: function checkRow(row) {
       if (!this.isRowChecked(row)) {
@@ -22815,9 +22815,9 @@ var table_script$2 = {
       this.$emit('update:checkedRows', this.newCheckedRows);
     },
 
-    /**
-    * Row click listener.
-    * Emit all necessary events.
+    /**
+    * Row click listener.
+    * Emit all necessary events.
     */
     selectRow: function selectRow(row, index) {
       this.$emit('click', row);
@@ -22828,8 +22828,8 @@ var table_script$2 = {
       this.$emit('update:selected', row);
     },
 
-    /**
-    * Paginator change listener.
+    /**
+    * Paginator change listener.
     */
     pageChanged: function pageChanged(page) {
       this.newCurrentPage = page > 0 ? page : 1;
@@ -22837,8 +22837,8 @@ var table_script$2 = {
       this.$emit('update:currentPage', this.newCurrentPage);
     },
 
-    /**
-    * Toggle to show/hide details slot
+    /**
+    * Toggle to show/hide details slot
     */
     toggleDetails: function toggleDetails(obj) {
       var found = this.isVisibleDetailRow(obj);
@@ -22875,9 +22875,9 @@ var table_script$2 = {
       return this.detailed && this.customDetailRow && this.isVisibleDetailRow(row);
     },
 
-    /**
-        * When the detailKey is defined we use the object[detailKey] as index.
-        * If not, use the object reference by default.
+    /**
+        * When the detailKey is defined we use the object[detailKey] as index.
+        * If not, use the object reference by default.
         */
     handleDetailKey: function handleDetailKey(index) {
       var key = this.detailKey;
@@ -22891,8 +22891,8 @@ var table_script$2 = {
       }
     },
 
-    /**
-    * Call initSort only first time (For example async data).
+    /**
+    * Call initSort only first time (For example async data).
     */
     checkSort: function checkSort() {
       if (this.newColumns.length && this.firstTimeSort) {
@@ -22910,8 +22910,8 @@ var table_script$2 = {
       }
     },
 
-    /**
-    * Check if footer slot has custom content.
+    /**
+    * Check if footer slot has custom content.
     */
     hasCustomFooterSlot: function hasCustomFooterSlot() {
       if (this.$slots.footer.length > 1) return true;
@@ -22920,15 +22920,15 @@ var table_script$2 = {
       return true;
     },
 
-    /**
-    * Check if bottom-left slot exists.
+    /**
+    * Check if bottom-left slot exists.
     */
     hasBottomLeftSlot: function hasBottomLeftSlot() {
       return typeof this.$slots['bottom-left'] !== 'undefined';
     },
 
-    /**
-    * Table arrow keys listener, change selection.
+    /**
+    * Table arrow keys listener, change selection.
     */
     pressedArrow: function pressedArrow(pos) {
       if (!this.visibleData.length) return;
@@ -22938,16 +22938,16 @@ var table_script$2 = {
       this.selectRow(this.visibleData[index]);
     },
 
-    /**
-    * Focus table element if has selected prop.
+    /**
+    * Focus table element if has selected prop.
     */
     focus: function focus() {
       if (!this.focusable) return;
       this.$el.querySelector('table').focus();
     },
 
-    /**
-    * Initial sorted column based on the default-sort prop.
+    /**
+    * Initial sorted column based on the default-sort prop.
     */
     initSort: function initSort() {
       var _this5 = this;
@@ -22975,8 +22975,8 @@ var table_script$2 = {
       });
     },
 
-    /**
-    * Emits drag start event
+    /**
+    * Emits drag start event
     */
     handleDragStart: function handleDragStart(event, row, index) {
       this.$emit('dragstart', {
@@ -22986,8 +22986,8 @@ var table_script$2 = {
       });
     },
 
-    /**
-    * Emits drop event
+    /**
+    * Emits drop event
     */
     handleDrop: function handleDrop(event, row, index) {
       this.$emit('drop', {
@@ -22997,8 +22997,8 @@ var table_script$2 = {
       });
     },
 
-    /**
-    * Emits drag over event
+    /**
+    * Emits drag over event
     */
     handleDragOver: function handleDragOver(event, row, index) {
       this.$emit('dragover', {
@@ -23008,8 +23008,8 @@ var table_script$2 = {
       });
     },
 
-    /**
-    * Emits drag leave event
+    /**
+    * Emits drag leave event
     */
     handleDragLeave: function handleDragLeave(event, row, index) {
       this.$emit('dragleave', {
@@ -23125,15 +23125,15 @@ var tabs_script = {
     }
   },
   watch: {
-    /**
-    * When v-model is changed set the new active tab.
+    /**
+    * When v-model is changed set the new active tab.
     */
     value: function value(_value) {
       this.changeTab(_value);
     },
 
-    /**
-    * When tab-items are updated, set active one.
+    /**
+    * When tab-items are updated, set active one.
     */
     tabItems: function tabItems() {
       if (this.activeTab < this.tabItems.length) {
@@ -23142,8 +23142,8 @@ var tabs_script = {
     }
   },
   methods: {
-    /**
-    * Change the active tab and emit change event.
+    /**
+    * Change the active tab and emit change event.
     */
     changeTab: function changeTab(newIndex) {
       if (this.activeTab === newIndex) return;
@@ -23157,8 +23157,8 @@ var tabs_script = {
       this.$emit('change', newIndex);
     },
 
-    /**
-    * Tab click listener, emit input event and change active tab.
+    /**
+    * Tab click listener, emit input event and change active tab.
     */
     tabClick: function tabClick(value) {
       this.$emit('input', value);
@@ -23223,16 +23223,16 @@ var tabs_script$1 = {
     };
   },
   methods: {
-    /**
-    * Activate tab, alter animation name based on the index.
+    /**
+    * Activate tab, alter animation name based on the index.
     */
     activate: function activate(oldIndex, index) {
       this.transitionName = index < oldIndex ? 'slide-next' : 'slide-prev';
       this.isActive = true;
     },
 
-    /**
-    * Deactivate tab, alter animation name based on the index.
+    /**
+    * Deactivate tab, alter animation name based on the index.
     */
     deactivate: function deactivate(oldIndex, index) {
       this.transitionName = index < oldIndex ? 'slide-next' : 'slide-prev';
@@ -23396,9 +23396,9 @@ var chunk_3e47308f_script = {
     ariaCloseLabel: String
   },
   methods: {
-    /**
-    * Emit close event when delete button is clicked
-    * or delete key is pressed.
+    /**
+    * Emit close event when delete button is clicked
+    * or delete key is pressed.
     */
     close: function close() {
       if (this.disabled) return;
@@ -23641,8 +23641,8 @@ var taginput_script = {
       return !!this.$slots.footer;
     },
 
-    /**
-     * Show the input field if a maxtags hasn't been set or reached.
+    /**
+     * Show the input field if a maxtags hasn't been set or reached.
      */
     hasInput: function hasInput() {
       return this.maxtags == null || this.tagsLength < this.maxtags;
@@ -23651,9 +23651,9 @@ var taginput_script = {
       return this.tags.length;
     },
 
-    /**
-     * If Taginput has onPasteSeparators prop,
-     * returning new RegExp used to split pasted string.
+    /**
+     * If Taginput has onPasteSeparators prop,
+     * returning new RegExp used to split pasted string.
      */
     separatorsAsRegExp: function separatorsAsRegExp() {
       var sep = this.onPasteSeparators;
@@ -23663,8 +23663,8 @@ var taginput_script = {
     }
   },
   watch: {
-    /**
-     * When v-model is changed set internal value.
+    /**
+     * When v-model is changed set internal value.
      */
     value: function value(_value) {
       this.tags = _value;
@@ -24006,12 +24006,12 @@ var upload_script = {
     };
   },
   watch: {
-    /**
-     *   When v-model is changed:
-     *   1. Get value from input file
-     *   2. Set internal value.
-     *   3. Reset input value if array is empty or when input file is not found in newValue
-     *   4. If it's invalid, validate again.
+    /**
+     *   When v-model is changed:
+     *   1. Get value from input file
+     *   2. Set internal value.
+     *   3. Reset input value if array is empty or when input file is not found in newValue
+     *   4. If it's invalid, validate again.
      */
     value: function value(_value) {
       var inputFiles = this.$refs.input.files;
@@ -24027,9 +24027,9 @@ var upload_script = {
     }
   },
   methods: {
-    /**
-    * Listen change event on input type 'file',
-    * emit 'input' event and validate
+    /**
+    * Listen change event on input type 'file',
+    * emit 'input' event and validate
     */
     onFileChange: function onFileChange(event) {
       if (this.disabled || this.loading) return;
@@ -24088,8 +24088,8 @@ var upload_script = {
       !this.dragDrop && this.checkHtml5Validity();
     },
 
-    /**
-    * Listen drag-drop to update internal variable
+    /**
+    * Listen drag-drop to update internal variable
     */
     updateDragDropFocus: function updateDragDropFocus(focus) {
       if (!this.disabled && !this.loading) {
@@ -24097,8 +24097,8 @@ var upload_script = {
       }
     },
 
-    /**
-    * Check mime type of file
+    /**
+    * Check mime type of file
     */
     checkType: function checkType(file) {
       if (!this.accept) return true;
@@ -27096,30 +27096,30 @@ if (inBrowser && window.Vue) {
 var action_cable = __webpack_require__(13);
 
 // CONCATENATED MODULE: ./app/vue/plugins/bus.js
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 // · Loading core framework and libraries
 // · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
@@ -27169,31 +27169,31 @@ Building a better future, one line of code at a time.
   }
 });
 // CONCATENATED MODULE: ./app/vue/plugins/url.js
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-//  · 
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+//  · 
 */
 //  · Plugin initializing 
 // ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -27225,31 +27225,31 @@ var axios = __webpack_require__(14);
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 // CONCATENATED MODULE: ./app/vue/plugins/http.js
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
-
-// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-//  · 
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  GIT: 0.1.0 alpha
+
+// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+//  · 
 */
 //  · Loading frameworks, libraries and tools
 // ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -27305,36 +27305,83 @@ Building a better future, one line of code at a time.
     Vue.prototype.http = http;
   }
 });
+// CONCATENATED MODULE: ./app/vue/plugins/date.js
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { date_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function date_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+/* harmony default export */ var plugins_date = ({
+  install: function install(Vue, options) {
+    //date will be returned in standard format YYYY-MM-DD
+    var today = function today() {
+      var date = new Date(); //We do not use time so date type inputs will accept the value
+
+      return date.toISOString().substr(0, 10);
+    };
+
+    var date_options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      timeZone: 'UTC'
+    };
+
+    var datetime_options = _objectSpread({}, date_options, {}, {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }); //date should be given in standard format YYYY-MM-DD
+
+
+    var toLocalFormat = function toLocalFormat(date) {
+      var include_time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      date = new Date(date);
+
+      if (include_time) {
+        return date.toLocaleDateString(I18n.currentLocale(), datetime_options);
+      } else {
+        return date.toLocaleDateString(I18n.currentLocale(), date_options);
+      }
+    };
+
+    Vue.prototype.date = {
+      today: today,
+      toLocalFormat: toLocalFormat
+    };
+  }
+});
 // EXTERNAL MODULE: ./node_modules/lesli-nodejs-debug-message/browser.js
 var browser = __webpack_require__(15);
 var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 
 // CONCATENATED MODULE: ./app/vue/functions/document.js
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 /* harmony default export */ var functions_document = ({
   ready: function ready(callback) {
@@ -27408,31 +27455,31 @@ render._withStripped = true
 // CONCATENATED MODULE: ./app/vue/layouts/notify.vue?vue&type=template&id=26199bf4&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/notify.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
-
-//  · 
-// ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  GIT: 0.1.0 alpha
+
+//  · 
+// ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
 */
 // · LesliCloud component
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -28139,30 +28186,30 @@ empty_datavue_type_template_id_2e65fed5_render._withStripped = true
 // CONCATENATED MODULE: ./app/vue/layouts/empty-data.vue?vue&type=template&id=2e65fed5&
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./app/vue/layouts/empty-data.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 /* harmony default export */ var empty_datavue_type_script_lang_js_ = ({});
 // CONCATENATED MODULE: ./app/vue/layouts/empty-data.vue?vue&type=script&lang=js&
@@ -28292,30 +28339,30 @@ if (false) { var navigation_api; }
 navigation_component.options.__file = "app/vue/layouts/navigation.vue"
 /* harmony default export */ var navigation = (navigation_component.exports);
 // CONCATENATED MODULE: ./app/vue/app.js
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 // · Loading core framework and libraries
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -28323,6 +28370,7 @@ Building a better future, one line of code at a time.
 
  // · Loading app plugins
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
 
 
 
@@ -28346,6 +28394,7 @@ vue_default.a.use(esm); //Vue.use(pluginBus)
 vue_default.a.use(vue_router_esm);
 vue_default.a.use(url);
 vue_default.a.use(plugins_http);
+vue_default.a.use(plugins_date);
 vue_default.a.component('component-layout-empty-data', empty_data); // · Vue app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · module: Main module
@@ -28448,7 +28497,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(39);
+__webpack_require__(40);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -28465,7 +28514,8 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* 18 */,
 /* 19 */,
 /* 20 */,
-/* 21 */
+/* 21 */,
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28473,7 +28523,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(4);
-var Axios = __webpack_require__(23);
+var Axios = __webpack_require__(24);
 var mergeConfig = __webpack_require__(11);
 var defaults = __webpack_require__(7);
 
@@ -28509,14 +28559,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(12);
-axios.CancelToken = __webpack_require__(35);
+axios.CancelToken = __webpack_require__(36);
 axios.isCancel = __webpack_require__(6);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(36);
+axios.spread = __webpack_require__(37);
 
 module.exports = axios;
 
@@ -28525,7 +28575,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 /*!
@@ -28542,7 +28592,7 @@ module.exports = function isBuffer (obj) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28550,8 +28600,8 @@ module.exports = function isBuffer (obj) {
 
 var utils = __webpack_require__(2);
 var buildURL = __webpack_require__(5);
-var InterceptorManager = __webpack_require__(24);
-var dispatchRequest = __webpack_require__(25);
+var InterceptorManager = __webpack_require__(25);
+var dispatchRequest = __webpack_require__(26);
 var mergeConfig = __webpack_require__(11);
 
 /**
@@ -28635,7 +28685,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28694,18 +28744,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(26);
+var transformData = __webpack_require__(27);
 var isCancel = __webpack_require__(6);
 var defaults = __webpack_require__(7);
-var isAbsoluteURL = __webpack_require__(33);
-var combineURLs = __webpack_require__(34);
+var isAbsoluteURL = __webpack_require__(34);
+var combineURLs = __webpack_require__(35);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -28787,7 +28837,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28814,7 +28864,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28833,7 +28883,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28865,7 +28915,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28914,7 +28964,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28974,7 +29024,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29049,7 +29099,7 @@ module.exports = (
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29109,7 +29159,7 @@ module.exports = (
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29130,7 +29180,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29151,7 +29201,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29215,7 +29265,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29249,276 +29299,276 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-Lesli Debug Message 
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-
-
-// · Loading node modules
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-let utils = __webpack_require__(38)
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-class browserDebugService {
-
-
-    // · write informatie message
-    log(message, module = null) {
-        console.log(utils.buildMessage(message, module, "log"))
-    }
-
-    // · write informatie message
-    msg(message, module = null) {
-        console.log(utils.buildMessage(message, module, "msg"))
-    }
-
-    // · write informatie message
-    info(message, module = null) {
-        console.info('%c'+utils.buildMessage(message, module, "info"), utils.stylesFor("info"))
-    }
-
-    // · write warning message
-    warn(message, module = null) {
-        console.warn('%c'+utils.buildMessage(message, module, "warn"), utils.stylesFor("warn"))
-    }
-
-    // · write warning message
-    error(message, module = null) {
-        console.error('%c'+utils.buildMessage(message, module, "error"), utils.stylesFor("error"))
-    }
-
-    // · write warning message
-    fatal(message, module = null) {
-        console.error('%c'+utils.buildMessage(message, module, "error"), utils.stylesFor("fatal"))
-    }
-
-    userWarningMessage(title=null, message=null, link=null) {
-
-        if (!title) {
-            title = "DANGER!"
-        }
-
-        if (!message) {
-            message = "This is a browser feature intended for developers."
-            message += "If someone told you to copy-paste something here to enable a feature or \"hack\" someone's account,"
-            message += "it is a scam and will give them access to your information and possible all your online accounts."
-        }
-
-        if (!link) {
-            link = "See https://wikipedia.org/wiki/Self-XSS for more information."
-        }
-
-        console.log('%c'+title, 'color:#c0392b;font-size:56px;font-weight:600;line-height:1;')
-        console.log('%c'+message, 'background-color:#ffffff;color:#1a1a1a;font-size:18px;font-weight:400;line-height:1.1;')
-        
-    }
-
-}
-
-// · 
-module.exports = new browserDebugService
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+Lesli Debug Message 
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  GIT: 0.1.0 alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
 
 
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
+// · Loading node modules
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+let utils = __webpack_require__(39)
 
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-Lesli Debug Message 
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-class Utils {
-
-    // · 
-    buildDate() {
-
-        let date = new Date()
-        let year = date.getFullYear()
-        let month = date.getMonth() + 1
-        let day = date.getDate()
-        let hour = date.getHours()
-        let minutes = date.getMinutes()
-        let milliseconds = date.getMilliseconds()
-
-        day = (day < 10) ? "0" + day : day
-        hour = (hour < 10) ? "0" + hour : hour
-        month = (month < 10) ? "0" + month : month
-        minutes = (minutes < 10) ? "0" + minutes : minutes
-        
-        return `${year}-${month}-${day} ${hour}:${minutes}:${milliseconds}`
-
-    }
-
-    // · 
-    buildMessage(message, module, level) {
-
-        // desire output format
-        // [2010-01-17 11:43:37.987] [ERROR] (cheese module) - Cheese is too ripe!
-        // [2010-01-17 11:43:37.990] [FATAL] (cheese module) - Cheese was breeding ground for listeria.
-        let newMessage = `[${this.buildDate()}] [${level.toUpperCase()}]`
-
-        if (module) {
-            newMessage += ` (${module})`
-        }
-
-        newMessage = newMessage.concat(" - ").concat(message)
-
-        return newMessage
-
-    }
-
-    // · 
-    stylesFor(type) {
-
-        let lineheight="1.5;"
-        let fontsize="14px;"
-        let padding="2px;"
-
-        let info = "background-color:#3498db;color:#ffffff;"
-        let warn = "background-color:#f1c40f;color:#000000;"
-        let error = "background-color:#e74c3c;color:#ffffff;"
-        let fatal = "background-color:#c0392b;color:#fff394;"
-
-        let style = ""
-
-        switch (type) {
-            case "info": style = info; break;
-            case "warn": style = warn; break;
-            case "error": style = error; break;
-            case "fatal": style = fatal; break;
-        }
-
-        style += "padding:" + padding
-        style += "font-size:" + fontsize
-        style += "line-height:" + lineheight
-
-        return style
-
-    }
-
-    // · 
-    print_r (data, level = 1) {
-
-        let isArray = Array.isArray(data);
-
-        let comma = ","
-        let string = ""
-        let padding_key = ""
-        let padding_prop = ""
-        let newline = "\n"
-
-        for(let i=0;i<(4*level);i++) {
-            padding_prop += " "
-        }
-
-        if (level > 1) {
-            padding_key = padding_prop.slice(0, padding_prop.length - 4)
-        }
-
-        if (typeof data == "object" && !Array.isArray(data)) {
-
-            string += padding_key + "{" + newline
-
-            for(let property in data) {
-
-                if (typeof data[property] == "object") {
-                    string += padding_prop + property + ": " + this.print_r(data[property], level+1) + comma + newline
-                } else {
-                    string += padding_prop + property + ": " + data[property] + comma + newline
-                }
-                
-            }
-
-            string += padding_key + "}"
-
-        } 
-
-        if (typeof data == "object" && Array.isArray(data)) {
-
-            string += "[" + newline
-
-            for(let property in data) {
-
-                if (typeof data[property] == "object") {
-                    string += this.print_r(data[property], level+1) + comma + newline
-                } else {
-                    string += padding_prop + data[property] + newline
-                }
-
-            }
-
-            string += padding_key + "]"
-
-        }
-
-        // trying to remove last comma if is the end of object or array
-        //string = string.replace(/,\n/g, "0")
-
-        return string
-
-    }
-
-}
-
-module.exports = new Utils
+
+// · 
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+class browserDebugService {
+
+
+    // · write informatie message
+    log(message, module = null) {
+        console.log(utils.buildMessage(message, module, "log"))
+    }
+
+    // · write informatie message
+    msg(message, module = null) {
+        console.log(utils.buildMessage(message, module, "msg"))
+    }
+
+    // · write informatie message
+    info(message, module = null) {
+        console.info('%c'+utils.buildMessage(message, module, "info"), utils.stylesFor("info"))
+    }
+
+    // · write warning message
+    warn(message, module = null) {
+        console.warn('%c'+utils.buildMessage(message, module, "warn"), utils.stylesFor("warn"))
+    }
+
+    // · write warning message
+    error(message, module = null) {
+        console.error('%c'+utils.buildMessage(message, module, "error"), utils.stylesFor("error"))
+    }
+
+    // · write warning message
+    fatal(message, module = null) {
+        console.error('%c'+utils.buildMessage(message, module, "error"), utils.stylesFor("fatal"))
+    }
+
+    userWarningMessage(title=null, message=null, link=null) {
+
+        if (!title) {
+            title = "DANGER!"
+        }
+
+        if (!message) {
+            message = "This is a browser feature intended for developers."
+            message += "If someone told you to copy-paste something here to enable a feature or \"hack\" someone's account,"
+            message += "it is a scam and will give them access to your information and possible all your online accounts."
+        }
+
+        if (!link) {
+            link = "See https://wikipedia.org/wiki/Self-XSS for more information."
+        }
+
+        console.log('%c'+title, 'color:#c0392b;font-size:56px;font-weight:600;line-height:1;')
+        console.log('%c'+message, 'background-color:#ffffff;color:#1a1a1a;font-size:18px;font-weight:400;line-height:1.1;')
+        
+    }
+
+}
+
+// · 
+module.exports = new browserDebugService
 
 
 /***/ }),
 /* 39 */
+/***/ (function(module, exports) {
+
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+Lesli Debug Message 
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Luis Donis <ldonis@lesli.tech>
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  GIT: 0.1.0 alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+
+
+// · 
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+class Utils {
+
+    // · 
+    buildDate() {
+
+        let date = new Date()
+        let year = date.getFullYear()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
+        let hour = date.getHours()
+        let minutes = date.getMinutes()
+        let milliseconds = date.getMilliseconds()
+
+        day = (day < 10) ? "0" + day : day
+        hour = (hour < 10) ? "0" + hour : hour
+        month = (month < 10) ? "0" + month : month
+        minutes = (minutes < 10) ? "0" + minutes : minutes
+        
+        return `${year}-${month}-${day} ${hour}:${minutes}:${milliseconds}`
+
+    }
+
+    // · 
+    buildMessage(message, module, level) {
+
+        // desire output format
+        // [2010-01-17 11:43:37.987] [ERROR] (cheese module) - Cheese is too ripe!
+        // [2010-01-17 11:43:37.990] [FATAL] (cheese module) - Cheese was breeding ground for listeria.
+        let newMessage = `[${this.buildDate()}] [${level.toUpperCase()}]`
+
+        if (module) {
+            newMessage += ` (${module})`
+        }
+
+        newMessage = newMessage.concat(" - ").concat(message)
+
+        return newMessage
+
+    }
+
+    // · 
+    stylesFor(type) {
+
+        let lineheight="1.5;"
+        let fontsize="14px;"
+        let padding="2px;"
+
+        let info = "background-color:#3498db;color:#ffffff;"
+        let warn = "background-color:#f1c40f;color:#000000;"
+        let error = "background-color:#e74c3c;color:#ffffff;"
+        let fatal = "background-color:#c0392b;color:#fff394;"
+
+        let style = ""
+
+        switch (type) {
+            case "info": style = info; break;
+            case "warn": style = warn; break;
+            case "error": style = error; break;
+            case "fatal": style = fatal; break;
+        }
+
+        style += "padding:" + padding
+        style += "font-size:" + fontsize
+        style += "line-height:" + lineheight
+
+        return style
+
+    }
+
+    // · 
+    print_r (data, level = 1) {
+
+        let isArray = Array.isArray(data);
+
+        let comma = ","
+        let string = ""
+        let padding_key = ""
+        let padding_prop = ""
+        let newline = "\n"
+
+        for(let i=0;i<(4*level);i++) {
+            padding_prop += " "
+        }
+
+        if (level > 1) {
+            padding_key = padding_prop.slice(0, padding_prop.length - 4)
+        }
+
+        if (typeof data == "object" && !Array.isArray(data)) {
+
+            string += padding_key + "{" + newline
+
+            for(let property in data) {
+
+                if (typeof data[property] == "object") {
+                    string += padding_prop + property + ": " + this.print_r(data[property], level+1) + comma + newline
+                } else {
+                    string += padding_prop + property + ": " + data[property] + comma + newline
+                }
+                
+            }
+
+            string += padding_key + "}"
+
+        } 
+
+        if (typeof data == "object" && Array.isArray(data)) {
+
+            string += "[" + newline
+
+            for(let property in data) {
+
+                if (typeof data[property] == "object") {
+                    string += this.print_r(data[property], level+1) + comma + newline
+                } else {
+                    string += padding_prop + data[property] + newline
+                }
+
+            }
+
+            string += padding_key + "]"
+
+        }
+
+        // trying to remove last comma if is the end of object or array
+        //string = string.replace(/,\n/g, "0")
+
+        return string
+
+    }
+
+}
+
+module.exports = new Utils
+
+
+/***/ }),
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -29711,7 +29761,6 @@ module.exports = new Utils
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(8)))
 
 /***/ }),
-/* 40 */,
 /* 41 */,
 /* 42 */,
 /* 43 */,
