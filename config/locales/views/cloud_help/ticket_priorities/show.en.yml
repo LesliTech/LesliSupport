@@ -1,0 +1,13 @@
+en:
+    cloud_help:
+        ticket_priorities:
+            show:
+                messages:
+                    delete:
+                        successful: Ticket priority was successfuly deleted
+                modal:
+                    title: Are you sure you want to delete this priority?
+                    body: You will only be able to do this if there are no tickets currenty in this priority.
+                    actions:
+                        delete: Yes, delete it
+                        cancel: Cancel

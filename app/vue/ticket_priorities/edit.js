@@ -16,7 +16,7 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Luis Donis <ldonis@lesli.tech>
+@dev      Carlos Hermosilla
 @author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
 @version  GIT: 0.1.0 alpha
@@ -25,34 +25,4 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 */
 
-
-// · Import main app
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCloud/vue/app'
-
-
-
-// · Import apps and components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList from './apps/list.vue'
-import appEdit from './apps/edit.vue'
-import appShow from './apps/show.vue'
-import appNew from './apps/new.vue'
-
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|edit|show]", "help/tickets", [{
-    path: "/",
-    component: appList,
-},{
-    path: "/new",
-    component: appNew,
-},{
-    path: "/:id",
-    component: appShow,
-},{
-    path: "/:id/edit",
-    component: appEdit,
-}])
+import './index'

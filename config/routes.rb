@@ -29,6 +29,7 @@ CloudHelp::Engine.routes.draw do
 
     scope :api do
         get '/tickets/options', to: 'tickets#api_options'
+        get '/ticket_priorities/:id', to: 'ticket_priorities#api_show'
     end
     
 end
