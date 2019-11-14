@@ -1,0 +1,13 @@
+en:
+    cloud_help:
+        ticket_types:
+            show:
+                messages:
+                    delete:
+                        successful: Ticket type was successfuly deleted
+                modal:
+                    title: Are you sure you want to delete this type?
+                    body: You will only be able to do this if there are no tickets registered with this type.
+                    actions:
+                        delete: Yes, delete it
+                        cancel: Cancel

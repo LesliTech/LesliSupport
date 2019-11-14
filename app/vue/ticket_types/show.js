@@ -25,33 +25,4 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 */
 
-
-// · Import main app
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCloud/vue/app'
-
-
-
-// · Import apps and components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList from './apps/list.vue'
-import appNew from './apps/new.vue'
-import appShow from './apps/show.vue'
-import appEdit from './apps/edit.vue'
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|show|edit]", "help/ticket_types", [{
-    path: "/",
-    component: appList,
-},{
-    path: "/new",
-    component: appNew
-},{
-    path: "/:id",
-    component: appShow
-},{
-    path: "/:id/edit",
-    component: appEdit
-}])
+import './index'

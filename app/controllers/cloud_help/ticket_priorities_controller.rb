@@ -53,7 +53,7 @@ module CloudHelp
 
         # DELETE /ticket_priorities/1
         def destroy
-        if @ticket_priority.destroy
+            if @ticket_priority.destroy
                 responseWithSuccessful
             else
                 responseWithError(@ticket_priority.errors.full_messages.to_sentence)
