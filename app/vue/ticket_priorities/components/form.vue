@@ -54,6 +54,7 @@ export default {
         },
 
         putTicketPriority() {
+            console.log('hola mundp');
             this.http.put(`/help/ticket_priorities/${this.ticket_priority_id}`, {
                 ticket_priority: this.ticket_priority
             }).then(result => {
@@ -83,19 +84,15 @@ export default {
         },
 
         getTicketPriority() {
-            this.http.get(`/help/ticket_priorities/${this.ticket_priority_id}/edit`).then(result => {
+            this.http.get(`/help/api/ticket_priorities/${this.ticket_priority_id}`).then(result => {
                 if (result.successful) {
-                    this.ticket = result.data
+                    this.ticket_priority = result.data
                 }else{
                     this.alert(result.error,'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
-        },
-        
-        goToList(){
-            this.$router.push(`/`)
         }
 
     }
@@ -108,15 +105,17 @@ export default {
                 <h2 class="card-header-title">
                     Ticket Priority
                 </h2>
-                <h2 class="card-header-options">
-                    <a @click="goToList">
+                <div class="card-header-icon">
+                    <router-link v-if="ticket_priority_id" :to="`/${ticket_priority_id}`">
+                        <i class="fas fa-eye"></i>
+                        Show
+                    </router-link>
+                    <router-link v-if="ticket_priority_id" :to="`/`">
+                        &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-undo"></i>
                         Return
-                    </a>
-                </h2>
-                <router-link v-if="ticket_priority_id" :to="`/${ticket_priority_id}/show`" class="card-header-icon">
-                    Show
-                </router-link>
+                    </router-link>
+                </div>
             </div>
             <div class="card-content">
                 <form @submit="submitTicketPriority">
@@ -133,17 +132,31 @@ export default {
                             </b-field>
                         </div>
                     </div>
-                    
-                    <div v-if="ticket_priority_id" class="field">
-                        <p>
-                            Created at: {{ ticket_priority.created_at }}, 
-                            Updated at: {{ ticket_priority.updated_at }}
-                        </p>
-                    </div>
-                    <div class="field">
-                        <div class="actions">
-                            <button class="button is-primary" v-if="!ticket_priority_id" type="submit">Create Priority</button>
-                            <button class="button is-primary" v-if="ticket_priority_id" type="submit">Update Priority</button>
+                    <div class="columns">
+                        <div v-if="ticket_priority_id" class="column">
+                            <div class="field">
+                                <small>
+                                    <span class="has-text-weight-bold">
+                                        {{ `Created at:` }}
+                                    </span>
+                                    {{ ticket_priority.created_at }}
+                                    <br>
+                                    <span class="has-text-weight-bold">
+                                        {{ `Updated at:` }}
+                                    </span>
+                                    {{ ticket_priority.updated_at }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="field">
+                                <div class="actions has-text-right">
+                                    <button class="button is-primary" type="submit">
+                                        <span v-if="ticket_priority_id">Update Priority</span>
+                                        <span v-else>Create Priority</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

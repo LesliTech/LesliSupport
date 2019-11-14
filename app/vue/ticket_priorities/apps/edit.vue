@@ -1,3 +1,4 @@
+<script>
 /*
 Lesli
 
@@ -16,13 +17,27 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Luis Donis <ldonis@lesli.tech>
+@dev      Carlos Hermosilla
 @author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
+@version  0.1.0-alpha
 
-//  · Public website template
-// ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 
-@import 'leslicloud/templates/application';
+
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentForm from '../components/form.vue'
+
+
+export default {
+    components: {
+        'component-form': componentForm
+    }
+}
+</script>
+<template>
+    <component-form></component-form>
+</template>

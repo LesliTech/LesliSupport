@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 54);
+/******/ 	return __webpack_require__(__webpack_require__.s = 55);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -12133,7 +12133,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(17).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(18).setImmediate))
 
 /***/ }),
 /* 2 */
@@ -12143,7 +12143,7 @@ function normalizeComponent (
 
 
 var bind = __webpack_require__(4);
-var isBuffer = __webpack_require__(23);
+var isBuffer = __webpack_require__(22);
 
 /*global toString:true*/
 
@@ -12618,7 +12618,7 @@ module.exports = function isCancel(value) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(28);
+var normalizeHeaderName = __webpack_require__(27);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -12914,10 +12914,10 @@ process.umask = function() { return 0; };
 
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(29);
+var settle = __webpack_require__(28);
 var buildURL = __webpack_require__(5);
-var parseHeaders = __webpack_require__(31);
-var isURLSameOrigin = __webpack_require__(32);
+var parseHeaders = __webpack_require__(30);
+var isURLSameOrigin = __webpack_require__(31);
 var createError = __webpack_require__(10);
 
 module.exports = function xhrAdapter(config) {
@@ -13010,7 +13010,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(33);
+      var cookies = __webpack_require__(32);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -13094,7 +13094,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(30);
+var enhanceError = __webpack_require__(29);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -13723,7 +13723,7 @@ module.exports = Cancel;
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(22);
+module.exports = __webpack_require__(21);
 
 /***/ }),
 /* 15 */
@@ -13756,7 +13756,7 @@ Building a better future, one line of code at a time.
 // · 
 */
 
-module.exports = __webpack_require__(38)
+module.exports = __webpack_require__(37)
 
 
 /***/ }),
@@ -28444,6 +28444,28 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var content = __webpack_require__(42);
+
+if (typeof content === 'string') {
+  content = [[module.i, content, '']];
+}
+
+var options = {}
+
+options.insert = "head";
+options.singleton = false;
+
+var update = __webpack_require__(20)(content, options);
+
+if (content.locals) {
+  module.exports = content.locals;
+}
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
             (typeof self !== "undefined" && self) ||
             window;
@@ -28497,7 +28519,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(40);
+__webpack_require__(39);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -28511,7 +28533,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28607,7 +28629,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28895,30 +28917,7 @@ module.exports = function (list, options) {
 };
 
 /***/ }),
-/* 20 */,
 /* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var content = __webpack_require__(47);
-
-if (typeof content === 'string') {
-  content = [[module.i, content, '']];
-}
-
-var options = {}
-
-options.insert = "head";
-options.singleton = false;
-
-var update = __webpack_require__(19)(content, options);
-
-if (content.locals) {
-  module.exports = content.locals;
-}
-
-
-/***/ }),
-/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28926,7 +28925,7 @@ if (content.locals) {
 
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(4);
-var Axios = __webpack_require__(24);
+var Axios = __webpack_require__(23);
 var mergeConfig = __webpack_require__(11);
 var defaults = __webpack_require__(7);
 
@@ -28962,14 +28961,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(12);
-axios.CancelToken = __webpack_require__(36);
+axios.CancelToken = __webpack_require__(35);
 axios.isCancel = __webpack_require__(6);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(37);
+axios.spread = __webpack_require__(36);
 
 module.exports = axios;
 
@@ -28978,7 +28977,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports) {
 
 /*!
@@ -28995,7 +28994,7 @@ module.exports = function isBuffer (obj) {
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29003,8 +29002,8 @@ module.exports = function isBuffer (obj) {
 
 var utils = __webpack_require__(2);
 var buildURL = __webpack_require__(5);
-var InterceptorManager = __webpack_require__(25);
-var dispatchRequest = __webpack_require__(26);
+var InterceptorManager = __webpack_require__(24);
+var dispatchRequest = __webpack_require__(25);
 var mergeConfig = __webpack_require__(11);
 
 /**
@@ -29088,7 +29087,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29147,18 +29146,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(27);
+var transformData = __webpack_require__(26);
 var isCancel = __webpack_require__(6);
 var defaults = __webpack_require__(7);
-var isAbsoluteURL = __webpack_require__(34);
-var combineURLs = __webpack_require__(35);
+var isAbsoluteURL = __webpack_require__(33);
+var combineURLs = __webpack_require__(34);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -29240,7 +29239,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29267,7 +29266,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29286,7 +29285,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29318,7 +29317,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29367,7 +29366,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29427,7 +29426,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29502,7 +29501,7 @@ module.exports = (
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29562,7 +29561,7 @@ module.exports = (
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29583,7 +29582,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29604,7 +29603,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29668,7 +29667,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29702,7 +29701,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -29735,7 +29734,7 @@ Building a better future, one line of code at a time.
 
 // · Loading node modules
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-let utils = __webpack_require__(39)
+let utils = __webpack_require__(38)
 
 
 // · 
@@ -29801,7 +29800,7 @@ module.exports = new browserDebugService
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports) {
 
 /*
@@ -29971,7 +29970,7 @@ module.exports = new Utils
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -30164,32 +30163,27 @@ module.exports = new Utils
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(8)))
 
 /***/ }),
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */
+/* 40 */,
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
 /* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
-/* 47 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(18)(false);
+exports = module.exports = __webpack_require__(19)(false);
 // Module
 exports.push([module.i, "\ntable tr:hover {\n    cursor: pointer;\n}\n", ""]);
 
 
 /***/ }),
-/* 48 */,
-/* 49 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30305,7 +30299,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_priorities/apps/list.vue?vue&type=script&lang=js&
  /* harmony default export */ var apps_listvue_type_script_lang_js_ = (listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_priorities/apps/list.vue?vue&type=style&index=0&lang=css&
-var listvue_type_style_index_0_lang_css_ = __webpack_require__(46);
+var listvue_type_style_index_0_lang_css_ = __webpack_require__(41);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -30354,34 +30348,37 @@ var formvue_type_template_id_0cb2b397_render = function() {
   var _c = _vm._self._c || _h
   return _c("section", [
     _c("div", { staticClass: "card" }, [
-      _c(
-        "div",
-        { staticClass: "card-header" },
-        [
-          _c("h2", { staticClass: "card-header-title" }, [
-            _vm._v("\n                Ticket Priority\n            ")
-          ]),
-          _vm._v(" "),
-          _c("h2", { staticClass: "card-header-options" }, [
-            _c("a", { on: { click: _vm.goToList } }, [
-              _c("i", { staticClass: "fas fa-undo" }),
-              _vm._v("\n                    Return\n                ")
-            ])
-          ]),
-          _vm._v(" "),
-          _vm.ticket_priority_id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "card-header-icon",
-                  attrs: { to: "/" + _vm.ticket_priority_id + "/show" }
-                },
-                [_vm._v("\n                Show\n            ")]
-              )
-            : _vm._e()
-        ],
-        1
-      ),
+      _c("div", { staticClass: "card-header" }, [
+        _c("h2", { staticClass: "card-header-title" }, [
+          _vm._v("\n                Ticket Priority\n            ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-header-icon" },
+          [
+            _vm.ticket_priority_id
+              ? _c(
+                  "router-link",
+                  { attrs: { to: "/" + _vm.ticket_priority_id } },
+                  [
+                    _c("i", { staticClass: "fas fa-eye" }),
+                    _vm._v("\n                    Show\n                ")
+                  ]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.ticket_priority_id
+              ? _c("router-link", { attrs: { to: "/" } }, [
+                  _vm._v("\n                       \n                    "),
+                  _c("i", { staticClass: "fas fa-undo" }),
+                  _vm._v("\n                    Return\n                ")
+                ])
+              : _vm._e()
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-content" }, [
         _c("form", { on: { submit: _vm.submitTicketPriority } }, [
@@ -30442,43 +30439,59 @@ var formvue_type_template_id_0cb2b397_render = function() {
             )
           ]),
           _vm._v(" "),
-          _vm.ticket_priority_id
-            ? _c("div", { staticClass: "field" }, [
-                _c("p", [
-                  _vm._v(
-                    "\n                        Created at: " +
-                      _vm._s(_vm.ticket_priority.created_at) +
-                      ", \n                        Updated at: " +
-                      _vm._s(_vm.ticket_priority.updated_at) +
-                      "\n                    "
+          _c("div", { staticClass: "columns" }, [
+            _vm.ticket_priority_id
+              ? _c("div", { staticClass: "column" }, [
+                  _c("div", { staticClass: "field" }, [
+                    _c("small", [
+                      _c("span", { staticClass: "has-text-weight-bold" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s("Created at:") +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.ticket_priority.created_at) +
+                          "\n                                "
+                      ),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "has-text-weight-bold" }, [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s("Updated at:") +
+                            "\n                                "
+                        )
+                      ]),
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.ticket_priority.updated_at) +
+                          "\n                            "
+                      )
+                    ])
+                  ])
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("div", { staticClass: "actions has-text-right" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-primary",
+                      attrs: { type: "submit" }
+                    },
+                    [
+                      _vm.ticket_priority_id
+                        ? _c("span", [_vm._v("Update Priority")])
+                        : _c("span", [_vm._v("Create Priority")])
+                    ]
                   )
                 ])
               ])
-            : _vm._e(),
-          _vm._v(" "),
-          _c("div", { staticClass: "field" }, [
-            _c("div", { staticClass: "actions" }, [
-              !_vm.ticket_priority_id
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "button is-primary",
-                      attrs: { type: "submit" }
-                    },
-                    [_vm._v("Create Priority")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.ticket_priority_id
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "button is-primary",
-                      attrs: { type: "submit" }
-                    },
-                    [_vm._v("Update Priority")]
-                  )
-                : _vm._e()
             ])
           ])
         ])
@@ -30550,6 +30563,7 @@ Building a better future, one line of code at a time.
     putTicketPriority: function putTicketPriority() {
       var _this = this;
 
+      console.log('hola mundp');
       this.http.put("/help/ticket_priorities/".concat(this.ticket_priority_id), {
         ticket_priority: this.ticket_priority
       }).then(function (result) {
@@ -30580,18 +30594,15 @@ Building a better future, one line of code at a time.
     getTicketPriority: function getTicketPriority() {
       var _this3 = this;
 
-      this.http.get("/help/ticket_priorities/".concat(this.ticket_priority_id, "/edit")).then(function (result) {
+      this.http.get("/help/api/ticket_priorities/".concat(this.ticket_priority_id)).then(function (result) {
         if (result.successful) {
-          _this3.ticket = result.data;
+          _this3.ticket_priority = result.data;
         } else {
           _this3.alert(result.error, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
       });
-    },
-    goToList: function goToList() {
-      this.$router.push("/");
     }
   }
 });
@@ -30692,12 +30703,27 @@ var showvue_type_template_id_1158a218_render = function() {
           _vm._v("\n                Ticket Priority\n            ")
         ]),
         _vm._v(" "),
-        _c("h2", { staticClass: "card-header-options" }, [
-          _c("a", { on: { click: _vm.goToList } }, [
-            _c("i", { staticClass: "fas fa-undo" }),
-            _vm._v("\n                    Return\n                ")
-          ])
-        ])
+        _c(
+          "div",
+          { staticClass: "card-header-icon" },
+          [
+            _c(
+              "router-link",
+              { attrs: { to: "/" + _vm.ticket_priority_id + "/edit" } },
+              [
+                _c("i", { staticClass: "fas fa-edit" }),
+                _vm._v("\n                    Edit Priority\n                ")
+              ]
+            ),
+            _vm._v(" "),
+            _c("router-link", { attrs: { to: "/" } }, [
+              _vm._v("\n                       \n                    "),
+              _c("i", { staticClass: "fas fa-undo" }),
+              _vm._v("\n                    Return\n                ")
+            ])
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-content" }, [
@@ -30730,9 +30756,11 @@ var showvue_type_template_id_1158a218_render = function() {
                     "\n                        "
                 )
               ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "column has-text-right" }, [
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "columns" }, [
+            _c("div", { staticClass: "column" }, [
               _c("small", [
                 _c("span", { staticClass: "has-text-weight-bold" }, [
                   _vm._v(
@@ -30761,23 +30789,6 @@ var showvue_type_template_id_1158a218_render = function() {
                     "\n                        "
                 )
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "columns" }, [
-            _c("div", { staticClass: "column has-text-right" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "button is-primary",
-                  on: { click: _vm.goToEdit }
-                },
-                [
-                  _vm._v(
-                    "\n                            Edit Priority\n                        "
-                  )
-                ]
-              )
             ])
           ])
         ])
@@ -30825,7 +30836,8 @@ Building a better future, one line of code at a time.
   data: function data() {
     return {
       translations: I18n.t('cloud_help.ticket_priorities.shared'),
-      ticket_priority: {}
+      ticket_priority: {},
+      ticket_priority_id: null
     };
   },
   components: {
@@ -30854,12 +30866,6 @@ Building a better future, one line of code at a time.
       })["catch"](function (error) {
         console.log(error);
       });
-    },
-    goToEdit: function goToEdit() {
-      this.$router.push("/".concat(this.ticket_priority_id, "/edit"));
-    },
-    goToList: function goToList() {
-      this.$router.push("/");
     }
   }
 });
@@ -30888,6 +30894,79 @@ var show_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var show_api; }
 show_component.options.__file = "engines/CloudHelp/app/vue/ticket_priorities/apps/show.vue"
 /* harmony default export */ var show = (show_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_priorities/apps/edit.vue?vue&type=template&id=6b02f381&
+var editvue_type_template_id_6b02f381_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("component-form")
+}
+var editvue_type_template_id_6b02f381_staticRenderFns = []
+editvue_type_template_id_6b02f381_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_priorities/apps/edit.vue?vue&type=template&id=6b02f381&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_priorities/apps/edit.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var editvue_type_script_lang_js_ = ({
+  components: {
+    'component-form': components_form
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_priorities/apps/edit.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_editvue_type_script_lang_js_ = (editvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_priorities/apps/edit.vue
+
+
+
+
+
+/* normalize component */
+
+var edit_component = Object(componentNormalizer["a" /* default */])(
+  apps_editvue_type_script_lang_js_,
+  editvue_type_template_id_6b02f381_render,
+  editvue_type_template_id_6b02f381_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var edit_api; }
+edit_component.options.__file = "engines/CloudHelp/app/vue/ticket_priorities/apps/edit.vue"
+/* harmony default export */ var edit = (edit_component.exports);
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_priorities/index.js
 /*
 Lesli
@@ -30922,10 +31001,11 @@ Building a better future, one line of code at a time.
 
 
 
+
  // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-Object(app["a" /* default */])("CloudHelp", "[list|new|show]", "help/ticket_priorities", [{
+Object(app["a" /* default */])("CloudHelp", "[list|new|show|edit]", "help/ticket_priorities", [{
   path: "/",
   component: list
 }, {
@@ -30934,19 +31014,29 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|show]", "help/ticket_prio
 }, {
   path: "/:id",
   component: show
+}, {
+  path: "/:id/edit",
+  component: edit
 }]);
 
 /***/ }),
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
 /* 50 */,
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */
+/* 54 */,
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49);
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(43);
 /*
 Lesli
 

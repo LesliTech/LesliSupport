@@ -46,9 +46,9 @@ module CloudHelp
     # PATCH/PUT /ticket_priorities/1
     def update
       if @ticket_priority.update(ticket_priority_params)
-        redirect_to @ticket_priority, notice: 'Ticket priority was successfully updated.'
+        responseWithSuccessful(@ticket_priority)
       else
-        render :edit
+        responseWithError(@ticket_priority.errors.full_messages.to_sentence)
       end
     end
 

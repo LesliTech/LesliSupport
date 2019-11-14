@@ -36,7 +36,8 @@ export default {
     data() {
         return {
             translations: I18n.t('cloud_help.ticket_priorities.shared'),
-            ticket_priority: {}
+            ticket_priority: {},
+            ticket_priority_id: null
         }
     },
     components: {
@@ -65,14 +66,6 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-        },
-
-        goToEdit(){
-            this.$router.push(`/${this.ticket_priority_id}/edit`)
-        },
-        
-        goToList(){
-            this.$router.push(`/`)
         }
     }
 }
@@ -84,12 +77,17 @@ export default {
                 <h2 class="card-header-title">
                     Ticket Priority
                 </h2>
-                <h2 class="card-header-options">
-                    <a @click="goToList">
+                <div class="card-header-icon">
+                    <router-link :to="`/${ticket_priority_id}/edit`">
+                        <i class="fas fa-edit"></i>
+                        Edit Priority
+                    </router-link>
+                    <router-link :to="`/`">
+                        &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-undo"></i>
                         Return
-                    </a>
-                </h2>
+                    </router-link>
+                </div>
             </div>
             <div class="card-content">
                 <form>
@@ -106,7 +104,9 @@ export default {
                                 {{ ticket_priority.weight }}
                             </p>
                         </div>
-                        <div class="column has-text-right">
+                    </div>
+                    <div class="columns">
+                        <div class="column">
                             <small>
                                 <span class="has-text-weight-bold">
                                     {{ `${translations.fields.created_at}:` }}
@@ -118,13 +118,6 @@ export default {
                                 </span>
                                 {{ ticket_priority.updated_at }}
                             </small>
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column has-text-right">
-                            <button class="button is-primary" @click="goToEdit">
-                                Edit Priority
-                            </button>
                         </div>
                     </div>
                 </form>
