@@ -78,12 +78,12 @@ export default {
                             &nbsp;&nbsp;
                             <a v-if="tree.has_children" @click="toggleSubTrees(tree)" class="has-text-weight-bold">
                                 <slot name="content" :node="tree">
-                                    {{tree.index}} - {{tree.name}}
+                                    {{tree.name}}
                                 </slot>
                             </a>
                             <span v-else>
                                 <slot name="content" :node="tree">
-                                    {{tree.index}} - {{tree.name}}
+                                    {{tree.name}}
                                 </slot>
                             </span>
                         </p>

@@ -15,6 +15,7 @@ en:
                 fields:
                     id: Number
                     parent_category: Parent Category
+                    path: Parent Categories
                     name: Name
                     created_at: Created at
                     updated_at: Updated at

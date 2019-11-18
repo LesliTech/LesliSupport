@@ -1,3 +1,4 @@
+<script>
 /*
 Lesli
 
@@ -19,39 +20,24 @@ Building a better future, one line of code at a time.
 @dev      Carlos Hermosilla
 @author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
+@version  0.1.0-alpha
 
-// · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 
 
-// · Import main app
+// · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCloud/vue/app'
+import componentForm from '../components/form.vue'
 
 
-
-// · Import apps and components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList from './apps/list.vue'
-import appNew from './apps/new.vue'
-import appEdit from './apps/edit.vue'
-import appShow from './apps/show.vue'
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|edit|show]", "help/ticket_categories", [{
-    path: "/",
-    component: appList,
-},{
-    path: "/new",
-    component: appNew
-},{
-    path: "/:id/edit",
-    component: appEdit
-},{
-    path: "/:id",
-    component: appShow
-}])
+export default {
+    components: {
+        'component-form': componentForm
+    }
+}
+</script>
+<template>
+    <component-form></component-form>
+</template>

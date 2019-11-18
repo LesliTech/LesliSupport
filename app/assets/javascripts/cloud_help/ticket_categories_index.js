@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 57);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -12133,7 +12133,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(17).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(19).setImmediate))
 
 /***/ }),
 /* 2 */
@@ -28386,76 +28386,6 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(38);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
 "use strict";
 
 
@@ -28549,7 +28479,7 @@ function toComment(sourceMap) {
 }
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28835,6 +28765,76 @@ module.exports = function (list, options) {
     }
   };
 };
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(38);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3)))
 
 /***/ }),
 /* 20 */
@@ -30083,13 +30083,10 @@ module.exports = new Utils
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(8)))
 
 /***/ }),
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var content = __webpack_require__(56);
+var content = __webpack_require__(45);
 
 if (typeof content === 'string') {
   content = [[module.i, content, '']];
@@ -30100,7 +30097,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(19)(content, options);
+var update = __webpack_require__(18)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -30108,38 +30105,74 @@ if (content.locals) {
 
 
 /***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var content = __webpack_require__(47);
+
+if (typeof content === 'string') {
+  content = [[module.i, content, '']];
+}
+
+var options = {}
+
+options.insert = "head";
+options.singleton = false;
+
+var update = __webpack_require__(18)(content, options);
+
+if (content.locals) {
+  module.exports = content.locals;
+}
+
+
+/***/ }),
+/* 41 */,
+/* 42 */,
 /* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_tree_list_vue_vue_type_style_index_0_id_0797fec2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42);
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_tree_list_vue_vue_type_style_index_0_id_0797fec2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(39);
 /* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_tree_list_vue_vue_type_style_index_0_id_0797fec2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_tree_list_vue_vue_type_style_index_0_id_0797fec2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_tree_list_vue_vue_type_style_index_0_id_0797fec2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
-/* 56 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(18)(false);
+exports = module.exports = __webpack_require__(17)(false);
 // Module
 exports.push([module.i, "\nsection.scrollable[data-v-0797fec2] {\n    height: 23rem;\n    overflow-y: scroll;\n}\n", ""]);
 
 
 /***/ }),
-/* 57 */
+/* 46 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_46c00364_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(40);
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_46c00364_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_46c00364_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_46c00364_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(17)(false);
+// Module
+exports.push([module.i, "\nsection.scrollable[data-v-46c00364] {\n    height: 23rem;\n    overflow-y: scroll;\n}\n.margin-left[data-v-46c00364] {\n    margin-left: 2rem;\n}\n.l-shape[data-v-46c00364] {\n    border-left: 2px solid black;\n    border-bottom: 2px solid black;\n    margin-bottom: 1px;\n}\n", ""]);
+
+
+/***/ }),
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30304,8 +30337,6 @@ var tree_listvue_type_template_id_0797fec2_scoped_true_render = function() {
                                   [
                                     _vm._v(
                                       "\n                                " +
-                                        _vm._s(tree.index) +
-                                        " - " +
                                         _vm._s(tree.name) +
                                         "\n                            "
                                     )
@@ -30323,8 +30354,6 @@ var tree_listvue_type_template_id_0797fec2_scoped_true_render = function() {
                                   [
                                     _vm._v(
                                       "\n                                " +
-                                        _vm._s(tree.index) +
-                                        " - " +
                                         _vm._s(tree.name) +
                                         "\n                            "
                                     )
@@ -30411,7 +30440,7 @@ tree_listvue_type_template_id_0797fec2_scoped_true_render._withStripped = true
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/components/tree_list.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_tree_listvue_type_script_lang_js_ = (tree_listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_categories/components/tree_list.vue?vue&type=style&index=0&id=0797fec2&scoped=true&lang=css&
-var tree_listvue_type_style_index_0_id_0797fec2_scoped_true_lang_css_ = __webpack_require__(55);
+var tree_listvue_type_style_index_0_id_0797fec2_scoped_true_lang_css_ = __webpack_require__(44);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -30635,6 +30664,7 @@ var formvue_type_template_id_6e389771_render = function() {
                               _c("b-radio", {
                                 attrs: {
                                   name: "parent_category",
+                                  checked: "",
                                   "native-value": null
                                 },
                                 model: {
@@ -30661,7 +30691,8 @@ var formvue_type_template_id_6e389771_render = function() {
                               _c("b-radio", {
                                 attrs: {
                                   name: "parent_category",
-                                  "native-value": node.id
+                                  "native-value": node.id,
+                                  disabled: _vm.editingAncestry(node)
                                 },
                                 model: {
                                   value: _vm.ticket_category.parent_id,
@@ -30828,7 +30859,9 @@ Building a better future, one line of code at a time.
         shared: I18n.t('cloud_help.ticket_categories.shared')
       },
       ticket_category_id: null,
-      ticket_category: {},
+      ticket_category: {
+        parent_id: null
+      },
       ticket_categories: []
     };
   },
@@ -30843,11 +30876,30 @@ Building a better future, one line of code at a time.
       this.http.get("/help/ticket_categories.json").then(function (result) {
         if (result.successful) {
           _this.ticket_categories = result.data;
+
+          _this.showCategoryPath();
         } else {
           _this.alert(result.error, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
+      });
+    },
+    showCategoryPath: function showCategoryPath() {
+      var _this2 = this;
+
+      var path_ids = this.ticket_category.ancestry.split('/').map(function (item) {
+        return parseInt(item);
+      });
+      var path = this.ticket_categories.filter(function (element) {
+        return path_ids.includes(element.id) || _this2.ticket_category_id == element.id;
+      });
+      path.map(function (node) {
+        node.active = true;
+
+        if (node.id != _this2.ticket_category_id) {
+          node.children_active = true;
+        }
       });
     },
     setTicketCategoryId: function setTicketCategoryId() {
@@ -30868,30 +30920,15 @@ Building a better future, one line of code at a time.
       }
     },
     putTicketCategory: function putTicketCategory() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.http.put("/help/ticket_categories/".concat(this.ticket_category_id), {
         ticket_category: this.ticket_category
       }).then(function (result) {
         if (result.successful) {
-          _this2.alert(_this2.translations.form.messages.update.successful, 'success');
-        } else {
-          _this2.alert(result.error.message, 'danger');
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    postTicketCategory: function postTicketCategory() {
-      var _this3 = this;
+          _this3.alert(_this3.translations.form.messages.update.successful, 'success');
 
-      this.http.post("/help/ticket_categories", {
-        ticket_category: this.ticket_category
-      }).then(function (result) {
-        if (result.successful) {
-          _this3.ticket_category = result.data;
-
-          _this3.$router.push("".concat(_this3.ticket_category.id));
+          _this3.$router.push("/".concat(_this3.ticket_category_id));
         } else {
           _this3.alert(result.error.message, 'danger');
         }
@@ -30899,18 +30936,42 @@ Building a better future, one line of code at a time.
         console.log(error);
       });
     },
-    getTicketCategory: function getTicketCategory() {
+    postTicketCategory: function postTicketCategory() {
       var _this4 = this;
 
-      this.http.get("/help/api/ticket_categories/".concat(this.ticket_category_id)).then(function (result) {
+      this.http.post("/help/ticket_categories", {
+        ticket_category: this.ticket_category
+      }).then(function (result) {
         if (result.successful) {
-          _this4.ticket_category = result.data;
+          _this4.alert(_this4.translations.form.messages.create.successful, 'success');
+
+          _this4.$router.push("/".concat(result.data.id));
         } else {
-          _this4.alert(result.error, 'danger');
+          _this4.alert(result.error.message, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    getTicketCategory: function getTicketCategory() {
+      var _this5 = this;
+
+      this.http.get("/help/api/ticket_categories/".concat(this.ticket_category_id)).then(function (result) {
+        if (result.successful) {
+          _this5.ticket_category = result.data;
+        } else {
+          _this5.alert(result.error, 'danger');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    editingAncestry: function editingAncestry(node) {
+      if (!this.ticket_category_id) {
+        return false;
+      }
+
+      return node.id == this.ticket_category_id || node.ancestry && node.ancestry.split('/').includes(this.ticket_category_id);
     }
   }
 });
@@ -30999,6 +31060,442 @@ var new_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var new_api; }
 new_component.options.__file = "engines/CloudHelp/app/vue/ticket_categories/apps/new.vue"
 /* harmony default export */ var apps_new = (new_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_categories/apps/edit.vue?vue&type=template&id=504f42db&
+var editvue_type_template_id_504f42db_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("component-form")
+}
+var editvue_type_template_id_504f42db_staticRenderFns = []
+editvue_type_template_id_504f42db_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/edit.vue?vue&type=template&id=504f42db&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_categories/apps/edit.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var editvue_type_script_lang_js_ = ({
+  components: {
+    'component-form': components_form
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/edit.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_editvue_type_script_lang_js_ = (editvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/edit.vue
+
+
+
+
+
+/* normalize component */
+
+var edit_component = Object(componentNormalizer["a" /* default */])(
+  apps_editvue_type_script_lang_js_,
+  editvue_type_template_id_504f42db_render,
+  editvue_type_template_id_504f42db_staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var edit_api; }
+edit_component.options.__file = "engines/CloudHelp/app/vue/ticket_categories/apps/edit.vue"
+/* harmony default export */ var edit = (edit_component.exports);
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue?vue&type=template&id=46c00364&scoped=true&
+var showvue_type_template_id_46c00364_scoped_true_render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "section",
+    [
+      _c(
+        "b-modal",
+        {
+          attrs: {
+            active: _vm.modal.active,
+            "has-modal-card": "",
+            "trap-focus": "",
+            "aria-role": "dialog",
+            "aria-modal": ""
+          },
+          on: {
+            "update:active": function($event) {
+              return _vm.$set(_vm.modal, "active", $event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "card" }, [
+            _c("div", { staticClass: "card-header is-danger" }, [
+              _c("h2", { staticClass: "card-header-title" }, [
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.translations.show.modal.title) +
+                    "\n                "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-content" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(_vm.translations.show.modal.body) +
+                  "\n            "
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer has-text-right" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "card-footer-item button is-danger",
+                  on: { click: _vm.deleteTicketCategory }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.translations.show.modal.actions.delete) +
+                      "\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "card-footer-item button is-secondary",
+                  on: {
+                    click: function($event) {
+                      _vm.modal.active = false
+                    }
+                  }
+                },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.translations.show.modal.actions.cancel) +
+                      "\n                "
+                  )
+                ]
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("h2", { staticClass: "card-header-title" }, [
+            _vm._v(
+              "\n                " +
+                _vm._s(_vm.translations.shared.name) +
+                "\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-header-icon" },
+            [
+              _c(
+                "router-link",
+                { attrs: { to: "/" + _vm.ticket_category_id + "/edit" } },
+                [
+                  _c("i", { staticClass: "fas fa-edit" }),
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(_vm.translations.shared.actions.edit) +
+                      "\n                "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("router-link", { attrs: { to: "/" } }, [
+                _vm._v("\n                       \n                    "),
+                _c("i", { staticClass: "fas fa-undo" }),
+                _vm._v(
+                  "\n                    " +
+                    _vm._s(_vm.translations.shared.actions.return) +
+                    "\n                "
+                )
+              ])
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-content" }, [
+          _c("div", { staticClass: "columns" }, [
+            _c("div", { staticClass: "column" }, [
+              _c(
+                "p",
+                [
+                  _c("span", { staticClass: "has-text-weight-bold" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.translations.shared.fields.name + ":") +
+                        "\n                        "
+                    )
+                  ]),
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm.ticket_category.name) +
+                      "\n                        "
+                  ),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "has-text-weight-bold" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.translations.shared.fields.path + ":") +
+                        "\n                        "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("tree-list", {
+                    attrs: { trees: _vm.ticket_path, scrollable: true }
+                  })
+                ],
+                1
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "columns" }, [
+            _c("div", { staticClass: "column" }, [
+              _c("small", [
+                _c("span", { staticClass: "has-text-weight-bold" }, [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.translations.shared.fields.created_at + ":") +
+                      "\n                        "
+                  )
+                ]),
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(_vm.ticket_category.created_at) +
+                    "\n                        "
+                ),
+                _c("br"),
+                _vm._v(" "),
+                _c("span", { staticClass: "has-text-weight-bold" }, [
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(_vm.translations.shared.fields.updated_at + ":") +
+                      "\n                        "
+                  )
+                ]),
+                _vm._v(
+                  "\n                        " +
+                    _vm._s(_vm.ticket_category.updated_at) +
+                    "\n                    "
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "column" }, [
+              _c("div", { staticClass: "field" }, [
+                _c("div", { staticClass: "actions has-text-right" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-danger",
+                      on: {
+                        click: function($event) {
+                          _vm.modal.active = true
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.translations.shared.actions.delete) +
+                          "\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ],
+    1
+  )
+}
+var showvue_type_template_id_46c00364_scoped_true_staticRenderFns = []
+showvue_type_template_id_46c00364_scoped_true_render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue?vue&type=template&id=46c00364&scoped=true&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+/* harmony default export */ var showvue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      translations: {
+        show: I18n.t('cloud_help.ticket_categories.show'),
+        shared: I18n.t('cloud_help.ticket_categories.shared')
+      },
+      ticket_category: {},
+      ticket_path: [],
+      ticket_category_id: null,
+      modal: {
+        active: false
+      }
+    };
+  },
+  components: {
+    'tree-list': tree_list
+  },
+  mounted: function mounted() {
+    // · SetTicketCategoryId calls getTicketCategory
+    this.setTicketCategoryId();
+  },
+  methods: {
+    setTicketCategoryId: function setTicketCategoryId() {
+      if (this.$route.params.id) {
+        this.ticket_category_id = this.$route.params.id;
+        this.getTicketCategory();
+      }
+    },
+    getTicketCategory: function getTicketCategory() {
+      var _this = this;
+
+      this.http.get("/help/api/ticket_categories/".concat(this.ticket_category_id)).then(function (result) {
+        if (result.successful) {
+          _this.ticket_category = result.data;
+
+          _this.getTicketCategoryTree();
+        } else {
+          _this.alert(result.error.message, 'danger');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    getTicketCategoryTree: function getTicketCategoryTree() {
+      var _this2 = this;
+
+      this.http.get("/help/api/ticket_categories/".concat(this.ticket_category_id, "/tree")).then(function (result) {
+        if (result.successful) {
+          _this2.ticket_path = result.data;
+        } else {
+          _this2.alert(result.error.message, 'danger');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    deleteTicketCategory: function deleteTicketCategory() {
+      var _this3 = this;
+
+      this.http["delete"]("/help/ticket_categories/".concat(this.ticket_category_id)).then(function (result) {
+        if (result.successful) {
+          _this3.alert(_this3.translations.show.messages["delete"].successful, 'success');
+
+          _this3.$router.push('/');
+        } else {
+          _this3.alert(result.error.message, 'danger');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue?vue&type=script&lang=js&
+ /* harmony default export */ var apps_showvue_type_script_lang_js_ = (showvue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue?vue&type=style&index=0&id=46c00364&scoped=true&lang=css&
+var showvue_type_style_index_0_id_46c00364_scoped_true_lang_css_ = __webpack_require__(46);
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue
+
+
+
+
+
+
+/* normalize component */
+
+var show_component = Object(componentNormalizer["a" /* default */])(
+  apps_showvue_type_script_lang_js_,
+  showvue_type_template_id_46c00364_scoped_true_render,
+  showvue_type_template_id_46c00364_scoped_true_staticRenderFns,
+  false,
+  null,
+  "46c00364",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var show_api; }
+show_component.options.__file = "engines/CloudHelp/app/vue/ticket_categories/apps/show.vue"
+/* harmony default export */ var show = (show_component.exports);
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/index.js
 /*
 Lesli
@@ -31032,15 +31529,23 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
 
+
+
  // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
-Object(app["a" /* default */])("CloudHelp", "[list|new]", "help/ticket_categories", [{
+Object(app["a" /* default */])("CloudHelp", "[list|new|edit|show]", "help/ticket_categories", [{
   path: "/",
   component: list
 }, {
   path: "/new",
   component: apps_new
+}, {
+  path: "/:id/edit",
+  component: edit
+}, {
+  path: "/:id",
+  component: show
 }]);
 
 /***/ })

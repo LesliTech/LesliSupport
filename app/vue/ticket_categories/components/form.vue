@@ -42,7 +42,9 @@ export default {
                 shared: I18n.t('cloud_help.ticket_categories.shared'),
             },
             ticket_category_id: null,
-            ticket_category: {},
+            ticket_category: {
+                parent_id: null
+            },
             ticket_categories: []
         }
     },
@@ -56,11 +58,27 @@ export default {
             this.http.get("/help/ticket_categories.json").then(result => {
                 if (result.successful) {
                     this.ticket_categories = result.data
+                    this.showCategoryPath()
                 }else{
                     this.alert(result.error,'danger')
                 }
             }).catch(error => {
                 console.log(error)
+            })
+        },
+
+        showCategoryPath(){
+            let path_ids = this.ticket_category.ancestry.split('/').map((item)=>{
+                return parseInt(item)
+            })
+            let path = this.ticket_categories.filter((element)=>{
+                return path_ids.includes(element.id) || this.ticket_category_id == element.id
+            })
+            path.map((node)=>{
+                node.active = true
+                if(node.id != this.ticket_category_id){
+                    node.children_active = true
+                }
             })
         },
 
@@ -86,6 +104,7 @@ export default {
             }).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.form.messages.update.successful,'success')
+                    this.$router.push(`/${this.ticket_category_id}`)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -100,8 +119,8 @@ export default {
                 ticket_category: this.ticket_category
             }).then(result => {
                 if (result.successful) {
-                    this.ticket_category = result.data
-                    this.$router.push(`${this.ticket_category.id}`)
+                    this.alert(this.translations.form.messages.create.successful,'success')
+                    this.$router.push(`/${result.data.id}`)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -121,8 +140,17 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+        editingAncestry(node){
+            if(! this.ticket_category_id){
+                return false;
+            }
+            return (
+                node.id == this.ticket_category_id
+            ) || (
+                node.ancestry && node.ancestry.split('/').includes(this.ticket_category_id)
+            )
         }
-
     }
 }
 </script>
@@ -158,6 +186,7 @@ export default {
                                         <b-radio
                                             v-model="ticket_category.parent_id"
                                             name="parent_category"
+                                            checked
                                             :native-value="null"
                                         >
                                         </b-radio>
@@ -167,6 +196,7 @@ export default {
                                             v-model="ticket_category.parent_id"
                                             name="parent_category"
                                             :native-value="node.id"
+                                            :disabled="editingAncestry(node)"
                                         >
                                         </b-radio>
                                     </template>

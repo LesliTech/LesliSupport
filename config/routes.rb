@@ -31,6 +31,11 @@ CloudHelp::Engine.routes.draw do
         get '/tickets/options', to: 'tickets#api_options'
         get '/ticket_priorities/:id', to: 'ticket_priorities#api_show'
         get '/ticket_types/:id', to: 'ticket_types#api_show'
+
+        scope :ticket_categories do
+            get '/:id', to: 'ticket_categories#api_show'
+            get '/:id/tree', to: 'ticket_categories#api_tree'
+        end
     end
     
 end

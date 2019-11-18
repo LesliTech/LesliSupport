@@ -27,37 +27,59 @@ Building a better future, one line of code at a time.
 */
 
 
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import treeList from '../components/tree_list.vue'
+
+
 export default {
     data() {
         return {
             translations: {
-                show: I18n.t('cloud_help.ticket_priorities.show'),
-                shared: I18n.t('cloud_help.ticket_priorities.shared'),
+                show: I18n.t('cloud_help.ticket_categories.show'),
+                shared: I18n.t('cloud_help.ticket_categories.shared'),
             },
-            ticket_priority: {},
-            ticket_priority_id: null,
+            ticket_category: {},
+            ticket_path: [],
+            ticket_category_id: null,
             modal:{
                 active: false
             }
         }
     },
+    components: {
+        'tree-list': treeList
+    },
     mounted() {
-        // · SetTicketPriorityId calls getTicketPriority
-        this.setTicketPriorityId()
+        // · SetTicketCategoryId calls getTicketCategory
+        this.setTicketCategoryId()
     },
     methods: {
         
-        setTicketPriorityId(){
+        setTicketCategoryId(){
             if (this.$route.params.id) {
-                this.ticket_priority_id = this.$route.params.id
-                this.getTicketPriority()
+                this.ticket_category_id = this.$route.params.id
+                this.getTicketCategory()
             }
         },
 
-        getTicketPriority() {
-            this.http.get(`/help/api/ticket_priorities/${this.ticket_priority_id}`).then(result => {
+        getTicketCategory() {
+            this.http.get(`/help/api/ticket_categories/${this.ticket_category_id}`).then(result => {
                 if (result.successful) {
-                    this.ticket_priority = result.data
+                    this.ticket_category = result.data
+                    this.getTicketCategoryTree()
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+        
+        getTicketCategoryTree(){
+            this.http.get(`/help/api/ticket_categories/${this.ticket_category_id}/tree`).then(result => {
+                if (result.successful) {
+                    this.ticket_path = result.data;
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -66,8 +88,8 @@ export default {
             })
         },
 
-        deleteTicketPriority(){
-            this.http.delete(`/help/ticket_priorities/${this.ticket_priority_id}`).then(result => {
+        deleteTicketCategory(){
+            this.http.delete(`/help/ticket_categories/${this.ticket_category_id}`).then(result => {
                 if(result.successful){
                     this.alert(this.translations.show.messages.delete.successful,'success')
                     this.$router.push('/')
@@ -100,7 +122,7 @@ export default {
                     {{ translations.show.modal.body }}
                 </div>
                 <div class="card-footer has-text-right">
-                    <button class="card-footer-item button is-danger" @click="deleteTicketPriority">
+                    <button class="card-footer-item button is-danger" @click="deleteTicketCategory">
                         {{ translations.show.modal.actions.delete }}
                     </button>
                     <button class="card-footer-item button is-secondary" @click="modal.active=false">
@@ -115,7 +137,7 @@ export default {
                     {{ translations.shared.name }}
                 </h2>
                 <div class="card-header-icon">
-                    <router-link :to="`/${ticket_priority_id}/edit`">
+                    <router-link :to="`/${ticket_category_id}/edit`">
                         <i class="fas fa-edit"></i>
                         {{ translations.shared.actions.edit }}
                     </router-link>
@@ -133,11 +155,13 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.name}:` }}
                             </span>
-                            {{ ticket_priority.name }},
+                            {{ ticket_category.name }}
+                            <br>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.shared.fields.weight}:` }}
+                                {{ `${translations.shared.fields.path}:` }}
                             </span>
-                            {{ ticket_priority.weight }}
+                            <tree-list :trees="ticket_path" :scrollable="true">
+                            </tree-list>
                         </p>
                     </div>
                 </div>
@@ -147,12 +171,12 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.created_at}:` }}
                             </span>
-                            {{ ticket_priority.created_at }}
+                            {{ ticket_category.created_at }}
                             <br>
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.updated_at}:` }}
                             </span>
-                            {{ ticket_priority.updated_at }}
+                            {{ ticket_category.updated_at }}
                         </small>
                     </div>
                     <div class="column">
@@ -169,3 +193,17 @@ export default {
         </div>
     </section>
 </template>
+<style scoped>
+section.scrollable {
+    height: 23rem;
+    overflow-y: scroll;
+}
+.margin-left {
+    margin-left: 2rem;
+}
+.l-shape {
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-bottom: 1px;
+}
+</style>

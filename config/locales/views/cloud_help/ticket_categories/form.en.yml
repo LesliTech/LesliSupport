@@ -6,7 +6,9 @@ en:
                     no_subcategory: None
                 messages:
                     update:
-                        successful: Ticket category updated successfuly
+                        successful: Ticket category updated successfully
+                    create:
+                        successful: Ticket category created successfully
                 actions:
                     update: Update category
                     create: Create category

@@ -63,6 +63,7 @@ export default {
             }).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.form.messages.update.successful,'success')
+                    this.$router.push(`/${this.ticket_priority_id}`)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -77,8 +78,8 @@ export default {
                 ticket_priority: this.ticket_priority
             }).then(result => {
                 if (result.successful) {
-                    this.ticket_priority = result.data
-                    this.$router.push(`${this.ticket_priority.id}`)
+                    this.alert(this.translations.form.messages.create.successful,'success')
+                    this.$router.push(`/${result.data.id}`)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
