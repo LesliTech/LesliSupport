@@ -25,41 +25,64 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
+
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import treeList from '../components/tree_list.vue'
+
 export default {
+    components: {
+        'tree-list': treeList
+    },
+
     data() {
         return {
             translations: {
-                form: I18n.t('cloud_help.ticket_priorities.form'),
-                shared: I18n.t('cloud_help.ticket_priorities.shared'),
+                form: I18n.t('cloud_help.ticket_categories.form'),
+                shared: I18n.t('cloud_help.ticket_categories.shared'),
             },
-            ticket_priority_id: null,
-            ticket_priority: {}
+            ticket_category_id: null,
+            ticket_category: {},
+            ticket_categories: []
         }
     },
     mounted() {
-        this.setTicketPriorityId()
+        this.setTicketCategoryId()
+        this.getTicketCategories()
     },
     methods: {
 
-        setTicketPriorityId(){
+        getTicketCategories() {
+            this.http.get("/help/ticket_categories.json").then(result => {
+                if (result.successful) {
+                    this.ticket_categories = result.data
+                }else{
+                    this.alert(result.error,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        setTicketCategoryId(){
             if (this.$route.params.id) {
-                this.ticket_priority_id = this.$route.params.id
-                this.getTicketPriority()
+                this.ticket_category_id = this.$route.params.id
+                this.getTicketCategory()
             }
         },
 
-        submitTicketPriority(event){
+        submitTicketCategory(event){
             if (event) { event.preventDefault() }
-            if(this.ticket_priority_id){
-                this.putTicketPriority()
+            if(this.ticket_category_id){
+                this.putTicketCategory()
             }else{
-                this.postTicketPriority()
+                this.postTicketCategory()
             }
         },
 
-        putTicketPriority() {
-            this.http.put(`/help/ticket_priorities/${this.ticket_priority_id}`, {
-                ticket_priority: this.ticket_priority
+        putTicketCategory() {
+            this.http.put(`/help/ticket_categories/${this.ticket_category_id}`, {
+                ticket_category: this.ticket_category
             }).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.form.messages.update.successful,'success')
@@ -72,13 +95,13 @@ export default {
 
         },
 
-        postTicketPriority() {
-            this.http.post("/help/ticket_priorities", {
-                ticket_priority: this.ticket_priority
+        postTicketCategory() {
+            this.http.post("/help/ticket_categories", {
+                ticket_category: this.ticket_category
             }).then(result => {
                 if (result.successful) {
-                    this.ticket_priority = result.data
-                    this.$router.push(`${this.ticket_priority.id}`)
+                    this.ticket_category = result.data
+                    this.$router.push(`${this.ticket_category.id}`)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -88,12 +111,12 @@ export default {
 
         },
 
-        getTicketPriority() {
-            this.http.get(`/help/api/ticket_priorities/${this.ticket_priority_id}`).then(result => {
+        getTicketCategory() {
+            this.http.get(`/help/api/ticket_categories/${this.ticket_category_id}`).then(result => {
                 if (result.successful) {
-                    this.ticket_priority = result.data
+                    this.ticket_category = result.data
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.alert(result.error,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -111,7 +134,7 @@ export default {
                     {{translations.shared.name}}
                 </h2>
                 <div class="card-header-icon">
-                    <router-link v-if="ticket_priority_id" :to="`/${ticket_priority_id}`">
+                    <router-link v-if="ticket_category_id" :to="`/${ticket_category_id}`">
                         <i class="fas fa-eye"></i>
                         {{translations.shared.actions.show}}
                     </router-link>
@@ -123,33 +146,52 @@ export default {
                 </div>
             </div>
             <div class="card-content">
-                <form @submit="submitTicketPriority">
+                <form @submit="submitTicketCategory">
                     <div class="columns">
                         <div class="column">
-                            <b-field :label="translations.shared.fields.name">
-                                <b-input v-model="ticket_priority.name" required="true"></b-input>
+                            <b-field :label="translations.shared.fields.parent_category">
+                                <tree-list :trees="ticket_categories" :scrollable="true" :default_card="true">
+                                    <template v-slot:default_content>
+                                        {{translations.form.titles.no_subcategory}}
+                                    </template>
+                                    <template v-slot:default_actions>
+                                        <b-radio
+                                            v-model="ticket_category.parent_id"
+                                            name="parent_category"
+                                            :native-value="null"
+                                        >
+                                        </b-radio>
+                                    </template>
+                                    <template v-slot:actions="{node}">
+                                        <b-radio 
+                                            v-model="ticket_category.parent_id"
+                                            name="parent_category"
+                                            :native-value="node.id"
+                                        >
+                                        </b-radio>
+                                    </template>
+                                </tree-list>
                             </b-field>
                         </div>
                         <div class="column">
-                            <b-field :label="translations.shared.fields.weight">
-                                <b-input max="1000000" min="0" v-model="ticket_priority.weight" type="number" required="true" >
-                                </b-input>
+                            <b-field :label="translations.shared.fields.name">
+                                <b-input v-model="ticket_category.name" required="true"></b-input>
                             </b-field>
                         </div>
                     </div>
                     <div class="columns">
-                        <div v-if="ticket_priority_id" class="column">
+                        <div v-if="ticket_category_id" class="column">
                             <div class="field">
                                 <small>
                                     <span class="has-text-weight-bold">
                                         {{ `${translations.shared.fields.created_at}:` }}
                                     </span>
-                                    {{ ticket_priority.created_at }}
+                                    {{ ticket_category.created_at }}
                                     <br>
                                     <span class="has-text-weight-bold">
                                         {{ `${translations.shared.fields.updated_at}:` }}
                                     </span>
-                                    {{ ticket_priority.updated_at }}
+                                    {{ ticket_category.updated_at }}
                                 </small>
                             </div>
                         </div>
@@ -157,7 +199,7 @@ export default {
                             <div class="field">
                                 <div class="actions has-text-right">
                                     <button class="button is-primary" type="submit">
-                                        <span v-if="ticket_priority_id">{{translations.form.actions.update}}</span>
+                                        <span v-if="ticket_category_id">{{translations.form.actions.update}}</span>
                                         <span v-else>{{translations.form.actions.create}}</span>
                                     </button>
                                 </div>

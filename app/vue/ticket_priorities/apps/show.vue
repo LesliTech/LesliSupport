@@ -67,7 +67,7 @@ export default {
                 if (result.successful) {
                     this.ticket_priority = result.data
                 }else{
-                    this.alert(result.error,'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -80,7 +80,7 @@ export default {
                     this.alert(this.translations.show.messages.delete.successful,'success')
                     this.$router.push('/')
                 }else{
-                    this.alert(result.error,'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)

@@ -1,0 +1,12 @@
+en:
+    cloud_help:
+        ticket_categories:
+            form:
+                titles:
+                    no_subcategory: None
+                messages:
+                    update:
+                        successful: Ticket category updated successfuly
+                actions:
+                    update: Update category
+                    create: Create category

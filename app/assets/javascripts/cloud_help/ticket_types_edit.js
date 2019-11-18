@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 60);
+/******/ 	return __webpack_require__(__webpack_require__.s = 65);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -30087,7 +30087,7 @@ module.exports = new Utils
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var content = __webpack_require__(45);
+var content = __webpack_require__(46);
 
 if (typeof content === 'string') {
   content = [[module.i, content, '']];
@@ -30109,7 +30109,8 @@ if (content.locals) {
 /* 41 */,
 /* 42 */,
 /* 43 */,
-/* 44 */
+/* 44 */,
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30119,7 +30120,7 @@ if (content.locals) {
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(18)(false);
@@ -30128,7 +30129,7 @@ exports.push([module.i, "\ntable tr:hover {\n    cursor: pointer;\n}\n", ""]);
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30233,7 +30234,7 @@ Building a better future, one line of code at a time.
         if (result.successful) {
           _this.ticket_types = result.data;
         } else {
-          _this.alert(result.error, 'danger');
+          _this.alert(result.error.message, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -30247,7 +30248,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_types/apps/list.vue?vue&type=script&lang=js&
  /* harmony default export */ var apps_listvue_type_script_lang_js_ = (listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_types/apps/list.vue?vue&type=style&index=0&lang=css&
-var listvue_type_style_index_0_lang_css_ = __webpack_require__(44);
+var listvue_type_style_index_0_lang_css_ = __webpack_require__(45);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -30504,6 +30505,8 @@ Building a better future, one line of code at a time.
       }).then(function (result) {
         if (result.successful) {
           _this.alert(_this.translations.form.messages.update.successful, 'success');
+        } else {
+          _this.alert(result.error.message, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -30520,7 +30523,7 @@ Building a better future, one line of code at a time.
 
           _this2.$router.push("".concat(_this2.ticket_type.id));
         } else {
-          _this2.alert(result.error, 'danger');
+          _this2.alert(result.error.message, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -30533,7 +30536,7 @@ Building a better future, one line of code at a time.
         if (result.successful) {
           _this3.ticket_type = result.data;
         } else {
-          _this3.alert(result.error, 'danger');
+          _this3.alert(result.error.message, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -30904,7 +30907,7 @@ Building a better future, one line of code at a time.
         if (result.successful) {
           _this.ticket_type = result.data;
         } else {
-          _this.alert(result.error, 'danger');
+          _this.alert(result.error.message, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -30919,7 +30922,7 @@ Building a better future, one line of code at a time.
 
           _this2.$router.push('/');
         } else {
-          _this2.alert(result.error, 'danger');
+          _this2.alert(result.error.message, 'danger');
         }
       })["catch"](function (error) {
         console.log(error);
@@ -31078,7 +31081,6 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|show|edit]", "help/ticket
 }]);
 
 /***/ }),
-/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
@@ -31091,12 +31093,17 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|show|edit]", "help/ticket
 /* 57 */,
 /* 58 */,
 /* 59 */,
-/* 60 */
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46);
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47);
 /*
 Lesli
 

@@ -63,6 +63,8 @@ export default {
             }).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.form.messages.update.successful,'success')
+                }else{
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -78,7 +80,7 @@ export default {
                     this.ticket_type = result.data
                     this.$router.push(`${this.ticket_type.id}`)
                 }else{
-                    this.alert(result.error,'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -91,7 +93,7 @@ export default {
                 if (result.successful) {
                     this.ticket_type = result.data
                 }else{
-                    this.alert(result.error,'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
