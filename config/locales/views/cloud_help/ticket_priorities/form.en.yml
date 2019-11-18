@@ -4,7 +4,9 @@ en:
             form:
                 messages:
                     update:
-                        successful: Ticket priority updated successfuly
+                        successful: Ticket priority updated successfully
+                    create:
+                        successful: Ticket type created successfully
                 actions:
                     update: Update priority
                     create: Create priority

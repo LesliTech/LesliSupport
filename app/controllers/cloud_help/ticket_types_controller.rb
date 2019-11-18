@@ -6,10 +6,17 @@ module CloudHelp
 
         # GET /ticket_types
         def index
-            ticket_types = current_user.account.help.ticket_types.select(:id, :name, :created_at, :updated_at)
             respond_to do |format|
-                format.html { @ticket_types = ticket_types }
-                format.json { responseWithSuccessful(ticket_types) }
+                format.html {}
+                format.json do
+                    ticket_types = current_user.account.help.ticket_types.select(
+                        :id,
+                        :name,
+                        :created_at,
+                        :updated_at
+                    )
+                    responseWithSuccessful(ticket_types) 
+                end
             end
         end
 

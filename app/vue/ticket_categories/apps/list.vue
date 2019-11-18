@@ -29,48 +29,30 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import treeList from '../components/tree_list.vue'
+
 export default {
+    components: {
+        'tree-list': treeList
+    },
+
     data() {
         return {
             translations:{
-                shared: I18n.t('cloud_help.ticket_priorities.shared')
+                shared: I18n.t('cloud_help.ticket_categories.shared')
             },
-            ticket_priorities: [],
-            columns: []
+            ticket_categories: []
         }
     },
     mounted() {
-        this.setColumns()
-        this.getTicketPriorities()
+        this.getTicketCategories()
     },
     methods: {
 
-        setColumns(){
-            this.columns = [{
-                field: 'id',
-                label: this.translations.shared.fields.id,
-                centered: true,
-                width: 40,
-                numeric: true
-            }, {
-                field: 'name',
-                label: this.translations.shared.fields.name
-            }, {
-                field: 'weight',
-                label: this.translations.shared.fields.weight,
-            }, {
-                field: 'created_at',
-                label: this.translations.shared.fields.created_at
-            }, {
-                field: 'updated_at',
-                label: this.translations.shared.fields.updated_at
-            }];
-        },
-
-        getTicketPriorities() {
-            this.http.get("/help/ticket_priorities.json").then(result => {
+        getTicketCategories() {
+            this.http.get("/help/ticket_categories.json").then(result => {
                 if (result.successful) {
-                    this.ticket_priorities = result.data
+                    this.ticket_categories = result.data
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -79,21 +61,24 @@ export default {
             })
         },
         
-        showTicketPriority(ticket_priority) {
-            this.$router.push(`${ticket_priority.id}`)
+        showTicketCategory(ticket_category) {
+            this.$router.push(`${ticket_category.id}`)
         }
-
     }
 }
 </script>
 <template>
     <section class="section">
-        <b-table :data="ticket_priorities" :columns="columns" @click="showTicketPriority" :hoverable="true">
-        </b-table>
+        <tree-list :trees="ticket_categories">
+            <template v-slot:actions="{node}">
+                <router-link :to="`/${node.id}`" class="button is-info is-small">
+                    <i class="fas fa-eye"></i>&nbsp;{{translations.shared.actions.short.show}}
+                </router-link>
+                &nbsp;
+                <router-link :to="`/${node.id}/edit`" class="button is-primary is-small">
+                    <i class="fas fa-edit"></i>&nbsp;{{translations.shared.actions.short.edit}}
+                </router-link>
+            </template>
+        </tree-list>
     </section>
 </template>
-<style>
-    table tr:hover {
-        cursor: pointer;
-    }
-</style>

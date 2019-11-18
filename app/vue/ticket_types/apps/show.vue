@@ -27,11 +27,6 @@ Building a better future, one line of code at a time.
 */
 
 
-// · Component list
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentForm from '../components/form.vue'
-
-
 export default {
     data() {
         return {
@@ -45,9 +40,6 @@ export default {
                 active: false
             }
         }
-    },
-    components: {
-        'component-form': componentForm
     },
     mounted() {
         // · SetTicketTypeId calls getTicketType
@@ -67,7 +59,7 @@ export default {
                 if (result.successful) {
                     this.ticket_type = result.data
                 }else{
-                    this.alert(result.error,'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -80,7 +72,7 @@ export default {
                     this.alert(this.translations.show.messages.delete.successful,'success')
                     this.$router.push('/')
                 }else{
-                    this.alert(result.error,'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)

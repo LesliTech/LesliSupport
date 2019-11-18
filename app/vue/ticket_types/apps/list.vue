@@ -69,7 +69,7 @@ export default {
                 if (result.successful) {
                     this.ticket_types = result.data
                 }else{
-                    this.alert(result.error,'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)

@@ -1,0 +1,21 @@
+en:
+    cloud_help:
+        ticket_categories:
+            shared:
+                name: Ticket Category
+                actions:
+                    short:
+                        show: Show
+                        edit: Edit
+                    new: New Category
+                    edit: Edit Category
+                    show: Show Category
+                    return: Return
+                    delete: Delete Category
+                fields:
+                    id: Number
+                    parent_category: Parent Category
+                    path: Parent Categories
+                    name: Name
+                    created_at: Created at
+                    updated_at: Updated at

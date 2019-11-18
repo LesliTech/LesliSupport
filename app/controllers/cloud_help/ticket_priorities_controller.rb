@@ -6,10 +6,18 @@ module CloudHelp
 
         # GET /ticket_priorities
         def index
-            ticket_priorities = current_user.account.help.ticket_priorities.select(:id, :name, :weight, :created_at, :updated_at)
             respond_to do |format|
-                format.html { @tickets_priorities = ticket_priorities }
-                format.json { responseWithSuccessful(ticket_priorities) }
+                format.html {}
+                format.json do 
+                    ticket_priorities = current_user.account.help.ticket_priorities.select(
+                        :id,
+                        :name,
+                        :weight,
+                        :created_at,
+                        :updated_at
+                    )
+                    responseWithSuccessful(ticket_priorities)
+                end
             end
         end
 
