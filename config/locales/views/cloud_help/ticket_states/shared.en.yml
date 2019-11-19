@@ -1,0 +1,25 @@
+en:
+    cloud_help:
+        ticket_states:
+            shared:
+                name: Ticket State
+                actions:
+                    new: New State
+                    edit: Edit State
+                    show: Show State
+                    return: Return
+                    delete: Delete State
+                fields:
+                    id: Number
+                    name: Name
+                    initial: Initial
+                    final: Final
+                    created_at: Created at
+                    updated_at: Updated at
+                default:
+                    names:
+                        created: Created
+                        closed: Closed
+                    types:
+                        initial: Initial
+                        final: Final
