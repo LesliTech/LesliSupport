@@ -141,6 +141,7 @@ export default {
                 console.log(error)
             })
         },
+        
         editingAncestry(node){
             if(! this.ticket_category_id){
                 return false;
