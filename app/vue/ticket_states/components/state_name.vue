@@ -1,4 +1,5 @@
-=begin
+<script>
+/*
 Lesli
 
 Copyright (c) 2019, Lesli Technologies, S. A.
@@ -16,12 +17,47 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   Carlos Hermosilla
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
-=end
-
-load "#{Rails.root}/engines/CloudHelp/db/seed/#{Rails.env.downcase}.rb"
+*/
+export default {
+    data() {
+        return {
+            translations: I18n.t('cloud_help.ticket_states.shared')
+        }
+    },
+    props: {
+        name: {
+            type: String,
+            default: ''
+        },
+        initial: {
+            type: Boolean,
+            default: false
+        },
+        final: {
+            type: Boolean,
+            default: false
+        }
+    }
+}
+</script>
+<template>
+    <span v-if="initial || final">
+        {{translations.default.names[name]}}
+        <span v-if="initial">
+            ({{translations.default.types.initial}})
+        </span>
+        <span v-else>
+            ({{translations.default.types.final}})
+        </span>
+    </span>
+    <span v-else>
+        {{name}}
+    </span>
+</template>

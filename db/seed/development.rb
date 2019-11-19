@@ -1,4 +1,5 @@
 =begin
+
 Lesli
 
 Copyright (c) 2019, Lesli Technologies, S. A.
@@ -16,12 +17,15 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
+@author   LesliTech <hello@lesli.tech>
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
-@version  0.1.0-alpha
+@version  GIT: 1.0.0 alpha
 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
+// · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
+
 =end
 
-load "#{Rails.root}/engines/CloudHelp/db/seed/#{Rails.env.downcase}.rb"
+load "#{Rails.root}/engines/CloudHelp/db/seed/development/accounts.rb"
+load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_states.rb"

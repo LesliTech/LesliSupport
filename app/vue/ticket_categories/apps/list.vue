@@ -62,7 +62,7 @@ export default {
         },
         
         showTicketCategory(ticket_category) {
-            this.$router.push(`${ticket_category.id}`)
+            this.$router.push(`/${ticket_category.id}`)
         }
     }
 }

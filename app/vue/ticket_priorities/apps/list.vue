@@ -80,7 +80,7 @@ export default {
         },
         
         showTicketPriority(ticket_priority) {
-            this.$router.push(`${ticket_priority.id}`)
+            this.$router.push(`/${ticket_priority.id}`)
         }
 
     }

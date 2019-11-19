@@ -29,19 +29,25 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentStateName from '../components/state_name.vue'
+
 export default {
+    components: {
+        'component-state-name': componentStateName
+    },
+
     data() {
         return {
             translations:{
-                shared: I18n.t('cloud_help.ticket_types.shared')
+                shared: I18n.t('cloud_help.ticket_states.shared')
             },
-            ticket_types: [],
+            ticket_states: [],
             columns: []
         }
     },
     mounted() {
         this.setColumns()
-        this.getTicketTypes()
+        this.getTicketStates()
     },
     methods: {
 
@@ -64,10 +70,10 @@ export default {
             }];
         },
 
-        getTicketTypes() {
-            this.http.get("/help/ticket_types.json").then(result => {
+        getTicketStates() {
+            this.http.get("/help/ticket_states.json").then(result => {
                 if (result.successful) {
-                    this.ticket_types = result.data
+                    this.ticket_states = result.data
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -76,8 +82,8 @@ export default {
             })
         },
         
-        showTicketType(ticket_type) {
-            this.$router.push(`/${ticket_type.id}`)
+        showTicketState(ticket_state) {
+            this.$router.push(`/${ticket_state.id}`)
         }
 
     }
@@ -85,7 +91,26 @@ export default {
 </script>
 <template>
     <section class="section">
-        <b-table :data="ticket_types" :columns="columns" @click="showTicketType" :hoverable="true">
+        <b-table :data="ticket_states" @click="showTicketState" :hoverable="true">
+            <template v-slot="props">
+                <b-table-column field="id" :label="translations.shared.fields.id" width="40" centered numeric>
+                    {{props.row.id}}
+                </b-table-column>
+                <b-table-column field="name" :label="translations.shared.fields.name">
+                    <component-state-name
+                        :name="props.row.name"
+                        :initial="props.row.initial"
+                        :final="props.row.final"
+                    >
+                    </component-state-name>
+                </b-table-column>
+                <b-table-column field="created_at" :label="translations.shared.fields.created_at">
+                    {{props.row.created_at}}
+                </b-table-column>
+                <b-table-column field="updated_at" :label="translations.shared.fields.updated_at">
+                    {{props.row.updated_at}}
+                </b-table-column>
+            </template>
         </b-table>
     </section>
 </template>

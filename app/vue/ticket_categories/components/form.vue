@@ -58,7 +58,7 @@ export default {
             this.http.get("/help/ticket_categories.json").then(result => {
                 if (result.successful) {
                     this.ticket_categories = result.data
-                    this.showCategoryPath()
+                    this.showTicketCategoryPath()
                 }else{
                     this.alert(result.error,'danger')
                 }
@@ -67,19 +67,21 @@ export default {
             })
         },
 
-        showCategoryPath(){
-            let path_ids = this.ticket_category.ancestry.split('/').map((item)=>{
-                return parseInt(item)
-            })
-            let path = this.ticket_categories.filter((element)=>{
-                return path_ids.includes(element.id) || this.ticket_category_id == element.id
-            })
-            path.map((node)=>{
-                node.active = true
-                if(node.id != this.ticket_category_id){
-                    node.children_active = true
-                }
-            })
+        showTicketCategoryPath(){
+            if(this.ticket_category.ancestry){
+                let path_ids = this.ticket_category.ancestry.split('/').map((item)=>{
+                    return parseInt(item)
+                })
+                let path = this.ticket_categories.filter((element)=>{
+                    return path_ids.includes(element.id) || this.ticket_category_id == element.id
+                })
+                path.map((node)=>{
+                    node.active = true
+                    if(node.id != this.ticket_category_id){
+                        node.children_active = true
+                    }
+                })
+            }
         },
 
         setTicketCategoryId(){
@@ -141,7 +143,8 @@ export default {
                 console.log(error)
             })
         },
-        editingAncestry(node){
+        
+        disableChildren(node){
             if(! this.ticket_category_id){
                 return false;
             }
@@ -196,7 +199,7 @@ export default {
                                             v-model="ticket_category.parent_id"
                                             name="parent_category"
                                             :native-value="node.id"
-                                            :disabled="editingAncestry(node)"
+                                            :disabled="disableChildren(node)"
                                         >
                                         </b-radio>
                                     </template>

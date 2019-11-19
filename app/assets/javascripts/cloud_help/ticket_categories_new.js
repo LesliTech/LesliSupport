@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 65);
+/******/ 	return __webpack_require__(__webpack_require__.s = 69);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -30086,7 +30086,7 @@ module.exports = new Utils
 /* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var content = __webpack_require__(45);
+var content = __webpack_require__(46);
 
 if (typeof content === 'string') {
   content = [[module.i, content, '']];
@@ -30108,7 +30108,7 @@ if (content.locals) {
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var content = __webpack_require__(47);
+var content = __webpack_require__(48);
 
 if (typeof content === 'string') {
   content = [[module.i, content, '']];
@@ -30130,7 +30130,8 @@ if (content.locals) {
 /* 41 */,
 /* 42 */,
 /* 43 */,
-/* 44 */
+/* 44 */,
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30140,7 +30141,7 @@ if (content.locals) {
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_tree_list_vue_vue_type_style_index_0_id_0797fec2_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(17)(false);
@@ -30149,7 +30150,7 @@ exports.push([module.i, "\nsection.scrollable[data-v-0797fec2] {\n    height: 23
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30159,7 +30160,7 @@ exports.push([module.i, "\nsection.scrollable[data-v-0797fec2] {\n    height: 23
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_show_vue_vue_type_style_index_0_id_46c00364_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(17)(false);
@@ -30168,11 +30169,14 @@ exports.push([module.i, "\nsection.scrollable[data-v-46c00364] {\n    height: 23
 
 
 /***/ }),
-/* 48 */,
 /* 49 */,
 /* 50 */,
 /* 51 */,
-/* 52 */
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30440,7 +30444,7 @@ tree_listvue_type_template_id_0797fec2_scoped_true_render._withStripped = true
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/components/tree_list.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_tree_listvue_type_script_lang_js_ = (tree_listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_categories/components/tree_list.vue?vue&type=style&index=0&id=0797fec2&scoped=true&lang=css&
-var tree_listvue_type_style_index_0_id_0797fec2_scoped_true_lang_css_ = __webpack_require__(44);
+var tree_listvue_type_style_index_0_id_0797fec2_scoped_true_lang_css_ = __webpack_require__(45);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -30529,7 +30533,7 @@ Building a better future, one line of code at a time.
       });
     },
     showTicketCategory: function showTicketCategory(ticket_category) {
-      this.$router.push("".concat(ticket_category.id));
+      this.$router.push("/".concat(ticket_category.id));
     }
   }
 });
@@ -30692,7 +30696,7 @@ var formvue_type_template_id_6e389771_render = function() {
                                 attrs: {
                                   name: "parent_category",
                                   "native-value": node.id,
-                                  disabled: _vm.editingAncestry(node)
+                                  disabled: _vm.disableChildren(node)
                                 },
                                 model: {
                                   value: _vm.ticket_category.parent_id,
@@ -30877,7 +30881,7 @@ Building a better future, one line of code at a time.
         if (result.successful) {
           _this.ticket_categories = result.data;
 
-          _this.showCategoryPath();
+          _this.showTicketCategoryPath();
         } else {
           _this.alert(result.error, 'danger');
         }
@@ -30885,22 +30889,24 @@ Building a better future, one line of code at a time.
         console.log(error);
       });
     },
-    showCategoryPath: function showCategoryPath() {
+    showTicketCategoryPath: function showTicketCategoryPath() {
       var _this2 = this;
 
-      var path_ids = this.ticket_category.ancestry.split('/').map(function (item) {
-        return parseInt(item);
-      });
-      var path = this.ticket_categories.filter(function (element) {
-        return path_ids.includes(element.id) || _this2.ticket_category_id == element.id;
-      });
-      path.map(function (node) {
-        node.active = true;
+      if (this.ticket_category.ancestry) {
+        var path_ids = this.ticket_category.ancestry.split('/').map(function (item) {
+          return parseInt(item);
+        });
+        var path = this.ticket_categories.filter(function (element) {
+          return path_ids.includes(element.id) || _this2.ticket_category_id == element.id;
+        });
+        path.map(function (node) {
+          node.active = true;
 
-        if (node.id != _this2.ticket_category_id) {
-          node.children_active = true;
-        }
-      });
+          if (node.id != _this2.ticket_category_id) {
+            node.children_active = true;
+          }
+        });
+      }
     },
     setTicketCategoryId: function setTicketCategoryId() {
       if (this.$route.params.id) {
@@ -30966,7 +30972,7 @@ Building a better future, one line of code at a time.
         console.log(error);
       });
     },
-    editingAncestry: function editingAncestry(node) {
+    disableChildren: function disableChildren(node) {
       if (!this.ticket_category_id) {
         return false;
       }
@@ -31470,7 +31476,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue?vue&type=script&lang=js&
  /* harmony default export */ var apps_showvue_type_script_lang_js_ = (showvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue?vue&type=style&index=0&id=46c00364&scoped=true&lang=css&
-var showvue_type_style_index_0_id_46c00364_scoped_true_lang_css_ = __webpack_require__(46);
+var showvue_type_style_index_0_id_46c00364_scoped_true_lang_css_ = __webpack_require__(47);
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_categories/apps/show.vue
 
@@ -31549,10 +31555,6 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|edit|show]", "help/ticket
 }]);
 
 /***/ }),
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
 /* 57 */,
 /* 58 */,
 /* 59 */,
@@ -31561,12 +31563,16 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|edit|show]", "help/ticket
 /* 62 */,
 /* 63 */,
 /* 64 */,
-/* 65 */
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(52);
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(56);
 /*
 Lesli
 

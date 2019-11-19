@@ -1,0 +1,8 @@
+en:
+    activerecord:
+        errors:
+            models:
+                cloud_help/ticket_state:
+                        attributes:
+                            base:
+                                destroy_attempt_on_default_state: This state cannot be deleted

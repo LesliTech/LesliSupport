@@ -2,7 +2,6 @@ class CreateCloudHelpTicketStates < ActiveRecord::Migration[6.0]
     def change
         create_table :cloud_help_ticket_states do |t|
             t.string :name
-            t.integer :number
             t.boolean :initial, default: false
             t.boolean :final, default: false
             t.timestamps

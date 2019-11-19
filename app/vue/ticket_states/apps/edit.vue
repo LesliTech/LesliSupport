@@ -1,4 +1,5 @@
-=begin
+<script>
+/*
 Lesli
 
 Copyright (c) 2019, Lesli Technologies, S. A.
@@ -16,12 +17,27 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   Carlos Hermosilla
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
-=end
+*/
 
-load "#{Rails.root}/engines/CloudHelp/db/seed/#{Rails.env.downcase}.rb"
+
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentForm from '../components/form.vue'
+
+
+export default {
+    components: {
+        'component-form': componentForm
+    }
+}
+</script>
+<template>
+    <component-form></component-form>
+</template>

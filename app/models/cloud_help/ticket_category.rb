@@ -6,9 +6,9 @@ module CloudHelp
 
         has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_types_id'
 
+        # Gets the path of the current node in tree style
         def tree
             data = []
-            puts path.class
             depth = 0
             path.each do |node|
                 if node.id == id
@@ -32,6 +32,7 @@ module CloudHelp
             data
         end
 
+        # Gets all records in tree style
         def self.tree(account)
             # We get the root nodes
             
