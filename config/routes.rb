@@ -17,6 +17,7 @@ CloudHelp::Engine.routes.draw do
         get '/activities', to: 'tickets#activities'
         get '/discussions', to: 'tickets#discussions'
     end
+    
     namespace :ticket do
         resources :timelines
         resources :followers
@@ -25,6 +26,10 @@ CloudHelp::Engine.routes.draw do
         resources :activities
         resources :files
         resources :details
+    end
+
+    namespace :state do
+        resources :assignments
     end
 
     scope :api do

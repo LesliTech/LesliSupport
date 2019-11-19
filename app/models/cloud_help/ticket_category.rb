@@ -4,7 +4,8 @@ module CloudHelp
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
 
-        has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_types_id'
+        has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_categories_id'
+        has_many :state_assignments, class_name: 'CloudHelp::TicketState::Assignment',  foreign_key: 'cloud_help_ticket_categories_id', dependent: :delete_all
 
         # Gets the path of the current node in tree style
         def tree
@@ -42,6 +43,25 @@ module CloudHelp
                 data.concat(self.tree_recursion(root, true, 0))
             end
             data
+        end
+
+        def assign_default_states
+            initial_state = TicketState.find_by(initial: true)
+            final_state = TicketState.find_by(final: true)
+
+            TicketType.all.each do |ticket_type|
+                TicketState::Assignment.create(
+                    ticket_state: initial_state,
+                    ticket_type:ticket_type,
+                    ticket_category: self,
+                    next_states: "#{final_state.id}"
+                )
+                TicketState::Assignment.create(
+                    ticket_state: final_state,
+                    ticket_type:ticket_type,
+                    ticket_category: self
+                )
+            end
         end
 
         private
