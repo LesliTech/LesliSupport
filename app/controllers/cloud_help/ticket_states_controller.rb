@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketStatesController < ApplicationController
-        before_action :set_ticket_state, only: [:show, :edit, :update, :destroy, :api_show]
+        before_action :set_ticket_state, only: [:update, :destroy]
 
         # GET /ticket_states
         def index
@@ -24,11 +24,17 @@ module CloudHelp
 
         # GET /ticket_states/1
         def show
-        end
-
-        # GET /api/ticket_states/1
-        def api_show
-            responseWithSuccessful(@ticket_state)
+            respond_to do |format|
+                format.html {}
+                format.json do
+                    set_ticket_state
+                    if @ticket_state
+                        responseWithSuccessful(@ticket_state)
+                    else
+                        responseWithError(I18n.t('cloud_help.controllers.ticket_states.errors.not_found'))
+                    end
+                end
+            end
         end
 
         # GET /ticket_states/new
@@ -62,6 +68,9 @@ module CloudHelp
 
         # DELETE /ticket_states/1
         def destroy
+            unless @ticket_state
+                return responseWithError(I18n.t('cloud_help.controllers.ticket_states.errors.not_found'))
+            end
             if @ticket_state.destroy
                 responseWithSuccessful
             else

@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
   class TicketCategoriesController < ApplicationController
-    before_action :set_ticket_category, only: [:show, :api_show, :edit, :update, :destroy, :api_tree]
+    before_action :set_ticket_category, only: [:update, :destroy, :api_tree]
 
     # GET /ticket_categories
     def index
@@ -17,13 +17,17 @@ module CloudHelp
 
     # GET /ticket_categories/1
     def show
-    end
-
-    # GET /api/ticket_categories/1
-    def api_show
-        responseWithSuccessful(@ticket_category.attributes.merge({
-            parent_id: @ticket_category.parent_id
-        }))
+        respond_to do |format|
+            format.html {}
+            format.json do
+                set_ticket_category
+                if @ticket_category
+                    responseWithSuccessful(@ticket_category)
+                else
+                    responseWithError(I18n.t('cloud_help.controllers.ticket_categories.errors.not_found'))
+                end
+            end
+        end
     end
 
     # GET /ticket_categories/new
@@ -59,6 +63,9 @@ module CloudHelp
 
     # DELETE /ticket_categories/1
     def destroy
+        unless @ticket_category
+            return responseWithError(I18n.t('cloud_help.controllers.ticket_categories.errors.not_found'))
+        end
         if @ticket_category.destroy
             responseWithSuccessful
         else

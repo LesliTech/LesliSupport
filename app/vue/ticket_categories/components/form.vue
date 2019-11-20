@@ -133,7 +133,7 @@ export default {
         },
 
         getTicketCategory() {
-            this.http.get(`/help/api/ticket_categories/${this.ticket_category_id}`).then(result => {
+            this.http.get(`/help/ticket_categories/${this.ticket_category_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_category = result.data
                 }else{

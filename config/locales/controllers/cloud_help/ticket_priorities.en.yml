@@ -1,0 +1,6 @@
+en:
+    cloud_help:
+        controllers:
+            ticket_priorities:
+                errors:
+                    not_found: Ticket priority not found

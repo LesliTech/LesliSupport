@@ -6,7 +6,6 @@ module CloudHelp
 
         # GET /tickets
         def index
-            tickets = current_user.account.help.ticket.joins(:detail).select(:id, :subject, :created_at, :updated_at)
             respond_to do |format|
                 format.html { @tickets = tickets }
                 format.json { responseWithSuccessful(tickets) }

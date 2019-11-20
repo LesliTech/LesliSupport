@@ -1,0 +1,18 @@
+en:
+    cloud_help:
+        ticket_workflows:
+            shared:
+                name: Ticket Workflow
+                actions:
+                    new: ''
+                    edit: Edit Workflow
+                    show: Show Workflow
+                    reset: Reset Workflow
+                    return: Return
+                fields:
+                    id: Number
+                    ticket_type_name: Ticket Type
+                    ticket_category_name: Ticket Category
+                    states_count: Number of States
+                    created_at: Created at
+                    updated_at: Updated at

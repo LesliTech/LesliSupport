@@ -6,6 +6,7 @@
         = link_to "Priorities", ticket_priorities_path, class: "navbar-item"
         = link_to "States", ticket_states_path, class: "navbar-item"
         = link_to "Types", ticket_types_path, class: "navbar-item"
+        = link_to "Workflow", ticket_workflows_path, class: "navbar-item"
     %template(v-slot:left)
         %router-link.navbar-item{"v-if" => "$route", ":to" => "'/new'"}
             = I18n.t("cloud_help.#{controller.controller_name}.shared.actions.new")

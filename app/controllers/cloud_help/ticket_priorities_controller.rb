@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketPrioritiesController < ApplicationController
-        before_action :set_ticket_priority, only: [:show, :edit, :update, :destroy, :api_show]
+        before_action :set_ticket_priority, only: [:update, :destroy]
 
         # GET /ticket_priorities
         def index
@@ -23,11 +23,17 @@ module CloudHelp
 
         # GET /ticket_priorities/1
         def show
-        end
-
-        # GET /api/ticket_priorities/1
-        def api_show
-            responseWithSuccessful(@ticket_priority)
+            respond_to do |format|
+                format.html {}
+                format.json do
+                    set_ticket_priority
+                    if @ticket_priority
+                        responseWithSuccessful(@ticket_priority)
+                    else
+                        responseWithError(I18n.t('cloud_help.controllers.ticket_priorities.errors.not_found'))
+                    end
+                end
+            end
         end
 
         # GET /ticket_priorities/new
@@ -61,6 +67,9 @@ module CloudHelp
 
         # DELETE /ticket_priorities/1
         def destroy
+            unless @ticket_category
+                return responseWithError(I18n.t('cloud_help.controllers.ticket_priorities.errors.not_found'))
+            end
             if @ticket_priority.destroy
                 responseWithSuccessful
             else
