@@ -38,10 +38,23 @@ export default {
             default() {
                 return {}
             }
+        },
+        rerender: {
+            type: Boolean,
+            default: false
+        },
+        ticket_state_created_id: {
+            type:Number,
+            default: 1
+        },
+        ticket_state_closed_id: {
+            type: Number,
+            default: 2
         }
     },
     data(){
         return {
+            translations: I18n.t('cloud_help.ticket_states.shared'),
             workflow_graph: ''
         }
     },
@@ -60,11 +73,20 @@ export default {
             this.workflow_graph = `graph LR `
             // · Initial node will always have key = 1 because is the first entry on the database
             let initial_node = this.workflow[1]
+            this.resetWorkflowNodes()
             this.workflowRecursion(initial_node)
             this.workflow_graph = `${this.workflow_graph};`
+            document.getElementById('mermaid-chart').removeAttribute('data-processed');
             this.$nextTick(()=>{
                 mermaid.init()
             })
+        },
+
+        resetWorkflowNodes(){
+            for(let key in this.workflow){
+                let node = this.workflow[key]
+                node.visited = false
+            }
         },
 
         workflowRecursion(node){
@@ -73,8 +95,7 @@ export default {
                     return
                 }
                 node.visited = true
-
-                let current_name = node.ticket_state_name
+                let current_name = this.getNodeName(node)
                 let current_icon = this.getIcon(node)
                 let next_node_ids = node.next_states.split('|').map((element)=>{
                     return parseInt(element)
@@ -82,13 +103,23 @@ export default {
 
                 next_node_ids.forEach((next_node_id)=>{
                     let next_node = this.workflow[next_node_id]
-                    let next_name = next_node.ticket_state_name
+                    let next_name = this.getNodeName(next_node)
                     let next_icon = this.getIcon(next_node)
 
                     this.workflow_graph+=`\n\t${node.ticket_state_id}[${current_icon} ${current_name}]-->${next_node.ticket_state_id}[${next_icon} ${next_name}]`
                     this.workflowRecursion(next_node)
                 })
             }
+        },
+
+        getNodeName(node){
+            if(node.ticket_state_id == this.ticket_state_created_id){
+                return this.translations.default.names.created
+            }
+            if(node.ticket_state_id == this.ticket_state_closed_id){
+                return this.translations.default.names.closed
+            }
+            return node.ticket_state_name
         }
     },
     watch: {
@@ -96,11 +127,17 @@ export default {
             if(Object.keys(this.workflow).length > 0){
                 this.generateWorkflow()
             }
+        },
+        rerender(){
+            if(this.rerender){
+                this.$emit('update:rerender', false)
+                this.generateWorkflow()
+            }
         }
     }
 }
 </script>
 <template>
-    <div class="mermaid" v-html="workflow_graph">
+    <div class="mermaid" id="mermaid-chart" v-html="workflow_graph">
     </div>
 </template>

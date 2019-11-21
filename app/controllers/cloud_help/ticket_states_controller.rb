@@ -16,7 +16,7 @@ module CloudHelp
                         :final,
                         :created_at,
                         :updated_at
-                    )
+                    ).order(name: :asc)
                     responseWithSuccessful(ticket_states) 
                 end
             end

@@ -93,7 +93,7 @@ export default {
             <div class="card-content">
                 <div class="columns">
                     <div class="column">
-                        <p v-if="ticket_workflow.length > 0">
+                        <p v-if="Object.keys(ticket_workflow).length > 0">
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.ticket_category_name}:` }}
                             </span>

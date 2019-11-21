@@ -36,10 +36,10 @@ module CloudHelp
 
         # PATCH/PUT /ticket_workflows/1
         def update
-            if @states_action.update(states_action_params)
-                responseWithSuccessful(@states_action)
+            if @ticket_workflow.replace_workflow(current_user.account, ticket_workflow_params)
+                responseWithSuccessful
             else
-                responseWithError("Action not updated")
+                responseWithError(I18n.t('cloud_help.controllers.ticket_workflows.errors.not_found'))
             end
         end
 
@@ -51,8 +51,12 @@ module CloudHelp
         end
 
         # Only allow a trusted parameter "white list" through.
-        def states_action_params
-            params.require(:states_action).permit(:id, :type, :instructions, :deadline, :complete, :tags, :cloud_help_statess_id)
+        def ticket_workflow_params
+            filtered_params = []
+            params.require(:ticket_workflow).each do |unfiltered_params|
+                filtered_params.push(unfiltered_params.permit(:id, :ticket_state_id, :next_states))
+            end
+            filtered_params
         end
 
     end
