@@ -1,0 +1,6 @@
+en:
+    cloud_help:
+        controllers:
+            ticket_states:
+                errors:
+                    not_found: Ticket state not found

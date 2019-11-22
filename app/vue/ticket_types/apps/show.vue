@@ -55,7 +55,7 @@ export default {
         },
 
         getTicketType() {
-            this.http.get(`/help/api/ticket_types/${this.ticket_type_id}`).then(result => {
+            this.http.get(`/help/ticket_types/${this.ticket_type_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_type = result.data
                 }else{

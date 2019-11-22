@@ -90,7 +90,7 @@ export default {
         },
 
         getTicketPriority() {
-            this.http.get(`/help/api/ticket_priorities/${this.ticket_priority_id}`).then(result => {
+            this.http.get(`/help/ticket_priorities/${this.ticket_priority_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_priority = result.data
                 }else{

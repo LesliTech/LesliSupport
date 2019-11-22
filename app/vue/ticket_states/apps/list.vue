@@ -29,7 +29,7 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentStateName from '../components/state_name.vue'
+import componentStateName from '../../components/ticket_state_name.vue'
 
 export default {
     components: {

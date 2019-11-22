@@ -29,7 +29,7 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentStateName from '../components/state_name.vue'
+import componentStateName from '../../components/ticket_state_name.vue'
 
 export default {
     components: {
@@ -62,7 +62,7 @@ export default {
         },
 
         getTicketState() {
-            this.http.get(`/help/api/ticket_states/${this.ticket_state_id}`).then(result => {
+            this.http.get(`/help/ticket_states/${this.ticket_state_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_state = result.data
                 }else{

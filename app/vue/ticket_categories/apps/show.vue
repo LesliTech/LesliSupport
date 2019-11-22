@@ -37,7 +37,7 @@ export default {
         return {
             translations: {
                 show: I18n.t('cloud_help.ticket_categories.show'),
-                shared: I18n.t('cloud_help.ticket_categories.shared'),
+                shared: I18n.t('cloud_help.ticket_categories.shared')
             },
             ticket_category: {},
             ticket_path: [],
@@ -64,7 +64,7 @@ export default {
         },
 
         getTicketCategory() {
-            this.http.get(`/help/api/ticket_categories/${this.ticket_category_id}`).then(result => {
+            this.http.get(`/help/ticket_categories/${this.ticket_category_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_category = result.data
                     this.getTicketCategoryTree()

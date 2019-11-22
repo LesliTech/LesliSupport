@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketTypesController < ApplicationController
-        before_action :set_ticket_type, only: [:show, :edit, :update, :destroy, :api_show]
+        before_action :set_ticket_type, only: [:update, :destroy]
 
         # GET /ticket_types
         def index
@@ -22,11 +22,17 @@ module CloudHelp
 
         # GET /ticket_types/1
         def show
-        end
-
-        # GET /api/ticket_types/1
-        def api_show
-            responseWithSuccessful(@ticket_type)
+            respond_to do |format|
+                format.html {}
+                format.json do
+                    set_ticket_type
+                    if @ticket_type
+                        responseWithSuccessful(@ticket_type)
+                    else
+                        responseWithError(I18n.t('cloud_help.controllers.ticket_types.errors.not_found'))
+                    end
+                end
+            end
         end
 
         # GET /ticket_types/new
@@ -43,6 +49,7 @@ module CloudHelp
             ticket_type.cloud_help_accounts_id = current_user.account.id
 
             if ticket_type.save
+                ticket_type.assign_default_states
                 responseWithSuccessful(ticket_type)
             else
                 responseWithError(ticket_type.errors.full_messages.to_sentence)
@@ -60,6 +67,9 @@ module CloudHelp
 
         # DELETE /ticket_types/1
         def destroy
+            unless @ticket_type
+                return responseWithError(I18n.t('cloud_help.controllers.ticket_types.errors.not_found'))
+            end
             if @ticket_type.destroy
                 responseWithSuccessful
             else
