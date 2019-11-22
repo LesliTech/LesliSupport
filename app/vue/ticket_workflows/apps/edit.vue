@@ -108,21 +108,31 @@ export default {
             }
         },
 
+        // · Checks if this is the only follow up state of the initial state
+        isRemovable(state_id){
+            let initial_node = this.ticket_workflow[this.default_states.created]
+            return initial_node.next_states != state_id
+        },
+
         deleteStateFromWorkflow(deleted_node){
             let id = deleted_node.ticket_state_id
-            this.$delete(this.ticket_workflow,id)
-            for(let node_id in this.ticket_workflow){
-                let node = this.ticket_workflow[node_id]
-                if(node.next_states){
-                    node.next_states = node.next_states.replace(
-                        new RegExp(`([^0-9]${id}$)|(^${id}[^0-9])|(^${id}$)`,'g'), ''
-                    ).replace(
-                        new RegExp(`([^0-9]${id}[^0-9])`,'g'), '|'
-                    )
-                    if(node.next_states.length == 0){
-                        node.next_states = null
+            if(this.isRemovable(id)){
+                this.$delete(this.ticket_workflow,id)
+                for(let node_id in this.ticket_workflow){
+                    let node = this.ticket_workflow[node_id]
+                    if(node.next_states){
+                        node.next_states = node.next_states.replace(
+                            new RegExp(`([^0-9]${id}$)|(^${id}[^0-9])|(^${id}$)`,'g'), ''
+                        ).replace(
+                            new RegExp(`([^0-9]${id}[^0-9])`,'g'), '|'
+                        )
+                        if(node.next_states.length == 0){
+                            node.next_states = null
+                        }
                     }
                 }
+            }else{
+                this.alert(this.translations.edit.errors.unable_to_remove_state,'danger')
             }
         },
 
@@ -143,12 +153,16 @@ export default {
 
         deleteFollowUpState(node){
             let id = node.ticket_state_id
-            this.selected_node.next_states = this.selected_node.next_states.replace(
-                new RegExp(`([^0-9]${id}$)|(^${id}[^0-9])|(^${id}$)`,'g'), ''
-            ).replace(
-                new RegExp(`([^0-9]${id}[^0-9])`,'g'), '|'
-            )
-            this.rerender_chart = true
+            if(this.isRemovable(id)){
+                this.selected_node.next_states = this.selected_node.next_states.replace(
+                    new RegExp(`([^0-9]${id}$)|(^${id}[^0-9])|(^${id}$)`,'g'), ''
+                ).replace(
+                    new RegExp(`([^0-9]${id}[^0-9])`,'g'), '|'
+                )
+                this.rerender_chart = true
+            }else{
+                this.alert(this.translations.edit.errors.unable_to_remove_state,'danger')
+            }
         },
 
         putTicketWorkflow(event){

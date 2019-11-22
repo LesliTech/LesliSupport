@@ -14,3 +14,5 @@ en:
                 messages:
                     update:
                         successful: Ticket workflow was updated successfully
+                errors:
+                    unable_to_remove_state: The initial state needs a follow up at all times. Please add another follow up state before deleting this one
