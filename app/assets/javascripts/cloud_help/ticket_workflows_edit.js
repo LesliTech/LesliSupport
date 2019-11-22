@@ -121654,6 +121654,10 @@ var editvue_type_template_id_24ec2395_render = function() {
           _c("form", { on: { submit: _vm.putTicketWorkflow } }, [
             _c("div", { staticClass: "columns" }, [
               _c("div", { staticClass: "column" }, [
+                _c("label", [
+                  _vm._v(_vm._s(_vm.translations.edit.titles.add_state) + ":")
+                ]),
+                _vm._v(" "),
                 _c("div", { staticClass: "columns" }, [
                   _c(
                     "div",
@@ -121665,10 +121669,7 @@ var editvue_type_template_id_24ec2395_render = function() {
                           _c(
                             "b-select",
                             {
-                              attrs: {
-                                placeholder: "Add a state to the workflow",
-                                expanded: ""
-                              },
+                              attrs: { expanded: "" },
                               model: {
                                 value: _vm.selected_state,
                                 callback: function($$v) {
@@ -121718,7 +121719,11 @@ var editvue_type_template_id_24ec2395_render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                                        Add State\n                                    "
+                                "\n                                        " +
+                                  _vm._s(
+                                    _vm.translations.edit.actions.add_state
+                                  ) +
+                                  "\n                                    "
                               )
                             ]
                           )
@@ -121732,6 +121737,12 @@ var editvue_type_template_id_24ec2395_render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "column" }, [
+                _c("label", [
+                  _vm._v(
+                    _vm._s(_vm.translations.edit.titles.add_follow_up) + ":"
+                  )
+                ]),
+                _vm._v(" "),
                 _c("div", { staticClass: "columns" }, [
                   _c(
                     "div",
@@ -121743,10 +121754,7 @@ var editvue_type_template_id_24ec2395_render = function() {
                           _c(
                             "b-select",
                             {
-                              attrs: {
-                                placeholder: "Add a follow up state",
-                                expanded: ""
-                              },
+                              attrs: { expanded: "" },
                               model: {
                                 value: _vm.selected_follow_up_state,
                                 callback: function($$v) {
@@ -121801,7 +121809,11 @@ var editvue_type_template_id_24ec2395_render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                                        Add Follow Up\n                                    "
+                                "\n                                        " +
+                                  _vm._s(
+                                    _vm.translations.edit.actions.add_follow_up
+                                  ) +
+                                  "\n                                    "
                               )
                             ]
                           )
@@ -121818,7 +121830,9 @@ var editvue_type_template_id_24ec2395_render = function() {
             _c("div", { staticClass: "columns" }, [
               _c("div", { staticClass: "column" }, [
                 _vm._v(
-                  "\n                        Current State:\n                        "
+                  "\n                        " +
+                    _vm._s(_vm.translations.edit.titles.current_state) +
+                    ":\n                        "
                 ),
                 _c(
                   "div",
@@ -121871,7 +121885,9 @@ var editvue_type_template_id_24ec2395_render = function() {
               _vm._v(" "),
               _c("div", { staticClass: "column" }, [
                 _vm._v(
-                  "\n                        Follow up States:\n                        "
+                  "\n                        " +
+                    _vm._s(_vm.translations.edit.titles.follow_up) +
+                    ":\n                        "
                 ),
                 _c(
                   "div",
@@ -121894,7 +121910,7 @@ var editvue_type_template_id_24ec2395_render = function() {
                           attrs: { type: "button" },
                           on: {
                             click: function($event) {
-                              return _vm.deleteFollowingState(node)
+                              return _vm.deleteFollowUpState(node)
                             }
                           }
                         })
@@ -122083,7 +122099,7 @@ Building a better future, one line of code at a time.
     selectNode: function selectNode(node) {
       this.selected_node = node;
     },
-    deleteFollowingState: function deleteFollowingState(node) {
+    deleteFollowUpState: function deleteFollowUpState(node) {
       var id = node.ticket_state_id;
       this.selected_node.next_states = this.selected_node.next_states.replace(new RegExp("([^0-9]".concat(id, "$)|(^").concat(id, "[^0-9])|(^").concat(id, "$)"), 'g'), '').replace(new RegExp("([^0-9]".concat(id, "[^0-9])"), 'g'), '|');
       this.rerender_chart = true;

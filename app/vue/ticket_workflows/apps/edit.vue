@@ -141,7 +141,7 @@ export default {
             this.selected_node = node
         },
 
-        deleteFollowingState(node){
+        deleteFollowUpState(node){
             let id = node.ticket_state_id
             this.selected_node.next_states = this.selected_node.next_states.replace(
                 new RegExp(`([^0-9]${id}$)|(^${id}[^0-9])|(^${id}$)`,'g'), ''
@@ -245,10 +245,11 @@ export default {
                 <form @submit="putTicketWorkflow">
                     <div class="columns">
                         <div class="column">
+                            <label>{{translations.edit.titles.add_state}}:</label>
                             <div class="columns">
                                 <div class="column is-four-fifths">
                                     <b-field>
-                                        <b-select placeholder="Add a state to the workflow" expanded v-model="selected_state">
+                                        <b-select expanded v-model="selected_state">
                                             <option
                                                 v-for="ticket_state in ticketStates"
                                                 :value="ticket_state.id"
@@ -261,17 +262,18 @@ export default {
                                 <div class="column is-one-fifths">
                                     <b-field class="has-text-right">
                                         <b-button type="is-success" expanded @click="addStateToWorkflow">
-                                            Add State
+                                            {{translations.edit.actions.add_state}}
                                         </b-button>
                                     </b-field>
                                 </div>
                             </div>
                         </div>
                         <div class="column">
+                            <label>{{translations.edit.titles.add_follow_up}}:</label>
                             <div class="columns">
                                 <div class="column is-four-fifths">
                                     <b-field>
-                                        <b-select placeholder="Add a follow up state" expanded v-model="selected_follow_up_state">
+                                        <b-select expanded v-model="selected_follow_up_state">
                                             <option
                                                 v-for="ticket_state in possibleFollowUpStates"
                                                 :value="ticket_state.id"
@@ -289,7 +291,7 @@ export default {
                                 <div class="column is-one-fifths">
                                     <b-field class="has-text-right">
                                         <b-button type="is-success" expanded @click="addFollowUpState">
-                                            Add Follow Up
+                                            {{translations.edit.actions.add_follow_up}}
                                         </b-button>
                                     </b-field>
                                 </div>
@@ -298,7 +300,7 @@ export default {
                     </div>
                     <div class="columns">
                         <div class="column">
-                            Current State:
+                            {{translations.edit.titles.current_state}}:
                             <div class="list is-hoverable">
                                 <a 
                                     v-for="(node, key) in ticket_workflow"
@@ -319,12 +321,12 @@ export default {
                             </div>
                         </div>
                         <div class="column">
-                            Follow up States:
+                            {{translations.edit.titles.follow_up}}:
                             <div class="list is-hoverable">
                                 <a v-for="(node, key) in nextStatesOfSelectedNode" :key="key" class="list-item">
                                     <component-state-name :name="node.ticket_state_name" :initial="node.initial" :final="node.final">
                                     </component-state-name>
-                                    <button type="button" class="delete is-pulled-right" @click="deleteFollowingState(node)"></button>
+                                    <button type="button" class="delete is-pulled-right" @click="deleteFollowUpState(node)"></button>
                                 </a>
                             </div>
                         </div>
