@@ -41,6 +41,7 @@ module CloudHelp
         # POST /tickets
         def create
             ticket = Ticket.new(ticket_params)
+            ticket.user = current_user
             ticket.account = current_user.account.help
             ticket.detail.source = TicketSource.cloud_help_source
             ticket.set_workflow

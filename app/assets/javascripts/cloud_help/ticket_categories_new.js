@@ -29963,7 +29963,7 @@ module.exports.default = axios;
 
 exports = module.exports = __webpack_require__(23)(false);
 // Module
-exports.push([module.i, "\nsection.scrollable[data-v-0797fec2] {\n    height: 23rem;\n    overflow-y: scroll;\n}\n", ""]);
+exports.push([module.i, "\nsection.scrollable[data-v-0797fec2] {\r\n    height: 23rem;\r\n    overflow-y: scroll;\n}\r\n", ""]);
 
 
 /***/ }),
@@ -29984,7 +29984,7 @@ exports.push([module.i, "\nsection.scrollable[data-v-0797fec2] {\n    height: 23
 
 exports = module.exports = __webpack_require__(23)(false);
 // Module
-exports.push([module.i, "\nsection.scrollable[data-v-46c00364] {\n    height: 23rem;\n    overflow-y: scroll;\n}\n.margin-left[data-v-46c00364] {\n    margin-left: 2rem;\n}\n.l-shape[data-v-46c00364] {\n    border-left: 2px solid black;\n    border-bottom: 2px solid black;\n    margin-bottom: 1px;\n}\n", ""]);
+exports.push([module.i, "\nsection.scrollable[data-v-46c00364] {\r\n    height: 23rem;\r\n    overflow-y: scroll;\n}\n.margin-left[data-v-46c00364] {\r\n    margin-left: 2rem;\n}\n.l-shape[data-v-46c00364] {\r\n    border-left: 2px solid black;\r\n    border-bottom: 2px solid black;\r\n    margin-bottom: 1px;\n}\r\n", ""]);
 
 
 /***/ }),

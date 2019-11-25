@@ -32829,7 +32829,7 @@ var formvue_type_template_id_33e6a429_render = function() {
                     [
                       _vm._v(
                         "\n                            " +
-                          _vm._s(_vm.translations.shared.actions.create) +
+                          _vm._s(_vm.translations.form.actions.create) +
                           "\n                        "
                       )
                     ]
@@ -32844,7 +32844,7 @@ var formvue_type_template_id_33e6a429_render = function() {
                     [
                       _vm._v(
                         "\n                            " +
-                          _vm._s(_vm.translations.shared.actions.update) +
+                          _vm._s(_vm.translations.form.actions.update) +
                           "\n                        "
                       )
                     ]
@@ -32958,7 +32958,7 @@ Building a better future, one line of code at a time.
 
           _this2.alert(_this2.translations.form.messages.create.successful);
 
-          _this2.$router.push("/help/tickets/".concat(_this2.ticket.id));
+          _this2.$router.push("/".concat(_this2.ticket.id));
         } else {
           _this2.alert(result.error.message, 'danger');
         }
@@ -33149,41 +33149,166 @@ var showvue_type_template_id_63b815f4_render = function() {
         [
           _c(
             "div",
-            { staticClass: "column is-8" },
+            { staticClass: "column" },
             [
               _c("div", { staticClass: "card box" }, [
-                _c(
-                  "div",
-                  { staticClass: "card-header" },
-                  [
-                    _c("h4", { staticClass: "card-header-title" }, [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(_vm.ticket.detail_attributes.subject) +
-                          "\n                "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "card-header-icon",
-                        attrs: { to: "/" + _vm.ticket_id + "/edit" }
-                      },
-                      [_vm._v("\n                    edit\n                ")]
+                _c("div", { staticClass: "card-header" }, [
+                  _c("h4", { staticClass: "card-header-title" }, [
+                    _vm._v(
+                      "\n                    " +
+                        _vm._s(_vm.ticket.detail_attributes.subject) +
+                        "\n                "
                     )
-                  ],
-                  1
-                ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "card-header-icon" },
+                    [
+                      _c(
+                        "router-link",
+                        { attrs: { to: "/" + _vm.ticket_id + "/edit" } },
+                        [
+                          _c("i", { staticClass: "fas fa-edit" }),
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(_vm.translations.shared.actions.edit) +
+                              "\n                    "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("router-link", { attrs: { to: "/" } }, [
+                        _vm._v(
+                          "\n                           \n                        "
+                        ),
+                        _c("i", { staticClass: "fas fa-undo" }),
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.translations.shared.actions.return) +
+                            "\n                    "
+                        )
+                      ])
+                    ],
+                    1
+                  )
+                ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-content" }, [
-                  _c("div", {
-                    domProps: {
-                      innerHTML: _vm._s(
-                        _vm.ticket.detail_attributes.description
+                  _c("div", { staticClass: "columns" }, [
+                    _c(
+                      "div",
+                      { staticClass: "column is-10" },
+                      [
+                        _c("span", { staticClass: "has-text-weight-bold" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(
+                                _vm.translations.shared.fields.category + ":"
+                              ) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.ticket.detail_attributes.category) +
+                            ", \n                        "
+                        ),
+                        _c("span", { staticClass: "has-text-weight-bold" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(
+                                _vm.translations.shared.fields.type + ":"
+                              ) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.ticket.detail_attributes.type) +
+                            ", \n                        "
+                        ),
+                        _c("span", { staticClass: "has-text-weight-bold" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(
+                                _vm.translations.shared.fields.state + ":"
+                              ) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("component-ticket-state-name", {
+                          attrs: { name: _vm.ticket.detail_attributes.state }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "column is-2 has-text-right" }, [
+                      _c(
+                        "span",
+                        { staticClass: "has-text-weight-bold is-size-5" },
+                        [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(
+                                _vm.translations.shared.fields.priority + ":"
+                              ) +
+                              "\n                            "
+                          ),
+                          _c("span", { staticClass: "has-text-danger" }, [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.ticket.detail_attributes.priority) +
+                                "\n                            "
+                            )
+                          ])
+                        ]
                       )
-                    }
-                  })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "columns" }, [
+                    _c("div", { staticClass: "column" }, [
+                      _c("span", { staticClass: "has-text-weight-bold" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(
+                              _vm.translations.shared.fields.description + ":"
+                            ) +
+                            "\n                        "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", {
+                        domProps: {
+                          innerHTML: _vm._s(
+                            _vm.ticket.detail_attributes.description
+                          )
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "columns" }, [
+                    _c("div", { staticClass: "column" }, [
+                      _c("span", { staticClass: "has-text-weight-bold" }, [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s("Created by:") +
+                            "\n                        "
+                        )
+                      ]),
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(_vm.ticket.detail_attributes.email) +
+                          " at \n                        " +
+                          _vm._s(_vm.ticket.created_at) +
+                          "\n                    "
+                      )
+                    ])
+                  ])
                 ])
               ]),
               _vm._v(" "),
@@ -33200,35 +33325,6 @@ var showvue_type_template_id_63b815f4_render = function() {
                   "cloud-module": "help/ticket",
                   "cloud-id": _vm.ticket_id
                 }
-              })
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "column is-4" },
-            [
-              _c("component-form-status", { staticClass: "box" }),
-              _vm._v(" "),
-              _c("component-form-tag", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-type", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-state", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-priority", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
               })
             ],
             1
@@ -33285,10 +33381,6 @@ Building a better future, one line of code at a time.
 
 
 
-
-
-
-
  // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
@@ -33296,16 +33388,15 @@ Building a better future, one line of code at a time.
   components: {
     'component-discussion-form': forms_discussion,
     'component-discussion-list': discussion,
-    'component-form-priority': priority,
     'component-action-list': lists_action,
     'component-file-list': lists_file,
-    'component-form-status': components_status,
-    'component-form-state': state,
-    'component-form-type': type,
-    'component-form-tag': tag
+    'component-ticket-state-name': ticket_state_name["a" /* default */]
   },
   data: function data() {
     return {
+      translations: {
+        shared: I18n.t('cloud_help.tickets.shared')
+      },
       ticket_options: null,
       ticket_id: null,
       ticket: null

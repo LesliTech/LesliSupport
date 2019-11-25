@@ -34,14 +34,7 @@ import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.
 import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
 import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
 import componentFileList from 'LesliCloud/vue/components/lists/file.vue'
-import componentFormPriority from '../components/priority.vue'
-import componentFormStatus from '../components/status.vue'
-import componentFormState from '../components/state.vue'
-import componentFormType from '../components/type.vue'
-import componentFormTag from '../components/tag.vue'
-
-
-
+import componentTicketStateName from '../../components/ticket_state_name.vue'
 
 // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -49,16 +42,15 @@ export default {
     components: {
         'component-discussion-form': componentDiscussionForm,
         'component-discussion-list': componentDiscussionList,
-        'component-form-priority': componentFormPriority,
         'component-action-list': componentActionList,
         'component-file-list': componentFileList,
-        'component-form-status': componentFormStatus,
-        'component-form-state': componentFormState,
-        'component-form-type': componentFormType,
-        'component-form-tag': componentFormTag
+        'component-ticket-state-name': componentTicketStateName
     },
     data() {
         return {
+            translations:{
+                shared: I18n.t('cloud_help.tickets.shared')
+            },
             ticket_options: null,
             ticket_id: null,
             ticket: null
@@ -96,29 +88,72 @@ export default {
 </script>
 <template>
     <div class="columns" v-if="ticket && ticket_options">
-        <div class="column is-8">
+        <div class="column">
             <div class="card box">
                 <div class="card-header">
                     <h4 class="card-header-title">
                         {{ ticket.detail_attributes.subject }}
                     </h4>
-                    <router-link :to="`/${ticket_id}/edit`" class="card-header-icon">
-                        edit
-                    </router-link>
+                    <div class="card-header-icon">
+                        <router-link :to="`/${ticket_id}/edit`">
+                            <i class="fas fa-edit"></i>
+                            {{translations.shared.actions.edit}}
+                        </router-link>
+                        <router-link :to="'/'">
+                            &nbsp;&nbsp;&nbsp;
+                            <i class="fas fa-undo"></i>
+                            {{translations.shared.actions.return}}
+                        </router-link>
+                    </div>
+                    
                 </div>
                 <div class="card-content">
-                    <div v-html="ticket.detail_attributes.description"></div>
+                    <div class="columns">
+                        <div class="column is-10">
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.category}:` }}
+                            </span>
+                            {{ ticket.detail_attributes.category}}, 
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.type}:` }}
+                            </span>
+                            {{ ticket.detail_attributes.type}}, 
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.state}:` }}
+                            </span>
+                            <component-ticket-state-name :name="ticket.detail_attributes.state">
+                            </component-ticket-state-name>
+                        </div>
+                        <div class="column is-2 has-text-right">
+                            <span class="has-text-weight-bold is-size-5">
+                                {{ `${translations.shared.fields.priority}:` }}
+                                <span class="has-text-danger">
+                                    {{ ticket.detail_attributes.priority}}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.description}:` }}
+                            </span>
+                            <div v-html="ticket.detail_attributes.description"></div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <span class="has-text-weight-bold">
+                                {{ `Created by:` }}
+                            </span>
+                            {{ ticket.detail_attributes.email}} at 
+                            {{ticket.created_at}}
+                        </div>
+                    </div>
                 </div>
             </div>
             <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
             <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
-        </div>
-        <div class="column is-4">
-            <component-form-status class="box" />
-            <component-form-tag class="box" :ticket="ticket" :options="ticket_options" />
-            <component-form-type class="box" :ticket="ticket" :options="ticket_options" />
-            <component-form-state class="box" :ticket="ticket" :options="ticket_options" />
-            <component-form-priority class="box" :ticket="ticket" :options="ticket_options" />
         </div>
         <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />

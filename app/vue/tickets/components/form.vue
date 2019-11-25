@@ -90,7 +90,7 @@ export default {
                 if (result.successful) {
                     this.ticket = result.data
                     this.alert(this.translations.form.messages.create.successful)
-                    this.$router.push(`/help/tickets/${this.ticket.id}`)
+                    this.$router.push(`/${this.ticket.id}`)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -210,10 +210,10 @@ export default {
                     <div class="field">
                         <div class="actions has-text-right">
                             <button v-if="!ticket_id" class="button is-primary" type="submit" @click="postTicket">
-                                {{translations.shared.actions.create}}
+                                {{translations.form.actions.create}}
                             </button>
                             <button v-else class="button is-primary" type="submit" @click="putTicket">
-                                {{translations.shared.actions.update}}
+                                {{translations.form.actions.update}}
                             </button>
                         </div>
                     </div>

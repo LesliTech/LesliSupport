@@ -104,15 +104,7 @@ module CloudHelp
         private
 
         def self.set_category_path(workflow_node)
-            category_path = ""
-            TicketCategory.find(workflow_node.ticket_category_id).path.each do |node|
-                if category_path.empty?
-                    category_path = node.name
-                else
-                    category_path += ", #{node.name}"
-                end
-            end
-            workflow_node.ticket_category_name = category_path
+            workflow_node.ticket_category_name =  TicketCategory.get_category_path(workflow_node.ticket_category_id)
         end
     end
 end

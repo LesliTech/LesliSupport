@@ -64,6 +64,18 @@ module CloudHelp
             end
         end
 
+        def self.get_category_path(id)
+            category_path = ""
+            TicketCategory.find(id).path.each do |node|
+                if category_path.empty?
+                    category_path = node.name
+                else
+                    category_path += ", #{node.name}"
+                end
+            end
+            category_path
+        end
+
         private
 
         def self.tree_recursion(root, is_root)
