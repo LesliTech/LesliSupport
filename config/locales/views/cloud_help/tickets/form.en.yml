@@ -1,0 +1,16 @@
+en:
+    cloud_help:
+        tickets:
+            form:
+                messages:
+                    update:
+                        successful: Ticket updated successfully
+                    create:
+                        successful: Ticket created successfully
+                actions:
+                    update: Update ticket
+                    create: Create ticket
+                placeholders:
+                    select_type: Select a type
+                    select_category: Select a category
+                    select_priority: Select a priority

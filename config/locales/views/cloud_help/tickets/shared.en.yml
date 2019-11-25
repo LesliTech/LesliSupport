@@ -1,0 +1,21 @@
+en:
+    cloud_help:
+        tickets:
+            shared:
+                name: Ticket
+                actions:
+                    new: New Ticket
+                    edit: Edit Ticket
+                    show: Show Ticket
+                    reset: Reset Ticket
+                    return: Return
+                fields:
+                    id: Number
+                    description: Description
+                    subject: Subject
+                    type: Type
+                    priority: Priority
+                    category: Category
+                    state: Status
+                    created_at: Created at
+                    updated_at: Updated at

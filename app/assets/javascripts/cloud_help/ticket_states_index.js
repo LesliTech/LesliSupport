@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 267);
+/******/ 	return __webpack_require__(__webpack_require__.s = 273);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -12135,7 +12135,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(23).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(22).setImmediate))
 
 /***/ }),
 
@@ -28088,12 +28088,23 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("footer", { staticClass: "quickview-footer" })
+        _vm._m(0)
       ]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("footer", { staticClass: "quickview-footer" }, [
+      _c("a", { attrs: { href: "/bell/notifications" } }, [
+        _vm._v("all notifications")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -29418,7 +29429,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 23:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -29489,7 +29500,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ 24:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29586,7 +29597,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 25:
+/***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29936,28 +29947,46 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 261:
+/***/ 266:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(79);
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(80);
 /* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ 262:
+/***/ 267:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(24)(false);
+exports = module.exports = __webpack_require__(23)(false);
 // Module
 exports.push([module.i, "\ntable tr:hover {\n    cursor: pointer;\n}\n", ""]);
 
 
 /***/ }),
 
-/***/ 267:
+/***/ 27:
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+
+/***/ }),
+
+/***/ 273:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30012,12 +30041,8 @@ var render = function() {
                     }
                   },
                   [
-                    _c("component-state-name", {
-                      attrs: {
-                        name: props.row.name,
-                        initial: props.row.initial,
-                        final: props.row.final
-                      }
+                    _c("component-ticket-state-name", {
+                      attrs: { name: props.row.name }
                     })
                   ],
                   1
@@ -30072,7 +30097,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=template&id=323da855&
 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue + 4 modules
-var ticket_state_name = __webpack_require__(57);
+var ticket_state_name = __webpack_require__(46);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=script&lang=js&
 /*
@@ -30106,7 +30131,7 @@ Building a better future, one line of code at a time.
 
 /* harmony default export */ var listvue_type_script_lang_js_ = ({
   components: {
-    'component-state-name': ticket_state_name["a" /* default */]
+    'component-ticket-state-name': ticket_state_name["a" /* default */]
   },
   data: function data() {
     return {
@@ -30161,7 +30186,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=script&lang=js&
  /* harmony default export */ var apps_listvue_type_script_lang_js_ = (listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=style&index=0&lang=css&
-var listvue_type_style_index_0_lang_css_ = __webpack_require__(261);
+var listvue_type_style_index_0_lang_css_ = __webpack_require__(266);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -30688,12 +30713,8 @@ var showvue_type_template_id_6452e998_render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("component-state-name", {
-                    attrs: {
-                      name: _vm.ticket_state.name,
-                      initial: _vm.ticket_state.initial || false,
-                      final: _vm.ticket_state.final || false
-                    }
+                  _c("component-ticket-state-name", {
+                    attrs: { name: _vm.ticket_state.name }
                   })
                 ],
                 1
@@ -30804,7 +30825,7 @@ Building a better future, one line of code at a time.
 
 /* harmony default export */ var showvue_type_script_lang_js_ = ({
   components: {
-    'component-state-name': ticket_state_name["a" /* default */]
+    'component-ticket-state-name': ticket_state_name["a" /* default */]
   },
   data: function data() {
     return {
@@ -31014,24 +31035,6 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|show|edit]", "help/ticket
   path: "/:id/edit",
   component: edit
 }]);
-
-/***/ }),
-
-/***/ 27:
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-module.exports = function isBuffer (obj) {
-  return obj != null && obj.constructor != null &&
-    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
 
 /***/ }),
 
@@ -32248,7 +32251,7 @@ module.exports = new Utils
 
 /***/ }),
 
-/***/ 57:
+/***/ 46:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -32258,26 +32261,25 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.initial || _vm.final
+  return _vm.name === _vm.names.initial
     ? _c("span", [
         _vm._v(
-          "\n    " + _vm._s(_vm.translations.default.names[_vm.name]) + "\n    "
-        ),
-        _vm.initial
-          ? _c("span", [
-              _vm._v(
-                "\n        (" +
-                  _vm._s(_vm.translations.default.types.initial) +
-                  ")\n    "
-              )
-            ])
-          : _c("span", [
-              _vm._v(
-                "\n        (" +
-                  _vm._s(_vm.translations.default.types.final) +
-                  ")\n    "
-              )
-            ])
+          "\n    " +
+            _vm._s(_vm.translations.default.names[_vm.name]) +
+            "\n    (" +
+            _vm._s(_vm.translations.default.types.initial) +
+            ")\n"
+        )
+      ])
+    : _vm.name === _vm.names.final
+    ? _c("span", [
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.translations.default.names[_vm.name]) +
+            "\n    (" +
+            _vm._s(_vm.translations.default.types.final) +
+            ")\n"
+        )
       ])
     : _c("span", [_vm._v("\n    " + _vm._s(_vm.name) + "\n")])
 }
@@ -32317,21 +32319,17 @@ Building a better future, one line of code at a time.
 /* harmony default export */ var ticket_state_namevue_type_script_lang_js_ = ({
   data: function data() {
     return {
-      translations: I18n.t('cloud_help.ticket_states.shared')
+      translations: I18n.t('cloud_help.ticket_states.shared'),
+      names: {
+        initial: 'created',
+        "final": 'closed'
+      }
     };
   },
   props: {
     name: {
       type: String,
       "default": ''
-    },
-    initial: {
-      type: Boolean,
-      "default": false
-    },
-    "final": {
-      type: Boolean,
-      "default": false
     }
   }
 });
@@ -32557,29 +32555,6 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
-/***/ 79:
-/***/ (function(module, exports, __webpack_require__) {
-
-var content = __webpack_require__(262);
-
-if (typeof content === 'string') {
-  content = [[module.i, content, '']];
-}
-
-var options = {}
-
-options.insert = "head";
-options.singleton = false;
-
-var update = __webpack_require__(25)(content, options);
-
-if (content.locals) {
-  module.exports = content.locals;
-}
-
-
-/***/ }),
-
 /***/ 8:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32595,6 +32570,29 @@ module.exports = function bind(fn, thisArg) {
     return fn.apply(thisArg, args);
   };
 };
+
+
+/***/ }),
+
+/***/ 80:
+/***/ (function(module, exports, __webpack_require__) {
+
+var content = __webpack_require__(267);
+
+if (typeof content === 'string') {
+  content = [[module.i, content, '']];
+}
+
+var options = {}
+
+options.insert = "head";
+options.singleton = false;
+
+var update = __webpack_require__(24)(content, options);
+
+if (content.locals) {
+  module.exports = content.locals;
+}
 
 
 /***/ }),

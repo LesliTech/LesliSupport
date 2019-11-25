@@ -12,5 +12,10 @@ module CloudHelp
             end
             super
         end
+
+        # Initial state is record #1 in the database
+        def self.initial_state
+            return TicketState.find(1)
+        end
     end
 end

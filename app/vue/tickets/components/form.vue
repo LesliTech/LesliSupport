@@ -42,7 +42,15 @@ export default {
     },
     data() {
         return {
-            ticket_options: {},
+            translations:{
+                shared: I18n.t('cloud_help.tickets.shared'),
+                form: I18n.t('cloud_help.tickets.form')
+            },
+            ticket_options: {
+                types: [],
+                categories: [],
+                priorities: []
+            },
             ticket_id: null,
             ticket: {
                 detail_attributes: {}
@@ -64,7 +72,9 @@ export default {
                 ticket: this.ticket
             }).then(result => {
                 if (result.successful) {
-                    this.alert("Ticket updated successfuly")
+                    this.alert(this.translations.form.messages.update.successful)
+                } else {
+                    this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -73,14 +83,17 @@ export default {
         },
 
         postTicket(e) {
-
             if (e) { e.preventDefault() }
-
             this.http.post("/help/tickets", {
                 ticket: this.ticket
             }).then(result => {
-                this.ticket = result.data
-                this.$router.push(`${this.ticket.id}/show`)
+                if (result.successful) {
+                    this.ticket = result.data
+                    this.alert(this.translations.form.messages.create.successful)
+                    this.$router.push(`/help/tickets/${this.ticket.id}`)
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
             }).catch(error => {
                 console.log(error)
             })
@@ -91,6 +104,8 @@ export default {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
+                } else {
+                    this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -101,6 +116,8 @@ export default {
             this.http.get('/help/api/tickets/options').then(result => {
                 if (result.successful) {
                     this.ticket_options = result.data
+                } else {
+                    this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -115,34 +132,89 @@ export default {
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
-                    Ticket 
+                    {{translations.shared.name}}
                 </h2>
                 <router-link v-if="ticket_id" :to="`/${ticket_id}/show`" class="card-header-icon">
-                    show
+                    {{translations.shared.actions.edit}}
                 </router-link>
             </div>
             <div class="card-content">
-                <div v-html="ticket.description"></div>
                 <form>
-                    <b-field label="Subject">
-                        <b-input v-model="ticket.detail_attributes.subject"></b-input>
-                    </b-field>
+                    <div class="columns">
+                        <div class="column is-12">
+                            <b-field :label="translations.shared.fields.subject">
+                                <b-input v-model="ticket.detail_attributes.subject"></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-4">
+                            <b-field :label="translations.shared.fields.type">
+                                <b-select 
+                                    :placeholder="translations.form.placeholders.select_type"
+                                    expanded
+                                    v-model="ticket.detail_attributes.cloud_help_ticket_types_id"
+                                >
+                                    <option
+                                        v-for="type in ticket_options.types"
+                                        :key="type.id"
+                                        :value="type.id"
+                                    >
+                                        {{type.name}}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                        <div class="column is-4">
+                            <b-field :label="translations.shared.fields.category">
+                                <b-select
+                                    :placeholder="translations.form.placeholders.select_category"
+                                    expanded
+                                    v-model="ticket.detail_attributes.cloud_help_ticket_categories_id"
+                                >
+                                    <option
+                                        v-for="category in ticket_options.categories"
+                                        :key="category.id"
+                                        :value="category.id"
+                                    >   
+                                        <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
+                                        {{category.name}}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                        <div class="column is-4">
+                            <b-field :label="translations.shared.fields.priority">
+                                <b-select
+                                    :placeholder="translations.form.placeholders.select_priority"
+                                    expanded
+                                    v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id"
+                                >
+                                    <option
+                                        v-for="priority in ticket_options.priorities"
+                                        :key="priority.id"
+                                        :value="priority.id"
+                                    >
+                                        {{priority.name}}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                    </div>
                     <div class="field">
-                        <label for="article.content" class="label">Content</label>
+                        <label for="article.content" class="label">{{translations.shared.fields.description}}</label>
                         <div class="control">
                             <component-trix-editor v-model="ticket.detail_attributes.description"></component-trix-editor>
                         </div>
                     </div>
                     <div class="field">
-                        <p>
-                            Created at: {{ ticket.detail_attributes.created_at }}, 
-                            updated at: {{ ticket.detail_attributes.updated_at }}
-                        </p>
-                    </div>
-                    <div class="field">
-                        <div class="actions">
-                            <button class="button is-primary" v-if="!ticket_id" @click="postTicket">Create ticket</button>
-                            <button class="button is-primary" v-if="ticket_id" @click="putTicket">Update ticket</button>
+                        <div class="actions has-text-right">
+                            <button v-if="!ticket_id" class="button is-primary" type="submit" @click="postTicket">
+                                {{translations.shared.actions.create}}
+                            </button>
+                            <button v-else class="button is-primary" type="submit" @click="putTicket">
+                                {{translations.shared.actions.update}}
+                            </button>
                         </div>
                     </div>
                 </form>

@@ -29,27 +29,17 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentTicketStateName from '../../components/ticket_state_name.vue'
 export default {
+    components: {
+        'component-ticket-state-name': componentTicketStateName
+    },
     data() {
         return {
-            tickets: [],
-            columns: [{
-                field: 'id',
-                label: 'Number',
-                centered: true,
-                numeric: true,
-                width: '40'
-            }, {
-                field: 'subject',
-                label: 'Subject'
-            }, {
-                field: 'status',
-                label: 'Status'
-            }, {
-                field: 'created_at',
-                label: 'Created',
-                centered: true
-            }]
+            translations: {
+                shared: I18n.t('cloud_help.tickets.shared') 
+            },
+            tickets: []
         }
     },
     mounted() {
@@ -58,15 +48,15 @@ export default {
     methods: {
 
         getTickets() {
-
             this.http.get("/help/tickets.json").then(result => {
                 if (result.successful) {
                     this.tickets = result.data
+                }else{
+                    this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
-
         },
 
         clickTicket(ticket) {
@@ -78,7 +68,31 @@ export default {
 </script>
 <template>
     <section class="section">
-        <b-table :data="tickets" :columns="columns" @click="clickTicket" :hoverable="true">
+        <b-table :data="tickets" @click="clickTicket" :hoverable="true">
+            <template v-slot="props">
+                <b-table-column field="id" :label="translations.shared.fields.id" centered numeric width="40">
+                    {{props.row.id}}
+                </b-table-column>
+                <b-table-column field="subject" :label="translations.shared.fields.subject">
+                    {{props.row.subject}}
+                </b-table-column>
+                <b-table-column field="priority" :label="translations.shared.fields.priority">
+                    {{props.row.priority}}
+                </b-table-column>
+                <b-table-column field="type" :label="translations.shared.fields.type">
+                    {{props.row.type}}
+                </b-table-column>
+                <b-table-column field="category" :label="translations.shared.fields.category">
+                    {{props.row.category}}
+                </b-table-column>
+                <b-table-column field="state" :label="translations.shared.fields.state">
+                    <component-ticket-state-name :name="props.row.state">
+                    </component-ticket-state-name>
+                </b-table-column>
+                <b-table-column field="created_at" :label="translations.shared.fields.created_at">
+                    {{props.row.created_at}}
+                </b-table-column>
+            </template>
         </b-table>
     </section>
 </template>

@@ -2,43 +2,30 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, except: [:index, :new, :create, :api_options]
+        before_action :set_ticket, only: [:update]
 
         # GET /tickets
         def index
             respond_to do |format|
-                format.html { @tickets = tickets }
-                format.json { responseWithSuccessful(tickets) }
+                format.html { }
+                format.json do
+                    tickets = Ticket.detailed_info(current_user.account.help)
+                    responseWithSuccessful(tickets) 
+                end
             end
         end
 
         # GET /tickets/1
         def show
-            ticket =  current_user.account.help.ticket
-                .joins(:detail)
-                .select(
-                    :id, :subject, :description, :tags,
-                    :cloud_help_ticket_types_id, 
-                    :cloud_help_ticket_states_id, 
-                    :cloud_help_ticket_priorities_id,
-                    :created_at, :updated_at)
-                .find(@ticket.id)
             respond_to do |format|
-                format.html 
-                format.json { 
-                    responseWithSuccessful({
-                        id: ticket[:id],
-                        detail_attributes: {
-                            id: ticket[:id],
-                            tags: ticket[:tags],
-                            subject: ticket[:subject],
-                            description: ticket[:description],
-                            cloud_help_ticket_types_id: ticket[:cloud_help_ticket_types_id],
-                            cloud_help_ticket_states_id: ticket[:cloud_help_ticket_states_id],
-                            cloud_help_ticket_priorities_id: ticket[:cloud_help_ticket_priorities_id]
-                        }
-                    })
-                }
+                format.html { }
+                format.json do
+                    ticket = Ticket.find_by(
+                        id: params[:id],
+                        account: current_user.account.help
+                    ).detailed_info
+                    responseWithSuccessful(ticket)
+                end
             end
         end
 
@@ -53,16 +40,16 @@ module CloudHelp
 
         # POST /tickets
         def create
-
             ticket = Ticket.new(ticket_params)
-            ticket.cloud_help_accounts_id = current_user.account.id
+            ticket.account = current_user.account.help
+            ticket.detail.source = TicketSource.cloud_help_source
+            ticket.set_workflow
 
             if ticket.save
                 responseWithSuccessful(ticket)
             else
                 responseWithError("error creating new ticket", ticket.errors.full_messages)
             end
-
         end
 
         # PATCH/PUT /tickets/1
@@ -107,10 +94,11 @@ module CloudHelp
         end
 
         def api_options
+            account = current_user.account
             responseWithSuccessful({
-                types: TicketType.all.select(:id, :name),
-                states: TicketState.all.select(:id, :name),
-                priorities: TicketPriority.all.select(:id, :name)
+                types: TicketType.where(account: current_user.account.help).select(:id, :name),
+                categories: TicketCategory.tree(account),
+                priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name)
             })
         end
 
@@ -131,8 +119,8 @@ module CloudHelp
                     :description,
                     :tags,
                     :cloud_help_ticket_types_id,
-                    :cloud_help_ticket_states_id,
-                    :cloud_help_ticket_priorities_id
+                    :cloud_help_ticket_priorities_id,
+                    :cloud_help_ticket_categories_id
                 ]
             )
         end

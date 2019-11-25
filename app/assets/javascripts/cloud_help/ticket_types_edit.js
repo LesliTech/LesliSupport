@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 567);
+/******/ 	return __webpack_require__(__webpack_require__.s = 568);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -12135,7 +12135,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(23).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(22).setImmediate))
 
 /***/ }),
 
@@ -28088,12 +28088,23 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("footer", { staticClass: "quickview-footer" })
+        _vm._m(0)
       ]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("footer", { staticClass: "quickview-footer" }, [
+      _c("a", { attrs: { href: "/bell/notifications" } }, [
+        _vm._v("all notifications")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -29418,7 +29429,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 23:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -29489,7 +29500,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ 24:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29586,7 +29597,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 25:
+/***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29936,28 +29947,46 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 263:
+/***/ 268:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(80);
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(81);
 /* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ 264:
+/***/ 269:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(24)(false);
+exports = module.exports = __webpack_require__(23)(false);
 // Module
 exports.push([module.i, "\ntable tr:hover {\n    cursor: pointer;\n}\n", ""]);
 
 
 /***/ }),
 
-/***/ 266:
+/***/ 27:
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+
+/***/ }),
+
+/***/ 272:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30076,7 +30105,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_types/apps/list.vue?vue&type=script&lang=js&
  /* harmony default export */ var apps_listvue_type_script_lang_js_ = (listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_types/apps/list.vue?vue&type=style&index=0&lang=css&
-var listvue_type_style_index_0_lang_css_ = __webpack_require__(263);
+var listvue_type_style_index_0_lang_css_ = __webpack_require__(268);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -30903,24 +30932,6 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|show|edit]", "help/ticket
   path: "/:id/edit",
   component: edit
 }]);
-
-/***/ }),
-
-/***/ 27:
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-module.exports = function isBuffer (obj) {
-  return obj != null && obj.constructor != null &&
-    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
 
 /***/ }),
 
@@ -32137,12 +32148,12 @@ module.exports = new Utils
 
 /***/ }),
 
-/***/ 567:
+/***/ 568:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(266);
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(272);
 /*
 Lesli
 
@@ -32383,10 +32394,10 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 
-/***/ 80:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
-var content = __webpack_require__(264);
+var content = __webpack_require__(269);
 
 if (typeof content === 'string') {
   content = [[module.i, content, '']];
@@ -32397,7 +32408,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(25)(content, options);
+var update = __webpack_require__(24)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;

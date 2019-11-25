@@ -12135,7 +12135,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(23).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(22).setImmediate))
 
 /***/ }),
 
@@ -28088,12 +28088,23 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("footer", { staticClass: "quickview-footer" })
+        _vm._m(0)
       ]
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("footer", { staticClass: "quickview-footer" }, [
+      _c("a", { attrs: { href: "/bell/notifications" } }, [
+        _vm._v("all notifications")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -29418,7 +29429,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 23:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||

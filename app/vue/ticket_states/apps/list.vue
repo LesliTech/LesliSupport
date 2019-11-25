@@ -29,11 +29,11 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentStateName from '../../components/ticket_state_name.vue'
+import componentTicketStateName from '../../components/ticket_state_name.vue'
 
 export default {
     components: {
-        'component-state-name': componentStateName
+        'component-ticket-state-name': componentTicketStateName
     },
 
     data() {
@@ -97,12 +97,8 @@ export default {
                     {{props.row.id}}
                 </b-table-column>
                 <b-table-column field="name" :label="translations.shared.fields.name">
-                    <component-state-name
-                        :name="props.row.name"
-                        :initial="props.row.initial"
-                        :final="props.row.final"
-                    >
-                    </component-state-name>
+                    <component-ticket-state-name :name="props.row.name">
+                    </component-ticket-state-name>
                 </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">
                     {{props.row.created_at}}
