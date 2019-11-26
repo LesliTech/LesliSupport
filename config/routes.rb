@@ -11,7 +11,6 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_tags
     resources :ticket_workflows, except: [:new, :create, :destroy]
 
-    resources :tickets
     resources :tickets do
         get '/files', to: 'tickets#files'
         get '/actions', to: 'tickets#actions'

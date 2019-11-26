@@ -12159,7 +12159,7 @@ module.exports = function isCancel(value) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(32);
+var normalizeHeaderName = __webpack_require__(33);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -12266,10 +12266,10 @@ module.exports = defaults;
 
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(33);
+var settle = __webpack_require__(34);
 var buildURL = __webpack_require__(9);
-var parseHeaders = __webpack_require__(35);
-var isURLSameOrigin = __webpack_require__(36);
+var parseHeaders = __webpack_require__(36);
+var isURLSameOrigin = __webpack_require__(37);
 var createError = __webpack_require__(13);
 
 module.exports = function xhrAdapter(config) {
@@ -12362,7 +12362,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(37);
+      var cookies = __webpack_require__(38);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -12447,7 +12447,7 @@ module.exports = function xhrAdapter(config) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(34);
+var enhanceError = __webpack_require__(35);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -13080,7 +13080,7 @@ module.exports = Cancel;
 /***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(26);
+module.exports = __webpack_require__(27);
 
 /***/ }),
 
@@ -13114,7 +13114,7 @@ Building a better future, one line of code at a time.
 // · 
 */
 
-module.exports = __webpack_require__(42)
+module.exports = __webpack_require__(43)
 
 
 /***/ }),
@@ -29094,7 +29094,7 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 
 
 var bind = __webpack_require__(8);
-var isBuffer = __webpack_require__(27);
+var isBuffer = __webpack_require__(28);
 
 /*global toString:true*/
 
@@ -29485,7 +29485,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(44);
+__webpack_require__(45);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -29973,6 +29973,119 @@ exports.push([module.i, "@charset \"UTF-8\";\n/*\nTrix 1.2.1\nCopyright © 2019 
 /***/ }),
 
 /***/ 26:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.name === _vm.names.initial
+    ? _c("span", [
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.translations.default.names[_vm.name]) +
+            "\n    (" +
+            _vm._s(_vm.translations.default.types.initial) +
+            ")\n"
+        )
+      ])
+    : _vm.name === _vm.names.final
+    ? _c("span", [
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.translations.default.names[_vm.name]) +
+            "\n    (" +
+            _vm._s(_vm.translations.default.types.final) +
+            ")\n"
+        )
+      ])
+    : _c("span", [_vm._v("\n    " + _vm._s(_vm.name) + "\n")])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+/* harmony default export */ var ticket_state_namevue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      translations: I18n.t('cloud_help.ticket_states.shared'),
+      names: {
+        initial: 'created',
+        "final": 'closed'
+      }
+    };
+  },
+  props: {
+    name: {
+      type: String,
+      "default": ''
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ticket_state_namevue_type_script_lang_js_ = (ticket_state_namevue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_ticket_state_namevue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "engines/CloudHelp/app/vue/components/ticket_state_name.vue"
+/* harmony default export */ var ticket_state_name = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29980,7 +30093,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n/*\nTrix 1.2.1\nCopyright © 2019 
 
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(8);
-var Axios = __webpack_require__(28);
+var Axios = __webpack_require__(29);
 var mergeConfig = __webpack_require__(14);
 var defaults = __webpack_require__(11);
 
@@ -30016,37 +30129,19 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(15);
-axios.CancelToken = __webpack_require__(40);
+axios.CancelToken = __webpack_require__(41);
 axios.isCancel = __webpack_require__(10);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(41);
+axios.spread = __webpack_require__(42);
 
 module.exports = axios;
 
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
-
-
-/***/ }),
-
-/***/ 27:
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-module.exports = function isBuffer (obj) {
-  return obj != null && obj.constructor != null &&
-    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
 
 
 /***/ }),
@@ -30213,7 +30308,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/apps/list.vue?vue&type=template&id=328b1227&
 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue + 4 modules
-var ticket_state_name = __webpack_require__(46);
+var ticket_state_name = __webpack_require__(26);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/apps/list.vue?vue&type=script&lang=js&
 /*
@@ -30352,21 +30447,6 @@ var editvue_type_template_id_41d33993_render = function() {
               _c("component-form-status", { staticClass: "box" }),
               _vm._v(" "),
               _c("component-form-tag", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-type", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-state", {
-                staticClass: "box",
-                attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
-              }),
-              _vm._v(" "),
-              _c("component-form-priority", {
                 staticClass: "box",
                 attrs: { ticket: _vm.ticket, options: _vm.ticket_options }
               })
@@ -31946,145 +32026,6 @@ var lists_file_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var lists_file_api; }
 lists_file_component.options.__file = "app/vue/components/lists/file.vue"
 /* harmony default export */ var lists_file = (lists_file_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=template&id=5f637289&
-var priorityvue_type_template_id_5f637289_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("div", { staticClass: "control is-expanded" }, [
-        _c("div", { staticClass: "select is-fullwidth" }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes
-                      .cloud_help_ticket_priorities_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_priorities_id"
-                }
-              ],
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_priorities_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.patchTicket
-                ]
-              }
-            },
-            _vm._l(_vm.options.priorities, function(option, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: option.id } },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(option.name) +
-                      "\n                    "
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var priorityvue_type_template_id_5f637289_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            Priority \n        ")
-      ])
-    ])
-  }
-]
-priorityvue_type_template_id_5f637289_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=template&id=5f637289&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&
-/* harmony default export */ var priorityvue_type_script_lang_js_ = ({
-  props: {
-    ticket: {
-      required: true
-    },
-    options: {
-      required: true
-    }
-  },
-  methods: {
-    patchTicket: function patchTicket() {
-      var _this = this;
-
-      this.http.patch("/help/tickets/".concat(this.ticket.id), {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.id,
-            cloud_help_ticket_priorities_id: this.ticket.detail_attributes.cloud_help_ticket_priorities_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("Priority succesfuly updated");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_priorityvue_type_script_lang_js_ = (priorityvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/priority.vue
-
-
-
-
-
-/* normalize component */
-
-var priority_component = Object(componentNormalizer["a" /* default */])(
-  components_priorityvue_type_script_lang_js_,
-  priorityvue_type_template_id_5f637289_render,
-  priorityvue_type_template_id_5f637289_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var priority_api; }
-priority_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/priority.vue"
-/* harmony default export */ var priority = (priority_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/status.vue?vue&type=template&id=2714a117&
 var statusvue_type_template_id_2714a117_render = function() {
   var _vm = this
@@ -32156,282 +32097,6 @@ var status_component = Object(componentNormalizer["a" /* default */])(
 if (false) { var status_api; }
 status_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/status.vue"
 /* harmony default export */ var components_status = (status_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=template&id=635bb97c&
-var statevue_type_template_id_635bb97c_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("div", { staticClass: "control is-expanded" }, [
-        _c("div", { staticClass: "select is-fullwidth" }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes.cloud_help_ticket_states_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_states_id"
-                }
-              ],
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_states_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.patchTicket
-                ]
-              }
-            },
-            _vm._l(_vm.options.states, function(option, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: option.id } },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(option.name) +
-                      "\n                    "
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var statevue_type_template_id_635bb97c_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            State \n        ")
-      ])
-    ])
-  }
-]
-statevue_type_template_id_635bb97c_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=template&id=635bb97c&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
-/* harmony default export */ var statevue_type_script_lang_js_ = ({
-  props: {
-    ticket: {
-      required: true
-    },
-    options: {
-      required: true
-    }
-  },
-  methods: {
-    patchTicket: function patchTicket() {
-      var _this = this;
-
-      this.http.patch("/help/tickets/".concat(this.ticket.id), {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.id,
-            cloud_help_ticket_states_id: this.ticket.detail_attributes.cloud_help_ticket_states_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("State succesfuly updated");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_statevue_type_script_lang_js_ = (statevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/state.vue
-
-
-
-
-
-/* normalize component */
-
-var state_component = Object(componentNormalizer["a" /* default */])(
-  components_statevue_type_script_lang_js_,
-  statevue_type_template_id_635bb97c_render,
-  statevue_type_template_id_635bb97c_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var state_api; }
-state_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/state.vue"
-/* harmony default export */ var state = (state_component.exports);
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=template&id=214a08c2&
-var typevue_type_template_id_214a08c2_render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _vm._m(0),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("div", { staticClass: "control is-expanded" }, [
-        _c("div", { staticClass: "select is-fullwidth" }, [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value:
-                    _vm.ticket.detail_attributes.cloud_help_ticket_types_id,
-                  expression:
-                    "ticket.detail_attributes.cloud_help_ticket_types_id"
-                }
-              ],
-              on: {
-                change: [
-                  function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.ticket.detail_attributes,
-                      "cloud_help_ticket_types_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  },
-                  _vm.patchTicket
-                ]
-              }
-            },
-            _vm._l(_vm.options.types, function(option, index) {
-              return _c(
-                "option",
-                { key: index, domProps: { value: option.id } },
-                [
-                  _vm._v(
-                    "\n                        " +
-                      _vm._s(option.name) +
-                      "\n                    "
-                  )
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var typevue_type_template_id_214a08c2_staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h4", { staticClass: "card-header-title" }, [
-        _vm._v("\n            Type\n        ")
-      ])
-    ])
-  }
-]
-typevue_type_template_id_214a08c2_render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=template&id=214a08c2&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
-/* harmony default export */ var typevue_type_script_lang_js_ = ({
-  props: {
-    ticket: {
-      required: true
-    },
-    options: {
-      required: true
-    }
-  },
-  methods: {
-    patchTicket: function patchTicket() {
-      var _this = this;
-
-      this.http.patch("/help/tickets/".concat(this.ticket.id), {
-        ticket: {
-          detail_attributes: {
-            id: this.ticket.id,
-            cloud_help_ticket_types_id: this.ticket.detail_attributes.cloud_help_ticket_types_id
-          }
-        }
-      }).then(function (result) {
-        if (result.successful) {
-          _this.alert("Tags succesfuly updated");
-        }
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_typevue_type_script_lang_js_ = (typevue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/tickets/components/type.vue
-
-
-
-
-
-/* normalize component */
-
-var type_component = Object(componentNormalizer["a" /* default */])(
-  components_typevue_type_script_lang_js_,
-  typevue_type_template_id_214a08c2_render,
-  typevue_type_template_id_214a08c2_staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var type_api; }
-type_component.options.__file = "engines/CloudHelp/app/vue/tickets/components/type.vue"
-/* harmony default export */ var type = (type_component.exports);
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/tickets/components/tag.vue?vue&type=template&id=6a90a0c5&
 var tagvue_type_template_id_6a90a0c5_render = function() {
   var _vm = this
@@ -32556,37 +32221,43 @@ var formvue_type_template_id_33e6a429_render = function() {
   var _c = _vm._self._c || _h
   return _c("section", [
     _c("div", { staticClass: "card" }, [
-      _c(
-        "div",
-        { staticClass: "card-header" },
-        [
-          _c("h2", { staticClass: "card-header-title" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.translations.shared.name) +
-                "\n            "
-            )
-          ]),
-          _vm._v(" "),
-          _vm.ticket_id
-            ? _c(
-                "router-link",
-                {
-                  staticClass: "card-header-icon",
-                  attrs: { to: "/" + _vm.ticket_id + "/show" }
-                },
-                [
+      _c("div", { staticClass: "card-header" }, [
+        _c("h2", { staticClass: "card-header-title" }, [
+          _vm._v(
+            "\n                " +
+              _vm._s(_vm.translations.shared.name) +
+              "\n            "
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "card-header-icon" },
+          [
+            _vm.ticket_id
+              ? _c("router-link", { attrs: { to: "/" + _vm.ticket_id } }, [
+                  _c("i", { staticClass: "fas fa-eye" }),
                   _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.translations.shared.actions.edit) +
-                      "\n            "
+                    "\n                    " +
+                      _vm._s(_vm.translations.shared.actions.show) +
+                      "\n                "
                   )
-                ]
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            _c("router-link", { attrs: { to: "/" } }, [
+              _vm._v("\n                       \n                    "),
+              _c("i", { staticClass: "fas fa-undo" }),
+              _vm._v(
+                "\n                    " +
+                  _vm._s(_vm.translations.shared.actions.return) +
+                  "\n                "
               )
-            : _vm._e()
-        ],
-        1
-      ),
+            ])
+          ],
+          1
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-content" }, [
         _c("form", [
@@ -32651,7 +32322,11 @@ var formvue_type_template_id_33e6a429_render = function() {
                       _vm._l(_vm.ticket_options.types, function(type) {
                         return _c(
                           "option",
-                          { key: type.id, domProps: { value: type.id } },
+                          {
+                            key: type.id,
+                            attrs: { disabled: _vm.ticket_id != null },
+                            domProps: { value: type.id }
+                          },
                           [
                             _vm._v(
                               "\n                                    " +
@@ -32706,6 +32381,7 @@ var formvue_type_template_id_33e6a429_render = function() {
                           "option",
                           {
                             key: category.id,
+                            attrs: { disabled: _vm.ticket_id != null },
                             domProps: { value: category.id }
                           },
                           [
@@ -32770,6 +32446,7 @@ var formvue_type_template_id_33e6a429_render = function() {
                           "option",
                           {
                             key: priority.id,
+                            attrs: { disabled: _vm.ticket_id != null },
                             domProps: { value: priority.id }
                           },
                           [
@@ -32817,9 +32494,9 @@ var formvue_type_template_id_33e6a429_render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "field" }, [
-            _c("div", { staticClass: "actions has-text-right" }, [
-              !_vm.ticket_id
-                ? _c(
+            !_vm.ticket_id
+              ? _c("div", { staticClass: "actions has-text-right" }, [
+                  _c(
                     "button",
                     {
                       staticClass: "button is-primary",
@@ -32834,22 +32511,58 @@ var formvue_type_template_id_33e6a429_render = function() {
                       )
                     ]
                   )
-                : _c(
+                ])
+              : _c("div", { staticClass: "action has-text-right" }, [
+                  _c(
                     "button",
                     {
-                      staticClass: "button is-primary",
-                      attrs: { type: "submit" },
-                      on: { click: _vm.putTicket }
+                      staticClass: "button is-warning has-text-white",
+                      attrs: { type: "button" }
                     },
                     [
                       _vm._v(
                         "\n                            " +
-                          _vm._s(_vm.translations.form.actions.update) +
+                          _vm._s(_vm.translations.form.actions.transfer) +
+                          "\n                        "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-success",
+                      attrs: { type: "button" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.translations.form.actions.descalate) +
+                          "\n                        "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-danger",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.modals.escalate = true
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(_vm.translations.form.actions.escalate) +
                           "\n                        "
                       )
                     ]
                   )
-            ])
+                ])
           ])
         ])
       ])
@@ -32912,6 +32625,9 @@ Building a better future, one line of code at a time.
       ticket_id: null,
       ticket: {
         detail_attributes: {}
+      },
+      modals: {
+        escalate: false
       }
     };
   },
@@ -33055,9 +32771,6 @@ Building a better future, one line of code at a time.
 
 
 
-
-
-
  // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
@@ -33065,12 +32778,9 @@ Building a better future, one line of code at a time.
   components: {
     'component-discussion-form': forms_discussion,
     'component-discussion-list': discussion,
-    'component-form-priority': priority,
     'component-action-list': lists_action,
     'component-file-list': lists_file,
     'component-form-status': components_status,
-    'component-form-state': state,
-    'component-form-type': type,
     'component-form-tag': tag,
     'component-form': components_form,
     'component-trix-editor': vue_trix_esm
@@ -33557,6 +33267,24 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|edit|show]", "help/ticket
 /***/ }),
 
 /***/ 28:
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+
+/***/ }),
+
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33564,8 +33292,8 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|edit|show]", "help/ticket
 
 var utils = __webpack_require__(2);
 var buildURL = __webpack_require__(9);
-var InterceptorManager = __webpack_require__(29);
-var dispatchRequest = __webpack_require__(30);
+var InterceptorManager = __webpack_require__(30);
+var dispatchRequest = __webpack_require__(31);
 var mergeConfig = __webpack_require__(14);
 
 /**
@@ -33650,7 +33378,34 @@ module.exports = Axios;
 
 /***/ }),
 
-/***/ 29:
+/***/ 3:
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 30:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33710,45 +33465,18 @@ module.exports = InterceptorManager;
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-
-/***/ 30:
+/***/ 31:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(31);
+var transformData = __webpack_require__(32);
 var isCancel = __webpack_require__(10);
 var defaults = __webpack_require__(11);
-var isAbsoluteURL = __webpack_require__(38);
-var combineURLs = __webpack_require__(39);
+var isAbsoluteURL = __webpack_require__(39);
+var combineURLs = __webpack_require__(40);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -33831,7 +33559,7 @@ module.exports = function dispatchRequest(config) {
 
 /***/ }),
 
-/***/ 31:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33859,7 +33587,7 @@ module.exports = function transformData(data, headers, fns) {
 
 /***/ }),
 
-/***/ 32:
+/***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33879,7 +33607,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 /***/ }),
 
-/***/ 33:
+/***/ 34:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33912,7 +33640,7 @@ module.exports = function settle(resolve, reject, response) {
 
 /***/ }),
 
-/***/ 34:
+/***/ 35:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33962,7 +33690,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 /***/ }),
 
-/***/ 35:
+/***/ 36:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34023,7 +33751,7 @@ module.exports = function parseHeaders(headers) {
 
 /***/ }),
 
-/***/ 36:
+/***/ 37:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34099,7 +33827,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 37:
+/***/ 38:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34160,7 +33888,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 38:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34182,7 +33910,7 @@ module.exports = function isAbsoluteURL(url) {
 
 /***/ }),
 
-/***/ 39:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34204,7 +33932,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 /***/ }),
 
-/***/ 40:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34269,7 +33997,7 @@ module.exports = CancelToken;
 
 /***/ }),
 
-/***/ 41:
+/***/ 42:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34304,7 +34032,7 @@ module.exports = function spread(callback) {
 
 /***/ }),
 
-/***/ 42:
+/***/ 43:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -34337,7 +34065,7 @@ Building a better future, one line of code at a time.
 
 // · Loading node modules
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-let utils = __webpack_require__(43)
+let utils = __webpack_require__(44)
 
 
 // · 
@@ -34404,7 +34132,7 @@ module.exports = new browserDebugService
 
 /***/ }),
 
-/***/ 43:
+/***/ 44:
 /***/ (function(module, exports) {
 
 /*
@@ -34575,7 +34303,7 @@ module.exports = new Utils
 
 /***/ }),
 
-/***/ 44:
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -34766,119 +34494,6 @@ module.exports = new Utils
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(3), __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 46:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.name === _vm.names.initial
-    ? _c("span", [
-        _vm._v(
-          "\n    " +
-            _vm._s(_vm.translations.default.names[_vm.name]) +
-            "\n    (" +
-            _vm._s(_vm.translations.default.types.initial) +
-            ")\n"
-        )
-      ])
-    : _vm.name === _vm.names.final
-    ? _c("span", [
-        _vm._v(
-          "\n    " +
-            _vm._s(_vm.translations.default.names[_vm.name]) +
-            "\n    (" +
-            _vm._s(_vm.translations.default.types.final) +
-            ")\n"
-        )
-      ])
-    : _c("span", [_vm._v("\n    " + _vm._s(_vm.name) + "\n")])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Carlos Hermosilla
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-/* harmony default export */ var ticket_state_namevue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      translations: I18n.t('cloud_help.ticket_states.shared'),
-      names: {
-        initial: 'created',
-        "final": 'closed'
-      }
-    };
-  },
-  props: {
-    name: {
-      type: String,
-      "default": ''
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_ticket_state_namevue_type_script_lang_js_ = (ticket_state_namevue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  components_ticket_state_namevue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "engines/CloudHelp/app/vue/components/ticket_state_name.vue"
-/* harmony default export */ var ticket_state_name = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 

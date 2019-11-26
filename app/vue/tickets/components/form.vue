@@ -54,6 +54,9 @@ export default {
             ticket_id: null,
             ticket: {
                 detail_attributes: {}
+            },
+            modals: {
+                escalate: false
             }
         }
     },
@@ -134,9 +137,17 @@ export default {
                 <h2 class="card-header-title">
                     {{translations.shared.name}}
                 </h2>
-                <router-link v-if="ticket_id" :to="`/${ticket_id}/show`" class="card-header-icon">
-                    {{translations.shared.actions.edit}}
-                </router-link>
+                <div class="card-header-icon">
+                    <router-link v-if="ticket_id" :to="`/${ticket_id}`">
+                        <i class="fas fa-eye"></i>
+                        {{translations.shared.actions.show}}
+                    </router-link>
+                    <router-link :to="`/`">
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="fas fa-undo"></i>
+                        {{translations.shared.actions.return}}
+                    </router-link>
+                </div>
             </div>
             <div class="card-content">
                 <form>
@@ -159,6 +170,7 @@ export default {
                                         v-for="type in ticket_options.types"
                                         :key="type.id"
                                         :value="type.id"
+                                        :disabled="ticket_id != null"
                                     >
                                         {{type.name}}
                                     </option>
@@ -176,6 +188,7 @@ export default {
                                         v-for="category in ticket_options.categories"
                                         :key="category.id"
                                         :value="category.id"
+                                        :disabled="ticket_id != null"
                                     >   
                                         <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
                                         {{category.name}}
@@ -194,6 +207,7 @@ export default {
                                         v-for="priority in ticket_options.priorities"
                                         :key="priority.id"
                                         :value="priority.id"
+                                        :disabled="ticket_id != null"
                                     >
                                         {{priority.name}}
                                     </option>
@@ -208,12 +222,20 @@ export default {
                         </div>
                     </div>
                     <div class="field">
-                        <div class="actions has-text-right">
-                            <button v-if="!ticket_id" class="button is-primary" type="submit" @click="postTicket">
+                        <div v-if="!ticket_id" class="actions has-text-right">
+                            <button class="button is-primary" type="submit" @click="postTicket">
                                 {{translations.form.actions.create}}
                             </button>
-                            <button v-else class="button is-primary" type="submit" @click="putTicket">
-                                {{translations.form.actions.update}}
+                        </div>
+                        <div v-else class="action has-text-right">
+                            <button class="button is-warning has-text-white" type="button">
+                                {{translations.form.actions.transfer}}
+                            </button>
+                            <button class="button is-success" type="button">
+                                {{translations.form.actions.descalate}}
+                            </button>
+                            <button class="button is-danger" type="button" @click="modals.escalate = true">
+                                {{translations.form.actions.escalate}}
                             </button>
                         </div>
                     </div>

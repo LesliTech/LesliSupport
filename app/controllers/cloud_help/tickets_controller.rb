@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, only: [:update]
+        before_action :set_ticket, only: [:update, :discussions, :actions, :files, :activities]
 
         # GET /tickets
         def index
@@ -73,23 +73,25 @@ module CloudHelp
             redirect_to tickets_url, notice: 'Ticket was successfully destroyed.'
         end
 
-        # 
-
+        # GET /tickets/1/discussions
         def discussions
             ticket_discussions = @ticket.discussions.order(id: :desc)
             responseWithSuccessful(ticket_discussions)
         end
 
+        # GET /tickets/1/actions
         def actions
             ticket_actions = @ticket.actions
             responseWithSuccessful(ticket_actions)
         end
 
+        # GET /tickets/1/files
         def files
             ticket_files = @ticket.files
             responseWithSuccessful(ticket_files)
         end
 
+        # GET /tickets/1/activities
         def activities
             responseWithSuccessful([])
         end
@@ -108,7 +110,7 @@ module CloudHelp
         def set_ticket
             ticket_id = params[:id] unless params[:id].blank?
             ticket_id = params[:ticket_id] unless params[:ticket_id].blank?
-            @ticket = current_user.account.help.ticket.find(ticket_id)
+            @ticket = current_user.account.help.tickets.find(ticket_id)
         end
 
         # Only allow a trusted parameter "white list" through.
