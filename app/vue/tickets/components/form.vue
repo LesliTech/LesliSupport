@@ -46,7 +46,8 @@ export default {
         return {
             translations:{
                 shared: I18n.t('cloud_help.tickets.shared'),
-                form: I18n.t('cloud_help.tickets.form')
+                form: I18n.t('cloud_help.tickets.form'),
+                modals: I18n.t('cloud_help.tickets.modals')
             },
             ticket_options: {
                 types: [],
@@ -60,7 +61,8 @@ export default {
                 detail_attributes: {}
             },
             modals: {
-                escalate: false
+                escalate: false,
+                descalate: false
             }
         }
     },
@@ -147,6 +149,31 @@ export default {
             })
         },
 
+        escalateTicket(){
+            this.puTicketPriority('escalate')
+        },
+
+        descalateTicket(){
+            this.puTicketPriority('descalate')
+        },
+
+        // Used by escalateTicket and descalateTicket. action has to either be 'escalate' or 'descalate'
+        puTicketPriority(action){
+            this.http.put(`/help/api/tickets/${this.ticket_id}/${action}`).then(result => {
+                this.modals[action] = false
+                if (result.successful) {
+                    let attributes = this.ticket.detail_attributes
+                    attributes.cloud_help_ticket_priorities_id = result.data.priority_id
+                    attributes.priority = result.data.priority_name
+                    this.alert(this.translations.modals[action].messages.successful)
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
         putTicketWorkflow(){
             let data = {
                 workflow_id: this.ticket_follow_up_state
@@ -172,6 +199,58 @@ export default {
 </script>
 <template>
     <section>
+        <b-modal 
+            :active.sync="modals.escalate"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-modal
+        >
+            <div class="card">
+                <div class="card-header is-danger">
+                    <h2 class="card-header-title">
+                        {{ translations.modals.escalate.title }}
+                    </h2>
+                </div>
+                <div class="card-content">
+                    {{ translations.modals.escalate.body }}
+                </div>
+                <div class="card-footer has-text-right">
+                    <button class="card-footer-item button is-danger" @click="escalateTicket">
+                        {{ translations.modals.escalate.actions.escalate }}
+                    </button>
+                    <button class="card-footer-item button is-secondary" @click="modals.escalate=false">
+                        {{ translations.modals.escalate.actions.cancel }}
+                    </button>
+                </div>
+            </div>
+        </b-modal>
+        <b-modal 
+            :active.sync="modals.descalate"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-modal
+        >
+            <div class="card">
+                <div class="card-header is-danger">
+                    <h2 class="card-header-title">
+                        {{ translations.modals.descalate.title }}
+                    </h2>
+                </div>
+                <div class="card-content">
+                    {{ translations.modals.descalate.body }}
+                </div>
+                <div class="card-footer has-text-right">
+                    <button class="card-footer-item button is-success" @click="descalateTicket">
+                        {{ translations.modals.descalate.actions.descalate }}
+                    </button>
+                    <button class="card-footer-item button is-secondary" @click="modals.descalate=false">
+                        {{ translations.modals.descalate.actions.cancel }}
+                    </button>
+                </div>
+            </div>
+        </b-modal>
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
@@ -297,6 +376,7 @@ export default {
                             </div>
                         </div>
                     </div>
+                    <hr v-if="ticket_id" class="is-divider">
                     <div class="field">
                         <div v-if="!ticket_id" class="actions has-text-right">
                             <button class="button is-primary" type="submit" @click="postTicket">
@@ -307,11 +387,11 @@ export default {
                             <button class="button is-danger" type="button" @click="modals.escalate = true">
                                 {{translations.form.actions.escalate}}
                             </button>
+                            <button class="button is-success" type="button" @click="modals.descalate = true">
+                                {{translations.form.actions.descalate}}
+                            </button>
                             <button class="button is-warning has-text-white" type="button">
                                 {{translations.form.actions.transfer}}
-                            </button>
-                            <button class="button is-success" type="button">
-                                {{translations.form.actions.descalate}}
                             </button>
                         </div>
                     </div>
@@ -320,3 +400,8 @@ export default {
         </div>
     </section>
 </template>
+<style scoped>
+.is-divider {
+    background-color: #F14668;
+}
+</style>

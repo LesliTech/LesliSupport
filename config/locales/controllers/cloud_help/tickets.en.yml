@@ -4,3 +4,5 @@ en:
             tickets:
                 errors:
                     invalid_workflow_transition: The selected state does not belong to this workflow
+                    cannot_escalate_closed_ticket: You cannot escalate a ticket that is already closed
+                    cannot_descalate_closed_ticket: You cannot de-escalate a ticket that is already closed

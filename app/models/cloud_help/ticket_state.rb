@@ -13,6 +13,10 @@ module CloudHelp
             super
         end
 
+        def is_final?
+            final
+        end
+
         # Initial state is record #1 in the database
         def self.initial_state
             return TicketState.find(1)

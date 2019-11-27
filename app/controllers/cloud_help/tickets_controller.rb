@@ -2,7 +2,17 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, only: [:update, :discussions, :actions, :files, :activities, :api_follow_up_states, :api_update_workflow]
+        before_action :set_ticket, only: [
+            :update,
+            :discussions,
+            :actions,
+            :files,
+            :activities,
+            :api_follow_up_states,
+            :api_update_workflow,
+            :api_escalate,
+            :api_descalate
+        ]
 
         # GET /tickets
         def index
@@ -63,7 +73,7 @@ module CloudHelp
                     href: "/help/tickets/#{@ticket.id}"
                 )
             else
-                responseWithError("error on update ticket", @ticket.errors.full_messages)
+                responseWithError(@ticket.errors.full_messages.to_sentence)
             end
         end
 
@@ -96,6 +106,7 @@ module CloudHelp
             responseWithSuccessful([])
         end
 
+        # GET /tickets/options
         def api_options
             account = current_user.account
             responseWithSuccessful({
@@ -105,10 +116,12 @@ module CloudHelp
             })
         end
 
+        # GET /tickets/1/follow_up_states
         def api_follow_up_states
             responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
         end
 
+        # PUT /tickets/1/workflow
         def api_update_workflow
             old_workflow = @ticket.detail.workflow
             new_workflow = TicketWorkflow.find_by(
@@ -121,6 +134,34 @@ module CloudHelp
                 responseWithSuccessful({state_id: new_workflow.ticket_state.id, state_name: new_workflow.ticket_state.name})
             else
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.invalid_workflow_transition'))
+            end
+        end
+
+        # PUT /tickets/1/escalate
+        def api_escalate
+            if @ticket.detail.workflow.ticket_state.is_final?
+                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_escalate_closed_ticket'))
+            else
+                if @ticket.escalate
+                    priority = @ticket.detail.priority
+                    responseWithSuccessful({ priority_id: priority.id, priority_name: priority.name })
+                else
+                    responseWithError(@ticket.errors.full_messages.to_sentence)
+                end
+            end
+        end
+
+        # PUT /tickets/1/descalate
+        def api_descalate
+            if @ticket.detail.workflow.ticket_state.is_final?
+                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_descalate_closed_ticket'))
+            else
+                if @ticket.descalate
+                    priority = @ticket.detail.priority
+                    responseWithSuccessful({ priority_id: priority.id, priority_name: priority.name })
+                else
+                    responseWithError(@ticket.errors.full_messages.to_sentence)
+                end
             end
         end
 

@@ -1,0 +1,9 @@
+en:
+    activerecord:
+        errors:
+            models:
+                cloud_help/ticket:
+                        attributes:
+                            base:
+                                ticket_at_max_priority: This ticket cannot be escalated any further
+
