@@ -44381,8 +44381,6 @@ var mermaid = __webpack_require__(256);
       this.resetWorkflowNodes();
       this.workflowRecursion(initial_node);
       this.workflow_graph = "".concat(this.workflow_graph, "\n\tstyle ").concat(this.selected_node_id, " fill:#EFFD5F,stroke:#FCE205;");
-      console.log(this.selected_node);
-      console.log(this.workflow_graph);
       document.getElementById('mermaid-chart').removeAttribute('data-processed');
       this.$nextTick(function () {
         mermaid.init();

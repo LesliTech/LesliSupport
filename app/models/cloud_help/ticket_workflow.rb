@@ -102,6 +102,9 @@ module CloudHelp
         end
 
         def follow_up_states
+            unless next_states
+                return []
+            end
             ids = next_states.split('|').map(&:to_i)
             TicketWorkflow.joins(
                 :ticket_state

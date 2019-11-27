@@ -153,9 +153,12 @@ export default {
             }
             this.http.put(`/help/api/tickets/${this.ticket_id}/workflow`, data).then(result =>{
                 if (result.successful) {
-                    this.getFollowUpStates()
-                    this.$emit('update-ticket-workflow', result.data)
-                    this.alert('Ticket state has been successfully updated')
+                    this.alert(this.translations.form.messages.update_workflow.successful)
+                    if(this.ticket.detail_attributes.cloud_help_ticket_workflows_id != this.ticket_follow_up_state){
+                        this.ticket.detail_attributes.cloud_help_ticket_workflows_id = this.ticket_follow_up_state
+                        this.getFollowUpStates()
+                        this.$emit('update-ticket-workflow', result.data)
+                    }
                 } else {
                     this.alert(result.error.message, 'danger')
                 }

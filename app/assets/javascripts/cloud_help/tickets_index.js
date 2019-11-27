@@ -44381,8 +44381,6 @@ var mermaid = __webpack_require__(256);
       this.resetWorkflowNodes();
       this.workflowRecursion(initial_node);
       this.workflow_graph = "".concat(this.workflow_graph, "\n\tstyle ").concat(this.selected_node_id, " fill:#EFFD5F,stroke:#FCE205;");
-      console.log(this.selected_node);
-      console.log(this.workflow_graph);
       document.getElementById('mermaid-chart').removeAttribute('data-processed');
       this.$nextTick(function () {
         mermaid.init();
@@ -124146,11 +124144,15 @@ Building a better future, one line of code at a time.
       };
       this.http.put("/help/api/tickets/".concat(this.ticket_id, "/workflow"), data).then(function (result) {
         if (result.successful) {
-          _this6.getFollowUpStates();
+          _this6.alert(_this6.translations.form.messages.update_workflow.successful);
 
-          _this6.$emit('update-ticket-workflow', result.data);
+          if (_this6.ticket.detail_attributes.cloud_help_ticket_workflows_id != _this6.ticket_follow_up_state) {
+            _this6.ticket.detail_attributes.cloud_help_ticket_workflows_id = _this6.ticket_follow_up_state;
 
-          _this6.alert('Ticket state has been successfully updated');
+            _this6.getFollowUpStates();
+
+            _this6.$emit('update-ticket-workflow', result.data);
+          }
         } else {
           _this6.alert(result.error.message, 'danger');
         }
