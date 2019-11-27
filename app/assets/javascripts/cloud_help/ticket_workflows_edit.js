@@ -44417,7 +44417,7 @@ function addLabel(root, node, location) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_workflows/components/chart.vue?vue&type=template&id=5ac2e3f2&
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/workflow_chart.vue?vue&type=template&id=7e3596ab&
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
@@ -44430,7 +44430,7 @@ var staticRenderFns = []
 render._withStripped = true
 
 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_workflows/components/chart.vue?vue&type=template&id=5ac2e3f2&
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/workflow_chart.vue?vue&type=template&id=7e3596ab&
 
 // EXTERNAL MODULE: ./node_modules/vue/dist/vue.js
 var vue = __webpack_require__(1);
@@ -44440,7 +44440,7 @@ var vue_default = /*#__PURE__*/__webpack_require__.n(vue);
 var vue_mermaid = __webpack_require__(251);
 var vue_mermaid_default = /*#__PURE__*/__webpack_require__.n(vue_mermaid);
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_workflows/components/chart.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/workflow_chart.vue?vue&type=script&lang=js&
 /*
 Lesli
 
@@ -44472,7 +44472,7 @@ Building a better future, one line of code at a time.
 
 
 vue_default.a.use(vue_mermaid_default.a);
-/* harmony default export */ var chartvue_type_script_lang_js_ = ({
+/* harmony default export */ var workflow_chartvue_type_script_lang_js_ = ({
   props: {
     workflow: {
       type: Object,
@@ -44568,12 +44568,12 @@ vue_default.a.use(vue_mermaid_default.a);
     }
   }
 });
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_workflows/components/chart.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_chartvue_type_script_lang_js_ = (chartvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/workflow_chart.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_workflow_chartvue_type_script_lang_js_ = (workflow_chartvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
 
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_workflows/components/chart.vue
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/workflow_chart.vue
 
 
 
@@ -44582,7 +44582,7 @@ var componentNormalizer = __webpack_require__(0);
 /* normalize component */
 
 var component = Object(componentNormalizer["a" /* default */])(
-  components_chartvue_type_script_lang_js_,
+  components_workflow_chartvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
@@ -44594,8 +44594,8 @@ var component = Object(componentNormalizer["a" /* default */])(
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "engines/CloudHelp/app/vue/ticket_workflows/components/chart.vue"
-/* harmony default export */ var chart = __webpack_exports__["a"] = (component.exports);
+component.options.__file = "engines/CloudHelp/app/vue/components/workflow_chart.vue"
+/* harmony default export */ var workflow_chart = __webpack_exports__["a"] = (component.exports);
 
 /***/ }),
 /* 149 */
@@ -121548,7 +121548,9 @@ var showvue_type_template_id_9d8641f0_render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("component-chart", { attrs: { workflow: _vm.ticket_workflow } })
+          _c("component-workflow-chart", {
+            attrs: { workflow: _vm.ticket_workflow }
+          })
         ],
         1
       )
@@ -121561,8 +121563,8 @@ showvue_type_template_id_9d8641f0_render._withStripped = true
 
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_workflows/apps/show.vue?vue&type=template&id=9d8641f0&
 
-// EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_workflows/components/chart.vue + 4 modules
-var chart = __webpack_require__(148);
+// EXTERNAL MODULE: ./engines/CloudHelp/app/vue/components/workflow_chart.vue + 4 modules
+var workflow_chart = __webpack_require__(148);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_workflows/apps/show.vue?vue&type=script&lang=js&
 /*
@@ -121596,7 +121598,7 @@ Building a better future, one line of code at a time.
 
 /* harmony default export */ var showvue_type_script_lang_js_ = ({
   components: {
-    'component-chart': chart["a" /* default */]
+    'component-workflow-chart': workflow_chart["a" /* default */]
   },
   data: function data() {
     return {
@@ -121744,7 +121746,7 @@ var editvue_type_template_id_24ec2395_render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("component-chart", {
+          _c("component-workflow-chart", {
             attrs: {
               workflow: _vm.ticket_workflow,
               rerender: _vm.rerender_chart
@@ -122091,7 +122093,7 @@ Building a better future, one line of code at a time.
 
 /* harmony default export */ var editvue_type_script_lang_js_ = ({
   components: {
-    'component-chart': chart["a" /* default */],
+    'component-workflow-chart': workflow_chart["a" /* default */],
     'component-ticket-state-name': ticket_state_name["a" /* default */]
   },
   data: function data() {

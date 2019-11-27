@@ -29,12 +29,12 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentChart from '../components/chart.vue'
+import componentWorkflowChart from '../../components/workflow_chart.vue'
 import componentTicketStateName from '../../components/ticket_state_name.vue'
 
 export default {
     components: {
-        'component-chart': componentChart,
+        'component-workflow-chart': componentWorkflowChart,
         'component-ticket-state-name': componentTicketStateName
     },
     data() {
@@ -253,8 +253,8 @@ export default {
                         </p>
                     </div>
                 </div>
-                <component-chart :workflow="ticket_workflow" :rerender.sync="rerender_chart">
-                </component-chart>
+                <component-workflow-chart :workflow="ticket_workflow" :rerender.sync="rerender_chart">
+                </component-workflow-chart>
                 <hr>
                 <form @submit="putTicketWorkflow">
                     <div class="columns">

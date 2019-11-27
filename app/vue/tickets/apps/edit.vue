@@ -37,7 +37,7 @@ import componentFileList from 'LesliCloud/vue/components/lists/file.vue'
 import componentFormStatus from '../components/status.vue'
 import componentFormTag from '../components/tag.vue'
 import componentForm from '../components/form.vue'
-import componentChart from '../../ticket_workflows/components/chart.vue'
+import componentWorkflowChart from '../../components/workflow_chart.vue'
 import VueTrix from "vue-trix"
 
 
@@ -53,7 +53,7 @@ export default {
         'component-form-status': componentFormStatus,
         'component-form-tag': componentFormTag,
         'component-form': componentForm,
-        'component-chart': componentChart,
+        'component-workflow-chart': componentWorkflowChart,
         'component-trix-editor': VueTrix
     },
     data() {
@@ -142,12 +142,12 @@ export default {
                         </h4>
                     </div>
                     <div class="card-content">
-                        <component-chart 
+                        <component-workflow-chart 
                             :rerender.sync="rerender_chart"
                             :workflow="ticket_workflow"
                             :selected_node="ticket.detail_attributes.cloud_help_ticket_states_id"
                         >
-                        </component-chart>
+                        </component-workflow-chart>
                     </div>
                 </div>
                 <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>

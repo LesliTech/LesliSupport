@@ -29,11 +29,11 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentChart from '../components/chart.vue'
+import componentWorkflowChart from '../../components/workflow_chart.vue'
 
 export default {
     components: {
-        'component-chart': componentChart
+        'component-workflow-chart': componentWorkflowChart
     },
     data() {
         return {
@@ -105,8 +105,8 @@ export default {
                         </p>
                     </div>
                 </div>
-                <component-chart :workflow="ticket_workflow">
-                </component-chart>
+                <component-workflow-chart :workflow="ticket_workflow">
+                </component-workflow-chart>
             </div>
         </div>
     </section>
