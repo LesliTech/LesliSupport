@@ -2,7 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, only: [:update, :discussions, :actions, :files, :activities]
+        before_action :set_ticket, only: [:update, :discussions, :actions, :files, :activities, :api_follow_up_states, :api_update_workflow]
 
         # GET /tickets
         def index
@@ -103,6 +103,25 @@ module CloudHelp
                 categories: TicketCategory.tree(account),
                 priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name)
             })
+        end
+
+        def api_follow_up_states
+            responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
+        end
+
+        def api_update_workflow
+            old_workflow = @ticket.detail.workflow
+            new_workflow = TicketWorkflow.find_by(
+                id: params[:workflow_id],
+                ticket_category: old_workflow.ticket_category,
+                ticket_type: old_workflow.ticket_type
+            )
+            if new_workflow
+                @ticket.detail.update(workflow: new_workflow)
+                responseWithSuccessful({state_id: new_workflow.ticket_state.id, state_name: new_workflow.ticket_state.name})
+            else
+                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.invalid_workflow_transition'))
+            end
         end
 
         private

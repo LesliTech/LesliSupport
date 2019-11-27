@@ -39,6 +39,10 @@ export default {
                 return {}
             }
         },
+        selected_node: {
+            type: Number,
+            default: null
+        },
         rerender: {
             type: Boolean,
             default: false
@@ -55,7 +59,11 @@ export default {
     data(){
         return {
             translations: I18n.t('cloud_help.ticket_states.shared'),
-            workflow_graph: ''
+            selected_node_id: 'workflow-selected-node',
+            workflow_graph: `
+                graph LR 
+                    1[fas:fa-play Created]-->2[fas:fa-stop Closed];
+            `
         }
     },
     methods: {
@@ -75,8 +83,10 @@ export default {
             let initial_node = this.workflow[1]
             this.resetWorkflowNodes()
             this.workflowRecursion(initial_node)
-            this.workflow_graph = `${this.workflow_graph};`
-            document.getElementById('mermaid-chart').removeAttribute('data-processed');
+            this.workflow_graph = `${this.workflow_graph}\n\tstyle ${this.selected_node_id} fill:#EFFD5F,stroke:#FCE205;`
+            console.log(this.selected_node)
+            console.log(this.workflow_graph)
+            document.getElementById('mermaid-chart').removeAttribute('data-processed')
             this.$nextTick(()=>{
                 mermaid.init()
             })
@@ -106,7 +116,17 @@ export default {
                     let next_name = this.getNodeName(next_node)
                     let next_icon = this.getIcon(next_node)
 
-                    this.workflow_graph+=`\n\t${node.ticket_state_id}[${current_icon} ${current_name}]-->${next_node.ticket_state_id}[${next_icon} ${next_name}]`
+                    let state_id = node.ticket_state_id
+                    if(this.selected_node == state_id){
+                        state_id = this.selected_node_id
+                    }
+
+                    let next_state_id = next_node.ticket_state_id
+                    if(this.selected_node == next_state_id){
+                        next_state_id = this.selected_node_id
+                    }
+
+                    this.workflow_graph+=`\n\t${state_id}[${current_icon} ${current_name}]-->${next_state_id}[${next_icon} ${next_name}]`
                     this.workflowRecursion(next_node)
                 })
             }

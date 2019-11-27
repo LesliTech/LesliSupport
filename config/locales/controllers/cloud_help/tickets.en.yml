@@ -1,0 +1,6 @@
+en:
+    cloud_help:
+        controllers:
+            tickets:
+                errors:
+                    invalid_workflow_transition: The selected state does not belong to this workflow

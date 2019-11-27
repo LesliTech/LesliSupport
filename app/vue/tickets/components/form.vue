@@ -31,6 +31,7 @@ Building a better future, one line of code at a time.
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import VueTrix from "vue-trix"
+import componentTicketStateName from "../../components/ticket_state_name.vue"
 
 
 
@@ -38,7 +39,8 @@ import VueTrix from "vue-trix"
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-trix-editor': VueTrix
+        'component-trix-editor': VueTrix,
+        'component-ticket-state-name': componentTicketStateName
     },
     data() {
         return {
@@ -52,6 +54,8 @@ export default {
                 priorities: []
             },
             ticket_id: null,
+            ticket_follow_up_states: [],
+            ticket_follow_up_state: null,
             ticket: {
                 detail_attributes: {}
             },
@@ -64,6 +68,7 @@ export default {
         if (this.$route.params.id) {
             this.ticket_id = this.$route.params.id
             this.getTicket()
+            this.getFollowUpStates()
         }
         this.getTicketOptions()
     },
@@ -115,10 +120,42 @@ export default {
             })
         },
 
+        getFollowUpStates() {
+            this.http.get(`/help/api/tickets/${this.ticket_id}/follow_up_states`).then(result =>{
+                if (result.successful) {
+                    this.ticket_follow_up_states = result.data
+                    if(result.data.length > 0){
+                        this.ticket_follow_up_state = result.data[0].workflow_id
+                    }
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
         getTicketOptions() {
             this.http.get('/help/api/tickets/options').then(result => {
                 if (result.successful) {
                     this.ticket_options = result.data
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        putTicketWorkflow(){
+            let data = {
+                workflow_id: this.ticket_follow_up_state
+            }
+            this.http.put(`/help/api/tickets/${this.ticket_id}/workflow`, data).then(result =>{
+                if (result.successful) {
+                    this.getFollowUpStates()
+                    this.$emit('update-ticket-workflow', result.data)
+                    this.alert('Ticket state has been successfully updated')
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -154,7 +191,7 @@ export default {
                     <div class="columns">
                         <div class="column is-12">
                             <b-field :label="translations.shared.fields.subject">
-                                <b-input v-model="ticket.detail_attributes.subject"></b-input>
+                                <b-input v-model="ticket.detail_attributes.subject" :readonly="ticket_id != null"></b-input>
                             </b-field>
                         </div>
                     </div>
@@ -216,9 +253,43 @@ export default {
                         </div>
                     </div>
                     <div class="field">
-                        <label for="article.content" class="label">{{translations.shared.fields.description}}</label>
+                        <label class="label">{{translations.shared.fields.description}}</label>
                         <div class="control">
-                            <component-trix-editor v-model="ticket.detail_attributes.description"></component-trix-editor>
+                            <component-trix-editor 
+                                :disabledEditor="$route.params.id != null"
+                                v-model="ticket.detail_attributes.description"
+                            ></component-trix-editor>
+                        </div>
+                    </div>
+                    <label class="label">{{translations.form.labels.move_to_another_state}}</label>
+                    <div class="columns" v-if="ticket_id">
+                        <div class="column is-9">
+                            <div class="field">
+                                <div class="control">
+                                    <b-select
+                                        :placeholder="translations.form.placeholders.select_category"
+                                        expanded
+                                        v-model="ticket_follow_up_state"
+                                    >
+                                        <option
+                                            v-for="state in ticket_follow_up_states"
+                                            :key="state.workflow_id"
+                                            :value="state.workflow_id"
+                                        >
+                                            <component-ticket-state-name :name="state.state_name"/>
+                                        </option>
+                                    </b-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-3">
+                            <div class="field">
+                                <div class="actions has-text-right">
+                                    <button class="button is-primary is-fullwidth" type="button" @click="putTicketWorkflow">
+                                        {{translations.form.actions.update}}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="field">
@@ -227,15 +298,15 @@ export default {
                                 {{translations.form.actions.create}}
                             </button>
                         </div>
-                        <div v-else class="action has-text-right">
+                        <div v-else class="actions has-text-right">
+                            <button class="button is-danger" type="button" @click="modals.escalate = true">
+                                {{translations.form.actions.escalate}}
+                            </button>
                             <button class="button is-warning has-text-white" type="button">
                                 {{translations.form.actions.transfer}}
                             </button>
                             <button class="button is-success" type="button">
                                 {{translations.form.actions.descalate}}
-                            </button>
-                            <button class="button is-danger" type="button" @click="modals.escalate = true">
-                                {{translations.form.actions.escalate}}
                             </button>
                         </div>
                     </div>

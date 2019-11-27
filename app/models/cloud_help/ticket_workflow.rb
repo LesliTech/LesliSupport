@@ -101,6 +101,24 @@ module CloudHelp
             end
         end
 
+        def follow_up_states
+            ids = next_states.split('|').map(&:to_i)
+            TicketWorkflow.joins(
+                :ticket_state
+            ).where(
+                ticket_type: ticket_type,
+                ticket_category: ticket_category,
+                cloud_help_ticket_states_id: ids
+            ).select(
+                "cloud_help_ticket_workflows.id as workflow_id",
+                "cloud_help_ticket_states.id",
+                "cloud_help_ticket_states.name as state_name"
+            ).order(
+                "cloud_help_ticket_states.final asc",
+                "cloud_help_ticket_states.name asc"
+            )
+        end
+
         private
 
         def self.set_category_path(workflow_node)

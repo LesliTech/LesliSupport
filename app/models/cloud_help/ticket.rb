@@ -29,7 +29,11 @@ module CloudHelp
             ).joins(
                 "inner join cloud_help_ticket_categories CHTC on CHTD.cloud_help_ticket_categories_id = CHTC.id"
             ).joins(
-                "inner join cloud_help_ticket_workflows CHTW on CHTD.cloud_help_ticket_types_id = CHTW.id"
+                "
+                    inner join cloud_help_ticket_workflows CHTW on CHTD.cloud_help_ticket_types_id = CHTW.cloud_help_ticket_types_id and 
+                    CHTD.cloud_help_ticket_categories_id = CHTW.cloud_help_ticket_categories_id and 
+                    CHTD.cloud_help_ticket_workflows_id = CHTW.id
+                "
             ).joins(
                 "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
             ).joins(
@@ -44,9 +48,9 @@ module CloudHelp
                 "CHTS.name as state",
                 "CHTP.id as cloud_help_ticket_priorities_id",
                 "CHTT.id as cloud_help_ticket_types_id",
-                "CHTW.id",
+                "CHTW.id as cloud_help_ticket_workflows_id",
                 "CHTC.id as cloud_help_ticket_categories_id",
-                "CHTS.id"
+                "CHTS.id as cloud_help_ticket_states_id"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
             { 
