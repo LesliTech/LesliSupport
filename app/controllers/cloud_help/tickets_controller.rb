@@ -2,43 +2,30 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
-        before_action :set_ticket, except: [:index, :new, :create, :api_options]
+        before_action :set_ticket, only: [:update, :discussions, :actions, :files, :activities, :api_follow_up_states, :api_update_workflow]
 
         # GET /tickets
         def index
             respond_to do |format|
-                format.html { @tickets = tickets }
-                format.json { responseWithSuccessful(tickets) }
+                format.html { }
+                format.json do
+                    tickets = Ticket.detailed_info(current_user.account.help)
+                    responseWithSuccessful(tickets) 
+                end
             end
         end
 
         # GET /tickets/1
         def show
-            ticket =  current_user.account.help.ticket
-                .joins(:detail)
-                .select(
-                    :id, :subject, :description, :tags,
-                    :cloud_help_ticket_types_id, 
-                    :cloud_help_ticket_states_id, 
-                    :cloud_help_ticket_priorities_id,
-                    :created_at, :updated_at)
-                .find(@ticket.id)
             respond_to do |format|
-                format.html 
-                format.json { 
-                    responseWithSuccessful({
-                        id: ticket[:id],
-                        detail_attributes: {
-                            id: ticket[:id],
-                            tags: ticket[:tags],
-                            subject: ticket[:subject],
-                            description: ticket[:description],
-                            cloud_help_ticket_types_id: ticket[:cloud_help_ticket_types_id],
-                            cloud_help_ticket_states_id: ticket[:cloud_help_ticket_states_id],
-                            cloud_help_ticket_priorities_id: ticket[:cloud_help_ticket_priorities_id]
-                        }
-                    })
-                }
+                format.html { }
+                format.json do
+                    ticket = Ticket.find_by(
+                        id: params[:id],
+                        account: current_user.account.help
+                    ).detailed_info
+                    responseWithSuccessful(ticket)
+                end
             end
         end
 
@@ -53,16 +40,17 @@ module CloudHelp
 
         # POST /tickets
         def create
-
             ticket = Ticket.new(ticket_params)
-            ticket.cloud_help_accounts_id = current_user.account.id
+            ticket.user = current_user
+            ticket.account = current_user.account.help
+            ticket.detail.source = TicketSource.cloud_help_source
+            ticket.set_workflow
 
             if ticket.save
                 responseWithSuccessful(ticket)
             else
                 responseWithError("error creating new ticket", ticket.errors.full_messages)
             end
-
         end
 
         # PATCH/PUT /tickets/1
@@ -85,33 +73,55 @@ module CloudHelp
             redirect_to tickets_url, notice: 'Ticket was successfully destroyed.'
         end
 
-        # 
-
+        # GET /tickets/1/discussions
         def discussions
             ticket_discussions = @ticket.discussions.order(id: :desc)
             responseWithSuccessful(ticket_discussions)
         end
 
+        # GET /tickets/1/actions
         def actions
             ticket_actions = @ticket.actions
             responseWithSuccessful(ticket_actions)
         end
 
+        # GET /tickets/1/files
         def files
             ticket_files = @ticket.files
             responseWithSuccessful(ticket_files)
         end
 
+        # GET /tickets/1/activities
         def activities
             responseWithSuccessful([])
         end
 
         def api_options
+            account = current_user.account
             responseWithSuccessful({
-                types: TicketType.all.select(:id, :name),
-                states: TicketState.all.select(:id, :name),
-                priorities: TicketPriority.all.select(:id, :name)
+                types: TicketType.where(account: current_user.account.help).select(:id, :name),
+                categories: TicketCategory.tree(account),
+                priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name)
             })
+        end
+
+        def api_follow_up_states
+            responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
+        end
+
+        def api_update_workflow
+            old_workflow = @ticket.detail.workflow
+            new_workflow = TicketWorkflow.find_by(
+                id: params[:workflow_id],
+                ticket_category: old_workflow.ticket_category,
+                ticket_type: old_workflow.ticket_type
+            )
+            if new_workflow
+                @ticket.detail.update(workflow: new_workflow)
+                responseWithSuccessful({state_id: new_workflow.ticket_state.id, state_name: new_workflow.ticket_state.name})
+            else
+                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.invalid_workflow_transition'))
+            end
         end
 
         private
@@ -119,7 +129,7 @@ module CloudHelp
         def set_ticket
             ticket_id = params[:id] unless params[:id].blank?
             ticket_id = params[:ticket_id] unless params[:ticket_id].blank?
-            @ticket = current_user.account.help.ticket.find(ticket_id)
+            @ticket = current_user.account.help.tickets.find(ticket_id)
         end
 
         # Only allow a trusted parameter "white list" through.
@@ -131,8 +141,8 @@ module CloudHelp
                     :description,
                     :tags,
                     :cloud_help_ticket_types_id,
-                    :cloud_help_ticket_states_id,
-                    :cloud_help_ticket_priorities_id
+                    :cloud_help_ticket_priorities_id,
+                    :cloud_help_ticket_categories_id
                 ]
             )
         end

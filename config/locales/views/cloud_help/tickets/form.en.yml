@@ -1,0 +1,23 @@
+en:
+    cloud_help:
+        tickets:
+            form:
+                messages:
+                    update:
+                        successful: Ticket updated successfully
+                    create:
+                        successful: Ticket created successfully
+                    update_workflow:
+                        successful: Ticket state has been successfully updated
+                actions:
+                    escalate: Escalate
+                    descalate: De-escalate
+                    transfer: Transfer
+                    create: Create ticket
+                    update: Update Ticket
+                placeholders:
+                    select_type: Select a type
+                    select_category: Select a category
+                    select_priority: Select a priority
+                labels:
+                    move_to_another_state: Move to another state

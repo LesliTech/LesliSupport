@@ -34,12 +34,10 @@ import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.
 import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
 import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
 import componentFileList from 'LesliCloud/vue/components/lists/file.vue'
-import componentFormPriority from '../components/priority.vue'
 import componentFormStatus from '../components/status.vue'
-import componentFormState from '../components/state.vue'
-import componentFormType from '../components/type.vue'
 import componentFormTag from '../components/tag.vue'
 import componentForm from '../components/form.vue'
+import componentWorkflowChart from '../../components/workflow_chart.vue'
 import VueTrix from "vue-trix"
 
 
@@ -50,21 +48,24 @@ export default {
     components: {
         'component-discussion-form': componentDiscussionForm,
         'component-discussion-list': componentDiscussionList,
-        'component-form-priority': componentFormPriority,
         'component-action-list': componentActionList,
         'component-file-list': componentFileList,
         'component-form-status': componentFormStatus,
-        'component-form-state': componentFormState,
-        'component-form-type': componentFormType,
         'component-form-tag': componentFormTag,
         'component-form': componentForm,
+        'component-workflow-chart': componentWorkflowChart,
         'component-trix-editor': VueTrix
     },
     data() {
         return {
+            translations: I18n.t('cloud_help.tickets.edit'),
+            ticket_workflow: null,
             ticket_options: null,
             ticket_id: null,
-            ticket: null
+            ticket: {
+                detail_attributes: {}
+            },
+            rerender_chart: false
         }
     },
     mounted() {
@@ -74,10 +75,25 @@ export default {
     },
     methods: {
 
+        getTicketWorkflow() {
+            let id = this.ticket.detail_attributes.cloud_help_ticket_workflows_id
+            this.http.get(`/help/ticket_workflows/${id}.json`).then(result => {
+                if (result.successful) {
+                    this.ticket_workflow = result.data
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
         getTicketOptions() {
             this.http.get('/help/api/tickets/options').then(result => {
                 if (result.successful) {
                     this.ticket_options = result.data
+                }else{
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -88,30 +104,57 @@ export default {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
+                    this.getTicketWorkflow()
+                }else{
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        updateTicketWorkflow(state_data) {
+            this.ticket.detail_attributes.cloud_help_ticket_states_id = state_data.state_id
+            this.ticket.detail_attributes.state = state_data.state_name
+            this.rerender_chart = true
         }
 
     }
 }
 </script>
 <template>
-    <div class="columns" v-if="ticket && ticket_options">
-        <div class="column is-8">
-            <component-form />
-            <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
-            <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+    <div>
+        <div class="columns" v-if="ticket && ticket_options">
+            <div class="column is-8">
+                <component-form v-on:update-ticket-workflow="updateTicketWorkflow"/>
+            </div>
+            <div class="column is-4">
+                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation_date="ticket.created_at"/>
+                <component-form-tag class="box" :ticket="ticket" :options="ticket_options" />
+            </div>
         </div>
-        <div class="column is-4">
-            <component-form-status class="box" />
-            <component-form-tag class="box" :ticket="ticket" :options="ticket_options" />
-            <component-form-type class="box" :ticket="ticket" :options="ticket_options" />
-            <component-form-state class="box" :ticket="ticket" :options="ticket_options" />
-            <component-form-priority class="box" :ticket="ticket" :options="ticket_options" />
+        <div class="columns">
+            <div class="column">
+                <div class="card box">
+                    <div class="card-header">
+                        <h4 class="card-header-title">
+                            {{translations.titles.workflow}}
+                        </h4>
+                    </div>
+                    <div class="card-content">
+                        <component-workflow-chart 
+                            :rerender.sync="rerender_chart"
+                            :workflow="ticket_workflow"
+                            :selected_node="ticket.detail_attributes.cloud_help_ticket_states_id"
+                        >
+                        </component-workflow-chart>
+                    </div>
+                </div>
+                <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
+                <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+            </div>
+            <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
-        <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
-        <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
     </div>
 </template>

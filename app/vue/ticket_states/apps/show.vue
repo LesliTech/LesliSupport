@@ -29,11 +29,11 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentStateName from '../../components/ticket_state_name.vue'
+import componentTicketStateName from '../../components/ticket_state_name.vue'
 
 export default {
     components: {
-        'component-state-name': componentStateName
+        'component-ticket-state-name': componentTicketStateName
     },
     data() {
         return {
@@ -145,12 +145,8 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.name}:` }}
                             </span>
-                            <component-state-name
-                                :name="ticket_state.name"
-                                :initial="(ticket_state.initial || false)"
-                                :final="(ticket_state.final || false)"
-                            >
-                            </component-state-name>
+                            <component-ticket-state-name :name="ticket_state.name">
+                            </component-ticket-state-name>
                         </p>
                     </div>
                 </div>

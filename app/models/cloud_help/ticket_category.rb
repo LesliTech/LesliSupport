@@ -40,7 +40,7 @@ module CloudHelp
             roots = account.help.ticket_categories.where(ancestry: nil).order(name: :asc)
             data = []
             roots.each_with_index do |root|
-                data.concat(self.tree_recursion(root, true, 0))
+                data.concat(self.tree_recursion(root, true))
             end
             data
         end
@@ -64,15 +64,27 @@ module CloudHelp
             end
         end
 
+        def self.get_category_path(id)
+            category_path = ""
+            TicketCategory.find(id).path.each do |node|
+                if category_path.empty?
+                    category_path = node.name
+                else
+                    category_path += ", #{node.name}"
+                end
+            end
+            category_path
+        end
+
         private
 
-        def self.tree_recursion(root, is_root, depth)
+        def self.tree_recursion(root, is_root)
             # leaves is the list of children. I called it differently so there would be no conflict
             leaves = []
             has_children = root.has_children?
             if has_children
                 root.children.order(name: :asc).each_with_index do |child|
-                    child_data = self.tree_recursion(child, false, depth+1)
+                    child_data = self.tree_recursion(child, false)
                     leaves.concat(child_data)
                 end
             end
@@ -86,7 +98,7 @@ module CloudHelp
                 'has_children'=>has_children,
                 'active'=>is_root,
                 'children_active'=>false,
-                'depth'=>depth
+                'depth'=>root.depth
             
             })].concat(leaves)
         end

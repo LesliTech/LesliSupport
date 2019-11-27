@@ -28,34 +28,29 @@ Building a better future, one line of code at a time.
 export default {
     data() {
         return {
-            translations: I18n.t('cloud_help.ticket_states.shared')
+            translations: I18n.t('cloud_help.ticket_states.shared'),
+            names: {
+                initial: 'created',
+                final: 'closed'
+            }
         }
     },
     props: {
         name: {
             type: String,
             default: ''
-        },
-        initial: {
-            type: Boolean,
-            default: false
-        },
-        final: {
-            type: Boolean,
-            default: false
         }
     }
 }
 </script>
 <template>
-    <span v-if="initial || final">
+    <span v-if="name === names.initial">
         {{translations.default.names[name]}}
-        <span v-if="initial">
-            ({{translations.default.types.initial}})
-        </span>
-        <span v-else>
-            ({{translations.default.types.final}})
-        </span>
+        ({{translations.default.types.initial}})
+    </span>
+    <span v-else-if="name === names.final">
+        {{translations.default.names[name]}}
+        ({{translations.default.types.final}})
     </span>
     <span v-else>
         {{name}}

@@ -29,15 +29,21 @@ Building a better future, one line of code at a time.
 
 // · Library List
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-const mermaid = require('mermaid')
+import Vue from 'vue'
+import VueMermaid from 'vue-mermaid'
+Vue.use(VueMermaid)
 
 export default {
     props: {
         workflow: {
             type: Object,
-            default() {
+            default: ()=>{
                 return {}
             }
+        },
+        selected_node: {
+            type: Number,
+            default: null
         },
         rerender: {
             type: Boolean,
@@ -55,7 +61,7 @@ export default {
     data(){
         return {
             translations: I18n.t('cloud_help.ticket_states.shared'),
-            workflow_graph: ''
+            parsed_workflow: []
         }
     },
     methods: {
@@ -68,48 +74,24 @@ export default {
             }
             return icon
         },
-
+        
         generateWorkflow(){
-            this.workflow_graph = `graph LR `
-            // · Initial node will always have key = 1 because is the first entry on the database
-            let initial_node = this.workflow[1]
-            this.resetWorkflowNodes()
-            this.workflowRecursion(initial_node)
-            this.workflow_graph = `${this.workflow_graph};`
-            document.getElementById('mermaid-chart').removeAttribute('data-processed');
-            this.$nextTick(()=>{
-                mermaid.init()
-            })
-        },
-
-        resetWorkflowNodes(){
-            for(let key in this.workflow){
-                let node = this.workflow[key]
-                node.visited = false
-            }
-        },
-
-        workflowRecursion(node){
-            if(node.next_states){
-                if(node.visited){
-                    return
+            this.$emit('update:rerender', false)
+            let data = []
+            Object.values(this.workflow).forEach( node => {
+                let parsed_node = {
+                    id: node.ticket_state_id,
+                    text: `${this.getIcon(node)} ${this.getNodeName(node)}`
                 }
-                node.visited = true
-                let current_name = this.getNodeName(node)
-                let current_icon = this.getIcon(node)
-                let next_node_ids = node.next_states.split('|').map((element)=>{
-                    return parseInt(element)
-                })
-
-                next_node_ids.forEach((next_node_id)=>{
-                    let next_node = this.workflow[next_node_id]
-                    let next_name = this.getNodeName(next_node)
-                    let next_icon = this.getIcon(next_node)
-
-                    this.workflow_graph+=`\n\t${node.ticket_state_id}[${current_icon} ${current_name}]-->${next_node.ticket_state_id}[${next_icon} ${next_name}]`
-                    this.workflowRecursion(next_node)
-                })
-            }
+                if(node.next_states){
+                    parsed_node.next = node.next_states.split("|")
+                }
+                if(this.selected_node == node.ticket_state_id){
+                    parsed_node.style = 'fill:#EFFD5F,stroke:#FCE205'
+                }
+                data.push(parsed_node)
+            })
+            this.parsed_workflow = data
         },
 
         getNodeName(node){
@@ -123,14 +105,20 @@ export default {
         }
     },
     watch: {
-        workflow(){
-            if(Object.keys(this.workflow).length > 0){
+        selected_node(){
+            if(this.workflow){
                 this.generateWorkflow()
             }
         },
+
+        workflow(){
+            if(this.workflow){
+                this.generateWorkflow()
+            }
+        },
+        
         rerender(){
             if(this.rerender){
-                this.$emit('update:rerender', false)
                 this.generateWorkflow()
             }
         }
@@ -138,6 +126,9 @@ export default {
 }
 </script>
 <template>
-    <div class="mermaid" id="mermaid-chart" v-html="workflow_graph">
-    </div>
+    <vue-mermaid
+        :nodes="parsed_workflow"
+        type="graph LR"
+    >
+    </vue-mermaid>
 </template>

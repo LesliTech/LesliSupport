@@ -11,7 +11,6 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_tags
     resources :ticket_workflows, except: [:new, :create, :destroy]
 
-    resources :tickets
     resources :tickets do
         get '/files', to: 'tickets#files'
         get '/actions', to: 'tickets#actions'
@@ -30,7 +29,11 @@ CloudHelp::Engine.routes.draw do
     end
 
     scope :api do
-        get '/tickets/options', to: 'tickets#api_options'
+        scope :tickets do
+            get '/options', to: 'tickets#api_options'
+            get '/:id/follow_up_states', to: 'tickets#api_follow_up_states'
+            put '/:id/workflow', to: 'tickets#api_update_workflow'
+        end
         get '/ticket_categories/:id/tree', to: 'ticket_categories#api_tree'
     end
     

@@ -29,13 +29,13 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentChart from '../components/chart.vue'
-import componentStateName from '../../components/ticket_state_name.vue'
+import componentWorkflowChart from '../../components/workflow_chart.vue'
+import componentTicketStateName from '../../components/ticket_state_name.vue'
 
 export default {
     components: {
-        'component-chart': componentChart,
-        'component-state-name': componentStateName
+        'component-workflow-chart': componentWorkflowChart,
+        'component-ticket-state-name': componentTicketStateName
     },
     data() {
         return {
@@ -253,8 +253,8 @@ export default {
                         </p>
                     </div>
                 </div>
-                <component-chart :workflow="ticket_workflow" :rerender.sync="rerender_chart">
-                </component-chart>
+                <component-workflow-chart :workflow="ticket_workflow" :rerender.sync="rerender_chart">
+                </component-workflow-chart>
                 <hr>
                 <form @submit="putTicketWorkflow">
                     <div class="columns">
@@ -292,12 +292,12 @@ export default {
                                                 v-for="ticket_state in possibleFollowUpStates"
                                                 :value="ticket_state.id"
                                                 :key="ticket_state.id">
-                                                    <component-state-name 
+                                                    <component-ticket-state-name 
                                                         :name="ticket_state.name"
                                                         :initial="ticket_state.initial"
                                                         :final="ticket_state.final"
                                                     >
-                                                    </component-state-name>
+                                                    </component-ticket-state-name>
                                             </option>
                                         </b-select>
                                     </b-field>
@@ -323,8 +323,8 @@ export default {
                                     @click="selectNode(node)"
                                     :class="{'is-active':selected_node.ticket_state_id == node.ticket_state_id}"
                                 >
-                                    <component-state-name :name="node.ticket_state_name" :initial="node.initial" :final="node.final">
-                                    </component-state-name>
+                                    <component-ticket-state-name :name="node.ticket_state_name">
+                                    </component-ticket-state-name>
                                     <button 
                                         v-if="node.ticket_state_id != default_states.created && node.ticket_state_id != default_states.closed"
                                         type="button"
@@ -338,8 +338,8 @@ export default {
                             {{translations.edit.titles.follow_up}}:
                             <div class="list is-hoverable">
                                 <a v-for="(node, key) in nextStatesOfSelectedNode" :key="key" class="list-item">
-                                    <component-state-name :name="node.ticket_state_name" :initial="node.initial" :final="node.final">
-                                    </component-state-name>
+                                    <component-ticket-state-name :name="node.ticket_state_name">
+                                    </component-ticket-state-name>
                                     <button type="button" class="delete is-pulled-right" @click="deleteFollowUpState(node)"></button>
                                 </a>
                             </div>
