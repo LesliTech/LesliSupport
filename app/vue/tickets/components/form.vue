@@ -264,33 +264,35 @@ export default {
                             ></component-trix-editor>
                         </div>
                     </div>
-                    <label class="label">{{translations.form.labels.move_to_another_state}}</label>
-                    <div class="columns" v-if="ticket_id">
-                        <div class="column is-9">
-                            <div class="field">
-                                <div class="control">
-                                    <b-select
-                                        :placeholder="translations.form.placeholders.select_category"
-                                        expanded
-                                        v-model="ticket_follow_up_state"
-                                    >
-                                        <option
-                                            v-for="state in ticket_follow_up_states"
-                                            :key="state.workflow_id"
-                                            :value="state.workflow_id"
+                    <div v-if="ticket_id">
+                        <label class="label">{{translations.form.labels.move_to_another_state}}</label>
+                        <div class="columns">
+                            <div class="column is-9">
+                                <div class="field">
+                                    <div class="control">
+                                        <b-select
+                                            :placeholder="translations.form.placeholders.select_category"
+                                            expanded
+                                            v-model="ticket_follow_up_state"
                                         >
-                                            <component-ticket-state-name :name="state.state_name"/>
-                                        </option>
-                                    </b-select>
+                                            <option
+                                                v-for="state in ticket_follow_up_states"
+                                                :key="state.workflow_id"
+                                                :value="state.workflow_id"
+                                            >
+                                                <component-ticket-state-name :name="state.state_name"/>
+                                            </option>
+                                        </b-select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="column is-3">
-                            <div class="field">
-                                <div class="actions has-text-right">
-                                    <button class="button is-primary is-fullwidth" type="button" @click="putTicketWorkflow">
-                                        {{translations.form.actions.update}}
-                                    </button>
+                            <div class="column is-3">
+                                <div class="field">
+                                    <div class="actions has-text-right">
+                                        <button class="button is-primary is-fullwidth" type="button" @click="putTicketWorkflow">
+                                            {{translations.form.actions.update}}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

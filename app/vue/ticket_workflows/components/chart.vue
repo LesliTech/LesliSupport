@@ -83,7 +83,10 @@ export default {
             let initial_node = this.workflow[1]
             this.resetWorkflowNodes()
             this.workflowRecursion(initial_node)
-            this.workflow_graph = `${this.workflow_graph}\n\tstyle ${this.selected_node_id} fill:#EFFD5F,stroke:#FCE205;`
+            if(this.selected_node){
+                this.workflow_graph = `${this.workflow_graph}\n\tstyle ${this.selected_node_id} fill:#EFFD5F,stroke:#FCE205`
+            }
+            this.workflow_graph = `${this.workflow_graph};`
             document.getElementById('mermaid-chart').removeAttribute('data-processed')
             this.$nextTick(()=>{
                 mermaid.init()
