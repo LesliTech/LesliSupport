@@ -23,5 +23,15 @@ module CloudHelp
                 )
             end
         end
+
+        def destroy
+            begin
+                super
+            rescue ActiveRecord::InvalidForeignKey
+                errors.add(:base, :foreign_key_prevents_destruction)
+                false
+            end
+        end
+
     end
 end

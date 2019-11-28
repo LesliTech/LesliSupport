@@ -35,34 +35,13 @@ export default {
             translations:{
                 shared: I18n.t('cloud_help.ticket_types.shared')
             },
-            ticket_types: [],
-            columns: []
+            ticket_types: []
         }
     },
     mounted() {
-        this.setColumns()
         this.getTicketTypes()
     },
     methods: {
-
-        setColumns(){
-            this.columns = [{
-                field: 'id',
-                label: this.translations.shared.fields.id,
-                width: 40,
-                centered: true,
-                numeric: true
-            }, {
-                field: 'name',
-                label: this.translations.shared.fields.name
-            }, {
-                field: 'created_at',
-                label: this.translations.shared.fields.created_at
-            }, {
-                field: 'updated_at',
-                label: this.translations.shared.fields.updated_at
-            }];
-        },
 
         getTicketTypes() {
             this.http.get("/help/ticket_types.json").then(result => {
@@ -85,7 +64,21 @@ export default {
 </script>
 <template>
     <section class="section">
-        <b-table :data="ticket_types" :columns="columns" @click="showTicketType" :hoverable="true">
+        <b-table :data="ticket_types" @click="showTicketType" :hoverable="true">
+            <template slot-scope="props">
+                <b-table-column field="id" :label="translations.shared.fields.id" width="40" numeric centered>
+                    {{ props.row.id }}
+                </b-table-column>
+                <b-table-column field="name" :label="translations.shared.fields.name">
+                    {{ props.row.name }}
+                </b-table-column>
+                <b-table-column field="created_at" :label="translations.shared.fields.created_at">
+                    {{ date.toLocalFormat(props.row.created_at, true) }}
+                </b-table-column>
+                <b-table-column field="updated_at" :label="translations.shared.fields.updated_at">
+                    {{ date.toLocalFormat(props.row.updated_at, true) }}
+                </b-table-column>
+            </template>
         </b-table>
     </section>
 </template>

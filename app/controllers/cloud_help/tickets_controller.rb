@@ -42,7 +42,6 @@ module CloudHelp
 
         # GET /tickets/new
         def new
-            @ticket = Ticket.new
         end
 
         # GET /tickets/1/edit
@@ -60,28 +59,8 @@ module CloudHelp
             if ticket.save
                 responseWithSuccessful(ticket)
             else
-                responseWithError("error creating new ticket", ticket.errors.full_messages)
-            end
-        end
-
-        # PATCH/PUT /tickets/1
-        def update
-            if @ticket.update(ticket_params)
-                responseWithSuccessful(@ticket)
-                Courier::Bell::NotificationJob.perform_now(
-                    user: current_user,
-                    subject: "The ticket: #{@ticket.id} was successfuly updated",
-                    href: "/help/tickets/#{@ticket.id}"
-                )
-            else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
-        end
-
-        # DELETE /tickets/1
-        def destroy
-            @ticket.destroy
-            redirect_to tickets_url, notice: 'Ticket was successfully destroyed.'
         end
 
         # GET /tickets/1/discussions

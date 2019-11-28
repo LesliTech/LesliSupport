@@ -30464,7 +30464,9 @@ var render = function() {
                   [
                     _vm._v(
                       "\n                " +
-                        _vm._s(props.row.created_at) +
+                        _vm._s(
+                          _vm.date.toLocalFormat(props.row.created_at, true)
+                        ) +
                         "\n            "
                     )
                   ]
@@ -30481,7 +30483,9 @@ var render = function() {
                   [
                     _vm._v(
                       "\n                " +
-                        _vm._s(props.row.updated_at) +
+                        _vm._s(
+                          _vm.date.toLocalFormat(props.row.updated_at, true)
+                        ) +
                         "\n            "
                     )
                   ]
@@ -30543,33 +30547,13 @@ Building a better future, one line of code at a time.
       translations: {
         shared: I18n.t('cloud_help.ticket_states.shared')
       },
-      ticket_states: [],
-      columns: []
+      ticket_states: []
     };
   },
   mounted: function mounted() {
-    this.setColumns();
     this.getTicketStates();
   },
   methods: {
-    setColumns: function setColumns() {
-      this.columns = [{
-        field: 'id',
-        label: this.translations.shared.fields.id,
-        width: 40,
-        centered: true,
-        numeric: true
-      }, {
-        field: 'name',
-        label: this.translations.shared.fields.name
-      }, {
-        field: 'created_at',
-        label: this.translations.shared.fields.created_at
-      }, {
-        field: 'updated_at',
-        label: this.translations.shared.fields.updated_at
-      }];
-    },
     getTicketStates: function getTicketStates() {
       var _this = this;
 
@@ -30720,8 +30704,14 @@ var formvue_type_template_id_e3a14052_render = function() {
                           )
                         ]),
                         _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.ticket_state.created_at) +
+                          "\n                                 " +
+                            _vm._s(
+                              _vm.date.toLocalFormat(
+                                _vm.ticket_state.created_at,
+                                false,
+                                true
+                              )
+                            ) +
                             "\n                                "
                         ),
                         _c("br"),
@@ -30736,8 +30726,14 @@ var formvue_type_template_id_e3a14052_render = function() {
                           )
                         ]),
                         _vm._v(
-                          "\n                                " +
-                            _vm._s(_vm.ticket_state.updated_at) +
+                          "\n                                 " +
+                            _vm._s(
+                              _vm.date.toLocalFormat(
+                                _vm.ticket_state.updated_at,
+                                false,
+                                true
+                              )
+                            ) +
                             "\n                            "
                         )
                       ])
@@ -31139,7 +31135,13 @@ var showvue_type_template_id_6452e998_render = function() {
                 ]),
                 _vm._v(
                   "\n                        " +
-                    _vm._s(_vm.ticket_state.created_at) +
+                    _vm._s(
+                      _vm.date.toLocalFormat(
+                        _vm.ticket_state.created_at,
+                        false,
+                        true
+                      )
+                    ) +
                     "\n                        "
                 ),
                 _c("br"),
@@ -31153,7 +31155,13 @@ var showvue_type_template_id_6452e998_render = function() {
                 ]),
                 _vm._v(
                   "\n                        " +
-                    _vm._s(_vm.ticket_state.updated_at) +
+                    _vm._s(
+                      _vm.date.toLocalFormat(
+                        _vm.ticket_state.updated_at,
+                        false,
+                        true
+                      )
+                    ) +
                     "\n                    "
                 )
               ])
@@ -31272,6 +31280,7 @@ Building a better future, one line of code at a time.
     deleteTicketState: function deleteTicketState() {
       var _this2 = this;
 
+      this.modal.active = false;
       this.http["delete"]("/help/ticket_states/".concat(this.ticket_state_id)).then(function (result) {
         if (result.successful) {
           _this2.alert(_this2.translations.show.messages["delete"].successful, 'success');

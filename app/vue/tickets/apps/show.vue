@@ -146,8 +146,8 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `Created by:` }}
                             </span>
-                            {{ ticket.detail_attributes.email}} at 
-                            {{ticket.created_at}}
+                            {{ ticket.detail_attributes.email}} {{translations.shared.text_on}}
+                            {{ date.toLocalFormat(ticket.created_at, false, true) }}
                         </div>
                     </div>
                 </div>

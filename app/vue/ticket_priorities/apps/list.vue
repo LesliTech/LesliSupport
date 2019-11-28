@@ -35,37 +35,13 @@ export default {
             translations:{
                 shared: I18n.t('cloud_help.ticket_priorities.shared')
             },
-            ticket_priorities: [],
-            columns: []
+            ticket_priorities: []
         }
     },
     mounted() {
-        this.setColumns()
         this.getTicketPriorities()
     },
     methods: {
-
-        setColumns(){
-            this.columns = [{
-                field: 'id',
-                label: this.translations.shared.fields.id,
-                centered: true,
-                width: 40,
-                numeric: true
-            }, {
-                field: 'name',
-                label: this.translations.shared.fields.name
-            }, {
-                field: 'weight',
-                label: this.translations.shared.fields.weight,
-            }, {
-                field: 'created_at',
-                label: this.translations.shared.fields.created_at
-            }, {
-                field: 'updated_at',
-                label: this.translations.shared.fields.updated_at
-            }];
-        },
 
         getTicketPriorities() {
             this.http.get("/help/ticket_priorities.json").then(result => {
@@ -88,7 +64,24 @@ export default {
 </script>
 <template>
     <section class="section">
-        <b-table :data="ticket_priorities" :columns="columns" @click="showTicketPriority" :hoverable="true">
+        <b-table :data="ticket_priorities" @click="showTicketPriority" :hoverable="true">
+            <template v-slot="props">
+                <b-table-column field="id" :label="translations.shared.fields.id" width="40" centered numeric>
+                    {{props.row.id}}
+                </b-table-column>
+                <b-table-column field="name" :label="translations.shared.fields.name">
+                    {{props.row.name}}
+                </b-table-column>
+                <b-table-column field="weight" :label="translations.shared.fields.weight">
+                    {{props.row.weight}}
+                </b-table-column>
+                <b-table-column field="created_at" :label="translations.shared.fields.created_at">
+                    {{ date.toLocalFormat(props.row.created_at, true) }}
+                </b-table-column>
+                <b-table-column field="updated_at" :label="translations.shared.fields.updated_at">
+                    {{ date.toLocalFormat(props.row.updated_at, true) }}
+                </b-table-column>
+            </template>
         </b-table>
     </section>
 </template>

@@ -2,6 +2,7 @@ en:
     cloud_help:
         tickets:
             shared:
+                text_on: 'on'
                 name: Ticket
                 actions:
                     new: New Ticket

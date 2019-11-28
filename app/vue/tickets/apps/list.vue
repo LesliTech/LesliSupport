@@ -90,7 +90,7 @@ export default {
                     </component-ticket-state-name>
                 </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">
-                    {{props.row.created_at}}
+                    {{ date.toLocalFormat(props.row.created_at,true) }}
                 </b-table-column>
             </template>
         </b-table>

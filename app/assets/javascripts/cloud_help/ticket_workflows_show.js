@@ -121335,12 +121335,88 @@ var render = function() {
     { staticClass: "section" },
     [
       _c("b-table", {
-        attrs: {
-          data: _vm.ticket_workflows,
-          columns: _vm.columns,
-          hoverable: true
-        },
-        on: { click: _vm.showTicketWorkflow }
+        attrs: { data: _vm.ticket_workflows, hoverable: true },
+        on: { click: _vm.showTicketWorkflow },
+        scopedSlots: _vm._u([
+          {
+            key: "default",
+            fn: function(props) {
+              return [
+                _c(
+                  "b-table-column",
+                  {
+                    attrs: {
+                      field: "ticket_type_name",
+                      label: _vm.translations.shared.fields.ticket_type_name
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(props.row.ticket_type_name) +
+                        "\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-table-column",
+                  {
+                    attrs: {
+                      field: "ticket_category_name",
+                      label: _vm.translations.shared.fields.ticket_category_name
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(props.row.ticket_category_name) +
+                        "\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-table-column",
+                  {
+                    attrs: {
+                      field: "created_at",
+                      label: _vm.translations.shared.fields.created_at
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(
+                          _vm.date.toLocalFormat(props.row.created_at, true)
+                        ) +
+                        "\n            "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-table-column",
+                  {
+                    attrs: {
+                      field: "updated_at",
+                      label: _vm.translations.shared.fields.updated_at
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(
+                          _vm.date.toLocalFormat(props.row.updated_at, true)
+                        ) +
+                        "\n            "
+                    )
+                  ]
+                )
+              ]
+            }
+          }
+        ])
       })
     ],
     1
@@ -121387,34 +121463,17 @@ Building a better future, one line of code at a time.
       translations: {
         shared: I18n.t('cloud_help.ticket_workflows.shared')
       },
-      ticket_workflows: [],
-      columns: []
+      ticket_workflows: []
     };
   },
   mounted: function mounted() {
-    this.setColumns();
     this.getTicketWorkflows();
   },
   methods: {
-    setColumns: function setColumns() {
-      this.columns = [{
-        field: 'ticket_type_name',
-        label: this.translations.shared.fields.ticket_type_name
-      }, {
-        field: 'ticket_category_name',
-        label: this.translations.shared.fields.ticket_category_name
-      }, {
-        field: 'created_at',
-        label: this.translations.shared.fields.created_at
-      }, {
-        field: 'updated_at',
-        label: this.translations.shared.fields.updated_at
-      }];
-    },
     getTicketWorkflows: function getTicketWorkflows() {
       var _this = this;
 
-      this.http.get("/help/ticket_workflows.json").then(function (result) {
+      this.http.get('/help/ticket_workflows.json').then(function (result) {
         if (result.successful) {
           _this.ticket_workflows = result.data;
         } else {

@@ -67,7 +67,7 @@ module CloudHelp
 
         # DELETE /ticket_priorities/1
         def destroy
-            unless @ticket_category
+            unless @ticket_priority
                 return responseWithError(I18n.t('cloud_help.controllers.ticket_priorities.errors.not_found'))
             end
             if @ticket_priority.destroy

@@ -30317,7 +30317,7 @@ exports.push([module.i, "\nsection.scrollable[data-v-0797fec2] {\r\n    height: 
 
 exports = module.exports = __webpack_require__(40)(false);
 // Module
-exports.push([module.i, "\nsection.scrollable[data-v-46c00364] {\r\n    height: 23rem;\r\n    overflow-y: scroll;\n}\n.margin-left[data-v-46c00364] {\r\n    margin-left: 2rem;\n}\n.l-shape[data-v-46c00364] {\r\n    border-left: 2px solid black;\r\n    border-bottom: 2px solid black;\r\n    margin-bottom: 1px;\n}\r\n", ""]);
+exports.push([module.i, "\nsection.scrollable[data-v-46c00364] {\n    height: 23rem;\n    overflow-y: scroll;\n}\n.margin-left[data-v-46c00364] {\n    margin-left: 2rem;\n}\n.l-shape[data-v-46c00364] {\n    border-left: 2px solid black;\n    border-bottom: 2px solid black;\n    margin-bottom: 1px;\n}\n", ""]);
 
 
 /***/ }),
@@ -30910,7 +30910,13 @@ var formvue_type_template_id_6e389771_render = function() {
                       ]),
                       _vm._v(
                         "\n                                " +
-                          _vm._s(_vm.ticket_category.created_at) +
+                          _vm._s(
+                            _vm.date.toLocalFormat(
+                              _vm.ticket_category.created_at,
+                              false,
+                              true
+                            )
+                          ) +
                           "\n                                "
                       ),
                       _c("br"),
@@ -30926,7 +30932,13 @@ var formvue_type_template_id_6e389771_render = function() {
                       ]),
                       _vm._v(
                         "\n                                " +
-                          _vm._s(_vm.ticket_category.updated_at) +
+                          _vm._s(
+                            _vm.date.toLocalFormat(
+                              _vm.ticket_category.updated_at,
+                              false,
+                              true
+                            )
+                          ) +
                           "\n                            "
                       )
                     ])
@@ -31458,7 +31470,13 @@ var showvue_type_template_id_46c00364_scoped_true_render = function() {
                 ]),
                 _vm._v(
                   "\n                        " +
-                    _vm._s(_vm.ticket_category.created_at) +
+                    _vm._s(
+                      _vm.date.toLocalFormat(
+                        _vm.ticket_category.created_at,
+                        false,
+                        true
+                      )
+                    ) +
                     "\n                        "
                 ),
                 _c("br"),
@@ -31472,7 +31490,13 @@ var showvue_type_template_id_46c00364_scoped_true_render = function() {
                 ]),
                 _vm._v(
                   "\n                        " +
-                    _vm._s(_vm.ticket_category.updated_at) +
+                    _vm._s(
+                      _vm.date.toLocalFormat(
+                        _vm.ticket_category.updated_at,
+                        false,
+                        true
+                      )
+                    ) +
                     "\n                    "
                 )
               ])
@@ -31605,6 +31629,7 @@ Building a better future, one line of code at a time.
     deleteTicketCategory: function deleteTicketCategory() {
       var _this3 = this;
 
+      this.modal.active = false;
       this.http["delete"]("/help/ticket_categories/".concat(this.ticket_category_id)).then(function (result) {
         if (result.successful) {
           _this3.alert(_this3.translations.show.messages["delete"].successful, 'success');

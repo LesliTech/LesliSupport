@@ -41,34 +41,13 @@ export default {
             translations:{
                 shared: I18n.t('cloud_help.ticket_states.shared')
             },
-            ticket_states: [],
-            columns: []
+            ticket_states: []
         }
     },
     mounted() {
-        this.setColumns()
         this.getTicketStates()
     },
     methods: {
-
-        setColumns(){
-            this.columns = [{
-                field: 'id',
-                label: this.translations.shared.fields.id,
-                width: 40,
-                centered: true,
-                numeric: true
-            }, {
-                field: 'name',
-                label: this.translations.shared.fields.name
-            }, {
-                field: 'created_at',
-                label: this.translations.shared.fields.created_at
-            }, {
-                field: 'updated_at',
-                label: this.translations.shared.fields.updated_at
-            }];
-        },
 
         getTicketStates() {
             this.http.get("/help/ticket_states.json").then(result => {
@@ -101,10 +80,10 @@ export default {
                     </component-ticket-state-name>
                 </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">
-                    {{props.row.created_at}}
+                    {{ date.toLocalFormat(props.row.created_at, true) }}
                 </b-table-column>
                 <b-table-column field="updated_at" :label="translations.shared.fields.updated_at">
-                    {{props.row.updated_at}}
+                    {{ date.toLocalFormat(props.row.updated_at, true) }}
                 </b-table-column>
             </template>
         </b-table>

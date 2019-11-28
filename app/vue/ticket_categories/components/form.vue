@@ -219,12 +219,12 @@ export default {
                                     <span class="has-text-weight-bold">
                                         {{ `${translations.shared.fields.created_at}:` }}
                                     </span>
-                                    {{ ticket_category.created_at }}
+                                    {{ date.toLocalFormat(ticket_category.created_at, false, true) }}
                                     <br>
                                     <span class="has-text-weight-bold">
                                         {{ `${translations.shared.fields.updated_at}:` }}
                                     </span>
-                                    {{ ticket_category.updated_at }}
+                                    {{ date.toLocalFormat(ticket_category.updated_at, false, true) }}
                                 </small>
                             </div>
                         </div>
