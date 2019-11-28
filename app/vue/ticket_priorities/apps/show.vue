@@ -67,6 +67,7 @@ export default {
         },
 
         deleteTicketPriority(){
+            this.modal.active = false
             this.http.delete(`/help/ticket_priorities/${this.ticket_priority_id}`).then(result => {
                 if(result.successful){
                     this.alert(this.translations.show.messages.delete.successful,'success')
@@ -147,12 +148,12 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.created_at}:` }}
                             </span>
-                            {{ ticket_priority.created_at }}
+                            {{ date.toLocalFormat(ticket_priority.created_at, false, true) }}
                             <br>
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.updated_at}:` }}
                             </span>
-                            {{ ticket_priority.updated_at }}
+                            {{ date.toLocalFormat(ticket_priority.updated_at, false, true) }}
                         </small>
                     </div>
                     <div class="column">
