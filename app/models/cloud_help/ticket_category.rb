@@ -76,6 +76,15 @@ module CloudHelp
             category_path
         end
 
+        def destroy
+            begin
+                super
+            rescue ActiveRecord::InvalidForeignKey, ActiveRecord::StatementInvalid
+                errors.add(:base, :foreign_key_prevents_destruction)
+                false
+            end
+        end
+
         private
 
         def self.tree_recursion(root, is_root)
