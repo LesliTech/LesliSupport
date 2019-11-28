@@ -68,7 +68,7 @@ module CloudHelp
         def update
             if @ticket.update(ticket_params)
                 responseWithSuccessful(@ticket)
-                CloudCourier::Bell::NotificationJob.perform_now(
+                Courier::Bell::NotificationJob.perform_now(
                     user: current_user,
                     subject: "The ticket: #{@ticket.id} was successfuly updated",
                     href: "/help/tickets/#{@ticket.id}"
