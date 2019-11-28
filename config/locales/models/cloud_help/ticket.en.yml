@@ -6,4 +6,5 @@ en:
                         attributes:
                             base:
                                 ticket_at_max_priority: This ticket cannot be escalated any further
+                                transfer_type_or_category_missing: The selecteed type or category do not exist
 

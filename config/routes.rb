@@ -35,6 +35,7 @@ CloudHelp::Engine.routes.draw do
             put '/:id/workflow', to: 'tickets#api_update_workflow'
             put '/:id/escalate', to: 'tickets#api_escalate'
             put '/:id/descalate', to: 'tickets#api_descalate'
+            put '/:id/transfer', to: 'tickets#api_transfer'
         end
         get '/ticket_categories/:id/tree', to: 'ticket_categories#api_tree'
     end

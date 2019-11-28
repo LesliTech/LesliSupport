@@ -60,9 +60,11 @@ export default {
             ticket: {
                 detail_attributes: {}
             },
+            transfer: {},
             modals: {
                 escalate: false,
-                descalate: false
+                descalate: false,
+                transfer: false
             }
         }
     },
@@ -75,22 +77,6 @@ export default {
         this.getTicketOptions()
     },
     methods: {
-
-        putTicket(e) {
-            if (e) { e.preventDefault() }
-            this.http.put(`/help/tickets/${this.ticket_id}`, {
-                ticket: this.ticket
-            }).then(result => {
-                if (result.successful) {
-                    this.alert(this.translations.form.messages.update.successful)
-                } else {
-                    this.alert(result.error.message, 'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-
-        },
 
         postTicket(e) {
             if (e) { e.preventDefault() }
@@ -157,10 +143,31 @@ export default {
             this.puTicketPriority('descalate')
         },
 
+        transferTicket(e){
+            if (e) { e.preventDefault() }
+            let data = this.transfer
+            this.modals.transfer = false
+            this.http.put(`/help/api/tickets/${this.ticket_id}/transfer`, data).then(result => {
+                if (result.successful) {
+                    let attributes = this.ticket.detail_attributes
+                    attributes.cloud_help_ticket_categories_id = result.data.category_id
+                    attributes.category = result.data.category_name
+                    attributes.cloud_help_ticket_types_id = result.data.type_id
+                    attributes.type = result.data.type_name
+                    this.alert(this.translations.modals.transfer.messages.successful)
+                    this.$router.push(`/${this.ticket.id}`)
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
         // Used by escalateTicket and descalateTicket. action has to either be 'escalate' or 'descalate'
         puTicketPriority(action){
+            this.modals[action] = false
             this.http.put(`/help/api/tickets/${this.ticket_id}/${action}`).then(result => {
-                this.modals[action] = false
                 if (result.successful) {
                     let attributes = this.ticket.detail_attributes
                     attributes.cloud_help_ticket_priorities_id = result.data.priority_id
@@ -247,6 +254,75 @@ export default {
                     </button>
                     <button class="card-footer-item button is-secondary" @click="modals.descalate=false">
                         {{ translations.modals.descalate.actions.cancel }}
+                    </button>
+                </div>
+            </div>
+        </b-modal>
+        <b-modal 
+            :active.sync="modals.transfer"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-modal
+        >
+            <div class="card">
+                <div class="card-header is-danger">
+                    <h2 class="card-header-title">
+                        {{ translations.modals.transfer.title }}
+                    </h2>
+                </div>
+                <div class="card-content">
+                    {{ translations.modals.transfer.body.warning }}
+                    {{ translations.modals.transfer.body.instructions }}
+                    <hr>
+                    <form id="form-transfer" @submit="transferTicket">
+                        <div class="columns">
+                            <div class="column is-6">
+                                <b-field :label="translations.modals.transfer.fields.type">
+                                    <b-select 
+                                        :placeholder="translations.form.placeholders.select_type"
+                                        expanded
+                                        v-model="transfer.cloud_help_ticket_types_id"
+                                        :required="true"
+                                    >
+                                        <option
+                                            v-for="type in ticket_options.types"
+                                            :key="type.id"
+                                            :value="type.id"
+                                        >
+                                            {{type.name}}
+                                        </option>
+                                    </b-select>
+                                </b-field>
+                            </div>
+                            <div class="column is-6">
+                                <b-field :label="translations.modals.transfer.fields.category">
+                                    <b-select
+                                        :placeholder="translations.form.placeholders.select_category"
+                                        expanded
+                                        v-model="transfer.cloud_help_ticket_categories_id"
+                                        :required="true"
+                                    >
+                                        <option
+                                            v-for="category in ticket_options.categories"
+                                            :key="category.id"
+                                            :value="category.id"
+                                        >   
+                                            <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
+                                            {{category.name}}
+                                        </option>
+                                    </b-select>
+                                </b-field>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer has-text-right">
+                    <button class="card-footer-item button has-text-white is-warning" type="submit" form="form-transfer">
+                        {{ translations.modals.transfer.actions.transfer }}
+                    </button>
+                    <button class="card-footer-item button is-secondary" @click="modals.transfer=false">
+                        {{ translations.modals.transfer.actions.cancel }}
                     </button>
                 </div>
             </div>
@@ -390,7 +466,7 @@ export default {
                             <button class="button is-success" type="button" @click="modals.descalate = true">
                                 {{translations.form.actions.descalate}}
                             </button>
-                            <button class="button is-warning has-text-white" type="button">
+                            <button class="button is-warning has-text-white" type="button" @click="modals.transfer = true">
                                 {{translations.form.actions.transfer}}
                             </button>
                         </div>

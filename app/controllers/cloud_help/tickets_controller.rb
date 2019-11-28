@@ -11,7 +11,8 @@ module CloudHelp
             :api_follow_up_states,
             :api_update_workflow,
             :api_escalate,
-            :api_descalate
+            :api_descalate,
+            :api_transfer
         ]
 
         # GET /tickets
@@ -159,6 +160,25 @@ module CloudHelp
                 if @ticket.descalate
                     priority = @ticket.detail.priority
                     responseWithSuccessful({ priority_id: priority.id, priority_name: priority.name })
+                else
+                    responseWithError(@ticket.errors.full_messages.to_sentence)
+                end
+            end
+        end
+
+        def api_transfer
+            if @ticket.detail.workflow.ticket_state.is_final?
+                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_transfer_closed_ticket'))
+            else
+                if @ticket.transfer(current_user.account.help, params[:cloud_help_ticket_types_id], params[:cloud_help_ticket_categories_id])
+                    category = @ticket.detail.category
+                    type = @ticket.detail.type
+                    responseWithSuccessful({
+                        type_id: type.id,
+                        type_name: type.name,
+                        category_id: category.id,
+                        category_name: category.name
+                    })
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
