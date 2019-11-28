@@ -143,18 +143,12 @@ export default {
             this.puTicketPriority('descalate')
         },
 
-        transferTicket(e){
-            if (e) { e.preventDefault() }
-            let data = this.transfer
-            this.modals.transfer = false
-            this.http.put(`/help/api/tickets/${this.ticket_id}/transfer`, data).then(result => {
+        // Used by escalateTicket and descalateTicket. action has to either be 'escalate' or 'descalate'
+        puTicketPriority(action){
+            this.modals[action] = false
+            this.http.put(`/help/api/tickets/${this.ticket_id}/${action}`).then(result => {
                 if (result.successful) {
-                    let attributes = this.ticket.detail_attributes
-                    attributes.cloud_help_ticket_categories_id = result.data.category_id
-                    attributes.category = result.data.category_name
-                    attributes.cloud_help_ticket_types_id = result.data.type_id
-                    attributes.type = result.data.type_name
-                    this.alert(this.translations.modals.transfer.messages.successful)
+                    this.alert(this.translations.modals[action].messages.successful)
                     this.$router.push(`/${this.ticket.id}`)
                 } else {
                     this.alert(result.error.message, 'danger')
@@ -164,15 +158,14 @@ export default {
             })
         },
 
-        // Used by escalateTicket and descalateTicket. action has to either be 'escalate' or 'descalate'
-        puTicketPriority(action){
-            this.modals[action] = false
-            this.http.put(`/help/api/tickets/${this.ticket_id}/${action}`).then(result => {
+        transferTicket(e){
+            if (e) { e.preventDefault() }
+            let data = this.transfer
+            this.modals.transfer = false
+            this.http.put(`/help/api/tickets/${this.ticket_id}/transfer`, data).then(result => {
                 if (result.successful) {
-                    let attributes = this.ticket.detail_attributes
-                    attributes.cloud_help_ticket_priorities_id = result.data.priority_id
-                    attributes.priority = result.data.priority_name
-                    this.alert(this.translations.modals[action].messages.successful)
+                    this.alert(this.translations.modals.transfer.messages.successful)
+                    this.$router.push(`/${this.ticket.id}`)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }

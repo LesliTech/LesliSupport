@@ -145,7 +145,7 @@ module CloudHelp
             else
                 if @ticket.escalate
                     priority = @ticket.detail.priority
-                    responseWithSuccessful({ priority_id: priority.id, priority_name: priority.name })
+                    responseWithSuccessful
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
@@ -159,7 +159,7 @@ module CloudHelp
             else
                 if @ticket.descalate
                     priority = @ticket.detail.priority
-                    responseWithSuccessful({ priority_id: priority.id, priority_name: priority.name })
+                    responseWithSuccessful
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
@@ -171,14 +171,7 @@ module CloudHelp
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_transfer_closed_ticket'))
             else
                 if @ticket.transfer(current_user.account.help, params[:cloud_help_ticket_types_id], params[:cloud_help_ticket_categories_id])
-                    category = @ticket.detail.category
-                    type = @ticket.detail.type
-                    responseWithSuccessful({
-                        type_id: type.id,
-                        type_name: type.name,
-                        category_id: category.id,
-                        category_name: category.name
-                    })
+                    responseWithSuccessful
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
