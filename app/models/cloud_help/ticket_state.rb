@@ -25,5 +25,15 @@ module CloudHelp
         def self.initial_state
             return TicketState.find_by(initial: true)
         end
+
+        def destroy
+            begin
+                super
+            rescue ActiveRecord::InvalidForeignKey
+                errors.add(:base, :foreign_key_prevents_destruction)
+                false
+            end
+        end
+        
     end
 end

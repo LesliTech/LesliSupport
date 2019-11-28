@@ -74,6 +74,7 @@ export default {
         },
 
         deleteTicketState(){
+            this.modal.active = false
             this.http.delete(`/help/ticket_states/${this.ticket_state_id}`).then(result => {
                 if(result.successful){
                     this.alert(this.translations.show.messages.delete.successful,'success')
@@ -156,12 +157,12 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.created_at}:` }}
                             </span>
-                            {{ ticket_state.created_at }}
+                            {{ date.toLocalFormat(ticket_state.created_at, false, true) }}
                             <br>
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.updated_at}:` }}
                             </span>
-                            {{ ticket_state.updated_at }}
+                            {{ date.toLocalFormat(ticket_state.updated_at, false, true) }}
                         </small>
                     </div>
                     <div class="column">
