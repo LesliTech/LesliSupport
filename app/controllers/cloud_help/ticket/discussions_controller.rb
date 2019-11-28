@@ -27,7 +27,7 @@ module CloudHelp
 
             ticket_discussion = Ticket::Discussion.new(ticket_discussion_params)
             if ticket_discussion.save
-                CloudCourier::Bell::NotificationJob.perform_now(
+                Courier::Bell::NotificationJob.perform_now(
                     user: current_user,
                     subject: "New comment added to the ticket number: #{ticket_discussion.ticket.id}",
                     href: "/help/tickets/#{ticket_discussion.ticket.id}"

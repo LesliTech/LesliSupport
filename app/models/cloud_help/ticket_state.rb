@@ -13,9 +13,17 @@ module CloudHelp
             super
         end
 
-        # Initial state is record #1 in the database
+        def is_final?
+            final
+        end
+
+        def is_initial?
+            initial
+        end
+
+        # Initial state is also record #1 in the database
         def self.initial_state
-            return TicketState.find(1)
+            return TicketState.find_by(initial: true)
         end
     end
 end

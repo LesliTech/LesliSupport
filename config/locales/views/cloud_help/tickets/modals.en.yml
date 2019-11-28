@@ -1,0 +1,33 @@
+en:
+    cloud_help:
+        tickets:
+            modals:
+                escalate:
+                    title: Are you sure you want to escalate this ticket?
+                    body: Once done, you will give up control of the ticket to another team. Only do this if you are certain your team cannot resolve the issue.
+                    actions:
+                        escalate: Yes, escalate
+                        cancel: Cancel
+                    messages:
+                        successful: The ticket has been successfully escalated
+                descalate:
+                    title: Are you sure you want to descalate this ticket?
+                    body: Once done, you will give up control of the ticket to another team. Only do this if you are certain this issue can be resolved by a team bellow your position.
+                    actions:
+                        descalate: Yes, de-escalate
+                        cancel: Cancel
+                    messages:
+                        successful: The ticket has been successfully de-escalated
+                transfer:
+                    title: Are you sure you want to transfer this ticket?
+                    body: 
+                        warning: This action can only be performed if the ticket is in the initial state. Once this is done, you will transfer control of the ticket to another team. Only do this if you are sure that this ticket belongs to another category or to a different type.
+                        instructions: To transfer a ticket, you can select a different category, a different type, or both.
+                    actions:
+                        transfer: Transfer it
+                        cancel: Cancel
+                    messages:
+                        successful: The ticket has been successfully transfered
+                    fields:
+                        type: Select a new type
+                        category: Select a new category

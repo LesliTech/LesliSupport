@@ -77,6 +77,53 @@ module CloudHelp
             end
         end
         
+        def escalate
+            change_priority(false)
+        end
+
+        def descalate
+            change_priority(true)
+        end
+
+        def transfer(help_account, type_id, category_id)
+            new_type = TicketType.find_by(account: help_account, id: type_id)
+            new_category = TicketCategory.find_by(account: help_account, id: category_id)
+            unless (new_type && new_category)
+                errors.add(:base, :transfer_type_or_category_missing)
+                return false
+            end
+            new_workflow = TicketWorkflow.find_by(ticket_type: new_type, ticket_category: new_category, ticket_state: TicketState.initial_state)
+            detail.update(type: new_type, category: new_category, workflow: new_workflow)
+        end
+
+        private
+
+        # Change priority is used by escalate and descalate. to_lower indicates if the priority goes higher or lower
+        def change_priority(to_lower)
+
+            sort_order = :asc
+            comparison = '>'
+
+            if to_lower
+                sort_order = :desc
+                comparison = '<'
+            end
+
+            current_priority = detail.priority
+            new_priority = TicketPriority.where(
+                account: current_priority.account
+            ).where(
+                "cloud_help_ticket_priorities.weight #{comparison} #{current_priority.weight}"
+            ).order(
+                weight: sort_order
+            ).first
+            unless new_priority
+                errors.add(:base, :ticket_at_max_priority)
+                return false
+            end
+            detail.update(priority: new_priority)
+
+        end
 
     end
 end
