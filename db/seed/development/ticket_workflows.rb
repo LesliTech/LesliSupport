@@ -27,6 +27,22 @@ Building a better future, one line of code at a time.
 
 =end
 
-category = CloudHelp::TicketCategory.create!(name: 'Company System', account: CloudHelp::Account.first)
-CloudHelp::TicketCategory.create!(name: 'Books Module', parent: category, account: CloudHelp::Account.first)
-CloudHelp::TicketCategory.create!(name: 'Human Resources', account: CloudHelp::Account.first)
+CloudHelp::TicketType.all.each do |type|
+    CloudHelp::TicketCategory.all.each do |category|
+
+        # Assigning created state first ticket
+        CloudHelp::TicketWorkflow.create!(
+            next_states: '2',
+            ticket_type: type,
+            ticket_category: category,
+            ticket_state: CloudHelp::TicketState.find_by(id: 1, account: category.account)
+        )
+
+        # Assigning closed state to ticket
+        CloudHelp::TicketWorkflow.create!(
+            ticket_type: type,
+            ticket_category: category,
+            ticket_state: CloudHelp::TicketState.find_by(id: 2, account: category.account)
+        )
+    end
+end

@@ -30,3 +30,7 @@ Building a better future, one line of code at a time.
 load "#{Rails.root}/engines/CloudHelp/db/seed/development/accounts.rb"
 load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_states.rb"
 load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_sources.rb"
+load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_categories.rb"
+load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_priorities.rb"
+load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_types.rb"
+load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_workflows.rb"

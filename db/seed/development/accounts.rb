@@ -1,1 +1,1 @@
-CloudHelp::Account.create(id: 1)
+CloudHelp::Account.create!(account: Account.first)

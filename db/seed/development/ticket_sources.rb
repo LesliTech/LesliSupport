@@ -27,4 +27,4 @@ Building a better future, one line of code at a time.
 
 =end
 
-CloudHelp::TicketSource.create(name: 'CloudHelp', account: CloudHelp::Account.first)
+CloudHelp::TicketSource.create!(name: 'CloudHelp', account: CloudHelp::Account.first)

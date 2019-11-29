@@ -27,5 +27,5 @@ Building a better future, one line of code at a time.
 
 =end
 
-CloudHelp::TicketState.create(name: 'created', initial: true, account: CloudHelp::Account.first)
-CloudHelp::TicketState.create(name: 'closed', final: true, account: CloudHelp::Account.first)
+CloudHelp::TicketState.create!(name: 'created', initial: true, account: CloudHelp::Account.first)
+CloudHelp::TicketState.create!(name: 'closed', final: true, account: CloudHelp::Account.first)
