@@ -49,7 +49,8 @@ export default {
     data() {
         return {
             translations:{
-                shared: I18n.t('cloud_help.tickets.shared')
+                shared: I18n.t('cloud_help.tickets.shared'),
+                show: I18n.t('cloud_help.tickets.show')
             },
             ticket_options: null,
             ticket_id: null,
@@ -144,9 +145,9 @@ export default {
                     <div class="columns">
                         <div class="column">
                             <span class="has-text-weight-bold">
-                                {{ `Created by:` }}
+                                {{ translations.show.titles.created_by }}:
                             </span>
-                            {{ ticket.detail_attributes.email}} {{translations.shared.text_on}}
+                            {{ ticket.detail_attributes.email}} {{translations.show.titles.text_on   }}
                             {{ date.toLocalFormat(ticket.created_at, false, true) }}
                         </div>
                     </div>

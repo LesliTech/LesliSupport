@@ -1,0 +1,7 @@
+en:
+    cloud_help:
+        tickets:
+            show:
+                titles:
+                  created_by: Created by
+                  text_on: 'on'

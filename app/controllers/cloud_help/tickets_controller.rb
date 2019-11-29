@@ -59,7 +59,7 @@ module CloudHelp
             if ticket.save
                 responseWithSuccessful(ticket)
                 ticket.add_follower(current_user)
-                ticket.notify_followers("Ticket number #{ticket.id} has been created")
+                ticket.notify_followers(I18n.t('cloud_help.controllers.tickets.notifications.created', ticket_id: ticket.id))
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
@@ -115,7 +115,11 @@ module CloudHelp
                 @ticket.detail.update(workflow: new_workflow)
                 ticket_state = new_workflow.ticket_state
                 responseWithSuccessful({state_id: ticket_state.id, state_name: ticket_state.name})
-                @ticket.notify_followers("Ticket number #{@ticket.id} has been updated to state to #{ticket_state.name}")
+                @ticket.notify_followers(I18n.t(
+                    'cloud_help.controllers.tickets.notifications.updated.workflow',
+                    ticket_id: @ticket.id,
+                    state_name: ticket_state.name
+                ))
             else
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.invalid_workflow_transition'))
             end
