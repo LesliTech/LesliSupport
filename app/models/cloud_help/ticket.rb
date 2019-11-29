@@ -7,6 +7,7 @@ module CloudHelp
         has_many :discussions, foreign_key: 'cloud_help_tickets_id'
         has_many :actions, foreign_key: 'cloud_help_tickets_id'
         has_many :files, foreign_key: 'cloud_help_tickets_id'
+        has_many :followers, foreign_key: 'cloud_help_tickets_id'
 
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'
         accepts_nested_attributes_for :detail
@@ -94,6 +95,20 @@ module CloudHelp
             end
             new_workflow = TicketWorkflow.find_by(ticket_type: new_type, ticket_category: new_category, ticket_state: TicketState.initial_state)
             detail.update(type: new_type, category: new_category, workflow: new_workflow)
+        end
+
+        def add_follower(user)
+            followers.create(user: user)
+        end
+
+        def notify_followers(subject)
+            followers.each do |follower|
+                Courier::Bell::NotificationJob.perform_now(
+                    user: follower.user,
+                    subject: subject,
+                    href: "/help/tickets/#{id}"
+                )
+            end
         end
 
         private
