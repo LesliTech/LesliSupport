@@ -39,7 +39,7 @@ module CloudHelp
             if @ticket_workflow.replace_workflow(current_user.account, ticket_workflow_params)
                 responseWithSuccessful
             else
-                responseWithError(I18n.t('cloud_help.controllers.ticket_workflows.errors.not_found'))
+                responseWithError(@ticket_workflow.errors.full_messages.to_sentence)
             end
         end
 

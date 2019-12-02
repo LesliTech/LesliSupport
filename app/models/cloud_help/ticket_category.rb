@@ -64,18 +64,6 @@ module CloudHelp
             end
         end
 
-        def self.get_category_path(id)
-            category_path = ""
-            TicketCategory.find(id).path.each do |node|
-                if category_path.empty?
-                    category_path = node.name
-                else
-                    category_path += ", #{node.name}"
-                end
-            end
-            category_path
-        end
-
         def destroy
             begin
                 super
@@ -84,6 +72,19 @@ module CloudHelp
                 false
             end
         end
+
+        def full_path
+            string_path = ""
+            path.each do |node|
+                if string_path.empty?
+                    string_path = node.name
+                else
+                    string_path += ", #{node.name}"
+                end
+            end
+            string_path
+        end
+
 
         private
 

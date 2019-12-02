@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 571);
+/******/ 	return __webpack_require__(__webpack_require__.s = 574);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -12135,7 +12135,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6), __webpack_require__(39).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6), __webpack_require__(41).setImmediate))
 
 /***/ }),
 
@@ -12145,7 +12145,7 @@ function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(21);
+var bind = __webpack_require__(22);
 var isBuffer = __webpack_require__(58);
 
 /*global toString:true*/
@@ -12482,6 +12482,119 @@ module.exports = {
 /***/ }),
 
 /***/ 21:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.name === _vm.names.initial
+    ? _c("span", [
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.translations.default.names[_vm.name]) +
+            "\n    (" +
+            _vm._s(_vm.translations.default.types.initial) +
+            ")\n"
+        )
+      ])
+    : _vm.name === _vm.names.final
+    ? _c("span", [
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.translations.default.names[_vm.name]) +
+            "\n    (" +
+            _vm._s(_vm.translations.default.types.final) +
+            ")\n"
+        )
+      ])
+    : _c("span", [_vm._v("\n    " + _vm._s(_vm.name) + "\n")])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
+
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
+/*
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+/* harmony default export */ var ticket_state_namevue_type_script_lang_js_ = ({
+  data: function data() {
+    return {
+      translations: I18n.t('cloud_help.ticket_states.shared'),
+      names: {
+        initial: 'created',
+        "final": 'closed'
+      }
+    };
+  },
+  props: {
+    name: {
+      type: String,
+      "default": ''
+    }
+  }
+});
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
+ /* harmony default export */ var components_ticket_state_namevue_type_script_lang_js_ = (ticket_state_namevue_type_script_lang_js_); 
+// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
+var componentNormalizer = __webpack_require__(0);
+
+// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue
+
+
+
+
+
+/* normalize component */
+
+var component = Object(componentNormalizer["a" /* default */])(
+  components_ticket_state_namevue_type_script_lang_js_,
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "engines/CloudHelp/app/vue/components/ticket_state_name.vue"
+/* harmony default export */ var ticket_state_name = __webpack_exports__["a"] = (component.exports);
+
+/***/ }),
+
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12500,7 +12613,7 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 
-/***/ 22:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12579,7 +12692,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ }),
 
-/***/ 23:
+/***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12592,7 +12705,7 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
-/***/ 24:
+/***/ 25:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12616,10 +12729,10 @@ function getDefaultAdapter() {
   // Only Node.JS has a process variable that is of [[Class]] process
   if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(25);
+    adapter = __webpack_require__(26);
   } else if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(25);
+    adapter = __webpack_require__(26);
   }
   return adapter;
 }
@@ -12699,7 +12812,30 @@ module.exports = defaults;
 
 /***/ }),
 
-/***/ 25:
+/***/ 255:
+/***/ (function(module, exports, __webpack_require__) {
+
+var content = __webpack_require__(551);
+
+if (typeof content === 'string') {
+  content = [[module.i, content, '']];
+}
+
+var options = {}
+
+options.insert = "head";
+options.singleton = false;
+
+var update = __webpack_require__(40)(content, options);
+
+if (content.locals) {
+  module.exports = content.locals;
+}
+
+
+/***/ }),
+
+/***/ 26:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12707,10 +12843,10 @@ module.exports = defaults;
 
 var utils = __webpack_require__(2);
 var settle = __webpack_require__(64);
-var buildURL = __webpack_require__(22);
+var buildURL = __webpack_require__(23);
 var parseHeaders = __webpack_require__(66);
 var isURLSameOrigin = __webpack_require__(67);
-var createError = __webpack_require__(26);
+var createError = __webpack_require__(27);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -12881,30 +13017,7 @@ module.exports = function xhrAdapter(config) {
 
 /***/ }),
 
-/***/ 254:
-/***/ (function(module, exports, __webpack_require__) {
-
-var content = __webpack_require__(548);
-
-if (typeof content === 'string') {
-  content = [[module.i, content, '']];
-}
-
-var options = {}
-
-options.insert = "head";
-options.singleton = false;
-
-var update = __webpack_require__(41)(content, options);
-
-if (content.locals) {
-  module.exports = content.locals;
-}
-
-
-/***/ }),
-
-/***/ 26:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12930,7 +13043,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 /***/ }),
 
-/***/ 27:
+/***/ 28:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12989,7 +13102,7 @@ module.exports = function mergeConfig(config1, config2) {
 
 /***/ }),
 
-/***/ 28:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13016,7 +13129,7 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 29:
+/***/ 30:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(global, factory) {
@@ -13540,14 +13653,14 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 30:
+/***/ 31:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(57);
 
 /***/ }),
 
-/***/ 31:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -13582,7 +13695,7 @@ module.exports = __webpack_require__(73)
 
 /***/ }),
 
-/***/ 32:
+/***/ 33:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28246,7 +28359,7 @@ if (inBrowser && window.Vue) {
 /* harmony default export */ var vue_router_esm = (VueRouter);
 
 // EXTERNAL MODULE: ./node_modules/@rails/actioncable/app/assets/javascripts/action_cable.js
-var action_cable = __webpack_require__(29);
+var action_cable = __webpack_require__(30);
 
 // CONCATENATED MODULE: ./app/vue/plugins/bus.js
 /*
@@ -28376,7 +28489,7 @@ Building a better future, one line of code at a time.
   }
 });
 // EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __webpack_require__(30);
+var axios = __webpack_require__(31);
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 // CONCATENATED MODULE: ./app/vue/plugins/http.js
@@ -28518,7 +28631,7 @@ function date_defineProperty(obj, key, value) { if (key in obj) { Object.defineP
   }
 });
 // EXTERNAL MODULE: ./node_modules/lesli-nodejs-debug-message/browser.js
-var browser = __webpack_require__(31);
+var browser = __webpack_require__(32);
 var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 
 // CONCATENATED MODULE: ./app/vue/functions/document.js
@@ -29625,191 +29738,7 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 
 /***/ }),
 
-/***/ 35:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.name === _vm.names.initial
-    ? _c("span", [
-        _vm._v(
-          "\n    " +
-            _vm._s(_vm.translations.default.names[_vm.name]) +
-            "\n    (" +
-            _vm._s(_vm.translations.default.types.initial) +
-            ")\n"
-        )
-      ])
-    : _vm.name === _vm.names.final
-    ? _c("span", [
-        _vm._v(
-          "\n    " +
-            _vm._s(_vm.translations.default.names[_vm.name]) +
-            "\n    (" +
-            _vm._s(_vm.translations.default.types.final) +
-            ")\n"
-        )
-      ])
-    : _c("span", [_vm._v("\n    " + _vm._s(_vm.name) + "\n")])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=template&id=6ab6a54f&
-
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
-/*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Carlos Hermosilla
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-*/
-/* harmony default export */ var ticket_state_namevue_type_script_lang_js_ = ({
-  data: function data() {
-    return {
-      translations: I18n.t('cloud_help.ticket_states.shared'),
-      names: {
-        initial: 'created',
-        "final": 'closed'
-      }
-    };
-  },
-  props: {
-    name: {
-      type: String,
-      "default": ''
-    }
-  }
-});
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue?vue&type=script&lang=js&
- /* harmony default export */ var components_ticket_state_namevue_type_script_lang_js_ = (ticket_state_namevue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
-var componentNormalizer = __webpack_require__(0);
-
-// CONCATENATED MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue
-
-
-
-
-
-/* normalize component */
-
-var component = Object(componentNormalizer["a" /* default */])(
-  components_ticket_state_namevue_type_script_lang_js_,
-  render,
-  staticRenderFns,
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "engines/CloudHelp/app/vue/components/ticket_state_name.vue"
-/* harmony default export */ var ticket_state_name = __webpack_exports__["a"] = (component.exports);
-
-/***/ }),
-
 /***/ 39:
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(75);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
-
-/***/ }),
-
-/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29906,7 +29835,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 41:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30195,35 +30124,106 @@ module.exports = function (list, options) {
 
 /***/ }),
 
-/***/ 547:
+/***/ 41:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(75);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6)))
+
+/***/ }),
+
+/***/ 550:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(254);
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(255);
 /* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ 548:
+/***/ 551:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(40)(false);
+exports = module.exports = __webpack_require__(39)(false);
 // Module
 exports.push([module.i, "\ntable tr:hover {\n    cursor: pointer;\n}\n", ""]);
 
 
 /***/ }),
 
-/***/ 554:
+/***/ 557:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./app/vue/app.js + 92 modules
-var app = __webpack_require__(32);
+var app = __webpack_require__(33);
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=template&id=323da855&
 var render = function() {
@@ -30331,7 +30331,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=template&id=323da855&
 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue + 4 modules
-var ticket_state_name = __webpack_require__(35);
+var ticket_state_name = __webpack_require__(21);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=script&lang=js&
 /*
@@ -30400,7 +30400,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=script&lang=js&
  /* harmony default export */ var apps_listvue_type_script_lang_js_ = (listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=style&index=0&lang=css&
-var listvue_type_style_index_0_lang_css_ = __webpack_require__(547);
+var listvue_type_style_index_0_lang_css_ = __webpack_require__(550);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -31284,10 +31284,10 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|show|edit]", "help/ticket
 
 
 var utils = __webpack_require__(2);
-var bind = __webpack_require__(21);
+var bind = __webpack_require__(22);
 var Axios = __webpack_require__(59);
-var mergeConfig = __webpack_require__(27);
-var defaults = __webpack_require__(24);
+var mergeConfig = __webpack_require__(28);
+var defaults = __webpack_require__(25);
 
 /**
  * Create an instance of Axios
@@ -31320,9 +31320,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(28);
+axios.Cancel = __webpack_require__(29);
 axios.CancelToken = __webpack_require__(71);
-axios.isCancel = __webpack_require__(23);
+axios.isCancel = __webpack_require__(24);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -31338,12 +31338,12 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 571:
+/***/ 574:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(554);
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(557);
 /*
 Lesli
 
@@ -31399,10 +31399,10 @@ module.exports = function isBuffer (obj) {
 
 
 var utils = __webpack_require__(2);
-var buildURL = __webpack_require__(22);
+var buildURL = __webpack_require__(23);
 var InterceptorManager = __webpack_require__(60);
 var dispatchRequest = __webpack_require__(61);
-var mergeConfig = __webpack_require__(27);
+var mergeConfig = __webpack_require__(28);
 
 /**
  * Create a new instance of Axios
@@ -31581,8 +31581,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(2);
 var transformData = __webpack_require__(62);
-var isCancel = __webpack_require__(23);
-var defaults = __webpack_require__(24);
+var isCancel = __webpack_require__(24);
+var defaults = __webpack_require__(25);
 var isAbsoluteURL = __webpack_require__(69);
 var combineURLs = __webpack_require__(70);
 
@@ -31721,7 +31721,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(26);
+var createError = __webpack_require__(27);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -32046,7 +32046,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(28);
+var Cancel = __webpack_require__(29);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.

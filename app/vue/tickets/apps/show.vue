@@ -35,6 +35,7 @@ import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.
 import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
 import componentFileList from 'LesliCloud/vue/components/lists/file.vue'
 import componentTicketStateName from '../../components/ticket_state_name.vue'
+import componentTimeline from '../components/timeline.vue'
 
 // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -44,6 +45,7 @@ export default {
         'component-discussion-list': componentDiscussionList,
         'component-action-list': componentActionList,
         'component-file-list': componentFileList,
+        'component-timeline': componentTimeline,
         'component-ticket-state-name': componentTicketStateName
     },
     data() {
@@ -52,7 +54,6 @@ export default {
                 shared: I18n.t('cloud_help.tickets.shared'),
                 show: I18n.t('cloud_help.tickets.show')
             },
-            ticket_options: null,
             ticket_id: null,
             ticket: null
         }
@@ -60,19 +61,8 @@ export default {
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
-        this.getTicketOptions()
     },
     methods: {
-
-        getTicketOptions() {
-            this.http.get('/help/api/tickets/options').then(result => {
-                if (result.successful) {
-                    this.ticket_options = result.data
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
 
         getTicket() {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
@@ -88,8 +78,8 @@ export default {
 }
 </script>
 <template>
-    <div class="columns" v-if="ticket && ticket_options">
-        <div class="column">
+    <div class="columns" v-if="ticket">
+        <div class="column is-8">
             <div class="card box">
                 <div class="card-header">
                     <h4 class="card-header-title">
@@ -155,6 +145,9 @@ export default {
             </div>
             <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
             <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+        </div>
+        <div class="column is-4">
+            <component-timeline class="card box" />
         </div>
         <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />

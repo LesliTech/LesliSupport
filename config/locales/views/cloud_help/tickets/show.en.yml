@@ -3,5 +3,5 @@ en:
         tickets:
             show:
                 titles:
-                  created_by: Created by
-                  text_on: 'on'
+                    created_by: Created by
+                    text_on: 'on'
