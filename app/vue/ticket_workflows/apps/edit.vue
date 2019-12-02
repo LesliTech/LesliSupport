@@ -105,18 +105,24 @@ export default {
                 }
                 this.ticket_workflow[this.default_states.created].next_states+=`|${state.id}`
                 this.$set(this.ticket_workflow, state.id, new_node)
+                this.selected_state = null
             }
         },
 
         // · Checks if this is the only follow up state of the initial state
-        isRemovable(state_id){
-            let initial_node = this.ticket_workflow[this.default_states.created]
-            return initial_node.next_states != state_id
+        // · node = state from which a follow up will be removed. If the user wants to remove from the workflow, this will be the initial state
+        // · state_id = the id of the state the user wants to remove
+        isRemovable(node, state_id){
+            if(node.ticket_state_id == this.default_states.created){
+                let initial_node = this.ticket_workflow[this.default_states.created]
+                return initial_node.next_states != state_id
+            }
+            return true
         },
 
         deleteStateFromWorkflow(deleted_node){
             let id = deleted_node.ticket_state_id
-            if(this.isRemovable(id)){
+            if(this.isRemovable(this.ticket_workflow[this.default_states.created], id)){
                 this.$delete(this.ticket_workflow,id)
                 for(let node_id in this.ticket_workflow){
                     let node = this.ticket_workflow[node_id]
@@ -143,6 +149,7 @@ export default {
                 }else{
                     this.selected_node.next_states = `${this.selected_follow_up_state}`
                 }
+                this.selected_follow_up_state = null
                 this.rerender_chart = true
             }
         },
@@ -153,7 +160,7 @@ export default {
 
         deleteFollowUpState(node){
             let id = node.ticket_state_id
-            if(this.isRemovable(id)){
+            if(this.isRemovable(this.selected_node, id)){
                 this.selected_node.next_states = this.selected_node.next_states.replace(
                     new RegExp(`([^0-9]${id}$)|(^${id}[^0-9])|(^${id}$)`,'g'), ''
                 ).replace(
@@ -181,9 +188,11 @@ export default {
     },
     computed: {
         ticketStates(){
-            return this.ticket_states.filter((element)=>{
+            return [
+                {id: null, name: this.translations.edit.labels.add_to_workflow}
+            ].concat(this.ticket_states.filter((element)=>{
                 return !this.ticket_workflow[element.id]
-            })
+            }))
         },
         
         nextStatesOfSelectedNode(){
@@ -198,23 +207,24 @@ export default {
         },
 
         possibleFollowUpStates(){
+            let label = [{id: null, name: this.translations.edit.labels.add_follow_ups}]
             if(
                 ! this.selected_node.ticket_state_id || 
                 this.selected_node.ticket_state_id == this.default_states.closed
             ){
-                return []
+                return label
             }
             let follow_up_states  = this.selected_node.next_states.split('|').map((element)=>{
                 return parseInt(element)
             })
-            return this.ticket_states.filter(element => {
+            return label.concat(this.ticket_states.filter(element => {
                 return ! (
                     follow_up_states.includes(element.id) ||
                     element.id == this.default_states.created
                 ) && (
                     this.ticket_workflow[element.id]
                 )
-            })
+            }))
         }
     }
 }
@@ -245,11 +255,11 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.ticket_category_name}:` }}
                             </span>
-                            {{ ticket_workflow[1].ticket_category_name }},
+                            {{ ticket_workflow[this.default_states.created].ticket_category_name }},
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.ticket_type_name}:` }}
                             </span>
-                            {{ ticket_workflow[1].ticket_type_name }}
+                            {{ ticket_workflow[this.default_states.created].ticket_type_name }}
                         </p>
                     </div>
                 </div>
@@ -264,7 +274,10 @@ export default {
                                             <option
                                                 v-for="ticket_state in ticketStates"
                                                 :value="ticket_state.id"
-                                                :key="ticket_state.id">
+                                                :key="ticket_state.id"
+                                                :hidden="ticket_state.id == null"
+                                                :disbled="ticket_state.id == null"
+                                            >
                                                 {{ ticket_state.name }}
                                             </option>
                                         </b-select>
@@ -288,13 +301,16 @@ export default {
                                             <option
                                                 v-for="ticket_state in possibleFollowUpStates"
                                                 :value="ticket_state.id"
-                                                :key="ticket_state.id">
-                                                    <component-ticket-state-name 
-                                                        :name="ticket_state.name"
-                                                        :initial="ticket_state.initial"
-                                                        :final="ticket_state.final"
-                                                    >
-                                                    </component-ticket-state-name>
+                                                :key="ticket_state.id"
+                                                :hidden="ticket_state.id == null"
+                                                :disbled="ticket_state.id == null"  
+                                            >
+                                                <component-ticket-state-name 
+                                                    :name="ticket_state.name"
+                                                    :initial="ticket_state.initial"
+                                                    :final="ticket_state.final"
+                                                >
+                                                </component-ticket-state-name>
                                             </option>
                                         </b-select>
                                     </b-field>

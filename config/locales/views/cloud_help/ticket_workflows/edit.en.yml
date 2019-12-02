@@ -16,3 +16,6 @@ en:
                         successful: Ticket workflow was updated successfully
                 errors:
                     unable_to_remove_state: The initial state needs a follow up at all times. Please add another follow up state before deleting this one
+                labels:
+                    add_follow_ups: Select a follow up state to add
+                    add_to_workflow: Select a state to add
