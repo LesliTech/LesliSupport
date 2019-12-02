@@ -4,10 +4,10 @@ en:
             timeline:
                 title: Timeline
                 actions:
-                    state_changed: SC
-                    priority_increased: PI
-                    priority_decreased: PD
-                    category_transferred: CT
-                    type_transferred: TT
-                    created: CR
-                    closed: CL
+                    state_changed: State Change
+                    priority_increased: Priority Increase
+                    priority_decreased: Priority Decrease
+                    category_transferred: Category Transfer
+                    type_transferred: Type Transfer
+                    created: Created
+                    closed: Closed

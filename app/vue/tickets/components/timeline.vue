@@ -104,66 +104,26 @@ export default {
             </h4>
         </div>
         <div class="card-content timeline">
-            <div class="columns">
-                <div class="column is-3">
-                    Legend goes here
-                </div>
-                <div class="column is-9">
-                    <span v-for="(timeline, i) in ticket_timelines" :key="timeline.id">
-                        <span v-if="i != 0" class="line has-background-black" />
-                        <b-tooltip 
-                            :label="timeline.description"
-                            position="is-bottom"
-                            multilined
-                            :type="tooltipType(timeline.action)"
+            <div class="columns is-multiline">
+                <div v-for="(timeline) in ticket_timelines" :key="timeline.id" class="column is-12">
+                    <span>
+                        <span
+                            class="has-text-weight-bold"
+                            :class="{
+                                'has-text-warning': isTransfer(timeline.action),
+                                'has-text-danger': isEscalate(timeline.action),
+                                'has-text-success': isDescalate(timeline.action),
+                                'has-text-info': isCoreState(timeline.action)
+                            }"
                         >
-                            <span 
-                                class="button is-rounded has-text-centered"
-                                :class="{
-                                    'is-warning': isTransfer(timeline.action),
-                                    'is-danger': isEscalate(timeline.action),
-                                    'is-success': isDescalate(timeline.action),
-                                    'is-info': isCoreState(timeline.action)
-                                }"
-                            >
-                                {{translations.actions[timeline.action]}}
-
-
-
-
-
-
-<div class="tile">
-  <div class="tile is-8 is-parent is-vertical">
-    <div class="tile is-child notification is-primary">
-      Hello
-    </div>
-    <div class="tile is-child notification is-warning">
-      World
-    </div>
-  </div>
-  <div class="tile is-parent">
-    <div class="tile is-child notification is-info">
-      Helo!
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-                            </span>
-                            &nbsp;
-                        </b-tooltip>
+                            {{translations.actions[timeline.action]}}
+                        </span>: {{timeline.description}}
                     </span>
+                    <br>
+                    <small class="is-pulled-right">
+                        {{date.toLocalFormat(timeline.created_at, false, true)}}
+                    </small>
+                    <hr>
                 </div>
             </div>
         </div>

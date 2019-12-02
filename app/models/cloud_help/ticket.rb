@@ -161,14 +161,23 @@ module CloudHelp
 
         def update_workflow(new_workflow_node)
             if detail.update(workflow: new_workflow_node)
-                timelines.create(
-                    action: Ticket::Timeline.actions[:state_changed],
-                    description: I18n.t(
-                        'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
-                        old_state_name: detail.workflow.ticket_state.name,
-                        new_state_name: new_workflow_node.ticket_state.name
-                    )
+                
+                timeline_action = Ticket::Timeline.actions[:state_changed]
+                timeline_description = I18n.t(
+                    'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
+                    old_state_name: detail.workflow.ticket_state.name,
+                    new_state_name: new_workflow_node.ticket_state.name
                 )
+
+                if new_workflow_node.ticket_state.is_final?
+                    timeline_action = Ticket::Timeline.actions[:closed]
+                    timeline_description = I18n.t(
+                        'activerecord.models.cloud_help/ticket/timeline.actions.closed',
+                        id: id
+                    )
+                end
+
+                timelines.create( action: timeline_action, description: timeline_description )
                 return true
             else
                 return false

@@ -9,6 +9,8 @@ en:
                         successful: Ticket created successfully
                     update_workflow:
                         successful: Ticket state has been successfully updated
+                    close:
+                        successful: Ticket has been successfully closed
                 actions:
                     escalate: Escalate
                     descalate: De-escalate

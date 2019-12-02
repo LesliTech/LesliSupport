@@ -9,6 +9,7 @@ en:
                     category_transferred: Trasferred from category '%{old_category_name}' to '%{new_category_name}'
                     type_transferred: Transferred from type '%{old_type_name}' to '%{new_type_name}'
                     created: Ticket number %{id} has been created
+                    closed: Ticket number %{id} has been closed
         errors:
             models:
                 cloud_help/ticket:

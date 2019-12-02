@@ -9,6 +9,7 @@ en:
                     cannot_transfer_closed_ticket: You cannot transfer a ticket that is already closed
                 notifications:
                     created: Ticket number %{ticket_id} has been created
+                    closed: Ticket number %{ticket_id} has been closed
                     updated:
                         workflow: Ticket number %{ticket_id} has been updated to state %{state_name}
                         escalated: Ticket number %{ticket_id} has been escalated to %{priority_name} priority

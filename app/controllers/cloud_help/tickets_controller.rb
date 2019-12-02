@@ -117,11 +117,18 @@ module CloudHelp
             end
             if @ticket.update_workflow(new_workflow_node)
                 responseWithSuccessful(new_workflow_node.ticket_state)
-                @ticket.notify_followers(I18n.t(
-                    'cloud_help.controllers.tickets.notifications.updated.workflow',
-                    ticket_id: @ticket.id,
-                    state_name: new_workflow_node.ticket_state.name
-                ))
+                if new_workflow_node.ticket_state.is_final?
+                    @ticket.notify_followers(I18n.t(
+                        'cloud_help.controllers.tickets.notifications.closed',
+                        ticket_id: @ticket.id
+                    ))
+                else
+                    @ticket.notify_followers(I18n.t(
+                        'cloud_help.controllers.tickets.notifications.updated.workflow',
+                        ticket_id: @ticket.id,
+                        state_name: new_workflow_node.ticket_state.name
+                    ))
+                end
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
