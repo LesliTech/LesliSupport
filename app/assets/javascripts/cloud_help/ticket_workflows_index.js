@@ -121735,7 +121735,10 @@ var editvue_type_template_id_24ec2395_render = function() {
                     ]),
                     _vm._v(
                       "\n                        " +
-                        _vm._s(_vm.ticket_workflow[1].ticket_category_name) +
+                        _vm._s(
+                          _vm.ticket_workflow[this.default_states.created]
+                            .ticket_category_name
+                        ) +
                         ",\n                        "
                     ),
                     _c("span", { staticClass: "has-text-weight-bold" }, [
@@ -121750,7 +121753,10 @@ var editvue_type_template_id_24ec2395_render = function() {
                     ]),
                     _vm._v(
                       "\n                        " +
-                        _vm._s(_vm.ticket_workflow[1].ticket_type_name) +
+                        _vm._s(
+                          _vm.ticket_workflow[this.default_states.created]
+                            .ticket_type_name
+                        ) +
                         "\n                    "
                     )
                   ])
@@ -121790,6 +121796,10 @@ var editvue_type_template_id_24ec2395_render = function() {
                                 "option",
                                 {
                                   key: ticket_state.id,
+                                  attrs: {
+                                    hidden: ticket_state.id == null,
+                                    disbled: ticket_state.id == null
+                                  },
                                   domProps: { value: ticket_state.id }
                                 },
                                 [
@@ -121877,6 +121887,10 @@ var editvue_type_template_id_24ec2395_render = function() {
                                 "option",
                                 {
                                   key: ticket_state.id,
+                                  attrs: {
+                                    hidden: ticket_state.id == null,
+                                    disbled: ticket_state.id == null
+                                  },
                                   domProps: { value: ticket_state.id }
                                 },
                                 [
@@ -122180,17 +122194,24 @@ Building a better future, one line of code at a time.
         };
         this.ticket_workflow[this.default_states.created].next_states += "|".concat(state.id);
         this.$set(this.ticket_workflow, state.id, new_node);
+        this.selected_state = null;
       }
     },
     // · Checks if this is the only follow up state of the initial state
-    isRemovable: function isRemovable(state_id) {
-      var initial_node = this.ticket_workflow[this.default_states.created];
-      return initial_node.next_states != state_id;
+    // · node = state from which a follow up will be removed. If the user wants to remove from the workflow, this will be the initial state
+    // · state_id = the id of the state the user wants to remove
+    isRemovable: function isRemovable(node, state_id) {
+      if (node.ticket_state_id == this.default_states.created) {
+        var initial_node = this.ticket_workflow[this.default_states.created];
+        return initial_node.next_states != state_id;
+      }
+
+      return true;
     },
     deleteStateFromWorkflow: function deleteStateFromWorkflow(deleted_node) {
       var id = deleted_node.ticket_state_id;
 
-      if (this.isRemovable(id)) {
+      if (this.isRemovable(this.ticket_workflow[this.default_states.created], id)) {
         this.$delete(this.ticket_workflow, id);
 
         for (var node_id in this.ticket_workflow) {
@@ -122216,6 +122237,7 @@ Building a better future, one line of code at a time.
           this.selected_node.next_states = "".concat(this.selected_follow_up_state);
         }
 
+        this.selected_follow_up_state = null;
         this.rerender_chart = true;
       }
     },
@@ -122225,7 +122247,7 @@ Building a better future, one line of code at a time.
     deleteFollowUpState: function deleteFollowUpState(node) {
       var id = node.ticket_state_id;
 
-      if (this.isRemovable(id)) {
+      if (this.isRemovable(this.selected_node, id)) {
         this.selected_node.next_states = this.selected_node.next_states.replace(new RegExp("([^0-9]".concat(id, "$)|(^").concat(id, "[^0-9])|(^").concat(id, "$)"), 'g'), '').replace(new RegExp("([^0-9]".concat(id, "[^0-9])"), 'g'), '|');
         this.rerender_chart = true;
       } else {
@@ -122254,9 +122276,12 @@ Building a better future, one line of code at a time.
     ticketStates: function ticketStates() {
       var _this5 = this;
 
-      return this.ticket_states.filter(function (element) {
+      return [{
+        id: null,
+        name: this.translations.edit.labels.add_to_workflow
+      }].concat(this.ticket_states.filter(function (element) {
         return !_this5.ticket_workflow[element.id];
-      });
+      }));
     },
     nextStatesOfSelectedNode: function nextStatesOfSelectedNode() {
       var _this6 = this;
@@ -122275,16 +122300,21 @@ Building a better future, one line of code at a time.
     possibleFollowUpStates: function possibleFollowUpStates() {
       var _this7 = this;
 
+      var label = [{
+        id: null,
+        name: this.translations.edit.labels.add_follow_ups
+      }];
+
       if (!this.selected_node.ticket_state_id || this.selected_node.ticket_state_id == this.default_states.closed) {
-        return [];
+        return label;
       }
 
       var follow_up_states = this.selected_node.next_states.split('|').map(function (element) {
         return parseInt(element);
       });
-      return this.ticket_states.filter(function (element) {
+      return label.concat(this.ticket_states.filter(function (element) {
         return !(follow_up_states.includes(element.id) || element.id == _this7.default_states.created) && _this7.ticket_workflow[element.id];
-      });
+      }));
     }
   }
 });
