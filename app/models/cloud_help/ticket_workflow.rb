@@ -71,33 +71,37 @@ module CloudHelp
         end
 
         def replace_workflow(account, new_workflow)
-            workflow = TicketWorkflow.joins(
-                :ticket_state
-            ).where(
-                "cloud_help_ticket_states.cloud_help_accounts_id = #{account.id}"
-            ).where(
-                "cloud_help_ticket_types_id = #{cloud_help_ticket_types_id}"
-            ).where(
-                "cloud_help_ticket_categories_id = #{cloud_help_ticket_categories_id}"
-            ).where(
-                "cloud_help_ticket_states_id != #{TicketWorkflow::DEFAULT_STATES[:initial]}"
-            ).where(
-                "cloud_help_ticket_states_id != #{TicketWorkflow::DEFAULT_STATES[:final]}"
-            ).delete_all
-            new_workflow.each do |node|
-                # created or closed
-                if node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:initial] || node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:final]
-                    TicketWorkflow.find(node[:id]).update(
-                        next_states: node[:next_states]
+            begin
+                workflow = TicketWorkflow.joins( :ticket_state ).where(
+                    "cloud_help_ticket_states.cloud_help_accounts_id = #{account.id}"
+                ).where(
+                    "cloud_help_ticket_types_id = #{cloud_help_ticket_types_id}"
+                ).where(
+                    "cloud_help_ticket_categories_id = #{cloud_help_ticket_categories_id}"
+                ).where(
+                    "cloud_help_ticket_states_id != #{TicketWorkflow::DEFAULT_STATES[:initial]}"
+                ).where(
+                    "cloud_help_ticket_states_id != #{TicketWorkflow::DEFAULT_STATES[:final]}"
+                ).destroy_all
+                new_workflow.each do |node|
+                    # created or closed
+                    if (
+                        node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:initial] ||
+                        node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:final]
                     )
-                else
-                    TicketWorkflow.create(
-                        cloud_help_ticket_categories_id: cloud_help_ticket_categories_id,
-                        cloud_help_ticket_types_id: cloud_help_ticket_types_id,
-                        cloud_help_ticket_states_id: node[:ticket_state_id],
-                        next_states: node[:next_states]
-                    )
+                        TicketWorkflow.find(node[:id]).update(next_states: node[:next_states])
+                    else
+                        TicketWorkflow.create(
+                            cloud_help_ticket_categories_id: cloud_help_ticket_categories_id,
+                            cloud_help_ticket_types_id: cloud_help_ticket_types_id,
+                            cloud_help_ticket_states_id: node[:ticket_state_id],
+                            next_states: node[:next_states]
+                        )
+                    end
                 end
+            rescue ActiveRecord::InvalidForeignKey
+                errors.add(:base, :foreign_key_prevents_destruction)
+                false
             end
         end
 
@@ -125,7 +129,7 @@ module CloudHelp
         private
 
         def self.set_category_path(workflow_node)
-            workflow_node.ticket_category_name =  TicketCategory.get_category_path(workflow_node.ticket_category_id)
+            workflow_node.ticket_category_name =  TicketCategory.find(workflow_node.ticket_category_id).full_path
         end
     end
 end

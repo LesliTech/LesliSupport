@@ -93,13 +93,14 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-
         },
 
         getTicket() {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
+                    this.transfer.cloud_help_ticket_types_id = this.ticket.detail_attributes.cloud_help_ticket_types_id
+                    this.transfer.cloud_help_ticket_categories_id = this.ticket.detail_attributes.cloud_help_ticket_categories_id
                 } else {
                     this.alert(result.error.message, 'danger')
                 }

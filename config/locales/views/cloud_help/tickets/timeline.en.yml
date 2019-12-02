@@ -1,0 +1,13 @@
+en:
+    cloud_help:
+        tickets:
+            timeline:
+                title: Timeline
+                actions:
+                    state_changed: SC
+                    priority_increased: PI
+                    priority_decreased: PD
+                    category_transferred: CT
+                    type_transferred: TT
+                    created: CR
+                    closed: CL

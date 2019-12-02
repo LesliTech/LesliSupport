@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 559);
+/******/ 	return __webpack_require__(__webpack_require__.s = 562);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -12135,7 +12135,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6), __webpack_require__(39).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(6), __webpack_require__(41).setImmediate))
 
 /***/ }),
 
@@ -12145,7 +12145,7 @@ function normalizeComponent (
 "use strict";
 
 
-var bind = __webpack_require__(21);
+var bind = __webpack_require__(22);
 var isBuffer = __webpack_require__(58);
 
 /*global toString:true*/
@@ -12481,7 +12481,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 21:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12500,7 +12500,7 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 
-/***/ 22:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12579,7 +12579,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ }),
 
-/***/ 23:
+/***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12592,7 +12592,7 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
-/***/ 24:
+/***/ 25:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12616,10 +12616,10 @@ function getDefaultAdapter() {
   // Only Node.JS has a process variable that is of [[Class]] process
   if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(25);
+    adapter = __webpack_require__(26);
   } else if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(25);
+    adapter = __webpack_require__(26);
   }
   return adapter;
 }
@@ -12699,7 +12699,7 @@ module.exports = defaults;
 
 /***/ }),
 
-/***/ 25:
+/***/ 26:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12707,10 +12707,10 @@ module.exports = defaults;
 
 var utils = __webpack_require__(2);
 var settle = __webpack_require__(64);
-var buildURL = __webpack_require__(22);
+var buildURL = __webpack_require__(23);
 var parseHeaders = __webpack_require__(66);
 var isURLSameOrigin = __webpack_require__(67);
-var createError = __webpack_require__(26);
+var createError = __webpack_require__(27);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -12881,7 +12881,7 @@ module.exports = function xhrAdapter(config) {
 
 /***/ }),
 
-/***/ 26:
+/***/ 27:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12907,7 +12907,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 /***/ }),
 
-/***/ 27:
+/***/ 28:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12966,7 +12966,7 @@ module.exports = function mergeConfig(config1, config2) {
 
 /***/ }),
 
-/***/ 28:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12993,7 +12993,7 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 29:
+/***/ 30:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(global, factory) {
@@ -13517,14 +13517,14 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 30:
+/***/ 31:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(57);
 
 /***/ }),
 
-/***/ 31:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -13559,7 +13559,7 @@ module.exports = __webpack_require__(73)
 
 /***/ }),
 
-/***/ 32:
+/***/ 33:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28223,7 +28223,7 @@ if (inBrowser && window.Vue) {
 /* harmony default export */ var vue_router_esm = (VueRouter);
 
 // EXTERNAL MODULE: ./node_modules/@rails/actioncable/app/assets/javascripts/action_cable.js
-var action_cable = __webpack_require__(29);
+var action_cable = __webpack_require__(30);
 
 // CONCATENATED MODULE: ./app/vue/plugins/bus.js
 /*
@@ -28353,7 +28353,7 @@ Building a better future, one line of code at a time.
   }
 });
 // EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __webpack_require__(30);
+var axios = __webpack_require__(31);
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 // CONCATENATED MODULE: ./app/vue/plugins/http.js
@@ -28495,7 +28495,7 @@ function date_defineProperty(obj, key, value) { if (key in obj) { Object.defineP
   }
 });
 // EXTERNAL MODULE: ./node_modules/lesli-nodejs-debug-message/browser.js
-var browser = __webpack_require__(31);
+var browser = __webpack_require__(32);
 var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 
 // CONCATENATED MODULE: ./app/vue/functions/document.js
@@ -29602,7 +29602,7 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 
 /***/ }),
 
-/***/ 39:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -29673,12 +29673,12 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ 559:
+/***/ 562:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var LesliCloud_vue_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32);
+/* harmony import */ var LesliCloud_vue_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(33);
 /*
 Lesli
 
@@ -29720,10 +29720,10 @@ Object(LesliCloud_vue_app__WEBPACK_IMPORTED_MODULE_0__[/* default */ "a"])("Clou
 
 
 var utils = __webpack_require__(2);
-var bind = __webpack_require__(21);
+var bind = __webpack_require__(22);
 var Axios = __webpack_require__(59);
-var mergeConfig = __webpack_require__(27);
-var defaults = __webpack_require__(24);
+var mergeConfig = __webpack_require__(28);
+var defaults = __webpack_require__(25);
 
 /**
  * Create an instance of Axios
@@ -29756,9 +29756,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(28);
+axios.Cancel = __webpack_require__(29);
 axios.CancelToken = __webpack_require__(71);
-axios.isCancel = __webpack_require__(23);
+axios.isCancel = __webpack_require__(24);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -29799,10 +29799,10 @@ module.exports = function isBuffer (obj) {
 
 
 var utils = __webpack_require__(2);
-var buildURL = __webpack_require__(22);
+var buildURL = __webpack_require__(23);
 var InterceptorManager = __webpack_require__(60);
 var dispatchRequest = __webpack_require__(61);
-var mergeConfig = __webpack_require__(27);
+var mergeConfig = __webpack_require__(28);
 
 /**
  * Create a new instance of Axios
@@ -29981,8 +29981,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(2);
 var transformData = __webpack_require__(62);
-var isCancel = __webpack_require__(23);
-var defaults = __webpack_require__(24);
+var isCancel = __webpack_require__(24);
+var defaults = __webpack_require__(25);
 var isAbsoluteURL = __webpack_require__(69);
 var combineURLs = __webpack_require__(70);
 
@@ -30121,7 +30121,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(26);
+var createError = __webpack_require__(27);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -30446,7 +30446,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(28);
+var Cancel = __webpack_require__(29);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.

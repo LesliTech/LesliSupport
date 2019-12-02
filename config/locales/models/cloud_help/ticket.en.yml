@@ -1,10 +1,20 @@
 en:
     activerecord:
+        models:
+            cloud_help/ticket/timeline:
+                actions:
+                    state_changed: Moved from state '%{old_state_name}' to '%{new_state_name}'
+                    priority_increased: Escalated from priority '%{old_priority_name}' (%{old_priority_weight}) to '%{new_priority_name}' (%{new_priority_weight})
+                    priority_decreased: De-escalated from priority '%{old_priority_name}' (%{old_priority_weight}) to '%{new_priority_name}' (%{new_priority_weight})
+                    category_transferred: Trasferred from category '%{old_category_name}' to '%{new_category_name}'
+                    type_transferred: Transferred from type '%{old_type_name}' to '%{new_type_name}'
+                    created: Ticket number %{id} has been created
         errors:
             models:
                 cloud_help/ticket:
                         attributes:
                             base:
                                 ticket_at_max_priority: This ticket cannot be escalated any further
+                                ticket_at_min_priority: This ticket cannot be de-escalated any further
                                 transfer_type_or_category_missing: The selecteed type or category do not exist
 

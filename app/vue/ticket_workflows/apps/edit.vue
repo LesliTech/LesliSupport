@@ -253,9 +253,6 @@ export default {
                         </p>
                     </div>
                 </div>
-                <component-workflow-chart :workflow="ticket_workflow" :rerender.sync="rerender_chart">
-                </component-workflow-chart>
-                <hr>
                 <form @submit="putTicketWorkflow">
                     <div class="columns">
                         <div class="column">
@@ -357,6 +354,9 @@ export default {
                         </div>
                     </div>
                 </form>
+                <hr>
+                <component-workflow-chart :workflow="ticket_workflow" :rerender.sync="rerender_chart">
+                </component-workflow-chart>
             </div>
         </div>
     </section>

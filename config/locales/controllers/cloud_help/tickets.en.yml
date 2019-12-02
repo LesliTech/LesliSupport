@@ -11,3 +11,6 @@ en:
                     created: Ticket number %{ticket_id} has been created
                     updated:
                         workflow: Ticket number %{ticket_id} has been updated to state %{state_name}
+                        escalated: Ticket number %{ticket_id} has been escalated to %{priority_name} priority
+                        descalated: Ticket number %{ticket_id} has been de-escalated to %{priority_name} priority
+                        transferred: Ticket number %{ticket_id} has been transferred to type %{type_name} and category %{category_name}

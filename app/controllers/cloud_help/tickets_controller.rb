@@ -12,7 +12,8 @@ module CloudHelp
             :api_update_workflow,
             :api_escalate,
             :api_descalate,
-            :api_transfer
+            :api_transfer,
+            :api_timelines
         ]
 
         # GET /tickets
@@ -105,23 +106,24 @@ module CloudHelp
 
         # PUT /tickets/1/workflow
         def api_update_workflow
-            old_workflow = @ticket.detail.workflow
-            new_workflow = TicketWorkflow.find_by(
+            old_workflow_node = @ticket.detail.workflow
+            new_workflow_node = TicketWorkflow.find_by(
                 id: params[:workflow_id],
-                ticket_category: old_workflow.ticket_category,
-                ticket_type: old_workflow.ticket_type
+                ticket_category: old_workflow_node.ticket_category,
+                ticket_type: old_workflow_node.ticket_type
             )
-            if new_workflow
-                @ticket.detail.update(workflow: new_workflow)
-                ticket_state = new_workflow.ticket_state
-                responseWithSuccessful({state_id: ticket_state.id, state_name: ticket_state.name})
+            unless new_workflow_node
+                return responseWithError(I18n.t('cloud_help.controllers.tickets.errors.invalid_workflow_transition'))
+            end
+            if @ticket.update_workflow(new_workflow_node)
+                responseWithSuccessful(new_workflow_node.ticket_state)
                 @ticket.notify_followers(I18n.t(
                     'cloud_help.controllers.tickets.notifications.updated.workflow',
                     ticket_id: @ticket.id,
-                    state_name: ticket_state.name
+                    state_name: new_workflow_node.ticket_state.name
                 ))
             else
-                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.invalid_workflow_transition'))
+                responseWithError(@ticket.errors.full_messages.to_sentence)
             end
         end
 
@@ -131,8 +133,13 @@ module CloudHelp
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_escalate_closed_ticket'))
             else
                 if @ticket.escalate
-                    priority = @ticket.detail.priority
+                    ticket_priority = @ticket.detail.priority
                     responseWithSuccessful
+                    @ticket.notify_followers(I18n.t(
+                        'cloud_help.controllers.tickets.notifications.updated.escalated',
+                        ticket_id: @ticket.id,
+                        priority_name: ticket_priority.name
+                    ))
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
@@ -145,8 +152,13 @@ module CloudHelp
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_descalate_closed_ticket'))
             else
                 if @ticket.descalate
-                    priority = @ticket.detail.priority
+                    ticket_priority = @ticket.detail.priority
                     responseWithSuccessful
+                    @ticket.notify_followers(I18n.t(
+                        'cloud_help.controllers.tickets.notifications.updated.descalated',
+                        ticket_id: @ticket.id,
+                        priority_name: ticket_priority.name
+                    ))
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
@@ -159,10 +171,22 @@ module CloudHelp
             else
                 if @ticket.transfer(current_user.account.help, params[:cloud_help_ticket_types_id], params[:cloud_help_ticket_categories_id])
                     responseWithSuccessful
+                    ticket_category = @ticket.detail.category
+                    ticket_type = @ticket.detail.type
+                    @ticket.notify_followers(I18n.t(
+                        'cloud_help.controllers.tickets.notifications.updated.transferred',
+                        ticket_id: @ticket.id,
+                        type_name: ticket_type.name,
+                        category_name: ticket_category.name
+                    ))
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
             end
+        end
+
+        def api_timelines
+            responseWithSuccessful(@ticket.timelines)
         end
 
         private

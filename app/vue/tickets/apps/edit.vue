@@ -113,9 +113,9 @@ export default {
             })
         },
 
-        updateTicketWorkflow(state_data) {
-            this.ticket.detail_attributes.cloud_help_ticket_states_id = state_data.state_id
-            this.ticket.detail_attributes.state = state_data.state_name
+        updateTicketWorkflow(state) {
+            this.ticket.detail_attributes.cloud_help_ticket_states_id = state.id
+            this.ticket.detail_attributes.state = state.name
             this.rerender_chart = true
         }
 
