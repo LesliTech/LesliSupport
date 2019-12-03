@@ -11,6 +11,7 @@ en:
                     reset: Reset Ticket
                     return: Return
                 fields:
+                    assignable_type: Assigned
                     id: Number
                     description: Description
                     subject: Subject
@@ -20,3 +21,7 @@ en:
                     state: Status
                     created_at: Created at
                     updated_at: Updated at
+                assignable_types:
+                    none: None
+                    User: User
+                    CloudTeam: Team

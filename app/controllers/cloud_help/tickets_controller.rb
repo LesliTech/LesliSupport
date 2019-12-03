@@ -13,7 +13,8 @@ module CloudHelp
             :api_escalate,
             :api_descalate,
             :api_transfer,
-            :api_timelines
+            :api_timelines,
+            :api_assign
         ]
 
         # GET /tickets
@@ -32,11 +33,8 @@ module CloudHelp
             respond_to do |format|
                 format.html { }
                 format.json do
-                    ticket = Ticket.find_by(
-                        id: params[:id],
-                        account: current_user.account.help
-                    ).detailed_info
-                    responseWithSuccessful(ticket)
+                    set_ticket
+                    responseWithSuccessful(@ticket.detailed_info)
                 end
             end
         end
@@ -196,6 +194,27 @@ module CloudHelp
             responseWithSuccessful(@ticket.timelines)
         end
 
+        # GET /api/tickets/1/assignables
+        def api_assignables
+            users = Courier::Core::Users.list()
+            responseWithSuccessful(
+                users.map do |user|
+                    user.attributes.merge({
+                        assignable_type: 'User'
+                    })
+                end
+            )
+        end
+
+        # POST /api/tickets/1/assign
+        def api_assign
+            if @ticket.update(ticket_assignment_params)
+                responseWithSuccessful(@ticket.detailed_info)
+            else
+                responseWithError(@ticket.errors.full_messages.to_sentence)
+            end
+        end
+
         private
 
         def set_ticket
@@ -215,6 +234,15 @@ module CloudHelp
                     :cloud_help_ticket_types_id,
                     :cloud_help_ticket_priorities_id,
                     :cloud_help_ticket_categories_id
+                ]
+            )
+        end
+
+        def ticket_assignment_params
+            params.require(:ticket).permit(
+                assignment_attributes: [
+                    :assignable_id,
+                    :assignable_type
                 ]
             )
         end

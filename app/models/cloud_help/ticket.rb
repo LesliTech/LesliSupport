@@ -11,8 +11,12 @@ module CloudHelp
         has_many :timelines, foreign_key: 'cloud_help_tickets_id'
 
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'
+        has_one :assignment, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'  
 
         accepts_nested_attributes_for :detail
+        accepts_nested_attributes_for :assignment, update_only: true
+
+        UNASIGGNED = 'none'
 
         def save
             if new_record?
@@ -54,26 +58,26 @@ module CloudHelp
                 "
             ).joins(
                 "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
-            ).joins(
-                :user
-            ).select(
-                "users.email as email",
-                "subject",
-                "description",
-                "tags",
-                "CHTP.name as priority",
-                "CHTT.name as type",
-                "CHTS.name as state",
-                "CHTP.id as cloud_help_ticket_priorities_id",
-                "CHTT.id as cloud_help_ticket_types_id",
-                "CHTW.id as cloud_help_ticket_workflows_id",
-                "CHTC.id as cloud_help_ticket_categories_id",
-                "CHTS.id as cloud_help_ticket_states_id"
+            ).joins( :user ).select(
+                "users.email as email",                         "subject",
+                "description",                                  "tags",
+                "CHTP.name as priority",                        "CHTT.name as type",
+                "CHTS.name as state",                           "CHTP.id as cloud_help_ticket_priorities_id",
+                "CHTT.id as cloud_help_ticket_types_id",        "CHTW.id as cloud_help_ticket_workflows_id",
+                "CHTC.id as cloud_help_ticket_categories_id",   "CHTS.id as cloud_help_ticket_states_id"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
-            { 
+            assignable_name = ''
+            assignable_type = UNASIGGNED
+            if assignment
+                assignable_name = assignment.assignable.assignable_name
+                assignable_type = assignment.assignable_type
+            end
+            return { 
                 id: id,
                 created_at: created_at,
+                assignable_name: assignable_name,
+                assignable_type: assignable_type,
                 detail_attributes: data.merge(
                     category: detail.category.full_path
                 )
@@ -85,12 +89,18 @@ module CloudHelp
 
             tickets.map do |ticket|
                 detail = ticket.detail
+                assignable_type = UNASIGGNED
+                if ticket.assignment
+                    assignable_type = ticket.assignment.assignable_type
+                end
+                
                 ticket.attributes.merge({
                     subject: detail.subject,
                     type: detail.type.name,
                     state: detail.workflow.ticket_state.name,
                     category: detail.category.name,
-                    priority: detail.priority.name
+                    priority: detail.priority.name,
+                    assignable_type: assignable_type
                 })
             end
         end
@@ -230,7 +240,7 @@ module CloudHelp
 
         def notify_followers(subject)
             followers.each do |follower|
-                Courier::Bell::NotificationJob.perform_now(
+                Courier::Bell::Notifications.send(
                     user: follower.user,
                     subject: subject,
                     href: "/help/tickets/#{id}"
