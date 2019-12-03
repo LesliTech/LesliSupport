@@ -33,6 +33,8 @@ CloudHelp::Engine.routes.draw do
             get '/options', to: 'tickets#api_options'
             get '/:id/follow_up_states', to: 'tickets#api_follow_up_states'
             get '/:id/timelines', to: 'tickets#api_timelines'
+            get '/:id/assignables', to: 'tickets#api_assignables'
+            post '/:id/assign', to: 'tickets#api_assign'
             put '/:id/workflow', to: 'tickets#api_update_workflow'
             put '/:id/escalate', to: 'tickets#api_escalate'
             put '/:id/descalate', to: 'tickets#api_descalate'
