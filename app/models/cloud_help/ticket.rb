@@ -77,8 +77,7 @@ module CloudHelp
             }
         end
 
-        def self.detailed_info(help_account)
-            tickets = help_account.tickets.all
+        def self.detailed_info(tickets)
 
             tickets.map do |ticket|
                 detail = ticket.detail

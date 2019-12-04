@@ -1,7 +1,7 @@
 %component-layout-navigation
     %template(v-slot:right)
         = link_to "Dashboards", root_path, class: "navbar-item"
-        = link_to "My Tickets", tickets_path, class: "navbar-item"
+        = link_to "My Tickets", assigned_path, class: "navbar-item"
         = link_to "Tickets", tickets_path, class: "navbar-item"
         = link_to "Categories", ticket_categories_path, class: "navbar-item"
         = link_to "Priorities", ticket_priorities_path, class: "navbar-item"

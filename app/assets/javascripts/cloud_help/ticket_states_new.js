@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 576);
+/******/ 	return __webpack_require__(__webpack_require__.s = 580);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -12135,7 +12135,7 @@ function normalizeComponent (
 
 }));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(20).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(23).setImmediate))
 
 /***/ }),
 
@@ -12336,8 +12336,8 @@ process.umask = function() { return 0; };
 "use strict";
 
 
-var bind = __webpack_require__(26);
-var isBuffer = __webpack_require__(61);
+var bind = __webpack_require__(29);
+var isBuffer = __webpack_require__(71);
 
 /*global toString:true*/
 
@@ -12673,77 +12673,6 @@ module.exports = {
 /***/ }),
 
 /***/ 20:
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
-            (typeof self !== "undefined" && self) ||
-            window;
-var apply = Function.prototype.apply;
-
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) {
-  if (timeout) {
-    timeout.close();
-  }
-};
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
-}
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(scope, this._id);
-};
-
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// setimmediate attaches itself to the global object
-__webpack_require__(59);
-// On some exotic environments, it's not clear which object `setimmediate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
-
-/***/ }),
-
-/***/ 23:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12856,10 +12785,81 @@ component.options.__file = "engines/CloudHelp/app/vue/components/ticket_state_na
 
 /***/ }),
 
-/***/ 257:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
-var content = __webpack_require__(554);
+/* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
+            (typeof self !== "undefined" && self) ||
+            window;
+var apply = Function.prototype.apply;
+
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, scope, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, scope, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
+}
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(scope, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(69);
+// On some exotic environments, it's not clear which object `setimmediate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
+
+/***/ }),
+
+/***/ 258:
+/***/ (function(module, exports, __webpack_require__) {
+
+var content = __webpack_require__(557);
 
 if (typeof content === 'string') {
   content = [[module.i, content, '']];
@@ -12870,7 +12870,7 @@ var options = {}
 options.insert = "head";
 options.singleton = false;
 
-var update = __webpack_require__(43)(content, options);
+var update = __webpack_require__(38)(content, options);
 
 if (content.locals) {
   module.exports = content.locals;
@@ -12879,7 +12879,7 @@ if (content.locals) {
 
 /***/ }),
 
-/***/ 26:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12898,7 +12898,7 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 
-/***/ 27:
+/***/ 30:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12977,7 +12977,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ }),
 
-/***/ 28:
+/***/ 31:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12990,14 +12990,14 @@ module.exports = function isCancel(value) {
 
 /***/ }),
 
-/***/ 29:
+/***/ 32:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(66);
+var normalizeHeaderName = __webpack_require__(76);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -13014,10 +13014,10 @@ function getDefaultAdapter() {
   // Only Node.JS has a process variable that is of [[Class]] process
   if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(30);
+    adapter = __webpack_require__(33);
   } else if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(30);
+    adapter = __webpack_require__(33);
   }
   return adapter;
 }
@@ -13097,18 +13097,18 @@ module.exports = defaults;
 
 /***/ }),
 
-/***/ 30:
+/***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(67);
-var buildURL = __webpack_require__(27);
-var parseHeaders = __webpack_require__(69);
-var isURLSameOrigin = __webpack_require__(70);
-var createError = __webpack_require__(31);
+var settle = __webpack_require__(77);
+var buildURL = __webpack_require__(30);
+var parseHeaders = __webpack_require__(79);
+var isURLSameOrigin = __webpack_require__(80);
+var createError = __webpack_require__(34);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -13200,7 +13200,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(71);
+      var cookies = __webpack_require__(81);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -13279,13 +13279,13 @@ module.exports = function xhrAdapter(config) {
 
 /***/ }),
 
-/***/ 31:
+/***/ 34:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(68);
+var enhanceError = __webpack_require__(78);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -13305,7 +13305,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 /***/ }),
 
-/***/ 32:
+/***/ 35:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13364,7 +13364,7 @@ module.exports = function mergeConfig(config1, config2) {
 
 /***/ }),
 
-/***/ 33:
+/***/ 36:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13391,7 +13391,393 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 34:
+/***/ 37:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (useSourceMap) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item, useSourceMap);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], "{").concat(content, "}");
+      }
+
+      return content;
+    }).join('');
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery) {
+    if (typeof modules === 'string') {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, '']];
+    }
+
+    var alreadyImportedModules = {};
+
+    for (var i = 0; i < this.length; i++) {
+      // eslint-disable-next-line prefer-destructuring
+      var id = this[i][0];
+
+      if (id != null) {
+        alreadyImportedModules[id] = true;
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = modules[_i]; // skip already imported module
+      // this implementation is not 100% perfect for weird media query combinations
+      // when a module is imported multiple times with different media queries.
+      // I hope this will never occur (Hey this way we have smaller bundles)
+
+      if (item[0] == null || !alreadyImportedModules[item[0]]) {
+        if (mediaQuery && !item[2]) {
+          item[2] = mediaQuery;
+        } else if (mediaQuery) {
+          item[2] = "(".concat(item[2], ") and (").concat(mediaQuery, ")");
+        }
+
+        list.push(item);
+      }
+    }
+  };
+
+  return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
+
+  var cssMapping = item[3];
+
+  if (!cssMapping) {
+    return content;
+  }
+
+  if (useSourceMap && typeof btoa === 'function') {
+    var sourceMapping = toComment(cssMapping);
+    var sourceURLs = cssMapping.sources.map(function (source) {
+      return "/*# sourceURL=".concat(cssMapping.sourceRoot).concat(source, " */");
+    });
+    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+  }
+
+  return [content].join('\n');
+} // Adapted from convert-source-map (MIT)
+
+
+function toComment(sourceMap) {
+  // eslint-disable-next-line no-undef
+  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+  return "/*# ".concat(data, " */");
+}
+
+/***/ }),
+
+/***/ 38:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var stylesInDom = {};
+
+var isOldIE = function isOldIE() {
+  var memo;
+  return function memorize() {
+    if (typeof memo === 'undefined') {
+      // Test for IE <= 9 as proposed by Browserhacks
+      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+      // Tests for existence of standard globals is to allow style-loader
+      // to operate correctly into non-standard environments
+      // @see https://github.com/webpack-contrib/style-loader/issues/177
+      memo = Boolean(window && document && document.all && !window.atob);
+    }
+
+    return memo;
+  };
+}();
+
+var getTarget = function getTarget() {
+  var memo = {};
+  return function memorize(target) {
+    if (typeof memo[target] === 'undefined') {
+      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
+
+      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+        try {
+          // This will throw an exception if access to iframe is blocked
+          // due to cross-origin restrictions
+          styleTarget = styleTarget.contentDocument.head;
+        } catch (e) {
+          // istanbul ignore next
+          styleTarget = null;
+        }
+      }
+
+      memo[target] = styleTarget;
+    }
+
+    return memo[target];
+  };
+}();
+
+function listToStyles(list, options) {
+  var styles = [];
+  var newStyles = {};
+
+  for (var i = 0; i < list.length; i++) {
+    var item = list[i];
+    var id = options.base ? item[0] + options.base : item[0];
+    var css = item[1];
+    var media = item[2];
+    var sourceMap = item[3];
+    var part = {
+      css: css,
+      media: media,
+      sourceMap: sourceMap
+    };
+
+    if (!newStyles[id]) {
+      styles.push(newStyles[id] = {
+        id: id,
+        parts: [part]
+      });
+    } else {
+      newStyles[id].parts.push(part);
+    }
+  }
+
+  return styles;
+}
+
+function addStylesToDom(styles, options) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i];
+    var domStyle = stylesInDom[item.id];
+    var j = 0;
+
+    if (domStyle) {
+      domStyle.refs++;
+
+      for (; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j]);
+      }
+
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j], options));
+      }
+    } else {
+      var parts = [];
+
+      for (; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j], options));
+      }
+
+      stylesInDom[item.id] = {
+        id: item.id,
+        refs: 1,
+        parts: parts
+      };
+    }
+  }
+}
+
+function insertStyleElement(options) {
+  var style = document.createElement('style');
+
+  if (typeof options.attributes.nonce === 'undefined') {
+    var nonce =  true ? __webpack_require__.nc : undefined;
+
+    if (nonce) {
+      options.attributes.nonce = nonce;
+    }
+  }
+
+  Object.keys(options.attributes).forEach(function (key) {
+    style.setAttribute(key, options.attributes[key]);
+  });
+
+  if (typeof options.insert === 'function') {
+    options.insert(style);
+  } else {
+    var target = getTarget(options.insert || 'head');
+
+    if (!target) {
+      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
+    }
+
+    target.appendChild(style);
+  }
+
+  return style;
+}
+
+function removeStyleElement(style) {
+  // istanbul ignore if
+  if (style.parentNode === null) {
+    return false;
+  }
+
+  style.parentNode.removeChild(style);
+}
+/* istanbul ignore next  */
+
+
+var replaceText = function replaceText() {
+  var textStore = [];
+  return function replace(index, replacement) {
+    textStore[index] = replacement;
+    return textStore.filter(Boolean).join('\n');
+  };
+}();
+
+function applyToSingletonTag(style, index, remove, obj) {
+  var css = remove ? '' : obj.css; // For old IE
+
+  /* istanbul ignore if  */
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = replaceText(index, css);
+  } else {
+    var cssNode = document.createTextNode(css);
+    var childNodes = style.childNodes;
+
+    if (childNodes[index]) {
+      style.removeChild(childNodes[index]);
+    }
+
+    if (childNodes.length) {
+      style.insertBefore(cssNode, childNodes[index]);
+    } else {
+      style.appendChild(cssNode);
+    }
+  }
+}
+
+function applyToTag(style, options, obj) {
+  var css = obj.css;
+  var media = obj.media;
+  var sourceMap = obj.sourceMap;
+
+  if (media) {
+    style.setAttribute('media', media);
+  }
+
+  if (sourceMap && btoa) {
+    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
+  } // For old IE
+
+  /* istanbul ignore if  */
+
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    while (style.firstChild) {
+      style.removeChild(style.firstChild);
+    }
+
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var singleton = null;
+var singletonCounter = 0;
+
+function addStyle(obj, options) {
+  var style;
+  var update;
+  var remove;
+
+  if (options.singleton) {
+    var styleIndex = singletonCounter++;
+    style = singleton || (singleton = insertStyleElement(options));
+    update = applyToSingletonTag.bind(null, style, styleIndex, false);
+    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+  } else {
+    style = insertStyleElement(options);
+    update = applyToTag.bind(null, style, options);
+
+    remove = function remove() {
+      removeStyleElement(style);
+    };
+  }
+
+  update(obj);
+  return function updateStyle(newObj) {
+    if (newObj) {
+      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
+        return;
+      }
+
+      update(obj = newObj);
+    } else {
+      remove();
+    }
+  };
+}
+
+module.exports = function (list, options) {
+  options = options || {};
+  options.attributes = typeof options.attributes === 'object' ? options.attributes : {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+  // tags it will allow on a page
+
+  if (!options.singleton && typeof options.singleton !== 'boolean') {
+    options.singleton = isOldIE();
+  }
+
+  var styles = listToStyles(list, options);
+  addStylesToDom(styles, options);
+  return function update(newList) {
+    var mayRemove = [];
+
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i];
+      var domStyle = stylesInDom[item.id];
+
+      if (domStyle) {
+        domStyle.refs--;
+        mayRemove.push(domStyle);
+      }
+    }
+
+    if (newList) {
+      var newStyles = listToStyles(newList, options);
+      addStylesToDom(newStyles, options);
+    }
+
+    for (var _i = 0; _i < mayRemove.length; _i++) {
+      var _domStyle = mayRemove[_i];
+
+      if (_domStyle.refs === 0) {
+        for (var j = 0; j < _domStyle.parts.length; j++) {
+          _domStyle.parts[j]();
+        }
+
+        delete stylesInDom[_domStyle.id];
+      }
+    }
+  };
+};
+
+/***/ }),
+
+/***/ 39:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13912,7 +14298,7 @@ var FontAwesomeLayersText = {
 
 /***/ }),
 
-/***/ 35:
+/***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
 (function(global, factory) {
@@ -14436,14 +14822,14 @@ var FontAwesomeLayersText = {
 
 /***/ }),
 
-/***/ 36:
+/***/ 41:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(60);
+module.exports = __webpack_require__(70);
 
 /***/ }),
 
-/***/ 37:
+/***/ 42:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -14473,12 +14859,12 @@ Building a better future, one line of code at a time.
 // · 
 */
 
-module.exports = __webpack_require__(76)
+module.exports = __webpack_require__(86)
 
 
 /***/ }),
 
-/***/ 38:
+/***/ 43:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -34918,10 +35304,10 @@ var _iconsCache = {
 
 
 // EXTERNAL MODULE: ./node_modules/@fortawesome/vue-fontawesome/index.es.js
-var vue_fontawesome_index_es = __webpack_require__(34);
+var vue_fontawesome_index_es = __webpack_require__(39);
 
 // EXTERNAL MODULE: ./node_modules/@rails/actioncable/app/assets/javascripts/action_cable.js
-var action_cable = __webpack_require__(35);
+var action_cable = __webpack_require__(40);
 
 // CONCATENATED MODULE: ./app/vue/plugins/bus.js
 /*
@@ -35051,7 +35437,7 @@ Building a better future, one line of code at a time.
   }
 });
 // EXTERNAL MODULE: ./node_modules/axios/index.js
-var axios = __webpack_require__(36);
+var axios = __webpack_require__(41);
 var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 
 // CONCATENATED MODULE: ./app/vue/plugins/http.js
@@ -35193,7 +35579,7 @@ function date_defineProperty(obj, key, value) { if (key in obj) { Object.defineP
   }
 });
 // EXTERNAL MODULE: ./node_modules/lesli-nodejs-debug-message/browser.js
-var browser = __webpack_require__(37);
+var browser = __webpack_require__(42);
 var browser_default = /*#__PURE__*/__webpack_require__.n(browser);
 
 // CONCATENATED MODULE: ./app/vue/functions/document.js
@@ -36309,392 +36695,6 @@ vue_default.a.component('component-layout-empty-data', empty_data); // · Vue ap
 
 /***/ }),
 
-/***/ 42:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-// eslint-disable-next-line func-names
-module.exports = function (useSourceMap) {
-  var list = []; // return the list of modules as css string
-
-  list.toString = function toString() {
-    return this.map(function (item) {
-      var content = cssWithMappingToString(item, useSourceMap);
-
-      if (item[2]) {
-        return "@media ".concat(item[2], "{").concat(content, "}");
-      }
-
-      return content;
-    }).join('');
-  }; // import a list of modules into the list
-  // eslint-disable-next-line func-names
-
-
-  list.i = function (modules, mediaQuery) {
-    if (typeof modules === 'string') {
-      // eslint-disable-next-line no-param-reassign
-      modules = [[null, modules, '']];
-    }
-
-    var alreadyImportedModules = {};
-
-    for (var i = 0; i < this.length; i++) {
-      // eslint-disable-next-line prefer-destructuring
-      var id = this[i][0];
-
-      if (id != null) {
-        alreadyImportedModules[id] = true;
-      }
-    }
-
-    for (var _i = 0; _i < modules.length; _i++) {
-      var item = modules[_i]; // skip already imported module
-      // this implementation is not 100% perfect for weird media query combinations
-      // when a module is imported multiple times with different media queries.
-      // I hope this will never occur (Hey this way we have smaller bundles)
-
-      if (item[0] == null || !alreadyImportedModules[item[0]]) {
-        if (mediaQuery && !item[2]) {
-          item[2] = mediaQuery;
-        } else if (mediaQuery) {
-          item[2] = "(".concat(item[2], ") and (").concat(mediaQuery, ")");
-        }
-
-        list.push(item);
-      }
-    }
-  };
-
-  return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
-
-  var cssMapping = item[3];
-
-  if (!cssMapping) {
-    return content;
-  }
-
-  if (useSourceMap && typeof btoa === 'function') {
-    var sourceMapping = toComment(cssMapping);
-    var sourceURLs = cssMapping.sources.map(function (source) {
-      return "/*# sourceURL=".concat(cssMapping.sourceRoot).concat(source, " */");
-    });
-    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-  }
-
-  return [content].join('\n');
-} // Adapted from convert-source-map (MIT)
-
-
-function toComment(sourceMap) {
-  // eslint-disable-next-line no-undef
-  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
-  return "/*# ".concat(data, " */");
-}
-
-/***/ }),
-
-/***/ 43:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var stylesInDom = {};
-
-var isOldIE = function isOldIE() {
-  var memo;
-  return function memorize() {
-    if (typeof memo === 'undefined') {
-      // Test for IE <= 9 as proposed by Browserhacks
-      // @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-      // Tests for existence of standard globals is to allow style-loader
-      // to operate correctly into non-standard environments
-      // @see https://github.com/webpack-contrib/style-loader/issues/177
-      memo = Boolean(window && document && document.all && !window.atob);
-    }
-
-    return memo;
-  };
-}();
-
-var getTarget = function getTarget() {
-  var memo = {};
-  return function memorize(target) {
-    if (typeof memo[target] === 'undefined') {
-      var styleTarget = document.querySelector(target); // Special case to return head of iframe instead of iframe itself
-
-      if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-        try {
-          // This will throw an exception if access to iframe is blocked
-          // due to cross-origin restrictions
-          styleTarget = styleTarget.contentDocument.head;
-        } catch (e) {
-          // istanbul ignore next
-          styleTarget = null;
-        }
-      }
-
-      memo[target] = styleTarget;
-    }
-
-    return memo[target];
-  };
-}();
-
-function listToStyles(list, options) {
-  var styles = [];
-  var newStyles = {};
-
-  for (var i = 0; i < list.length; i++) {
-    var item = list[i];
-    var id = options.base ? item[0] + options.base : item[0];
-    var css = item[1];
-    var media = item[2];
-    var sourceMap = item[3];
-    var part = {
-      css: css,
-      media: media,
-      sourceMap: sourceMap
-    };
-
-    if (!newStyles[id]) {
-      styles.push(newStyles[id] = {
-        id: id,
-        parts: [part]
-      });
-    } else {
-      newStyles[id].parts.push(part);
-    }
-  }
-
-  return styles;
-}
-
-function addStylesToDom(styles, options) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i];
-    var domStyle = stylesInDom[item.id];
-    var j = 0;
-
-    if (domStyle) {
-      domStyle.refs++;
-
-      for (; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j]);
-      }
-
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j], options));
-      }
-    } else {
-      var parts = [];
-
-      for (; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j], options));
-      }
-
-      stylesInDom[item.id] = {
-        id: item.id,
-        refs: 1,
-        parts: parts
-      };
-    }
-  }
-}
-
-function insertStyleElement(options) {
-  var style = document.createElement('style');
-
-  if (typeof options.attributes.nonce === 'undefined') {
-    var nonce =  true ? __webpack_require__.nc : undefined;
-
-    if (nonce) {
-      options.attributes.nonce = nonce;
-    }
-  }
-
-  Object.keys(options.attributes).forEach(function (key) {
-    style.setAttribute(key, options.attributes[key]);
-  });
-
-  if (typeof options.insert === 'function') {
-    options.insert(style);
-  } else {
-    var target = getTarget(options.insert || 'head');
-
-    if (!target) {
-      throw new Error("Couldn't find a style target. This probably means that the value for the 'insert' parameter is invalid.");
-    }
-
-    target.appendChild(style);
-  }
-
-  return style;
-}
-
-function removeStyleElement(style) {
-  // istanbul ignore if
-  if (style.parentNode === null) {
-    return false;
-  }
-
-  style.parentNode.removeChild(style);
-}
-/* istanbul ignore next  */
-
-
-var replaceText = function replaceText() {
-  var textStore = [];
-  return function replace(index, replacement) {
-    textStore[index] = replacement;
-    return textStore.filter(Boolean).join('\n');
-  };
-}();
-
-function applyToSingletonTag(style, index, remove, obj) {
-  var css = remove ? '' : obj.css; // For old IE
-
-  /* istanbul ignore if  */
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = replaceText(index, css);
-  } else {
-    var cssNode = document.createTextNode(css);
-    var childNodes = style.childNodes;
-
-    if (childNodes[index]) {
-      style.removeChild(childNodes[index]);
-    }
-
-    if (childNodes.length) {
-      style.insertBefore(cssNode, childNodes[index]);
-    } else {
-      style.appendChild(cssNode);
-    }
-  }
-}
-
-function applyToTag(style, options, obj) {
-  var css = obj.css;
-  var media = obj.media;
-  var sourceMap = obj.sourceMap;
-
-  if (media) {
-    style.setAttribute('media', media);
-  }
-
-  if (sourceMap && btoa) {
-    css += "\n/*# sourceMappingURL=data:application/json;base64,".concat(btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))), " */");
-  } // For old IE
-
-  /* istanbul ignore if  */
-
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    while (style.firstChild) {
-      style.removeChild(style.firstChild);
-    }
-
-    style.appendChild(document.createTextNode(css));
-  }
-}
-
-var singleton = null;
-var singletonCounter = 0;
-
-function addStyle(obj, options) {
-  var style;
-  var update;
-  var remove;
-
-  if (options.singleton) {
-    var styleIndex = singletonCounter++;
-    style = singleton || (singleton = insertStyleElement(options));
-    update = applyToSingletonTag.bind(null, style, styleIndex, false);
-    remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-  } else {
-    style = insertStyleElement(options);
-    update = applyToTag.bind(null, style, options);
-
-    remove = function remove() {
-      removeStyleElement(style);
-    };
-  }
-
-  update(obj);
-  return function updateStyle(newObj) {
-    if (newObj) {
-      if (newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap) {
-        return;
-      }
-
-      update(obj = newObj);
-    } else {
-      remove();
-    }
-  };
-}
-
-module.exports = function (list, options) {
-  options = options || {};
-  options.attributes = typeof options.attributes === 'object' ? options.attributes : {}; // Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-  // tags it will allow on a page
-
-  if (!options.singleton && typeof options.singleton !== 'boolean') {
-    options.singleton = isOldIE();
-  }
-
-  var styles = listToStyles(list, options);
-  addStylesToDom(styles, options);
-  return function update(newList) {
-    var mayRemove = [];
-
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i];
-      var domStyle = stylesInDom[item.id];
-
-      if (domStyle) {
-        domStyle.refs--;
-        mayRemove.push(domStyle);
-      }
-    }
-
-    if (newList) {
-      var newStyles = listToStyles(newList, options);
-      addStylesToDom(newStyles, options);
-    }
-
-    for (var _i = 0; _i < mayRemove.length; _i++) {
-      var _domStyle = mayRemove[_i];
-
-      if (_domStyle.refs === 0) {
-        for (var j = 0; j < _domStyle.parts.length; j++) {
-          _domStyle.parts[j]();
-        }
-
-        delete stylesInDom[_domStyle.id];
-      }
-    }
-  };
-};
-
-/***/ }),
-
 /***/ 5:
 /***/ (function(module, exports) {
 
@@ -36722,35 +36722,35 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 553:
+/***/ 556:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(257);
+/* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(258);
 /* harmony import */ var _node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
  /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_style_loader_dist_index_js_node_modules_css_loader_dist_cjs_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_list_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
-/***/ 554:
+/***/ 557:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(42)(false);
+exports = module.exports = __webpack_require__(37)(false);
 // Module
 exports.push([module.i, "\ntable tr:hover {\n    cursor: pointer;\n}\n", ""]);
 
 
 /***/ }),
 
-/***/ 559:
+/***/ 562:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
 // EXTERNAL MODULE: ./app/vue/app.js + 93 modules
-var app = __webpack_require__(38);
+var app = __webpack_require__(43);
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=template&id=323da855&
 var render = function() {
@@ -36858,7 +36858,7 @@ render._withStripped = true
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=template&id=323da855&
 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/components/ticket_state_name.vue + 4 modules
-var ticket_state_name = __webpack_require__(23);
+var ticket_state_name = __webpack_require__(20);
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--3!./node_modules/vue-loader/lib??vue-loader-options!./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=script&lang=js&
 /*
@@ -36927,7 +36927,7 @@ Building a better future, one line of code at a time.
 // CONCATENATED MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=script&lang=js&
  /* harmony default export */ var apps_listvue_type_script_lang_js_ = (listvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./engines/CloudHelp/app/vue/ticket_states/apps/list.vue?vue&type=style&index=0&lang=css&
-var listvue_type_style_index_0_lang_css_ = __webpack_require__(553);
+var listvue_type_style_index_0_lang_css_ = __webpack_require__(556);
 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__(0);
@@ -37804,12 +37804,12 @@ Object(app["a" /* default */])("CloudHelp", "[list|new|show|edit]", "help/ticket
 
 /***/ }),
 
-/***/ 576:
+/***/ 580:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(559);
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(562);
 /*
 Lesli
 
@@ -37837,200 +37837,6 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 */
 
-
-/***/ }),
-
-/***/ 59:
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
-    "use strict";
-
-    if (global.setImmediate) {
-        return;
-    }
-
-    var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
-    var doc = global.document;
-    var registerImmediate;
-
-    function setImmediate(callback) {
-      // Callback can either be a function or a string
-      if (typeof callback !== "function") {
-        callback = new Function("" + callback);
-      }
-      // Copy function arguments
-      var args = new Array(arguments.length - 1);
-      for (var i = 0; i < args.length; i++) {
-          args[i] = arguments[i + 1];
-      }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
-      registerImmediate(nextHandle);
-      return nextHandle++;
-    }
-
-    function clearImmediate(handle) {
-        delete tasksByHandle[handle];
-    }
-
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
-        switch (args.length) {
-        case 0:
-            callback();
-            break;
-        case 1:
-            callback(args[0]);
-            break;
-        case 2:
-            callback(args[0], args[1]);
-            break;
-        case 3:
-            callback(args[0], args[1], args[2]);
-            break;
-        default:
-            callback.apply(undefined, args);
-            break;
-        }
-    }
-
-    function runIfPresent(handle) {
-        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
-            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
-            // "too much recursion" error.
-            setTimeout(runIfPresent, 0, handle);
-        } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
-                try {
-                    run(task);
-                } finally {
-                    clearImmediate(handle);
-                    currentlyRunningATask = false;
-                }
-            }
-        }
-    }
-
-    function installNextTickImplementation() {
-        registerImmediate = function(handle) {
-            process.nextTick(function () { runIfPresent(handle); });
-        };
-    }
-
-    function canUsePostMessage() {
-        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
-        // where `global.postMessage` means something completely different and can't be used for this purpose.
-        if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
-            var oldOnMessage = global.onmessage;
-            global.onmessage = function() {
-                postMessageIsAsynchronous = false;
-            };
-            global.postMessage("", "*");
-            global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
-        }
-    }
-
-    function installPostMessageImplementation() {
-        // Installs an event handler on `global` for the `message` event: see
-        // * https://developer.mozilla.org/en/DOM/window.postMessage
-        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
-
-        var messagePrefix = "setImmediate$" + Math.random() + "$";
-        var onGlobalMessage = function(event) {
-            if (event.source === global &&
-                typeof event.data === "string" &&
-                event.data.indexOf(messagePrefix) === 0) {
-                runIfPresent(+event.data.slice(messagePrefix.length));
-            }
-        };
-
-        if (global.addEventListener) {
-            global.addEventListener("message", onGlobalMessage, false);
-        } else {
-            global.attachEvent("onmessage", onGlobalMessage);
-        }
-
-        registerImmediate = function(handle) {
-            global.postMessage(messagePrefix + handle, "*");
-        };
-    }
-
-    function installMessageChannelImplementation() {
-        var channel = new MessageChannel();
-        channel.port1.onmessage = function(event) {
-            var handle = event.data;
-            runIfPresent(handle);
-        };
-
-        registerImmediate = function(handle) {
-            channel.port2.postMessage(handle);
-        };
-    }
-
-    function installReadyStateChangeImplementation() {
-        var html = doc.documentElement;
-        registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
-            var script = doc.createElement("script");
-            script.onreadystatechange = function () {
-                runIfPresent(handle);
-                script.onreadystatechange = null;
-                html.removeChild(script);
-                script = null;
-            };
-            html.appendChild(script);
-        };
-    }
-
-    function installSetTimeoutImplementation() {
-        registerImmediate = function(handle) {
-            setTimeout(runIfPresent, 0, handle);
-        };
-    }
-
-    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
-    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
-    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
-
-    // Don't get fooled by e.g. browserify environments.
-    if ({}.toString.call(global.process) === "[object process]") {
-        // For Node.js before 0.9
-        installNextTickImplementation();
-
-    } else if (canUsePostMessage()) {
-        // For non-IE10 modern browsers
-        installPostMessageImplementation();
-
-    } else if (global.MessageChannel) {
-        // For web workers, where supported
-        installMessageChannelImplementation();
-
-    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
-        // For IE 6–8
-        installReadyStateChangeImplementation();
-
-    } else {
-        // For older browsers
-        installSetTimeoutImplementation();
-    }
-
-    attachTo.setImmediate = setImmediate;
-    attachTo.clearImmediate = clearImmediate;
-}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
-
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(11)))
 
 /***/ }),
 
@@ -40457,21 +40263,215 @@ var autoReplace = function autoReplace() {
 
 
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(20).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(23).setImmediate))
 
 /***/ }),
 
-/***/ 60:
+/***/ 69:
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
+
+    if (global.setImmediate) {
+        return;
+    }
+
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
+
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
+            }
+        }
+    }
+
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
+        }
+    }
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
+    }
+
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
+
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
+
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
+
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5), __webpack_require__(11)))
+
+/***/ }),
+
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var bind = __webpack_require__(26);
-var Axios = __webpack_require__(62);
-var mergeConfig = __webpack_require__(32);
-var defaults = __webpack_require__(29);
+var bind = __webpack_require__(29);
+var Axios = __webpack_require__(72);
+var mergeConfig = __webpack_require__(35);
+var defaults = __webpack_require__(32);
 
 /**
  * Create an instance of Axios
@@ -40504,15 +40504,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(33);
-axios.CancelToken = __webpack_require__(74);
-axios.isCancel = __webpack_require__(28);
+axios.Cancel = __webpack_require__(36);
+axios.CancelToken = __webpack_require__(84);
+axios.isCancel = __webpack_require__(31);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(75);
+axios.spread = __webpack_require__(85);
 
 module.exports = axios;
 
@@ -40522,7 +40522,7 @@ module.exports.default = axios;
 
 /***/ }),
 
-/***/ 61:
+/***/ 71:
 /***/ (function(module, exports) {
 
 /*!
@@ -40540,17 +40540,17 @@ module.exports = function isBuffer (obj) {
 
 /***/ }),
 
-/***/ 62:
+/***/ 72:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var buildURL = __webpack_require__(27);
-var InterceptorManager = __webpack_require__(63);
-var dispatchRequest = __webpack_require__(64);
-var mergeConfig = __webpack_require__(32);
+var buildURL = __webpack_require__(30);
+var InterceptorManager = __webpack_require__(73);
+var dispatchRequest = __webpack_require__(74);
+var mergeConfig = __webpack_require__(35);
 
 /**
  * Create a new instance of Axios
@@ -40634,7 +40634,7 @@ module.exports = Axios;
 
 /***/ }),
 
-/***/ 63:
+/***/ 73:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40694,18 +40694,18 @@ module.exports = InterceptorManager;
 
 /***/ }),
 
-/***/ 64:
+/***/ 74:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(65);
-var isCancel = __webpack_require__(28);
-var defaults = __webpack_require__(29);
-var isAbsoluteURL = __webpack_require__(72);
-var combineURLs = __webpack_require__(73);
+var transformData = __webpack_require__(75);
+var isCancel = __webpack_require__(31);
+var defaults = __webpack_require__(32);
+var isAbsoluteURL = __webpack_require__(82);
+var combineURLs = __webpack_require__(83);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -40788,7 +40788,7 @@ module.exports = function dispatchRequest(config) {
 
 /***/ }),
 
-/***/ 65:
+/***/ 75:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40816,7 +40816,7 @@ module.exports = function transformData(data, headers, fns) {
 
 /***/ }),
 
-/***/ 66:
+/***/ 76:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40836,13 +40836,13 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 /***/ }),
 
-/***/ 67:
+/***/ 77:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(31);
+var createError = __webpack_require__(34);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -40869,7 +40869,7 @@ module.exports = function settle(resolve, reject, response) {
 
 /***/ }),
 
-/***/ 68:
+/***/ 78:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40919,7 +40919,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 /***/ }),
 
-/***/ 69:
+/***/ 79:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -40980,7 +40980,7 @@ module.exports = function parseHeaders(headers) {
 
 /***/ }),
 
-/***/ 70:
+/***/ 80:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41056,7 +41056,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 71:
+/***/ 81:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41117,7 +41117,7 @@ module.exports = (
 
 /***/ }),
 
-/***/ 72:
+/***/ 82:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41139,7 +41139,7 @@ module.exports = function isAbsoluteURL(url) {
 
 /***/ }),
 
-/***/ 73:
+/***/ 83:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41161,13 +41161,13 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 /***/ }),
 
-/***/ 74:
+/***/ 84:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(33);
+var Cancel = __webpack_require__(36);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -41226,7 +41226,7 @@ module.exports = CancelToken;
 
 /***/ }),
 
-/***/ 75:
+/***/ 85:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41261,7 +41261,7 @@ module.exports = function spread(callback) {
 
 /***/ }),
 
-/***/ 76:
+/***/ 86:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -41294,7 +41294,7 @@ Building a better future, one line of code at a time.
 
 // · Loading node modules
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-let utils = __webpack_require__(77)
+let utils = __webpack_require__(87)
 
 
 // · 
@@ -41361,7 +41361,7 @@ module.exports = new browserDebugService
 
 /***/ }),
 
-/***/ 77:
+/***/ 87:
 /***/ (function(module, exports) {
 
 /*

@@ -22,7 +22,7 @@ module CloudHelp
             respond_to do |format|
                 format.html { }
                 format.json do
-                    tickets = Ticket.detailed_info(current_user.account.help)
+                    tickets = Ticket.detailed_info(current_user.account.help.tickets.all)
                     responseWithSuccessful(tickets) 
                 end
             end
@@ -49,6 +49,21 @@ module CloudHelp
 
         # GET /tickets/1/assign
         def assign
+        end
+
+        # GET /tickets/1/assigned
+        def assigned
+            respond_to do |format|
+                format.html { }
+                format.json do
+                    tickets = Ticket.detailed_info(
+                        current_user.ticket_assignments.map do |ticket_assignment|
+                            ticket_assignment.ticket
+                        end
+                    )
+                    responseWithSuccessful(tickets) 
+                end
+            end
         end
 
         # POST /tickets
