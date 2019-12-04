@@ -67,20 +67,13 @@ module CloudHelp
                 "CHTC.id as cloud_help_ticket_categories_id",   "CHTS.id as cloud_help_ticket_states_id"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
-            assignable_name = ''
-            assignable_type = UNASIGGNED
-            if assignment
-                assignable_name = assignment.assignable.assignable_name
-                assignable_type = assignment.assignable_type
-            end
-            return { 
+            return {
                 id: id,
                 created_at: created_at,
-                assignable_name: assignable_name,
-                assignable_type: assignable_type,
                 detail_attributes: data.merge(
                     category: detail.category.full_path
-                )
+                ),
+                assignment_attributes: assignment_info
             }
         end
 
@@ -89,9 +82,9 @@ module CloudHelp
 
             tickets.map do |ticket|
                 detail = ticket.detail
-                assignable_type = UNASIGGNED
+                assignation_type = UNASIGGNED
                 if ticket.assignment
-                    assignable_type = ticket.assignment.assignable_type
+                    assignation_type = ticket.assignment.assignation_type
                 end
                 
                 ticket.attributes.merge({
@@ -100,7 +93,7 @@ module CloudHelp
                     state: detail.workflow.ticket_state.name,
                     category: detail.category.name,
                     priority: detail.priority.name,
-                    assignable_type: assignable_type
+                    assignation_type: assignation_type
                 })
             end
         end
@@ -245,6 +238,35 @@ module CloudHelp
                     subject: subject,
                     href: "/help/tickets/#{id}"
                 )
+            end
+        end
+
+        def assign_to_user(params)
+            return false unless update(params)
+            timelines.create(
+                action: Ticket::Timeline.actions[:assigned_to_user],
+                description: I18n.t(
+                    'activerecord.models.cloud_help/ticket/timeline.actions.assigned_to_user',
+                    user: assignment.user.email
+                )
+            )
+        end
+
+        private
+
+        def assignment_info
+            return {
+                assignation_type: UNASIGGNED
+            } unless assignment
+
+            if assignment.user?
+                assignment.attributes.merge({
+                    assignable_name: assignment.user.email
+                })
+            elsif assignment.team?
+                assignment.attributes.merge({
+                    assignable_name: 'IMPLEMENT ME'
+                })
             end
         end
 

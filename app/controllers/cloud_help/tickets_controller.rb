@@ -47,6 +47,10 @@ module CloudHelp
         def edit
         end
 
+        # GET /tickets/1/assign
+        def assign
+        end
+
         # POST /tickets
         def create
             ticket = Ticket.new(ticket_params)
@@ -194,22 +198,24 @@ module CloudHelp
             responseWithSuccessful(@ticket.timelines)
         end
 
-        # GET /api/tickets/1/assignables
+        # GET /api/tickets/assignables
         def api_assignables
             users = Courier::Core::Users.list()
-            responseWithSuccessful(
-                users.map do |user|
-                    user.attributes.merge({
-                        assignable_type: 'User'
-                    })
-                end
-            )
+            responseWithSuccessful({
+                :user => users,
+                :team => []
+            })
         end
 
         # POST /api/tickets/1/assign
         def api_assign
-            if @ticket.update(ticket_assignment_params)
-                responseWithSuccessful(@ticket.detailed_info)
+            if @ticket.assign_to_user(ticket_assignment_params)
+                responseWithSuccessful
+                @ticket.notify_followers(I18n.t(
+                    'cloud_help.controllers.tickets.notifications.updated.assigned_to_user',
+                    ticket_id: @ticket.id,
+                    user: @ticket.assignment.user.email
+                ))
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
@@ -241,8 +247,9 @@ module CloudHelp
         def ticket_assignment_params
             params.require(:ticket).permit(
                 assignment_attributes: [
-                    :assignable_id,
-                    :assignable_type
+                    :users_id,
+                    :cloud_teams_teams_id,
+                    :assignation_type
                 ]
             )
         end

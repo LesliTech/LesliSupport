@@ -11,6 +11,7 @@ en:
                     created: Ticket number %{ticket_id} has been created
                     closed: Ticket number %{ticket_id} has been closed
                     updated:
+                        assigned_to_user: Ticket number %{ticket_id} has been assigned to user %{user}
                         workflow: Ticket number %{ticket_id} has been updated to state %{state_name}
                         escalated: Ticket number %{ticket_id} has been escalated to %{priority_name} priority
                         descalated: Ticket number %{ticket_id} has been de-escalated to %{priority_name} priority

@@ -11,3 +11,4 @@ en:
                     type_transferred: Type Transfer
                     created: Created
                     closed: Closed
+                    assigned_to_user: Assigned to User
