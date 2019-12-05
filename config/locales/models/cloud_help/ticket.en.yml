@@ -10,6 +10,7 @@ en:
                     type_transferred: Transferred from type '%{old_type_name}' to '%{new_type_name}'
                     created: Ticket number %{id} has been created
                     closed: Ticket number %{id} has been closed
+                    assigned_to_user: Has been assigned to %{user}
         errors:
             models:
                 cloud_help/ticket:

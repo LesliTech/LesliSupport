@@ -12,6 +12,7 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_workflows, except: [:new, :create, :destroy]
 
     resources :tickets, except: [:update, :destroy] do
+        get '/assign', to: 'tickets#assign'
         get '/files', to: 'tickets#files'
         get '/actions', to: 'tickets#actions'
         get '/activities', to: 'tickets#activities'
@@ -30,10 +31,10 @@ CloudHelp::Engine.routes.draw do
 
     scope :api do
         scope :tickets do
+            get '/assignables', to: 'tickets#api_assignables'
             get '/options', to: 'tickets#api_options'
             get '/:id/follow_up_states', to: 'tickets#api_follow_up_states'
             get '/:id/timelines', to: 'tickets#api_timelines'
-            get '/:id/assignables', to: 'tickets#api_assignables'
             post '/:id/assign', to: 'tickets#api_assign'
             put '/:id/workflow', to: 'tickets#api_update_workflow'
             put '/:id/escalate', to: 'tickets#api_escalate'

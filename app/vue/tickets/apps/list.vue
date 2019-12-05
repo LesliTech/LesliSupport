@@ -85,8 +85,8 @@ export default {
                 <b-table-column field="category" :label="translations.shared.fields.category">
                     {{props.row.category}}
                 </b-table-column>
-                <b-table-column field="assignable_type" :label="translations.shared.fields.assignable_type">
-                    {{translations.shared.assignable_types[props.row.assignable_type]}}
+                <b-table-column field="assignation_type" :label="translations.shared.fields.assignation_type">
+                    {{translations.shared.assignation_types[props.row.assignation_type]}}
                 </b-table-column>
                 <b-table-column field="state" :label="translations.shared.fields.state">
                     <component-ticket-state-name :name="props.row.state">

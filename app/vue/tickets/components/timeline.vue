@@ -77,22 +77,6 @@ export default {
         isCoreState(action){
             return action == 'created' || action == 'closed'
         },
-
-        tooltipType(action){
-            if(this.isTransfer(action)){
-                return 'is-warning'
-            }
-            if(this.isEscalate(action)){
-                return 'is-danger'
-            }
-            if(this.isDescalate(action)){
-                return 'is-success'
-            }
-            if(this.isCoreState(action)){
-                return 'is-info'
-            }
-            return 'is-light'
-        }
     }
 }
 </script>

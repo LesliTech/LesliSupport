@@ -2,16 +2,21 @@ en:
     cloud_help:
         tickets:
             shared:
-                text_on: 'on'
+                not_implemented: This feature is not implemented yet
                 name: Ticket
+                titles:
+                    created_by: Created by
+                    date: Creation date
+                    assigned: Assigned to
                 actions:
                     new: New Ticket
                     edit: Edit Ticket
                     show: Show Ticket
+                    assign: Assign Ticket
                     reset: Reset Ticket
                     return: Return
                 fields:
-                    assignable_type: Assigned
+                    assignation_type: Assignment
                     id: Number
                     description: Description
                     subject: Subject
@@ -21,7 +26,7 @@ en:
                     state: Status
                     created_at: Created at
                     updated_at: Updated at
-                assignable_types:
+                assignation_types:
                     none: None
-                    User: User
-                    CloudTeam: Team
+                    user: User
+                    team: Team

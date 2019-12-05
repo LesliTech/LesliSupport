@@ -187,6 +187,7 @@ export default {
                 if (result.successful) {
                     if(result.data.id == this.default_states.closed){
                         this.alert(this.translations.form.messages.close.successful)
+                        this.$router.push(`/${this.ticket_id}`)
                     }else{
                         this.alert(this.translations.form.messages.update_workflow.successful)
                     }
@@ -251,7 +252,7 @@ export default {
                     {{ translations.modals.descalate.body }}
                 </div>
                 <div class="card-footer has-text-right">
-                    <button class="card-footer-item button is-success" @click="descalateTicket">
+                    <button class="card-footer-item button is-danger" @click="descalateTicket">
                         {{ translations.modals.descalate.actions.descalate }}
                     </button>
                     <button class="card-footer-item button is-secondary" @click="modals.descalate=false">
@@ -320,7 +321,7 @@ export default {
                     </form>
                 </div>
                 <div class="card-footer has-text-right">
-                    <button class="card-footer-item button has-text-white is-warning" type="submit" form="form-transfer">
+                    <button class="card-footer-item button is-danger" type="submit" form="form-transfer">
                         {{ translations.modals.transfer.actions.transfer }}
                     </button>
                     <button class="card-footer-item button is-secondary" @click="modals.transfer=false">
@@ -465,10 +466,14 @@ export default {
                             <button class="button is-danger" type="button" @click="modals.escalate = true">
                                 {{translations.form.actions.escalate}}
                             </button>
-                            <button class="button is-success" type="button" @click="modals.descalate = true">
+                            <button class="button is-danger" type="button" @click="modals.descalate = true">
                                 {{translations.form.actions.descalate}}
                             </button>
-                            <button class="button is-warning has-text-white" type="button" @click="modals.transfer = true">
+                            <button 
+                                v-if="ticket.detail_attributes.cloud_help_ticket_states_id == default_states.created"
+                                class="button is-danger"
+                                type="button" @click="modals.transfer = true"
+                            >
                                 {{translations.form.actions.transfer}}
                             </button>
                         </div>

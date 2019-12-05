@@ -38,21 +38,29 @@ import appList from './apps/list.vue'
 import appEdit from './apps/edit.vue'
 import appShow from './apps/show.vue'
 import appNew from './apps/new.vue'
+import appAssign from './apps/assign.vue'
+import appAssigned from './apps/assigned.vue'
 
 
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|edit|show]", "help/tickets", [{
+app("CloudHelp", "[list|new|edit|show|assign|assigned]", "help/tickets", [{
     path: "/",
-    component: appList,
+    component: appList
 },{
     path: "/new",
-    component: appNew,
+    component: appNew
+},{
+    path: "/assigned",
+    component: appAssigned
 },{
     path: "/:id",
-    component: appShow,
+    component: appShow
 },{
     path: "/:id/edit",
-    component: appEdit,
+    component: appEdit
+},{
+    path: "/:id/assign",
+    component: appAssign
 }])
