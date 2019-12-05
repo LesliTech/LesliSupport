@@ -2,8 +2,8 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class TicketsController < ApplicationController
+
         before_action :set_ticket, only: [
-            :update,
             :discussions,
             :actions,
             :files,
@@ -15,6 +15,13 @@ module CloudHelp
             :api_transfer,
             :api_timelines,
             :api_assign
+        ]
+        
+        before_action :check_user_permissions, only: [
+            :api_escalate,
+            :api_descalate,
+            :api_transfer,
+            :api_update_workflow
         ]
 
         # GET /tickets
@@ -49,21 +56,6 @@ module CloudHelp
 
         # GET /tickets/1/assign
         def assign
-        end
-
-        # GET /tickets/1/assigned
-        def assigned
-            respond_to do |format|
-                format.html { }
-                format.json do
-                    tickets = Ticket.detailed_info(
-                        current_user.ticket_assignments.map do |ticket_assignment|
-                            ticket_assignment.ticket
-                        end
-                    )
-                    responseWithSuccessful(tickets) 
-                end
-            end
         end
 
         # POST /tickets
@@ -106,7 +98,7 @@ module CloudHelp
             responseWithSuccessful([])
         end
 
-        # GET /tickets/options
+        # GET /api/tickets/options
         def api_options
             account = current_user.account
             responseWithSuccessful({
@@ -116,12 +108,12 @@ module CloudHelp
             })
         end
 
-        # GET /tickets/1/follow_up_states
+        # GET /api/tickets/1/follow_up_states
         def api_follow_up_states
             responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
         end
 
-        # PUT /tickets/1/workflow
+        # PUT /api/tickets/1/workflow
         def api_update_workflow
             old_workflow_node = @ticket.detail.workflow
             new_workflow_node = TicketWorkflow.find_by(
@@ -151,7 +143,7 @@ module CloudHelp
             end
         end
 
-        # PUT /tickets/1/escalate
+        # PUT /api/tickets/1/escalate
         def api_escalate
             if @ticket.detail.workflow.ticket_state.is_final?
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_escalate_closed_ticket'))
@@ -170,7 +162,7 @@ module CloudHelp
             end
         end
 
-        # PUT /tickets/1/descalate
+        # PUT /api/tickets/1/descalate
         def api_descalate
             if @ticket.detail.workflow.ticket_state.is_final?
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_descalate_closed_ticket'))
@@ -189,6 +181,7 @@ module CloudHelp
             end
         end
 
+        # PUT /api/tickets/1/transfer
         def api_transfer
             if @ticket.detail.workflow.ticket_state.is_final?
                 responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_transfer_closed_ticket'))
@@ -209,6 +202,7 @@ module CloudHelp
             end
         end
 
+        # GET /api/tickets/1/timelines
         def api_timelines
             responseWithSuccessful(@ticket.timelines)
         end
@@ -242,6 +236,13 @@ module CloudHelp
             ticket_id = params[:id] unless params[:id].blank?
             ticket_id = params[:ticket_id] unless params[:ticket_id].blank?
             @ticket = current_user.account.help.tickets.find(ticket_id)
+        end
+
+        def check_user_permissions
+            # TODO: Add teams support
+            error = I18n.t('cloud_help.controllers.tickets.errors.permission_denied_for_update')
+            return responseWithError(error) unless @ticket.assignment
+            return responseWithError(error) unless @ticket.assignment.user && @ticket.assignment.user == current_user
         end
 
         # Only allow a trusted parameter "white list" through.

@@ -51,6 +51,10 @@ export default {
             translations: {
                 shared: I18n.t("cloud_help.tickets.shared")
             },
+            default_states: {
+                created: 1,
+                closed: 2
+            },
             ticket_id: null,
             ticket: null
         }
@@ -83,10 +87,17 @@ export default {
                 <div class="card-header">
                     <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
                     <div class="card-header-icon">
-                        <router-link :to="`/${ticket_id}/assign`">
-                            <i class="fas fa-user-check"></i>
-                            {{translations.shared.actions.assign}}
-                        </router-link>
+                        <div v-if="ticket.detail_attributes.cloud_help_ticket_states_id != default_states.closed">
+                            <router-link :to="`/${ticket_id}/assign`">
+                                <i class="fas fa-user-check"></i>
+                                {{translations.shared.actions.assign}}
+                            </router-link>
+                            <router-link :to="`/${ticket_id}/edit`">
+                                &nbsp;&nbsp;&nbsp;
+                                <i class="fas fa-edit"></i>
+                                {{translations.shared.actions.edit}}
+                            </router-link>
+                        </div>
                         <router-link :to="'/'">
                             &nbsp;&nbsp;&nbsp;
                             <i class="fas fa-undo"></i>

@@ -78,7 +78,6 @@ module CloudHelp
         end
 
         def self.detailed_info(tickets)
-
             tickets.map do |ticket|
                 detail = ticket.detail
                 assignation_type = UNASIGGNED
@@ -123,6 +122,7 @@ module CloudHelp
                         new_priority_weight: new_priority.weight
                     )
                 )
+                assignment.destroy
                 return true
             else
                 return false
@@ -155,6 +155,7 @@ module CloudHelp
                         new_priority_weight: new_priority.weight
                     )
                 )
+                assignment.destroy
                 return true
             else
                 return false
@@ -220,6 +221,7 @@ module CloudHelp
                         )
                     )
                 end
+                assignment.destroy
                 return true
             else
                 return false

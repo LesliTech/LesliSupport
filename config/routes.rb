@@ -11,12 +11,8 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_tags
     resources :ticket_workflows, except: [:new, :create, :destroy]
 
-    scope :tickets do
-        get '/assigned', to: 'tickets#assigned'
-        get '/:id/assign', to: 'tickets#assign'
-    end
-
     resources :tickets, except: [:update, :destroy] do
+        get '/assign', to: 'tickets#assign'
         get '/files', to: 'tickets#files'
         get '/actions', to: 'tickets#actions'
         get '/activities', to: 'tickets#activities'

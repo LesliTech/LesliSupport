@@ -7,6 +7,7 @@ en:
                     cannot_escalate_closed_ticket: You cannot escalate a ticket that is already closed
                     cannot_descalate_closed_ticket: You cannot de-escalate a ticket that is already closed
                     cannot_transfer_closed_ticket: You cannot transfer a ticket that is already closed
+                    permission_denied_for_update: You don't have access to edit this ticket
                 notifications:
                     created: Ticket number %{ticket_id} has been created
                     closed: Ticket number %{ticket_id} has been closed
