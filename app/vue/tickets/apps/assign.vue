@@ -33,7 +33,7 @@ import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.
 import componentActionList from "LesliCloud/vue/components/lists/action.vue";
 import componentFileList from "LesliCloud/vue/components/lists/file.vue";
 import componentTimeline from "../components/timeline.vue";
-import componentTicketInfoDisplay from "../components/ticket_info_display.vue";
+import componentTicketInfo from "../components/ticket_info.vue";
 
 // · Component assign
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
@@ -43,7 +43,7 @@ export default {
         "component-discussion-list": componentDiscussionList,
         "component-action-list": componentActionList,
         "component-file-list": componentFileList,
-        "component-ticket-info-display": componentTicketInfoDisplay
+        "component-ticket-info": componentTicketInfo
     },
     data(){
         return {
@@ -115,7 +115,7 @@ export default {
                     }
                 }
                 this.modals.user.active = false
-                this.http.post(`/help/api/tickets/${this.ticket_id}/assign`, data).then(result => {
+                this.http.put(`/help/api/tickets/${this.ticket_id}/assign`, data).then(result => {
                     if (result.successful) {
                         this.alert(this.translations.assign.messages.assignment.user.successful)
                         this.$router.push(`/${this.ticket_id}`)
@@ -239,7 +239,7 @@ export default {
                     <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
                 </div>
                 <div class="card-content">
-                    <component-ticket-info-display :ticket="ticket" />
+                    <component-ticket-info :ticket="ticket" />
                 </div>
             </div>
             <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box" />

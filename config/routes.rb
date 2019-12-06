@@ -20,7 +20,7 @@ CloudHelp::Engine.routes.draw do
     end
     
     namespace :ticket do
-        resources :timelines
+        resource :timeline
         resources :followers
         resources :actions
         resources :discussions
@@ -33,13 +33,15 @@ CloudHelp::Engine.routes.draw do
         scope :tickets do
             get '/assignables', to: 'tickets#api_assignables'
             get '/options', to: 'tickets#api_options'
+            get '/:id/events', to: 'tickets#api_events'
             get '/:id/follow_up_states', to: 'tickets#api_follow_up_states'
             get '/:id/timelines', to: 'tickets#api_timelines'
-            post '/:id/assign', to: 'tickets#api_assign'
+            put '/:id/assign', to: 'tickets#api_assign'
             put '/:id/workflow', to: 'tickets#api_update_workflow'
             put '/:id/escalate', to: 'tickets#api_escalate'
             put '/:id/descalate', to: 'tickets#api_descalate'
             put '/:id/transfer', to: 'tickets#api_transfer'
+            put '/:id/subscribe', to: 'tickets#api_subscribe'
         end
         get '/ticket_categories/:id/tree', to: 'ticket_categories#api_tree'
     end

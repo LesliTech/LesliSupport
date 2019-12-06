@@ -33,7 +33,8 @@ import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.
 import componentActionList from "LesliCloud/vue/components/lists/action.vue";
 import componentFileList from "LesliCloud/vue/components/lists/file.vue";
 import componentTimeline from "../components/timeline.vue";
-import componentTicketInfoDisplay from "../components/ticket_info_display.vue";
+import componentTicketInfo from "../components/ticket_info.vue";
+import componentSubscriptions from "../components/subscriptions.vue"
 
 // · Component show
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
@@ -44,7 +45,8 @@ export default {
         "component-action-list": componentActionList,
         "component-file-list": componentFileList,
         "component-timeline": componentTimeline,
-        "component-ticket-info-display": componentTicketInfoDisplay
+        "component-ticket-info": componentTicketInfo,
+        "component-subscriptions": componentSubscriptions
     },
     data() {
         return {
@@ -56,7 +58,10 @@ export default {
                 closed: 2
             },
             ticket_id: null,
-            ticket: null
+            ticket: null,
+            subscriptions: {
+                active: false
+            }
         }
     },
     mounted() {
@@ -81,41 +86,50 @@ export default {
 };
 </script>
 <template>
-    <div class="columns" v-if="ticket">
-        <div class="column is-8">
-            <div class="card box">
-                <div class="card-header">
-                    <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
-                    <div class="card-header-icon">
-                        <div v-if="ticket.detail_attributes.cloud_help_ticket_states_id != default_states.closed">
-                            <router-link :to="`/${ticket_id}/assign`">
-                                <i class="fas fa-user-check"></i>
-                                {{translations.shared.actions.assign}}
-                            </router-link>
-                            <router-link :to="`/${ticket_id}/edit`">
+    <div class="section">
+        <component-subscriptions :active.sync="subscriptions.active" :ticket_id="ticket_id" />
+        <div class="columns" v-if="ticket">
+            <div class="column is-8">
+                <div class="card box">
+                    <div class="card-header">
+                        <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
+                        <div class="card-header-icon">
+                            <div v-if="ticket.detail_attributes.cloud_help_ticket_states_id != default_states.closed">
+                                <router-link :to="`/${ticket_id}/assign`">
+                                    <i class="fas fa-user-check"></i>
+                                    {{translations.shared.actions.assign}}
+                                </router-link>
+                                <router-link :to="`/${ticket_id}/edit`">
+                                    &nbsp;&nbsp;&nbsp;
+                                    <i class="fas fa-edit"></i>
+                                    {{translations.shared.actions.edit}}
+                                </router-link>
+                            </div>
+                            <router-link :to="'/'">
                                 &nbsp;&nbsp;&nbsp;
-                                <i class="fas fa-edit"></i>
-                                {{translations.shared.actions.edit}}
+                                <i class="fas fa-undo"></i>
+                                {{translations.shared.actions.return}}
                             </router-link>
                         </div>
-                        <router-link :to="'/'">
-                            &nbsp;&nbsp;&nbsp;
-                            <i class="fas fa-undo"></i>
-                            {{translations.shared.actions.return}}
-                        </router-link>
+                    </div>
+                    <div class="card-content">
+                        <component-ticket-info :ticket="ticket">
+                            <template v-slot:actions>
+                                <button class="button is-primary is-pulled-right" @click="subscriptions.active=true">
+                                    {{translations.shared.actions.manage_subscriptions}}
+                                </button>
+                            </template>
+                        </component-ticket-info>
                     </div>
                 </div>
-                <div class="card-content">
-                    <component-ticket-info-display :ticket="ticket" />
-                </div>
+                <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box" />
+                <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             </div>
-            <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box" />
-            <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <div class="column is-4">
+                <component-timeline class="card box" />
+            </div>
+            <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
-        <div class="column is-4">
-            <component-timeline class="card box" />
-        </div>
-        <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
-        <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
     </div>
 </template>

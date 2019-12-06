@@ -14,7 +14,9 @@ module CloudHelp
             :api_descalate,
             :api_transfer,
             :api_timelines,
-            :api_assign
+            :api_assign,
+            :api_events,
+            :api_subscribe
         ]
         
         before_action :check_user_permissions, only: [
@@ -68,8 +70,11 @@ module CloudHelp
 
             if ticket.save
                 responseWithSuccessful(ticket)
-                ticket.add_follower(current_user)
-                ticket.notify_followers(I18n.t('cloud_help.controllers.tickets.notifications.created', ticket_id: ticket.id))
+                ticket.add_subscriber(current_user)
+                ticket.notify_subscribers(
+                    I18n.t('cloud_help.controllers.tickets.notifications.created', ticket_id: ticket.id),
+                    :ticket_created
+                )
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
@@ -113,6 +118,38 @@ module CloudHelp
             responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
         end
 
+        # GET /api/tickets/1/timelines
+        def api_timelines
+            responseWithSuccessful(@ticket.timelines)
+        end
+
+        # GET /api/tickets/assignables
+        def api_assignables
+            users = Courier::Core::Users.list()
+            responseWithSuccessful({ user: users, team:  [] })
+        end
+
+        # GET /api/tickets/events
+        def api_events
+            events = subscription_events
+            responseWithSuccessful(events)
+        end
+
+        # POST /api/tickets/1/assign
+        def api_assign
+            if @ticket.assign_to_user(ticket_assignment_params)
+                responseWithSuccessful
+                message = I18n.t(
+                    'cloud_help.controllers.tickets.notifications.updated.assigned_to_user',
+                    ticket_id: @ticket.id,
+                    user: @ticket.assignment.user.email
+                )
+                @ticket.notify_subscribers(message, :assignment_updated)
+            else
+                responseWithError(@ticket.errors.full_messages.to_sentence)
+            end
+        end
+
         # PUT /api/tickets/1/workflow
         def api_update_workflow
             old_workflow_node = @ticket.detail.workflow
@@ -127,16 +164,15 @@ module CloudHelp
             if @ticket.update_workflow(new_workflow_node)
                 responseWithSuccessful(new_workflow_node.ticket_state)
                 if new_workflow_node.ticket_state.is_final?
-                    @ticket.notify_followers(I18n.t(
-                        'cloud_help.controllers.tickets.notifications.closed',
-                        ticket_id: @ticket.id
-                    ))
+                    message = I18n.t( 'cloud_help.controllers.tickets.notifications.closed', ticket_id: @ticket.id )
+                    @ticket.notify_subscribers(message, :ticket_closed)
                 else
-                    @ticket.notify_followers(I18n.t(
+                    message = I18n.t(
                         'cloud_help.controllers.tickets.notifications.updated.workflow',
                         ticket_id: @ticket.id,
                         state_name: new_workflow_node.ticket_state.name
-                    ))
+                    )
+                    @ticket.notify_subscribers(message, :workflow_updated)
                 end
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
@@ -151,11 +187,12 @@ module CloudHelp
                 if @ticket.escalate
                     ticket_priority = @ticket.detail.priority
                     responseWithSuccessful
-                    @ticket.notify_followers(I18n.t(
+                    message = I18n.t(
                         'cloud_help.controllers.tickets.notifications.updated.escalated',
                         ticket_id: @ticket.id,
                         priority_name: ticket_priority.name
-                    ))
+                    )
+                    @ticket.notify_subscribers(message, :priority_updated)
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
@@ -170,11 +207,12 @@ module CloudHelp
                 if @ticket.descalate
                     ticket_priority = @ticket.detail.priority
                     responseWithSuccessful
-                    @ticket.notify_followers(I18n.t(
+                    message = I18n.t(
                         'cloud_help.controllers.tickets.notifications.updated.descalated',
                         ticket_id: @ticket.id,
                         priority_name: ticket_priority.name
-                    ))
+                    )
+                    @ticket.notify_subscribers(message, :priority_updated)
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
@@ -190,41 +228,23 @@ module CloudHelp
                     responseWithSuccessful
                     ticket_category = @ticket.detail.category
                     ticket_type = @ticket.detail.type
-                    @ticket.notify_followers(I18n.t(
+                    message = I18n.t(
                         'cloud_help.controllers.tickets.notifications.updated.transferred',
                         ticket_id: @ticket.id,
                         type_name: ticket_type.name,
                         category_name: ticket_category.name
-                    ))
+                    )
+                    @ticket.notify_subscribers(message, :type_category_updated)
                 else
                     responseWithError(@ticket.errors.full_messages.to_sentence)
                 end
             end
         end
 
-        # GET /api/tickets/1/timelines
-        def api_timelines
-            responseWithSuccessful(@ticket.timelines)
-        end
-
-        # GET /api/tickets/assignables
-        def api_assignables
-            users = Courier::Core::Users.list()
-            responseWithSuccessful({
-                :user => users,
-                :team => []
-            })
-        end
-
-        # POST /api/tickets/1/assign
-        def api_assign
-            if @ticket.assign_to_user(ticket_assignment_params)
-                responseWithSuccessful
-                @ticket.notify_followers(I18n.t(
-                    'cloud_help.controllers.tickets.notifications.updated.assigned_to_user',
-                    ticket_id: @ticket.id,
-                    user: @ticket.assignment.user.email
-                ))
+        # PUT /api/tickets/1/subscribe
+        def api_subscribe
+            if @ticket.update(ticket_subscribers_params)
+                responseWithSuccessful(subscription_events)
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
@@ -260,6 +280,20 @@ module CloudHelp
             )
         end
 
+        def ticket_subscribers_params
+            subscribers_params = params.require(:ticket).permit(
+                subscribers_attributes: [
+                    :event,
+                    :id,
+                    :_destroy
+                ]
+            )
+            subscribers_params[:subscribers_attributes].each do |attributes|
+                attributes[:users_id] = current_user.id
+            end
+            subscribers_params
+        end
+
         def ticket_assignment_params
             params.require(:ticket).permit(
                 assignment_attributes: [
@@ -268,6 +302,23 @@ module CloudHelp
                     :assignation_type
                 ]
             )
+        end
+
+        def subscription_events
+            data = { }
+            events = Ticket::Subscriber.events.keys
+            subscriptions = @ticket.subscribers
+            events.each do |event|
+                data[event] = {
+                    event: event,
+                    subscribed: false
+                }
+            end
+            @ticket.subscribers.each do |subscriber|
+                data[subscriber.event][:id] = subscriber.id
+                data[subscriber.event][:subscribed] = true
+            end
+            data.values
         end
 
     end

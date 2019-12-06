@@ -27,14 +27,15 @@ module CloudHelp
 
             ticket_discussion = Ticket::Discussion.new(ticket_discussion_params)
             if ticket_discussion.save
-                Courier::Bell::Notifications.send(
-                    user: current_user,
-                    subject: "New comment added to the ticket number: #{ticket_discussion.ticket.id}",
-                    href: "/help/tickets/#{ticket_discussion.ticket.id}"
-                )
                 responseWithSuccessful(ticket_discussion)
+                ticket = ticket_discussion.ticket
+                message = I18n.t(
+                    'cloud_help.controllers.ticket.discussions.notifications.created',
+                    ticket_id: ticket.id
+                )
+                ticket.notify_subscribers(message, :comment_created)
             else
-                responseWithError("Comment not created")
+                responseWithError('Comment not created')
             end
 
         end

@@ -7,7 +7,7 @@ module CloudHelp
         has_many :discussions, foreign_key: 'cloud_help_tickets_id'
         has_many :actions, foreign_key: 'cloud_help_tickets_id'
         has_many :files, foreign_key: 'cloud_help_tickets_id'
-        has_many :followers, foreign_key: 'cloud_help_tickets_id'
+        has_many :subscribers, foreign_key: 'cloud_help_tickets_id'
         has_many :timelines, foreign_key: 'cloud_help_tickets_id'
 
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'
@@ -15,6 +15,7 @@ module CloudHelp
 
         accepts_nested_attributes_for :detail
         accepts_nested_attributes_for :assignment, update_only: true
+        accepts_nested_attributes_for :subscribers, allow_destroy: true
 
         UNASIGGNED = 'none'
 
@@ -228,14 +229,20 @@ module CloudHelp
             end
         end
 
-        def add_follower(user)
-            followers.create(user: user)
+        def add_subscriber(user, event = nil)
+            if event
+                subscribers.create(user: user, event: event)
+            else
+                Ticket::Subscriber.events.values.each do |event|
+                    subscribers.create(user: user, event: event)
+                end
+            end
         end
 
-        def notify_followers(subject)
-            followers.each do |follower|
+        def notify_subscribers(subject, event)
+            subscribers.where(event: event).each do |subscriber|
                 Courier::Bell::Notifications.send(
-                    user: follower.user,
+                    user: subscriber.user,
                     subject: subject,
                     href: "/help/tickets/#{id}"
                 )

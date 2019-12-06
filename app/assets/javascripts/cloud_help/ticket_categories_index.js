@@ -35647,9 +35647,7 @@ var render = function() {
               _vm._v(" "),
               _vm._m(0),
               _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
-              _vm._m(2)
+              _vm._m(1)
             ])
           ])
         ]
@@ -35662,31 +35660,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticClass: "navbar-item", attrs: { href: "/admin/users/" } },
-      [
-        _c("figure", { staticClass: "image" }, [
-          _c("img", {
-            staticClass: "is-rounded",
-            attrs: {
-              src: "https://placekitten.com/g/30/30",
-              alt: "profile thumbnail"
-            }
-          })
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "a",
-      { staticClass: "navbar-item", attrs: { href: "/admin/users" } },
-      [_c("i", { staticClass: "fas fa-users" })]
-    )
+    return _c("a", { staticClass: "navbar-item", attrs: { href: "#" } }, [
+      _c("figure", { staticClass: "image" }, [
+        _c("img", {
+          staticClass: "is-rounded",
+          attrs: {
+            src: "https://placekitten.com/g/30/30",
+            alt: "profile thumbnail"
+          }
+        })
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -36558,15 +36542,15 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 
 index_es["c" /* library */].add(_iconsCache);
-vue_default.a.component('font-awesome-icon', vue_fontawesome_index_es["a" /* FontAwesomeIcon */]);
-vue_default.a.use(esm, {
-  defaultIconPack: 'fas'
-});
 vue_default.a.use(bus);
 vue_default.a.use(vue_router_esm);
 vue_default.a.use(url);
 vue_default.a.use(plugins_http);
 vue_default.a.use(plugins_date);
+vue_default.a.use(esm, {
+  defaultIconPack: 'fas'
+});
+vue_default.a.component('font-awesome-icon', vue_fontawesome_index_es["a" /* FontAwesomeIcon */]);
 vue_default.a.component('component-layout-empty-data', empty_data); // · Vue app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · module: Main module
