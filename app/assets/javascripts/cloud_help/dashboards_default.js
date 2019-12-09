@@ -35270,8 +35270,8 @@ render._withStripped = true
   },
   mounted: function mounted() {
     this.mountListeners();
-    this.getNotificationsCounter();
     this.checkIfMicrophoneWorks();
+    this.notification.count = leslicloud_account.notifications.count;
   },
   methods: {
     mountListeners: function mountListeners() {
@@ -35954,7 +35954,6 @@ Building a better future, one line of code at a time.
   },
   mounted: function mounted() {
     this.mountListeners();
-    this.getNotifications();
   },
   methods: {
     mountListeners: function mountListeners() {
