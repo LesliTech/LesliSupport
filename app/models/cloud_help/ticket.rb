@@ -14,7 +14,7 @@ module CloudHelp
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'
         has_one :assignment, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'  
 
-        accepts_nested_attributes_for :detail
+        accepts_nested_attributes_for :detail, update_only: true
         accepts_nested_attributes_for :assignment, update_only: true
         accepts_nested_attributes_for :subscribers, allow_destroy: true
 
@@ -62,7 +62,7 @@ module CloudHelp
                 "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
             ).joins( :user ).select(
                 "users.email as email",                         "subject",
-                "description",                                  "tags",
+                "description",                                  "CHTD.tags",
                 "CHTP.name as priority",                        "CHTT.name as type",
                 "CHTS.name as state",                           "CHTP.id as cloud_help_ticket_priorities_id",
                 "CHTT.id as cloud_help_ticket_types_id",        "CHTW.id as cloud_help_ticket_workflows_id",

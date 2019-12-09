@@ -74,8 +74,10 @@ export default {
     },
     mounted() {
         this.ticket_id = this.$route.params.id
-        this.bus.subscribe("get:/help/ticket", this.setTicket)
-        this.getFollowUpStates()
+        if( this.ticket_id ){
+            this.bus.subscribe("get:/help/ticket", this.setTicket)
+            this.getFollowUpStates()
+        }
         this.getTicketOptions()
     },
     methods: {

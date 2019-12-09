@@ -16,7 +16,8 @@ module CloudHelp
             :api_timelines,
             :api_assign,
             :api_subscription_events,
-            :api_subscribe
+            :api_subscribe,
+            :api_tags
         ]
         
         before_action :check_user_permissions, only: [
@@ -250,6 +251,15 @@ module CloudHelp
             end
         end
 
+        # PUT /api/tickets/1/tags
+        def api_tags
+            if @ticket.update(ticket_tags_params)
+                responseWithSuccessful
+            else
+                responseWithError(@ticket.errors.full_messages.to_sentence)
+            end
+        end
+
         private
 
         def set_ticket
@@ -301,6 +311,14 @@ module CloudHelp
                     :users_id,
                     :cloud_teams_teams_id,
                     :assignation_type
+                ]
+            )
+        end
+
+        def ticket_tags_params
+            params.require(:ticket).permit(
+                detail_attributes: [
+                    :tags
                 ]
             )
         end

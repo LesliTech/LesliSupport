@@ -1,0 +1,9 @@
+en:
+    cloud_help:
+        tickets:
+            tag:
+                title: Tags
+                messages:
+                    update:
+                        successful: Tags updated successfully
+
