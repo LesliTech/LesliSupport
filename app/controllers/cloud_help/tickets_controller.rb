@@ -15,7 +15,7 @@ module CloudHelp
             :api_transfer,
             :api_timelines,
             :api_assign,
-            :api_events,
+            :api_subscription_events,
             :api_subscribe
         ]
         
@@ -130,8 +130,8 @@ module CloudHelp
         end
 
         # GET /api/tickets/events
-        def api_events
-            events = subscription_events
+        def api_subscription_events
+            events = @ticket.subscription_events
             responseWithSuccessful(events)
         end
 
@@ -244,7 +244,7 @@ module CloudHelp
         # PUT /api/tickets/1/subscribe
         def api_subscribe
             if @ticket.update(ticket_subscribers_params)
-                responseWithSuccessful(subscription_events)
+                responseWithSuccessful(@ticket.subscription_events)
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
@@ -284,6 +284,7 @@ module CloudHelp
             subscribers_params = params.require(:ticket).permit(
                 subscribers_attributes: [
                     :event,
+                    :notification_type,
                     :id,
                     :_destroy
                 ]
@@ -302,23 +303,6 @@ module CloudHelp
                     :assignation_type
                 ]
             )
-        end
-
-        def subscription_events
-            data = { }
-            events = Ticket::Subscriber.events.keys
-            subscriptions = @ticket.subscribers
-            events.each do |event|
-                data[event] = {
-                    event: event,
-                    subscribed: false
-                }
-            end
-            @ticket.subscribers.each do |subscriber|
-                data[subscriber.event][:id] = subscriber.id
-                data[subscriber.event][:subscribed] = true
-            end
-            data.values
         end
 
     end

@@ -33,7 +33,7 @@ CloudHelp::Engine.routes.draw do
         scope :tickets do
             get '/assignables', to: 'tickets#api_assignables'
             get '/options', to: 'tickets#api_options'
-            get '/:id/events', to: 'tickets#api_events'
+            get '/:id/subscription_events', to: 'tickets#api_subscription_events'
             get '/:id/follow_up_states', to: 'tickets#api_follow_up_states'
             get '/:id/timelines', to: 'tickets#api_timelines'
             put '/:id/assign', to: 'tickets#api_assign'

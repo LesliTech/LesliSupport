@@ -1,5 +1,6 @@
 module CloudHelp
-    class Ticket  < ApplicationRecord
+    class Ticket  < ApplicationRecord 
+        include Subscribable
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         belongs_to :user, class_name: 'User', foreign_key: 'users_id'
@@ -226,26 +227,6 @@ module CloudHelp
                 return true
             else
                 return false
-            end
-        end
-
-        def add_subscriber(user, event = nil)
-            if event
-                subscribers.create(user: user, event: event)
-            else
-                Ticket::Subscriber.events.values.each do |event|
-                    subscribers.create(user: user, event: event)
-                end
-            end
-        end
-
-        def notify_subscribers(subject, event)
-            subscribers.where(event: event).each do |subscriber|
-                Courier::Bell::Notifications.send(
-                    user: subscriber.user,
-                    subject: subject,
-                    href: "/help/tickets/#{id}"
-                )
             end
         end
 

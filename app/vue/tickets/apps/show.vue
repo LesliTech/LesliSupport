@@ -32,9 +32,9 @@ import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.
 import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue";
 import componentActionList from "LesliCloud/vue/components/lists/action.vue";
 import componentFileList from "LesliCloud/vue/components/lists/file.vue";
+import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue";
 import componentTimeline from "../components/timeline.vue";
 import componentTicketInfo from "../components/ticket_info.vue";
-import componentSubscriptions from "../components/subscriptions.vue"
 
 // · Component show
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
@@ -69,6 +69,10 @@ export default {
         this.getTicket()
     },
     methods: {
+        emit(){
+            this.bus.publish("show:/module/app/subscriptions")
+        },
+
         getTicket() {
             this.http.get(`/help/tickets/${this.ticket_id}.json`)
             .then(result => {
@@ -87,7 +91,11 @@ export default {
 </script>
 <template>
     <div class="section">
-        <component-subscriptions :active.sync="subscriptions.active" :ticket_id="ticket_id" />
+        <component-subscriptions
+            :active.sync="subscriptions.active"
+            :cloud-id="ticket_id"
+            cloud-module="help/ticket"
+        />
         <div class="columns" v-if="ticket">
             <div class="column is-8">
                 <div class="card box">
@@ -114,11 +122,6 @@ export default {
                     </div>
                     <div class="card-content">
                         <component-ticket-info :ticket="ticket">
-                            <template v-slot:actions>
-                                <button class="button is-primary is-pulled-right" @click="subscriptions.active=true">
-                                    {{translations.shared.actions.manage_subscriptions}}
-                                </button>
-                            </template>
                         </component-ticket-info>
                     </div>
                 </div>

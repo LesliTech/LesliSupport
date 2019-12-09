@@ -86,7 +86,7 @@ export default {
                 <span class="has-text-weight-bold">{{translations.fields.description}}:</span>
                 <div v-html="ticket.detail_attributes.description"></div>
             </div>
-            <div class="column is-8">
+            <div class="column is-12">
                 <span class="has-text-weight-bold">{{ translations.titles.created_by }}:</span>
                 {{ ticket.detail_attributes.email}}
                 <br />
@@ -96,10 +96,6 @@ export default {
                 <span class="has-text-weight-bold">{{translations.titles.assigned}}:</span>
                 {{ticket.assignment_attributes.assignable_name}}
                 ({{translations.assignation_types[ticket.assignment_attributes.assignation_type]}})
-            </div>
-            <div class="column is-4 has-text-bottom">
-                <slot name="actions">
-                </slot>
             </div>
         </div>
     </section>
