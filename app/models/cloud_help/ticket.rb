@@ -1,5 +1,6 @@
 module CloudHelp
-    class Ticket  < ApplicationRecord
+    class Ticket  < ApplicationRecord 
+        include Subscribable
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         belongs_to :user, class_name: 'User', foreign_key: 'users_id'
@@ -7,7 +8,7 @@ module CloudHelp
         has_many :discussions, foreign_key: 'cloud_help_tickets_id'
         has_many :actions, foreign_key: 'cloud_help_tickets_id'
         has_many :files, foreign_key: 'cloud_help_tickets_id'
-        has_many :followers, foreign_key: 'cloud_help_tickets_id'
+        has_many :subscribers, foreign_key: 'cloud_help_tickets_id'
         has_many :timelines, foreign_key: 'cloud_help_tickets_id'
 
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'
@@ -15,6 +16,7 @@ module CloudHelp
 
         accepts_nested_attributes_for :detail
         accepts_nested_attributes_for :assignment, update_only: true
+        accepts_nested_attributes_for :subscribers, allow_destroy: true
 
         UNASIGGNED = 'none'
 
@@ -225,20 +227,6 @@ module CloudHelp
                 return true
             else
                 return false
-            end
-        end
-
-        def add_follower(user)
-            followers.create(user: user)
-        end
-
-        def notify_followers(subject)
-            followers.each do |follower|
-                Courier::Bell::Notifications.send(
-                    user: follower.user,
-                    subject: subject,
-                    href: "/help/tickets/#{id}"
-                )
             end
         end
 

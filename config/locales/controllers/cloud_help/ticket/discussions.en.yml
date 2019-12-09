@@ -1,0 +1,7 @@
+en:
+    cloud_help:
+        controllers:
+            ticket:
+                discussions:
+                    notifications:
+                        created: New comment added to the ticket number %{ticket_id}
