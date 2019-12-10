@@ -32,7 +32,7 @@ module CloudHelp
             respond_to do |format|
                 format.html { }
                 format.json do
-                    tickets = Ticket.detailed_info(current_user.account.help.tickets.all)
+                    tickets = Ticket.detailed_info(current_user.account.help)
                     responseWithSuccessful(tickets) 
                 end
             end
