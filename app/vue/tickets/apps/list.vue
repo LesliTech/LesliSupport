@@ -86,7 +86,12 @@ export default {
                     {{props.row.category}}
                 </b-table-column>
                 <b-table-column field="assignation_type" :label="translations.shared.fields.assignation_type">
-                    {{translations.shared.assignation_types[props.row.assignation_type]}}
+                    <span v-if="props.row.assignation_type">
+                        {{translations.shared.assignation_types[props.row.assignation_type]}}
+                    </span>
+                    <span v-else>
+                        {{translations.shared.assignation_types.none}}
+                    </span>
                 </b-table-column>
                 <b-table-column field="state" :label="translations.shared.fields.state">
                     <component-ticket-state-name :name="props.row.state">

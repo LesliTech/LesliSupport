@@ -7,26 +7,32 @@ export default {
     },
     data() {
         return {
+            translations: I18n.t('cloud_help.tickets.tag'), 
             tags: null
         }
     },
     mounted() {
-        if (this.ticket.detail_attributes.tags) {
-            this.tags = this.ticket.detail_attributes.tags.split(',')
-        }
+        this.setTags()
     },
     methods: {
-        patchTicket() {
-            this.http.patch(`/help/tickets/${this.ticket.id}`, {
+        setTags(){
+            if (this.ticket && this.ticket.detail_attributes.tags) {
+                this.tags = this.ticket.detail_attributes.tags.split(',')
+            }
+        },
+
+        putTicketTags() {
+            this.http.put(`/help/api/tickets/${this.ticket.id}/tags`, {
                 ticket: {
                     detail_attributes: {
-                        id: this.ticket.id,
                         tags: this.tags.join(',')
                     }
                 }
             }).then(result => {
                 if (result.successful) {
-                    this.alert("Tags succesfuly updated")
+                    this.alert(this.translations.messages.update.successful)
+                } else {
+                    this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -34,13 +40,8 @@ export default {
         }
     },
     watch: {
-        tags(database_tags, current_tags) {
-            // current tags are null on the first load
-            // through this way we can avoid to send tags on the very first load
-            //this.patchTicket()
-            if (current_tags) {
-                //this.patchTicket()
-            }
+        ticket(){
+            this.setTags()
         }
     }
 }
@@ -49,11 +50,11 @@ export default {
     <div class="card">
         <div class="card-header">
             <h4 class="card-header-title">
-                Tags
+                {{translations.title}}
             </h4>
         </div>
         <div class="card-content">
-            <b-taginput v-model="tags" ellipsis @input="patchTicket" />
+            <b-taginput v-model="tags" ellipsis @input="putTicketTags" />
         </div>
     </div>
 </template>

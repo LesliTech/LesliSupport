@@ -60,7 +60,6 @@ export default {
         return {
             translations: I18n.t('cloud_help.tickets.edit'),
             ticket_workflow: null,
-            ticket_options: null,
             ticket_id: null,
             ticket: {
                 detail_attributes: {}
@@ -71,7 +70,6 @@ export default {
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
-        this.getTicketOptions()
     },
     methods: {
 
@@ -88,22 +86,12 @@ export default {
             })
         },
 
-        getTicketOptions() {
-            this.http.get('/help/api/tickets/options').then(result => {
-                if (result.successful) {
-                    this.ticket_options = result.data
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
+        // We publish the ticket so the form can use it
         getTicket() {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
+                    this.bus.publish("get:/help/ticket", this.ticket)
                     this.getTicketWorkflow()
                 }else{
                     this.alert(result.error.message,'danger')
@@ -123,14 +111,14 @@ export default {
 }
 </script>
 <template>
-    <div>
-        <div class="columns" v-if="ticket && ticket_options">
+    <section v-if="ticket">
+        <div class="columns">
             <div class="column is-8">
                 <component-form v-on:update-ticket-workflow="updateTicketWorkflow"/>
             </div>
             <div class="column is-4">
                 <component-form-status class="box" :state="ticket.detail_attributes.state" :creation_date="ticket.created_at"/>
-                <component-form-tag class="box" :ticket="ticket" :options="ticket_options" />
+                <component-form-tag class="box" :ticket="ticket"/>
             </div>
         </div>
         <div class="columns">
@@ -156,5 +144,5 @@ export default {
             <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
-    </div>
+    </section>
 </template>

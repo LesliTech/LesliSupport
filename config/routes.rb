@@ -42,6 +42,7 @@ CloudHelp::Engine.routes.draw do
             put '/:id/descalate', to: 'tickets#api_descalate'
             put '/:id/transfer', to: 'tickets#api_transfer'
             put '/:id/subscribe', to: 'tickets#api_subscribe'
+            put '/:id/tags', to: 'tickets#api_tags'
         end
         get '/ticket_categories/:id/tree', to: 'ticket_categories#api_tree'
     end

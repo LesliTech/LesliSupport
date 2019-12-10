@@ -73,9 +73,9 @@ export default {
         }
     },
     mounted() {
-        if (this.$route.params.id) {
-            this.ticket_id = this.$route.params.id
-            this.getTicket()
+        this.ticket_id = this.$route.params.id
+        if( this.ticket_id ){
+            this.bus.subscribe("get:/help/ticket", this.setTicket)
             this.getFollowUpStates()
         }
         this.getTicketOptions()
@@ -99,18 +99,8 @@ export default {
             })
         },
 
-        getTicket() {
-            this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
-                if (result.successful) {
-                    this.ticket = result.data
-                    this.transfer.cloud_help_ticket_types_id = this.ticket.detail_attributes.cloud_help_ticket_types_id
-                    this.transfer.cloud_help_ticket_categories_id = this.ticket.detail_attributes.cloud_help_ticket_categories_id
-                } else {
-                    this.alert(result.error.message, 'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
+        setTicket(ticket) {
+            this.ticket = ticket
         },
 
         getFollowUpStates() {
@@ -191,11 +181,9 @@ export default {
                     }else{
                         this.alert(this.translations.form.messages.update_workflow.successful)
                     }
-                    if(this.ticket.detail_attributes.cloud_help_ticket_workflows_id != this.ticket_follow_up_state){
-                        this.ticket.detail_attributes.cloud_help_ticket_workflows_id = this.ticket_follow_up_state
-                        this.getFollowUpStates()
-                        this.$emit('update-ticket-workflow', result.data)
-                    }
+                    this.ticket.detail_attributes.cloud_help_ticket_workflows_id = this.ticket_follow_up_state
+                    this.getFollowUpStates()
+                    this.$emit('update-ticket-workflow', result.data)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }

@@ -14,11 +14,9 @@ module CloudHelp
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'
         has_one :assignment, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'  
 
-        accepts_nested_attributes_for :detail
+        accepts_nested_attributes_for :detail, update_only: true
         accepts_nested_attributes_for :assignment, update_only: true
         accepts_nested_attributes_for :subscribers, allow_destroy: true
-
-        UNASIGGNED = 'none'
 
         def save
             if new_record?
@@ -62,7 +60,7 @@ module CloudHelp
                 "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
             ).joins( :user ).select(
                 "users.email as email",                         "subject",
-                "description",                                  "tags",
+                "description",                                  "CHTD.tags",
                 "CHTP.name as priority",                        "CHTT.name as type",
                 "CHTS.name as state",                           "CHTP.id as cloud_help_ticket_priorities_id",
                 "CHTT.id as cloud_help_ticket_types_id",        "CHTW.id as cloud_help_ticket_workflows_id",
@@ -79,21 +77,36 @@ module CloudHelp
             }
         end
 
-        def self.detailed_info(tickets)
-            tickets.map do |ticket|
-                detail = ticket.detail
-                assignation_type = UNASIGGNED
-                if ticket.assignment
-                    assignation_type = ticket.assignment.assignation_type
-                end
-                
+        def self.detailed_info(help_account)
+            Ticket.joins(
+                "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
+            ).joins(
+                "inner join cloud_help_ticket_priorities CHTP on CHTD.cloud_help_ticket_priorities_id = CHTP.id"
+            ).joins(
+                "inner join cloud_help_ticket_types CHTT on CHTD.cloud_help_ticket_types_id = CHTT.id"
+            ).joins(
+                "inner join cloud_help_ticket_categories CHTC on CHTD.cloud_help_ticket_categories_id = CHTC.id"
+            ).joins(
+                "
+                    inner join cloud_help_ticket_workflows CHTW on CHTD.cloud_help_ticket_types_id = CHTW.cloud_help_ticket_types_id and 
+                    CHTD.cloud_help_ticket_categories_id = CHTW.cloud_help_ticket_categories_id and 
+                    CHTD.cloud_help_ticket_workflows_id = CHTW.id
+                "
+            ).joins(
+                "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
+            ).joins(
+                "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
+            ).select(
+                "id",                                           "CHTP.name as priority",
+                "CHTT.name as type",                           "CHTS.name as state",
+                "CHTC.name as category",                        "CHTA.assignation_type",
+                "subject",                                      "CHTC.id as cloud_help_ticket_categories_id"
+            ).where(
+                "cloud_help_tickets.cloud_help_accounts_id = #{help_account.id}"
+            ).map do |ticket|
                 ticket.attributes.merge({
-                    subject: detail.subject,
-                    type: detail.type.name,
-                    state: detail.workflow.ticket_state.name,
-                    category: detail.category.name,
-                    priority: detail.priority.name,
-                    assignation_type: assignation_type
+                    assignation_type: Ticket::Assignment.assignation_types.key(ticket[:assignation_type]),
+                    category: TicketCategory.find(ticket[:cloud_help_ticket_categories_id]).full_path
                 })
             end
         end
@@ -245,7 +258,7 @@ module CloudHelp
 
         def assignment_info
             return {
-                assignation_type: UNASIGGNED
+                assignation_type: 'none'
             } unless assignment
 
             if assignment.user?
