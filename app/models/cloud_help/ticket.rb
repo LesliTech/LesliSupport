@@ -18,6 +18,8 @@ module CloudHelp
         accepts_nested_attributes_for :assignment, update_only: true
         accepts_nested_attributes_for :subscribers, allow_destroy: true
 
+        before_save :before_save_actions
+
         def save
             if new_record?
                 if super
@@ -256,6 +258,30 @@ module CloudHelp
         end
 
         private
+
+        def before_save_actions
+            if detail.deadline_changed?
+                action_register_ticket_deadline
+            end
+        end
+
+        def action_register_ticket_deadline
+            if assignment
+                Courier::Driver::Calendar.registerEvent(
+                    assignment.user,
+                    {
+                        title:          I18n.t('activerecord.models.cloud_help/ticket.assignation_registry.title', ticket_id: id),
+                        description:    I18n.t('activerecord.models.cloud_help/ticket.assignation_registry.description'),
+                        time_start:     detail.deadline.to_date,
+                        time_end:       detail.deadline.to_date + 1.hour,
+                        url:            "/help/tickets/#{id}"
+                    }
+                )
+            else
+                errors.add(:base, :cannot_add_deadline_without_assigned_user)
+                throw :abort
+            end
+        end
 
         def assignment_info
             return {

@@ -51,10 +51,11 @@ export default {
 
     methods: {
         putTicketDeadline(){
+            let deadline = this.deadline.toISOString()
             let data = {
                 ticket: {
                     detail_attributes: {
-                        deadline: this.deadline
+                        deadline: deadline
                     }
                 }
             }
@@ -62,7 +63,7 @@ export default {
             this.http.patch( `/help/tickets/${this.ticket_id}`, data).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.messages.put_deadline.successful)
-                    this.bus.publish("patch:/help/ticket/deadline", this.date.toString(this.deadline))
+                    this.bus.publish("patch:/help/ticket/deadline", deadline)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -99,13 +100,13 @@ export default {
                     <div class="section">
                         <form id="form-deadline">
                             <b-field :label="translations.labels.select_date">
-                                <b-datepicker
+                                <b-datetimepicker
                                     v-model="deadline"
                                     inline
                                     class="has-text-centered"
                                     size="is-small"
                                     icon="calendar-day"
-                                    :min-date="new Date()"
+                                    :min-datetime="new Date()"
                                 />
                             </b-field>
                         </form>

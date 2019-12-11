@@ -193,7 +193,7 @@ export default {
                                     <span class="has-text-weight-bold has-text-danger">
                                         {{translations.titles.deadline}}:
                                     </span>
-                                    {{date.toLocalFormat(ticket.detail_attributes.deadline)}}
+                                    {{date.toLocalFormat(ticket.detail_attributes.deadline, false, true)}}
                                 </div>
                             </div>
                         </div>
