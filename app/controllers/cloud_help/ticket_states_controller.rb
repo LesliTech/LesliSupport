@@ -57,7 +57,7 @@ module CloudHelp
             end
         end
 
-        # PATCH/PUT /ticket_priorities/1
+        # PATCH|PUT /ticket_priorities/1
         def update
             if @ticket_state.update(ticket_state_params)
                 responseWithSuccessful(@ticket_state)

@@ -56,7 +56,7 @@ module CloudHelp
             end
         end
 
-        # PATCH/PUT /ticket_priorities/1
+        # PATCH|PUT /ticket_priorities/1
         def update
             if @ticket_priority.update(ticket_priority_params)
                 responseWithSuccessful(@ticket_priority)
@@ -78,6 +78,7 @@ module CloudHelp
         end
 
         private
+
         # Use callbacks to share common setup or constraints between actions.
         def set_ticket_priority
             @ticket_priority = TicketPriority.find_by(

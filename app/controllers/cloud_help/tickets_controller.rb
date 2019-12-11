@@ -10,21 +10,8 @@ module CloudHelp
             :activities,
             :api_follow_up_states,
             :api_update_workflow,
-            :api_escalate,
-            :api_descalate,
             :api_transfer,
-            :api_timelines,
-            :api_assign,
-            :api_subscription_events,
-            :api_subscribe,
-            :api_tags
-        ]
-        
-        before_action :check_user_permissions, only: [
-            :api_escalate,
-            :api_descalate,
-            :api_transfer,
-            :api_update_workflow
+            :update
         ]
 
         # GET /tickets
@@ -57,8 +44,13 @@ module CloudHelp
         def edit
         end
 
-        # GET /tickets/1/assign
-        def assign
+        # PUT|PATCH /tickets/1
+        def update
+            if @ticket.update(ticket_params)
+                responseWithSuccessful(@ticket.detailed_info)
+            else
+                responseWithError(@ticket.errors.full_messages.to_sentence)
+            end
         end
 
         # POST /tickets
@@ -110,45 +102,13 @@ module CloudHelp
             responseWithSuccessful({
                 types: TicketType.where(account: current_user.account.help).select(:id, :name),
                 categories: TicketCategory.tree(account),
-                priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name)
+                priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name, :weight)
             })
         end
 
         # GET /api/tickets/1/follow_up_states
         def api_follow_up_states
             responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
-        end
-
-        # GET /api/tickets/1/timelines
-        def api_timelines
-            responseWithSuccessful(@ticket.timelines)
-        end
-
-        # GET /api/tickets/assignables
-        def api_assignables
-            users = Courier::Core::Users.list()
-            responseWithSuccessful({ user: users, team:  [] })
-        end
-
-        # GET /api/tickets/events
-        def api_subscription_events
-            events = @ticket.subscription_events
-            responseWithSuccessful(events)
-        end
-
-        # POST /api/tickets/1/assign
-        def api_assign
-            if @ticket.assign_to_user(ticket_assignment_params)
-                responseWithSuccessful
-                message = I18n.t(
-                    'cloud_help.controllers.tickets.notifications.updated.assigned_to_user',
-                    ticket_id: @ticket.id,
-                    user: @ticket.assignment.user.email
-                )
-                @ticket.notify_subscribers(message, :assignment_updated)
-            else
-                responseWithError(@ticket.errors.full_messages.to_sentence)
-            end
         end
 
         # PUT /api/tickets/1/workflow
@@ -180,46 +140,6 @@ module CloudHelp
             end
         end
 
-        # PUT /api/tickets/1/escalate
-        def api_escalate
-            if @ticket.detail.workflow.ticket_state.is_final?
-                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_escalate_closed_ticket'))
-            else
-                if @ticket.escalate
-                    ticket_priority = @ticket.detail.priority
-                    responseWithSuccessful
-                    message = I18n.t(
-                        'cloud_help.controllers.tickets.notifications.updated.escalated',
-                        ticket_id: @ticket.id,
-                        priority_name: ticket_priority.name
-                    )
-                    @ticket.notify_subscribers(message, :priority_updated)
-                else
-                    responseWithError(@ticket.errors.full_messages.to_sentence)
-                end
-            end
-        end
-
-        # PUT /api/tickets/1/descalate
-        def api_descalate
-            if @ticket.detail.workflow.ticket_state.is_final?
-                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_descalate_closed_ticket'))
-            else
-                if @ticket.descalate
-                    ticket_priority = @ticket.detail.priority
-                    responseWithSuccessful
-                    message = I18n.t(
-                        'cloud_help.controllers.tickets.notifications.updated.descalated',
-                        ticket_id: @ticket.id,
-                        priority_name: ticket_priority.name
-                    )
-                    @ticket.notify_subscribers(message, :priority_updated)
-                else
-                    responseWithError(@ticket.errors.full_messages.to_sentence)
-                end
-            end
-        end
-
         # PUT /api/tickets/1/transfer
         def api_transfer
             if @ticket.detail.workflow.ticket_state.is_final?
@@ -242,85 +162,46 @@ module CloudHelp
             end
         end
 
-        # PUT /api/tickets/1/subscribe
-        def api_subscribe
-            if @ticket.update(ticket_subscribers_params)
-                responseWithSuccessful(@ticket.subscription_events)
-            else
-                responseWithError(@ticket.errors.full_messages.to_sentence)
-            end
-        end
-
-        # PUT /api/tickets/1/tags
-        def api_tags
-            if @ticket.update(ticket_tags_params)
-                responseWithSuccessful
-            else
-                responseWithError(@ticket.errors.full_messages.to_sentence)
-            end
-        end
-
         private
 
+        # Setting up the ticket
         def set_ticket
             ticket_id = params[:id] unless params[:id].blank?
             ticket_id = params[:ticket_id] unless params[:ticket_id].blank?
             @ticket = current_user.account.help.tickets.find(ticket_id)
         end
-
-        def check_user_permissions
-            # TODO: Add teams support
-            error = I18n.t('cloud_help.controllers.tickets.errors.permission_denied_for_update')
-            return responseWithError(error) unless @ticket.assignment
-            return responseWithError(error) unless @ticket.assignment.user && @ticket.assignment.user == current_user
-        end
-
-        # Only allow a trusted parameter "white list" through.
+        
+        # Setting up the white list for tickets
         def ticket_params
-            params.require(:ticket).permit(
+            accepted_params = params.require(:ticket).permit(
                 detail_attributes: [
                     :id,
                     :subject,
                     :description,
                     :tags,
+                    :deadline,
                     :cloud_help_ticket_types_id,
                     :cloud_help_ticket_priorities_id,
                     :cloud_help_ticket_categories_id
-                ]
-            )
-        end
-
-        def ticket_subscribers_params
-            subscribers_params = params.require(:ticket).permit(
+                ],
                 subscribers_attributes: [
                     :event,
                     :notification_type,
                     :id,
                     :_destroy
-                ]
-            )
-            subscribers_params[:subscribers_attributes].each do |attributes|
-                attributes[:users_id] = current_user.id
-            end
-            subscribers_params
-        end
-
-        def ticket_assignment_params
-            params.require(:ticket).permit(
+                ],
                 assignment_attributes: [
                     :users_id,
                     :cloud_teams_teams_id,
                     :assignation_type
                 ]
             )
-        end
-
-        def ticket_tags_params
-            params.require(:ticket).permit(
-                detail_attributes: [
-                    :tags
-                ]
-            )
+            if accepted_params[:subscribers_attributes]
+                accepted_params[:subscribers_attributes].each do |attributes|
+                    attributes[:users_id] = current_user.id
+                end
+            end
+            accepted_params
         end
 
     end

@@ -1,5 +1,7 @@
 module CloudHelp
     class Ticket::Detail < ApplicationRecord
+        include ActiveModel::Dirty
+        
         belongs_to :ticket, inverse_of: :detail, foreign_key: 'cloud_help_tickets_id'
         belongs_to :type, class_name: 'CloudHelp::TicketType', foreign_key: 'cloud_help_ticket_types_id'
         belongs_to :workflow, class_name: 'CloudHelp::TicketWorkflow', foreign_key: 'cloud_help_ticket_workflows_id'

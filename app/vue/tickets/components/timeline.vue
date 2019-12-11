@@ -51,7 +51,7 @@ export default {
     },
     methods: {
         getTicketTimeline(){
-            this.http.get(`/help/api/tickets/${this.ticket_id}/timelines`).then(result => {
+            this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
                 if (result.successful) {
                     this.ticket_timelines = result.data
                 } else {

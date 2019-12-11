@@ -21,8 +21,8 @@ export default {
             }
         },
 
-        putTicketTags() {
-            this.http.put(`/help/api/tickets/${this.ticket.id}/tags`, {
+        patchTicket() {
+            this.http.patch(`/help/tickets/${this.ticket.id}`, {
                 ticket: {
                     detail_attributes: {
                         tags: this.tags.join(',')
@@ -54,7 +54,7 @@ export default {
             </h4>
         </div>
         <div class="card-content">
-            <b-taginput v-model="tags" ellipsis @input="putTicketTags" />
+            <b-taginput v-model="tags" ellipsis @input="patchTicket" />
         </div>
     </div>
 </template>
