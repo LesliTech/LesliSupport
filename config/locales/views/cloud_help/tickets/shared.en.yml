@@ -8,7 +8,9 @@ en:
                     created_by: Created by
                     date: Creation date
                     assigned: Assigned to
+                    deadline: Deadline
                 actions:
+                    deadline: Set Deadline
                     new: New Ticket
                     edit: Edit Ticket
                     show: Show Ticket

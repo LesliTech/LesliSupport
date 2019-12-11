@@ -78,6 +78,7 @@ module CloudHelp
         end
 
         private
+        
         # Use callbacks to share common setup or constraints between actions.
         def set_ticket_type
             @ticket_type = TicketType.find_by(

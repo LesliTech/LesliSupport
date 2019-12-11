@@ -52,7 +52,7 @@ module CloudHelp
         end
     end
 
-    # PATCH/PUT /ticket_categories/1
+    # PATCH|PUT /ticket_categories/1
     def update
         if @ticket_category.update(ticket_category_params)
             responseWithSuccessful(@ticket_category)

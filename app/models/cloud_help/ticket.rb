@@ -64,7 +64,8 @@ module CloudHelp
                 "CHTP.name as priority",                        "CHTT.name as type",
                 "CHTS.name as state",                           "CHTP.id as cloud_help_ticket_priorities_id",
                 "CHTT.id as cloud_help_ticket_types_id",        "CHTW.id as cloud_help_ticket_workflows_id",
-                "CHTC.id as cloud_help_ticket_categories_id",   "CHTS.id as cloud_help_ticket_states_id"
+                "CHTC.id as cloud_help_ticket_categories_id",   "CHTS.id as cloud_help_ticket_states_id",
+                "deadline"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
             return {
@@ -264,10 +265,6 @@ module CloudHelp
             if assignment.user?
                 assignment.attributes.merge({
                     assignable_name: assignment.user.email
-                })
-            elsif assignment.team?
-                assignment.attributes.merge({
-                    assignable_name: 'IMPLEMENT ME'
                 })
             end
         end

@@ -1,0 +1,26 @@
+en:
+    cloud_help:
+        tickets:
+            assignment:
+                messages:
+                    assignment:
+                        user:
+                            successful: The ticket has bee assigned successfully to a new user
+                            uselected: Please select a user to assign this ticket to
+                title: Assign ticket to a user
+                fields:
+                    user:
+                        id: Id
+                        email: Email
+                        first_name: First Name
+                        last_name: Last Name
+                        created_at: Created at
+                actions:
+                    assign_to_user: Assign to user
+                modals:
+                    user:
+                        title: Are you sure you want to assign this ticket to a user?
+                        body: If another user or team is already working on this ticket, they will cede control to the new user
+                        actions:
+                            cancel: Cancel
+                            assign: Assign
