@@ -131,17 +131,43 @@ export default {
         },
 
         escalateTicket(){
-            this.puTicketPriority('escalate')
+            let next_priority = this.ticket_options.priorities.filter( priority => {
+                return priority.weight > this.ticket.detail_attributes.priority_weight
+            }).sort()
+
+            this.modals.escalate = false
+            if(next_priority.length > 0){
+                this.puTicketPriority('escalate', next_priority[0])
+            }else{
+                this.alert(translations.form.errors.ticket_at_max_priority, 'error')
+            }
         },
 
         descalateTicket(){
-            this.puTicketPriority('descalate')
+            let next_priority = this.ticket_options.priorities.filter( priority => {
+                return priority.weight < this.ticket.detail_attributes.priority_weight
+            }).sort( (a, b)=>{
+                return b - a
+            })
+
+            this.modals.escalate = false
+            if(next_priority.length > 0){
+                this.puTicketPriority('descalate', next_priority[0])
+            }else{
+                this.alert(translations.form.errors.ticket_at_min_priority, 'error')
+            }
         },
 
         // Used by escalateTicket and descalateTicket. action has to either be 'escalate' or 'descalate'
-        puTicketPriority(action){
-            this.modals[action] = false
-            this.http.put(`/help/api/tickets/${this.ticket_id}/${action}`).then(result => {
+        puTicketPriority(action, priority){
+            let data = {
+                ticket: {
+                    detail_attributes: {
+                        cloud_help_ticket_priorities_id: priority.id
+                    }
+                }
+            }
+            this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.modals[action].messages.successful)
                     this.$router.push(`/${this.ticket.id}`)

@@ -39,12 +39,7 @@ CloudHelp::Engine.routes.draw do
         scope :tickets do
             get '/options', to: 'tickets#api_options'
             get '/:id/follow_up_states', to: 'tickets#api_follow_up_states'
-
-
-
             put '/:id/workflow', to: 'tickets#api_update_workflow'
-            put '/:id/escalate', to: 'tickets#api_escalate'
-            put '/:id/descalate', to: 'tickets#api_descalate'
             put '/:id/transfer', to: 'tickets#api_transfer'
         end
         get '/ticket_categories/:id/tree', to: 'ticket_categories#api_tree'

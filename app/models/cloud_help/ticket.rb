@@ -19,6 +19,7 @@ module CloudHelp
         accepts_nested_attributes_for :subscribers, allow_destroy: true
 
         before_save :before_save_actions
+        after_save :after_save_actions
 
         def save
             if new_record?
@@ -31,6 +32,10 @@ module CloudHelp
                 else
                     return false
                 end
+            end
+            if detail.workflow.ticket_state.is_final?
+                errors.add(:base, :ticket_already_closed)
+                return false
             end
             super
         end
@@ -67,7 +72,7 @@ module CloudHelp
                 "CHTS.name as state",                           "CHTP.id as cloud_help_ticket_priorities_id",
                 "CHTT.id as cloud_help_ticket_types_id",        "CHTW.id as cloud_help_ticket_workflows_id",
                 "CHTC.id as cloud_help_ticket_categories_id",   "CHTS.id as cloud_help_ticket_states_id",
-                "deadline"
+                "deadline"                                  ,   "CHTP.weight as priority_weight"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
             return {
@@ -111,72 +116,6 @@ module CloudHelp
                     assignation_type: Ticket::Assignment.assignation_types.key(ticket[:assignation_type]),
                     category: TicketCategory.find(ticket[:cloud_help_ticket_categories_id]).full_path
                 })
-            end
-        end
-        
-        def escalate
-            current_priority = detail.priority
-            new_priority = TicketPriority.where(
-                account: current_priority.account
-            ).where(
-                "cloud_help_ticket_priorities.weight > #{current_priority.weight}"
-            ).order(
-                weight: :asc
-            ).first
-
-            unless new_priority
-                errors.add(:base, :ticket_at_max_priority)
-                return false
-            end
-
-            if detail.update(priority: new_priority)
-                timelines.create(
-                    action: Ticket::Timeline.actions[:priority_increased],
-                    description: I18n.t(
-                        'activerecord.models.cloud_help/ticket/timeline.actions.priority_increased',
-                        old_priority_name: current_priority.name,
-                        old_priority_weight: current_priority.weight,
-                        new_priority_name: new_priority.name,
-                        new_priority_weight: new_priority.weight
-                    )
-                )
-                assignment.destroy
-                return true
-            else
-                return false
-            end
-        end
-
-        def descalate
-            current_priority = detail.priority
-            new_priority = TicketPriority.where(
-                account: current_priority.account
-            ).where(
-                "cloud_help_ticket_priorities.weight < #{current_priority.weight}"
-            ).order(
-                weight: :desc
-            ).first
-
-            unless new_priority
-                errors.add(:base, :ticket_at_min_priority)
-                return false
-            end
-            
-            if detail.update(priority: new_priority)
-                timelines.create(
-                    action: Ticket::Timeline.actions[:priority_decreased],
-                    description: I18n.t(
-                        'activerecord.models.cloud_help/ticket/timeline.actions.priority_decreased',
-                        old_priority_name: current_priority.name,
-                        old_priority_weight: current_priority.weight,
-                        new_priority_name: new_priority.name,
-                        new_priority_weight: new_priority.weight
-                    )
-                )
-                assignment.destroy
-                return true
-            else
-                return false
             end
         end
 
@@ -265,13 +204,54 @@ module CloudHelp
             end
         end
 
+        def after_save_actions
+            priority_change = detail.saved_changes["cloud_help_ticket_priorities_id"]
+            if priority_change && priority_change.length > 1
+                action_register_priority_change(priority_change[0], priority_change[1])
+            end
+        end
+
+        def action_register_priority_change(old_priority, new_priority)
+            old_priority = TicketPriority.find(old_priority)
+            new_priority = TicketPriority.find(new_priority)
+
+            action = :priority_decreased
+            timeline_translation = 'activerecord.models.cloud_help/ticket/timeline.actions.priority_decreased'
+            notification_translation = 'cloud_help.controllers.tickets.notifications.updated.descalated'
+
+            if old_priority.weight < new_priority.weight
+                action = :priority_increased
+                timeline_translation = 'activerecord.models.cloud_help/ticket/timeline.actions.priority_increased'
+                notification_translation = 'cloud_help.controllers.tickets.notifications.updated.escalated'
+            end
+
+            timelines.create(
+                action: Ticket::Timeline.actions[action],
+                description: I18n.t(
+                    timeline_translation,
+                    old_priority_name: old_priority.name,
+                    old_priority_weight: old_priority.weight,
+                    new_priority_name: new_priority.name,
+                    new_priority_weight: new_priority.weight
+                )
+            )
+            assignment.destroy
+            
+            message = I18n.t(
+                notification_translation,
+                ticket_id: id,
+                priority_name: new_priority.name
+            )
+            notify_subscribers(message, :priority_updated)
+        end
+
         def action_register_ticket_deadline
             if assignment
                 Courier::Driver::Calendar.registerEvent(
                     assignment.user,
                     {
-                        title:          I18n.t('activerecord.models.cloud_help/ticket.assignation_registry.title', ticket_id: id),
-                        description:    I18n.t('activerecord.models.cloud_help/ticket.assignation_registry.description'),
+                        title:          I18n.t('activerecord.models.cloud_help_ticket.assignation_registry.title', ticket_id: id),
+                        description:    I18n.t('activerecord.models.cloud_help_ticket.assignation_registry.description'),
                         time_start:     detail.deadline.to_date,
                         time_end:       detail.deadline.to_date + 1.hour,
                         url:            "/help/tickets/#{id}"

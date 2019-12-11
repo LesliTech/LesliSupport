@@ -10,8 +10,6 @@ module CloudHelp
             :activities,
             :api_follow_up_states,
             :api_update_workflow,
-            :api_escalate,
-            :api_descalate,
             :api_transfer,
             :update
         ]
@@ -104,7 +102,7 @@ module CloudHelp
             responseWithSuccessful({
                 types: TicketType.where(account: current_user.account.help).select(:id, :name),
                 categories: TicketCategory.tree(account),
-                priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name)
+                priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name, :weight)
             })
         end
 
@@ -139,46 +137,6 @@ module CloudHelp
                 end
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
-            end
-        end
-
-        # PUT /api/tickets/1/escalate
-        def api_escalate
-            if @ticket.detail.workflow.ticket_state.is_final?
-                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_escalate_closed_ticket'))
-            else
-                if @ticket.escalate
-                    ticket_priority = @ticket.detail.priority
-                    responseWithSuccessful
-                    message = I18n.t(
-                        'cloud_help.controllers.tickets.notifications.updated.escalated',
-                        ticket_id: @ticket.id,
-                        priority_name: ticket_priority.name
-                    )
-                    @ticket.notify_subscribers(message, :priority_updated)
-                else
-                    responseWithError(@ticket.errors.full_messages.to_sentence)
-                end
-            end
-        end
-
-        # PUT /api/tickets/1/descalate
-        def api_descalate
-            if @ticket.detail.workflow.ticket_state.is_final?
-                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_descalate_closed_ticket'))
-            else
-                if @ticket.descalate
-                    ticket_priority = @ticket.detail.priority
-                    responseWithSuccessful
-                    message = I18n.t(
-                        'cloud_help.controllers.tickets.notifications.updated.descalated',
-                        ticket_id: @ticket.id,
-                        priority_name: ticket_priority.name
-                    )
-                    @ticket.notify_subscribers(message, :priority_updated)
-                else
-                    responseWithError(@ticket.errors.full_messages.to_sentence)
-                end
             end
         end
 

@@ -11,7 +11,7 @@ en:
                     created: Ticket number %{id} has been created
                     closed: Ticket number %{id} has been closed
                     assigned_to_user: Has been assigned to %{user}
-            cloud_help/ticket:
+            cloud_help_ticket:
                 assignation_registry:
                     title: Ticket %{ticket_id} deadline
                     description: This ticket has to be resolved and closed before the established date
@@ -20,6 +20,7 @@ en:
                 cloud_help/ticket:
                         attributes:
                             base:
+                                ticket_already_closed: This ticket is already closed and cannot be modified any further
                                 ticket_at_max_priority: This ticket cannot be escalated any further
                                 ticket_at_min_priority: This ticket cannot be de-escalated any further
                                 transfer_type_or_category_missing: The selecteed type or category do not exist
