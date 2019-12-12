@@ -16,6 +16,7 @@ en:
                     priority_updated: Priory Change (escalate / de-escalate)
                     type_category_updated: Transfer (type / category)
                     assignment_updated: User Assignment
+                    deadline_updated: Deadline Established
                 placeholders:
                     notification_type: --
                 notification_types:

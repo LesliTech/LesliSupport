@@ -11,6 +11,7 @@ en:
                     created: Ticket number %{id} has been created
                     closed: Ticket number %{id} has been closed
                     assigned_to_user: Has been assigned to %{user}
+                    deadline_established: 'A deadline has been established: %{date}'
             cloud_help_ticket:
                 assignation_registry:
                     title: Ticket %{ticket_id} deadline
@@ -22,6 +23,7 @@ en:
                     descalated: Ticket number %{ticket_id} has been de-escalated to %{priority_name} priority
                     closed: Ticket number %{ticket_id} has been closed
                     assigned: Ticket number %{ticket_id} has been assigned to user %{user}
+                    deadline: 'New deadline: %{date}'
         errors:
             models:
                 cloud_help/ticket:

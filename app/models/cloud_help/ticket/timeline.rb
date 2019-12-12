@@ -10,7 +10,8 @@ module CloudHelp
             :type_transferred,
             :created,
             :closed,
-            :assigned_to_user
+            :assigned_to_user,
+            :deadline_established
         ]
     end
 end

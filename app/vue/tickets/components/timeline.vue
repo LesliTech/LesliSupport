@@ -55,6 +55,9 @@ export default {
             this.bus.subscribe('patch:/help/ticket/assignment', ()=>{
                 this.getTicketTimeline()
             })
+            this.bus.subscribe('patch:/help/ticket/deadline', ()=>{
+                this.getTicketTimeline()
+            })
         },
         getTicketTimeline(){
             this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
@@ -83,6 +86,10 @@ export default {
         isCoreState(action){
             return action == 'created' || action == 'closed'
         },
+
+        isDeadline(action){
+            return action == 'deadline_established'
+        }
     }
 }
 </script>
@@ -101,7 +108,7 @@ export default {
                             class="has-text-weight-bold"
                             :class="{
                                 'has-text-warning': isTransfer(timeline.action),
-                                'has-text-danger': isEscalate(timeline.action),
+                                'has-text-danger': isEscalate(timeline.action) || isDeadline(timeline.action),
                                 'has-text-success': isDescalate(timeline.action),
                                 'has-text-info': isCoreState(timeline.action)
                             }"

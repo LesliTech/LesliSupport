@@ -18,7 +18,7 @@ module CloudHelp
         accepts_nested_attributes_for :assignment, update_only: true
         accepts_nested_attributes_for :subscribers, allow_destroy: true
 
-        after_save :after_save_actions
+        after_update :after_update_actions
 
 
         def save
@@ -122,16 +122,16 @@ module CloudHelp
         private
 
         
-        def after_save_actions
+        def after_update_actions
 
             workflow_change = detail.saved_changes["cloud_help_ticket_workflows_id"]
-            if workflow_change && workflow_change.length > 1
+            if workflow_change
                 if TicketWorkflow.find(workflow_change[0]).ticket_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
                 action_verify_ticket_workflow(workflow_change[0], workflow_change[1])
-            elsif ! workflow_change
+            else
                 if detail.workflow.ticket_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
@@ -146,14 +146,14 @@ module CloudHelp
             end
             
             priority_change = detail.saved_changes["cloud_help_ticket_priorities_id"]
-            if priority_change && priority_change.length > 1
+            if priority_change
                 action_register_priority_change(priority_change[0], priority_change[1])
             end
             
             type_change = detail.saved_changes["cloud_help_ticket_types_id"]
             category_change = detail.saved_changes["cloud_help_ticket_categories_id"]
 
-            if (type_change && type_change.length > 1) || (category_change && category_change.length > 1)
+            if type_change || category_change
                 action_register_transfer(type_change[0], type_change[1], category_change[0], category_change[1])
             end
 
@@ -314,6 +314,22 @@ module CloudHelp
                         url:            "/help/tickets/#{id}"
                     }
                 )
+
+                # Adding deadline to timeline
+                timelines.create(
+                    action: Ticket::Timeline.actions[:deadline_established],
+                    description: I18n.t(
+                        'activerecord.models.cloud_help/ticket/timeline.actions.deadline_established',
+                        date: detail.deadline
+                    )
+                )
+
+                message = I18n.t(
+                    'activerecord.models.cloud_help_ticket.updated.deadline',
+                    ticket_id: id,
+                    date: detail.deadline
+                )
+                notify_subscribers(message, :deadline_updated)
             else
                 errors.add(:base, :cannot_add_deadline_without_assigned_user)
                 raise ActiveRecord::RecordInvalid, self

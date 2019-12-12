@@ -211,8 +211,8 @@ export default {
             }
             this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result =>{
                 if (result.successful) {
-                    let state_id = this.ticket_follow_up_states.filter (state => state.workflow_id == this.ticket_follow_up_state)[0].id
-                    if(state_id == this.default_states.closed){
+                    let state = this.ticket_follow_up_states.filter (state => state.workflow_id == this.ticket_follow_up_state)[0]
+                    if(state.id == this.default_states.closed){
                         this.alert(this.translations.form.messages.close.successful)
                         this.$router.push(`/${this.ticket_id}`)
                     }else{
@@ -220,7 +220,7 @@ export default {
                     }
                     this.ticket.detail_attributes.cloud_help_ticket_workflows_id = this.ticket_follow_up_state
                     this.getFollowUpStates()
-                    this.$emit('update-ticket-workflow', result.data)
+                    this.$emit('update-ticket-workflow', state)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
