@@ -18,8 +18,8 @@ module CloudHelp
         accepts_nested_attributes_for :assignment, update_only: true
         accepts_nested_attributes_for :subscribers, allow_destroy: true
 
-        before_save :before_save_actions
-        after_save :after_save_actions
+        after_update :after_update_actions
+
 
         def save
             if new_record?
@@ -33,12 +33,9 @@ module CloudHelp
                     return false
                 end
             end
-            if detail.workflow.ticket_state.is_final?
-                errors.add(:base, :ticket_already_closed)
-                return false
-            end
             super
         end
+
 
         def set_workflow
             detail.workflow = TicketWorkflow.find_by(
@@ -47,6 +44,7 @@ module CloudHelp
                 ticket_state: TicketState.initial_state
             )
         end
+
 
         def detailed_info
             data = Ticket.joins(
@@ -85,6 +83,7 @@ module CloudHelp
             }
         end
 
+
         def self.detailed_info(help_account)
             Ticket.joins(
                 "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
@@ -119,74 +118,52 @@ module CloudHelp
             end
         end
 
-        def update_workflow(new_workflow_node)
-            if detail.update(workflow: new_workflow_node)
-                
-                timeline_action = Ticket::Timeline.actions[:state_changed]
-                timeline_description = I18n.t(
-                    'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
-                    old_state_name: detail.workflow.ticket_state.name,
-                    new_state_name: new_workflow_node.ticket_state.name
-                )
 
-                if new_workflow_node.ticket_state.is_final?
-                    timeline_action = Ticket::Timeline.actions[:closed]
-                    timeline_description = I18n.t(
-                        'activerecord.models.cloud_help/ticket/timeline.actions.closed',
-                        id: id
-                    )
+        private
+
+        
+        def after_update_actions
+
+            workflow_change = detail.saved_changes["cloud_help_ticket_workflows_id"]
+            if workflow_change
+                if TicketWorkflow.find(workflow_change[0]).ticket_state.is_final?
+                    errors.add(:base, :ticket_already_closed)
+                    raise ActiveRecord::RecordInvalid, self
                 end
-
-                timelines.create( action: timeline_action, description: timeline_description )
-                return true
+                action_verify_ticket_workflow(workflow_change[0], workflow_change[1])
             else
-                return false
+                if detail.workflow.ticket_state.is_final?
+                    errors.add(:base, :ticket_already_closed)
+                    raise ActiveRecord::RecordInvalid, self
+                end
             end
-        end
 
-        def transfer(help_account, type_id, category_id)
-            current_type = detail.type
-            current_category = detail.category
-            new_type = TicketType.find_by(account: help_account, id: type_id)
-            new_category = TicketCategory.find_by(account: help_account, id: category_id)
-            unless (new_type && new_category)
-                errors.add(:base, :transfer_type_or_category_missing)
-                return false
+            if assignment
+                assignment_change = assignment.saved_changes["users_id"]
+                if assignment_change
+                    action_register_assignment_change()
+                end
             end
-            new_workflow = TicketWorkflow.find_by(ticket_type: new_type, ticket_category: new_category, ticket_state: TicketState.initial_state)
             
-            if detail.update(type: new_type, category: new_category, workflow: new_workflow)
-                # Adding type transfer to timeline
-                if current_type.id != new_type.id
-                    timelines.create(
-                        action: Ticket::Timeline.actions[:type_transferred],
-                        description: I18n.t(
-                            'activerecord.models.cloud_help/ticket/timeline.actions.type_transferred',
-                            old_type_name: current_type.name,
-                            new_type_name: new_type.name
-                        )
-                    )
-                end
-                # Adding category transfer to timeline
-                if current_category.id != new_category.id
-                    timelines.create(
-                        action: Ticket::Timeline.actions[:category_transferred],
-                        description: I18n.t(
-                            'activerecord.models.cloud_help/ticket/timeline.actions.category_transferred',
-                            old_category_name: current_category.name,
-                            new_category_name: new_category.name
-                        )
-                    )
-                end
-                assignment.destroy
-                return true
-            else
-                return false
+            priority_change = detail.saved_changes["cloud_help_ticket_priorities_id"]
+            if priority_change
+                action_register_priority_change(priority_change[0], priority_change[1])
             end
+            
+            type_change = detail.saved_changes["cloud_help_ticket_types_id"]
+            category_change = detail.saved_changes["cloud_help_ticket_categories_id"]
+
+            if type_change || category_change
+                action_register_transfer(type_change[0], type_change[1], category_change[0], category_change[1])
+            end
+
+            if detail.saved_changes["deadline"] 
+                action_register_ticket_deadline
+            end
+                
         end
 
-        def assign_to_user(params)
-            return false unless update(params)
+        def action_register_assignment_change
             timelines.create(
                 action: Ticket::Timeline.actions[:assigned_to_user],
                 description: I18n.t(
@@ -194,22 +171,100 @@ module CloudHelp
                     user: assignment.user.email
                 )
             )
+
+            message = I18n.t(
+                'activerecord.models.cloud_help_ticket.updated.assigned',
+                ticket_id: id,
+                user: assignment.user.email
+            )
+            notify_subscribers(message, :assignment_updated)
         end
 
-        private
+        def action_verify_ticket_workflow(old_workflow_id, new_workflow_id)
+            old_workflow = TicketWorkflow.find(old_workflow_id)
+            new_workflow = TicketWorkflow.find_by(
+                id: new_workflow_id,
+                cloud_help_ticket_categories_id: detail.cloud_help_ticket_categories_id,
+                cloud_help_ticket_types_id: detail.cloud_help_ticket_types_id
+            )
+            unless new_workflow
+                errors.add(:base, :invalid_workflow_transition)
+                raise ActiveRecord::RecordInvalid, self
+            end
 
-        def before_save_actions
-            if detail.deadline_changed?
-                action_register_ticket_deadline
+            timeline_action = Ticket::Timeline.actions[:state_changed]
+            timeline_description = I18n.t(
+                'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
+                old_state_name: old_workflow.ticket_state.name,
+                new_state_name: new_workflow.ticket_state.name
+            )
+            message = I18n.t(
+                'activerecord.models.cloud_help_ticket.updated.workflow',
+                ticket_id: id,
+                state_name: new_workflow.ticket_state.name
+            )
+
+            if new_workflow.ticket_state.is_final?
+                timeline_action = Ticket::Timeline.actions[:closed]
+                timeline_description = I18n.t(
+                    'activerecord.models.cloud_help/ticket/timeline.actions.closed',
+                    id: id
+                )
+                message = I18n.t(
+                    'activerecord.models.cloud_help_ticket.updated.closed',
+                    ticket_id: id
+                )
+            end
+
+            timelines.create( action: timeline_action, description: timeline_description )
+            notify_subscribers(message, :workflow_updated)
+        end
+
+
+        def action_register_transfer(old_type, new_type, old_category, new_category)
+            old_type = TicketType.find(old_type)
+            new_type = TicketType.find(new_type)
+            old_category = TicketCategory.find(old_category)
+            new_category = TicketCategory.find(new_category)
+            new_workflow = TicketWorkflow.find_by(ticket_type: new_type, ticket_category: new_category, ticket_state: TicketState.initial_state)
+            
+            if detail.update(workflow: new_workflow)
+                
+                # Adding type transfer to timeline
+                timelines.create(
+                    action: Ticket::Timeline.actions[:type_transferred],
+                    description: I18n.t(
+                        'activerecord.models.cloud_help/ticket/timeline.actions.type_transferred',
+                        old_type_name: old_type.name,
+                        new_type_name: new_type.name
+                    )
+                ) unless old_type.id == new_type.id
+
+                # Adding category transfer to timeline
+                timelines.create(
+                    action: Ticket::Timeline.actions[:category_transferred],
+                    description: I18n.t(
+                        'activerecord.models.cloud_help/ticket/timeline.actions.category_transferred',
+                        old_category_name: old_category.name,
+                        new_category_name: new_category.name
+                    )
+                ) unless old_category.id == new_category.id
+
+                assignment.destroy
+                message = I18n.t(
+                    'activerecord.models.cloud_help_ticket.updated.transferred',
+                    ticket_id: id,
+                    type_name: new_type.name,
+                    category_name: new_category.name
+                )
+                notify_subscribers(message, :type_category_updated)
+
+                return true
+            else
+                raise ActiveRecord::RecordInvalid, self
             end
         end
 
-        def after_save_actions
-            priority_change = detail.saved_changes["cloud_help_ticket_priorities_id"]
-            if priority_change && priority_change.length > 1
-                action_register_priority_change(priority_change[0], priority_change[1])
-            end
-        end
 
         def action_register_priority_change(old_priority, new_priority)
             old_priority = TicketPriority.find(old_priority)
@@ -217,12 +272,12 @@ module CloudHelp
 
             action = :priority_decreased
             timeline_translation = 'activerecord.models.cloud_help/ticket/timeline.actions.priority_decreased'
-            notification_translation = 'cloud_help.controllers.tickets.notifications.updated.descalated'
+            notification_translation = 'activerecord.models.cloud_help_ticket.updated.descalated'
 
             if old_priority.weight < new_priority.weight
                 action = :priority_increased
                 timeline_translation = 'activerecord.models.cloud_help/ticket/timeline.actions.priority_increased'
-                notification_translation = 'cloud_help.controllers.tickets.notifications.updated.escalated'
+                notification_translation = 'activerecord.models.cloud_help_ticket.updated.escalated'
             end
 
             timelines.create(
@@ -235,8 +290,9 @@ module CloudHelp
                     new_priority_weight: new_priority.weight
                 )
             )
-            assignment.destroy
-            
+            if assignment
+                assignment.destroy
+            end
             message = I18n.t(
                 notification_translation,
                 ticket_id: id,
@@ -244,6 +300,7 @@ module CloudHelp
             )
             notify_subscribers(message, :priority_updated)
         end
+
 
         def action_register_ticket_deadline
             if assignment
@@ -257,11 +314,28 @@ module CloudHelp
                         url:            "/help/tickets/#{id}"
                     }
                 )
+
+                # Adding deadline to timeline
+                timelines.create(
+                    action: Ticket::Timeline.actions[:deadline_established],
+                    description: I18n.t(
+                        'activerecord.models.cloud_help/ticket/timeline.actions.deadline_established',
+                        date: detail.deadline
+                    )
+                )
+
+                message = I18n.t(
+                    'activerecord.models.cloud_help_ticket.updated.deadline',
+                    ticket_id: id,
+                    date: detail.deadline
+                )
+                notify_subscribers(message, :deadline_updated)
             else
                 errors.add(:base, :cannot_add_deadline_without_assigned_user)
-                throw :abort
+                raise ActiveRecord::RecordInvalid, self
             end
         end
+
 
         def assignment_info
             return {
@@ -274,6 +348,7 @@ module CloudHelp
                 })
             end
         end
+
 
     end
 end

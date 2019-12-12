@@ -11,7 +11,8 @@ module CloudHelp
         :workflow_updated,
         :priority_updated,
         :type_category_updated,
-        :assignment_updated
+        :assignment_updated,
+        :deadline_updated
     ]
   end
 end

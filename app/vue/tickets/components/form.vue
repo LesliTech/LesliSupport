@@ -137,7 +137,7 @@ export default {
 
             this.modals.escalate = false
             if(next_priority.length > 0){
-                this.puTicketPriority('escalate', next_priority[0])
+                this.patchTicketPriority('escalate', next_priority[0])
             }else{
                 this.alert(translations.form.errors.ticket_at_max_priority, 'error')
             }
@@ -152,14 +152,14 @@ export default {
 
             this.modals.escalate = false
             if(next_priority.length > 0){
-                this.puTicketPriority('descalate', next_priority[0])
+                this.patchTicketPriority('descalate', next_priority[0])
             }else{
                 this.alert(translations.form.errors.ticket_at_min_priority, 'error')
             }
         },
 
         // Used by escalateTicket and descalateTicket. action has to either be 'escalate' or 'descalate'
-        puTicketPriority(action, priority){
+        patchTicketPriority(action, priority){
             let data = {
                 ticket: {
                     detail_attributes: {
@@ -179,11 +179,17 @@ export default {
             })
         },
 
-        transferTicket(e){
+        putTicketTransfer(e){
             if (e) { e.preventDefault() }
-            let data = this.transfer
+
+            let data = {
+                ticket: {
+                    detail_attributes: this.transfer
+                }
+            }
+
             this.modals.transfer = false
-            this.http.put(`/help/api/tickets/${this.ticket_id}/transfer`, data).then(result => {
+            this.http.put(`/help/tickets/${this.ticket_id}`, data).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.modals.transfer.messages.successful)
                     this.$router.push(`/${this.ticket.id}`)
@@ -195,13 +201,18 @@ export default {
             })
         },
 
-        putTicketWorkflow(){
+        patchTicketWorkflow(){
             let data = {
-                workflow_id: this.ticket_follow_up_state
+                ticket: {
+                    detail_attributes: {
+                        cloud_help_ticket_workflows_id: this.ticket_follow_up_state
+                    }
+                }
             }
-            this.http.put(`/help/api/tickets/${this.ticket_id}/workflow`, data).then(result =>{
+            this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result =>{
                 if (result.successful) {
-                    if(result.data.id == this.default_states.closed){
+                    let state = this.ticket_follow_up_states.filter (state => state.workflow_id == this.ticket_follow_up_state)[0]
+                    if(state.id == this.default_states.closed){
                         this.alert(this.translations.form.messages.close.successful)
                         this.$router.push(`/${this.ticket_id}`)
                     }else{
@@ -209,7 +220,7 @@ export default {
                     }
                     this.ticket.detail_attributes.cloud_help_ticket_workflows_id = this.ticket_follow_up_state
                     this.getFollowUpStates()
-                    this.$emit('update-ticket-workflow', result.data)
+                    this.$emit('update-ticket-workflow', state)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -292,7 +303,7 @@ export default {
                     {{ translations.modals.transfer.body.warning }}
                     {{ translations.modals.transfer.body.instructions }}
                     <hr>
-                    <form id="form-transfer" @submit="transferTicket">
+                    <form id="form-transfer" @submit="putTicketTransfer">
                         <div class="columns">
                             <div class="column is-6">
                                 <b-field :label="translations.modals.transfer.fields.type">
@@ -461,7 +472,7 @@ export default {
                             <div class="column is-3">
                                 <div class="field">
                                     <div class="actions has-text-right">
-                                        <button class="button is-primary is-fullwidth" type="button" @click="putTicketWorkflow">
+                                        <button class="button is-primary is-fullwidth" type="button" @click="patchTicketWorkflow">
                                             {{translations.form.actions.update}}
                                         </button>
                                     </div>

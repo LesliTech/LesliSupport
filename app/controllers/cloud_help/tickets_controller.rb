@@ -4,14 +4,12 @@ module CloudHelp
     class TicketsController < ApplicationController
 
         before_action :set_ticket, only: [
+            :update,
             :discussions,
             :actions,
             :files,
             :activities,
-            :api_follow_up_states,
-            :api_update_workflow,
-            :api_transfer,
-            :update
+            :api_follow_up_states
         ]
 
         # GET /tickets
@@ -111,57 +109,6 @@ module CloudHelp
             responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
         end
 
-        # PUT /api/tickets/1/workflow
-        def api_update_workflow
-            old_workflow_node = @ticket.detail.workflow
-            new_workflow_node = TicketWorkflow.find_by(
-                id: params[:workflow_id],
-                ticket_category: old_workflow_node.ticket_category,
-                ticket_type: old_workflow_node.ticket_type
-            )
-            unless new_workflow_node
-                return responseWithError(I18n.t('cloud_help.controllers.tickets.errors.invalid_workflow_transition'))
-            end
-            if @ticket.update_workflow(new_workflow_node)
-                responseWithSuccessful(new_workflow_node.ticket_state)
-                if new_workflow_node.ticket_state.is_final?
-                    message = I18n.t( 'cloud_help.controllers.tickets.notifications.closed', ticket_id: @ticket.id )
-                    @ticket.notify_subscribers(message, :ticket_closed)
-                else
-                    message = I18n.t(
-                        'cloud_help.controllers.tickets.notifications.updated.workflow',
-                        ticket_id: @ticket.id,
-                        state_name: new_workflow_node.ticket_state.name
-                    )
-                    @ticket.notify_subscribers(message, :workflow_updated)
-                end
-            else
-                responseWithError(@ticket.errors.full_messages.to_sentence)
-            end
-        end
-
-        # PUT /api/tickets/1/transfer
-        def api_transfer
-            if @ticket.detail.workflow.ticket_state.is_final?
-                responseWithError(I18n.t('cloud_help.controllers.tickets.errors.cannot_transfer_closed_ticket'))
-            else
-                if @ticket.transfer(current_user.account.help, params[:cloud_help_ticket_types_id], params[:cloud_help_ticket_categories_id])
-                    responseWithSuccessful
-                    ticket_category = @ticket.detail.category
-                    ticket_type = @ticket.detail.type
-                    message = I18n.t(
-                        'cloud_help.controllers.tickets.notifications.updated.transferred',
-                        ticket_id: @ticket.id,
-                        type_name: ticket_type.name,
-                        category_name: ticket_category.name
-                    )
-                    @ticket.notify_subscribers(message, :type_category_updated)
-                else
-                    responseWithError(@ticket.errors.full_messages.to_sentence)
-                end
-            end
-        end
-
         private
 
         # Setting up the ticket
@@ -182,7 +129,8 @@ module CloudHelp
                     :deadline,
                     :cloud_help_ticket_types_id,
                     :cloud_help_ticket_priorities_id,
-                    :cloud_help_ticket_categories_id
+                    :cloud_help_ticket_categories_id,
+                    :cloud_help_ticket_workflows_id
                 ],
                 subscribers_attributes: [
                     :event,
