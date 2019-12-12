@@ -48,8 +48,14 @@ export default {
             this.ticket_id = this.$route.params.id
             this.getTicketTimeline()
         }
+        this.setListeners()
     },
     methods: {
+        setListeners(){
+            this.bus.subscribe('patch:/help/ticket/assignment', ()=>{
+                this.getTicketTimeline()
+            })
+        },
         getTicketTimeline(){
             this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
                 if (result.successful) {
