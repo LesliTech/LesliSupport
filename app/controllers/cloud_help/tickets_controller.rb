@@ -71,12 +71,6 @@ module CloudHelp
             end
         end
 
-        # GET /tickets/1/discussions
-        def discussions
-            ticket_discussions = @ticket.discussions.order(id: :desc)
-            responseWithSuccessful(ticket_discussions)
-        end
-
         # GET /tickets/1/actions
         def actions
             ticket_actions = @ticket.actions

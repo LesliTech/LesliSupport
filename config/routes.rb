@@ -15,18 +15,17 @@ CloudHelp::Engine.routes.draw do
         get '/files', to: 'tickets#files'
         get '/actions', to: 'tickets#actions'
         get '/activities', to: 'tickets#activities'
-        get '/discussions', to: 'tickets#discussions'
         
         scope module: :ticket do
             resources :timelines, only: [:index]   
             resources :subscribers, only: [:index]
             resources :assignments, only: [:index]
+            resources :discussions
         end
     end
     
     namespace :ticket do
         resources :actions
-        resources :discussions
         resources :activities
         resources :files
     end
