@@ -1,5 +1,5 @@
 module CloudHelp
-  class Ticket::Subscriber < Subscriber
+  class Ticket::Subscriber < CloudObject::Subscriber
     belongs_to :ticket, class_name: "CloudHelp::Ticket", foreign_key: 'cloud_help_tickets_id'
     enum event: [
         :ticket_created,
