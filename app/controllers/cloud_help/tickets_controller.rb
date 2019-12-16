@@ -5,9 +5,7 @@ module CloudHelp
 
         before_action :set_ticket, only: [
             :update,
-            :discussions,
             :actions,
-            :files,
             :activities,
             :api_follow_up_states
         ]
@@ -75,12 +73,6 @@ module CloudHelp
         def actions
             ticket_actions = @ticket.actions
             responseWithSuccessful(ticket_actions)
-        end
-
-        # GET /tickets/1/files
-        def files
-            ticket_files = @ticket.files
-            responseWithSuccessful(ticket_files)
         end
 
         # GET /tickets/1/activities

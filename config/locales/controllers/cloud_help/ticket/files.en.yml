@@ -1,0 +1,7 @@
+en:
+    cloud_help:
+        controllers:
+            ticket:
+                files:
+                    notifications:
+                        created: New file added to the ticket number %{ticket_id}
