@@ -1,0 +1,8 @@
+en:
+    cloud_help:
+        controllers:
+            ticket:
+                actions:
+                    notifications:
+                        created: New action added to the ticket number %{ticket_id}
+                            
