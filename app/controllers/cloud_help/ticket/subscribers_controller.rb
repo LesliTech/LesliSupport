@@ -7,7 +7,7 @@ module CloudHelp
         # Returns all possible subscribers
         def index
             ticket = current_user.account.help.tickets.find(params[:ticket_id])
-            responseWithSuccessful(ticket.subscription_events)
+            responseWithSuccessful(ticket.subscription_events(current_user))
         end
 
     end

@@ -5,7 +5,6 @@ module CloudHelp
 
         before_action :set_ticket, only: [
             :update,
-            :actions,
             :activities,
             :api_follow_up_states
         ]
@@ -67,12 +66,6 @@ module CloudHelp
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
-        end
-
-        # GET /tickets/1/actions
-        def actions
-            ticket_actions = @ticket.actions
-            responseWithSuccessful(ticket_actions)
         end
 
         # GET /tickets/1/activities

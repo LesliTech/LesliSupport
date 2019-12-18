@@ -107,7 +107,8 @@ module CloudHelp
                 "id",                                           "CHTP.name as priority",
                 "CHTT.name as type",                           "CHTS.name as state",
                 "CHTC.name as category",                        "CHTA.assignation_type",
-                "subject",                                      "CHTC.id as cloud_help_ticket_categories_id"
+                "subject",                                      "CHTC.id as cloud_help_ticket_categories_id",
+                "created_at"
             ).where(
                 "cloud_help_tickets.cloud_help_accounts_id = #{help_account.id}"
             ).map do |ticket|
