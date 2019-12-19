@@ -1,0 +1,24 @@
+en:
+    cloud_help:
+        slas:
+            shared:
+                name: Service Level Agreement
+                actions:
+                    short:
+                        show: Show
+                        edit: Edit
+                    new: New SLA
+                    edit: Edit SLA
+                    show: Show SLA
+                    return: Return
+                    delete: Delete SLA
+                fields:
+                    id: Number
+                    name: Name
+                    body: Responsabilities Definition
+                    expected_response_time: Response time (hours)
+                    expected_resolution_time: Resolution time (hours)
+                    provider_repercussions: Repercussions of breaking the terms
+                    exceptions: Exceptions
+                    created_at: Created at
+                    updated_at: Updated at

@@ -27,6 +27,8 @@ Building a better future, one line of code at a time.
 
 =end
 
+default_sla = CloudHelp::Sla.find_by(default: true)
+
 CloudHelp::TicketType.all.each do |type|
     CloudHelp::TicketCategory.all.each do |category|
 
@@ -35,6 +37,7 @@ CloudHelp::TicketType.all.each do |type|
             next_states: '2',
             ticket_type: type,
             ticket_category: category,
+            sla: default_sla,
             ticket_state: CloudHelp::TicketState.find_by(id: 1, account: category.account)
         )
 
@@ -42,6 +45,7 @@ CloudHelp::TicketType.all.each do |type|
         CloudHelp::TicketWorkflow.create!(
             ticket_type: type,
             ticket_category: category,
+            sla: default_sla,
             ticket_state: CloudHelp::TicketState.find_by(id: 2, account: category.account)
         )
     end

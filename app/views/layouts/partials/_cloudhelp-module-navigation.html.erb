@@ -1,0 +1,17 @@
+<component-layout-navigation>
+    <template v-slot:right>
+        <%= link_to "Dashboards", root_path, class: "navbar-item" %>
+        <%= link_to "Tickets", tickets_path, class: "navbar-item" %>
+        <%= link_to "Categories", ticket_categories_path, class: "navbar-item" %>
+        <%= link_to "Priorities", ticket_priorities_path, class: "navbar-item" %>
+        <%= link_to "SLAs", slas_path, class: "navbar-item" %>
+        <%= link_to "States", ticket_states_path, class: "navbar-item" %>
+        <%= link_to "Types", ticket_types_path, class: "navbar-item" %>
+        <%= link_to "Workflows", ticket_workflows_path, class: "navbar-item" %>
+    </template>
+    <template v-slot:left>
+        <router-link v-if="$route" class="navbar-item" :to="'/new'">
+            <%= I18n.t("cloud_help.#{controller.controller_name}.shared.actions.new") %>
+        </router-link>
+    </template>
+</component-layout-navigation>

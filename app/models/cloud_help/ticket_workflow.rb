@@ -3,6 +3,7 @@ module CloudHelp
         belongs_to :ticket_state, class_name: "CloudHelp::TicketState", foreign_key: "cloud_help_ticket_states_id"
         belongs_to :ticket_type, class_name: "CloudHelp::TicketType", foreign_key: "cloud_help_ticket_types_id" 
         belongs_to :ticket_category, class_name: "CloudHelp::TicketCategory", foreign_key: "cloud_help_ticket_categories_id" 
+        belongs_to :sla, class_name: "CloudHelp::Sla", foreign_key: "cloud_help_slas_id"
 
         DEFAULT_STATES = {
             initial: 1,
@@ -16,13 +17,16 @@ module CloudHelp
                 :ticket_category
             ).joins(
                 :ticket_state
+            ).joins(
+                :sla
             ).select(
                 "cloud_help_ticket_workflows.id",
                 "cloud_help_ticket_workflows.created_at",
                 "cloud_help_ticket_workflows.updated_at",
                 "cloud_help_ticket_types.name as ticket_type_name",
                 "cloud_help_ticket_categories.name as ticket_category_name",
-                "cloud_help_ticket_categories.id as ticket_category_id"
+                "cloud_help_ticket_categories.id as ticket_category_id",
+                "cloud_help_slas.name as sla_name"
             ).where(
                 "cloud_help_ticket_states.initial = true"
             ).where(
@@ -45,6 +49,8 @@ module CloudHelp
                 :ticket_category
             ).joins(
                 :ticket_state
+            ).joins(
+                :sla
             ).select(
                 "false as visited",
                 "cloud_help_ticket_workflows.id",
@@ -54,8 +60,10 @@ module CloudHelp
                 "cloud_help_ticket_states.id as ticket_state_id",
                 "cloud_help_ticket_states.name as ticket_state_name",
                 "cloud_help_ticket_types.name as ticket_type_name",
+                "cloud_help_slas.name as sla_name",
+                "cloud_help_slas.id as cloud_help_slas_id",
                 "cloud_help_ticket_categories.name as ticket_category_name",
-                "cloud_help_ticket_categories.id as ticket_category_id"
+                "cloud_help_ticket_categories.id as ticket_category_id",
             ).where(
                 "cloud_help_ticket_states.cloud_help_accounts_id = #{account.id}"
             ).where(
@@ -89,12 +97,16 @@ module CloudHelp
                         node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:initial] ||
                         node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:final]
                     )
-                        TicketWorkflow.find(node[:id]).update(next_states: node[:next_states])
+                        TicketWorkflow.find(node[:id]).update(
+                            next_states: node[:next_states],
+                            cloud_help_slas_id: node[:cloud_help_slas_id]
+                        )
                     else
                         TicketWorkflow.create(
                             cloud_help_ticket_categories_id: cloud_help_ticket_categories_id,
                             cloud_help_ticket_types_id: cloud_help_ticket_types_id,
                             cloud_help_ticket_states_id: node[:ticket_state_id],
+                            cloud_help_slas_id: node[:cloud_help_slas_id],
                             next_states: node[:next_states]
                         )
                     end

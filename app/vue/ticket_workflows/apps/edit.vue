@@ -48,9 +48,10 @@ export default {
                 shared: I18n.t('cloud_help.ticket_workflows.shared'),
                 edit: I18n.t('cloud_help.ticket_workflows.edit')
             },
-            ticket_workflow: {},
+            ticket_workflow: null,
             ticket_workflow_id: null,
             ticket_states: [],
+            slas: [],
             selected_state: null,
             selected_follow_up_state: null,
             selected_node: {}
@@ -60,6 +61,7 @@ export default {
         // · SetTicketWorkflowId calls getTicketWorkflow
         this.setTicketWorkflowId()
         this.getTicketStates()
+        this.getSlas()
     },
     methods: {
         
@@ -86,6 +88,18 @@ export default {
             this.http.get("/help/ticket_states.json").then(result => {
                 if (result.successful) {
                     this.ticket_states = result.data
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        getSlas(){
+            this.http.get("/help/slas.json").then(result => {
+                if (result.successful) {
+                    this.slas = result.data
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -174,7 +188,12 @@ export default {
 
         putTicketWorkflow(event){
             event.preventDefault()
-            let data = { ticket_workflow: Object.values(this.ticket_workflow) }
+            let data = {
+                ticket_workflow: this.propagateSLA(
+                    Object.values(this.ticket_workflow),
+                    this.ticket_workflow[this.default_states.created].cloud_help_slas_id
+                )
+            }
             this.http.put(`/help/ticket_workflows/${this.ticket_workflow_id}`, data).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.edit.messages.update.successful)
@@ -184,6 +203,13 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        propagateSLA(workflow, sla_id){
+            workflow.forEach((workflow_node)=>{
+                workflow_node.cloud_help_slas_id = sla_id
+            })
+            return workflow
         }
     },
     computed: {
@@ -230,7 +256,7 @@ export default {
 }
 </script>
 <template>
-    <section>
+    <section v-if="ticket_workflow">
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
@@ -266,7 +292,22 @@ export default {
                 <form @submit="putTicketWorkflow">
                     <div class="columns">
                         <div class="column">
-                            <label>{{translations.edit.titles.add_state}}:</label>
+                            <b-field :label="translations.shared.fields.sla_name">
+                                <b-select expanded v-model="ticket_workflow[default_states.created].cloud_help_slas_id">
+                                    <option
+                                        v-for="sla in slas"
+                                        :value="sla.id"
+                                        :key="sla.id"
+                                    >
+                                        {{ sla.name }}
+                                    </option>
+                                </b-select>
+                            </b-field>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <label class="label">{{translations.edit.titles.add_state}}</label>
                             <div class="columns">
                                 <div class="column is-four-fifths">
                                     <b-field>
@@ -293,7 +334,7 @@ export default {
                             </div>
                         </div>
                         <div class="column">
-                            <label>{{translations.edit.titles.add_follow_up}}:</label>
+                            <label class="label">{{translations.edit.titles.add_follow_up}}</label>
                             <div class="columns">
                                 <div class="column is-four-fifths">
                                     <b-field>

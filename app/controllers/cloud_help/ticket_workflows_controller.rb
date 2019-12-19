@@ -54,7 +54,12 @@ module CloudHelp
         def ticket_workflow_params
             filtered_params = []
             params.require(:ticket_workflow).each do |unfiltered_params|
-                filtered_params.push(unfiltered_params.permit(:id, :ticket_state_id, :next_states))
+                filtered_params.push(unfiltered_params.permit(
+                    :id,
+                    :ticket_state_id,
+                    :next_states,
+                    :cloud_help_slas_id
+                ))
             end
             filtered_params
         end

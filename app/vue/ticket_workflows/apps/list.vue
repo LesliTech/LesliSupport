@@ -74,6 +74,9 @@ export default {
                 <b-table-column field="ticket_category_name" :label="translations.shared.fields.ticket_category_name">
                     {{ props.row.ticket_category_name }}
                 </b-table-column>
+                <b-table-column field="sla_name" :label="translations.shared.fields.sla_name">
+                    {{ props.row.sla_name }}
+                </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">
                     {{ date.toLocalFormat(props.row.created_at, true) }}
                 </b-table-column>
