@@ -5,6 +5,8 @@ module CloudHelp
         belongs_to :ticket_category, class_name: "CloudHelp::TicketCategory", foreign_key: "cloud_help_ticket_categories_id" 
         belongs_to :sla, class_name: "CloudHelp::Sla", foreign_key: "cloud_help_slas_id"
 
+        validates :cloud_help_slas_id, presence: true
+
         DEFAULT_STATES = {
             initial: 1,
             final: 2
