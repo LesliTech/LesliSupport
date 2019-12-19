@@ -1,0 +1,12 @@
+en:
+    cloud_help:
+        slas:
+            form:
+                messages:
+                    update:
+                        successful: Sla updated successfully
+                    create:
+                        successful: Sla created successfully
+                actions:
+                    update: Update sla
+                    create: Create sla

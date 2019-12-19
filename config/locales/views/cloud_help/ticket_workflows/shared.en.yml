@@ -13,6 +13,7 @@ en:
                     id: Number
                     ticket_type_name: Ticket Type
                     ticket_category_name: Ticket Category
+                    sla_name: Service Level Agreement (SLA)
                     states_count: Number of States
                     created_at: Created at
                     updated_at: Updated at

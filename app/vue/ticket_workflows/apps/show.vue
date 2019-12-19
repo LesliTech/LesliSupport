@@ -41,7 +41,11 @@ export default {
                 shared: I18n.t('cloud_help.ticket_workflows.shared')
             },
             ticket_workflow: {},
-            ticket_workflow_id: null
+            ticket_workflow_id: null,
+            default_states: {
+                created: 1,
+                closed: 2
+            }
         }
     },
     mounted() {
@@ -95,13 +99,19 @@ export default {
                     <div class="column">
                         <p v-if="Object.keys(ticket_workflow).length > 0">
                             <span class="has-text-weight-bold">
-                                {{ `${translations.shared.fields.ticket_category_name}:` }}
+                                {{ translations.shared.fields.ticket_category_name }}:
                             </span>
-                            {{ ticket_workflow[1].ticket_category_name }},
+                            {{ ticket_workflow[this.default_states.created].ticket_category_name }}
+                            <br>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.shared.fields.ticket_type_name}:` }}
+                                {{ translations.shared.fields.ticket_type_name }}:
                             </span>
-                            {{ ticket_workflow[1].ticket_type_name }}
+                            {{ ticket_workflow[this.default_states.created].ticket_type_name }}
+                            <br>
+                            <span class="has-text-weight-bold">
+                                {{ translations.shared.fields.sla_name }}:
+                            </span>
+                            {{ ticket_workflow[this.default_states.created].sla_name }}
                         </p>
                     </div>
                 </div>

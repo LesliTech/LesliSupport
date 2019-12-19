@@ -150,6 +150,11 @@ export default {
                     <div class="card-content">
                         <div class="columns">
                             <div class="column is-8">
+                                <span class="has-text-weight-bold">
+                                    {{translations.fields.id}}:
+                                    {{ ticket.id}}
+                                </span>
+                                <br>
                                 <span class="has-text-weight-bold">{{translations.fields.category}}:</span>
                                 {{ ticket.detail_attributes.category}}
                                 <br>
