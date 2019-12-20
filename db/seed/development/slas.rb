@@ -27,5 +27,5 @@ Building a better future, one line of code at a time.
 
 =end
 
-CloudHelp::Sla.create!(name: 'Default', account: CloudHelp::Account.first, expected_response_time: 1000, expected_resolution_time: 1000, default: true)
+CloudHelp::Sla.create!(name: 'Default', account: CloudHelp::Account.first, expected_response_time: 1000, expected_resolution_time: 2000, default: true)
 

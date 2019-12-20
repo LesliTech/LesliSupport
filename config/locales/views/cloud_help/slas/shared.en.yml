@@ -2,6 +2,7 @@ en:
     cloud_help:
         slas:
             shared:
+                default: Default
                 name: Service Level Agreement
                 actions:
                     short:

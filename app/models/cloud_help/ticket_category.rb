@@ -48,15 +48,18 @@ module CloudHelp
         def assign_default_states
             initial_state = TicketState.find_by(initial: true)
             final_state = TicketState.find_by(final: true)
+            default_sla = Sla.find_by(default: true)
 
             TicketType.all.each do |ticket_type|
-                TicketWorkflow.create(
+                TicketWorkflow.create!(
+                    sla: default_sla,
                     ticket_state: initial_state,
                     ticket_type:ticket_type,
                     ticket_category: self,
                     next_states: "#{final_state.id}"
                 )
-                TicketWorkflow.create(
+                TicketWorkflow.create!(
+                    sla: default_sla,
                     ticket_state: final_state,
                     ticket_type:ticket_type,
                     ticket_category: self

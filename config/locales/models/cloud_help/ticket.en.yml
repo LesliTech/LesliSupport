@@ -13,6 +13,12 @@ en:
                     assigned_to_user: Has been assigned to %{user}
                     deadline_established: 'A deadline has been established: %{date}'
             cloud_help_ticket:
+                expected_response_time:
+                    title: Ticket %{ticket_id} expected response date
+                    description: The client has to be notified of this ticket statue before the established date
+                expected_resolution_time:
+                    title: Ticket %{ticket_id} expected resolution date
+                    description: The ticket should be solved and closed before the established date. Any changes or delays should be justified and notified to the client in advance
                 assignation_registry:
                     title: Ticket %{ticket_id} deadline
                     description: This ticket has to be resolved and closed before the established date

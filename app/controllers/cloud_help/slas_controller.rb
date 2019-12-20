@@ -14,6 +14,7 @@ module CloudHelp
                         :name,
                         :expected_response_time,
                         :expected_resolution_time,
+                        :default,
                         :created_at,
                         :updated_at
                     )
@@ -96,7 +97,8 @@ module CloudHelp
                 :expected_resolution_time,
                 :expected_response_time,
                 :provider_repercussions,
-                :exceptions
+                :exceptions,
+                :default
             )
         end
     end

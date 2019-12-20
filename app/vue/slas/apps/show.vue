@@ -139,6 +139,9 @@ export default {
                                 {{translations.shared.fields.name}}:
                             </span>
                             {{ sla.name }}
+                            <span v-if="sla.default" class="has-text-weight-bold">
+                                ({{translations.shared.default}})
+                            </span>
                             <br>
                             <span class="has-text-weight-bold">
                                 {{translations.shared.fields.expected_response_time}}:
