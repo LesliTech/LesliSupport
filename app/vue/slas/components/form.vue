@@ -136,7 +136,7 @@ export default {
             <div class="card-content">
                 <form @submit="submitSla">
                     <div class="columns">
-                        <div class="column is-6">
+                        <div class="column is-5">
                             <b-field :label="translations.shared.fields.name">
                                 <b-input v-model="sla.name" required="true"></b-input>
                             </b-field>
@@ -150,6 +150,15 @@ export default {
                             <b-field :label="translations.shared.fields.expected_resolution_time">
                                 <b-input v-model="sla.expected_resolution_time" type="number" min="0" required="true"></b-input>
                             </b-field>
+                        </div>
+                        <div class="column is-1">
+                            <div class="field">
+                                <label class="label is-w-100">Default</label>
+                                <div class="has-text-centered">
+                                    <input id="sla_default" class="is-checkradio" type="checkbox" v-model="sla.default">
+                                    <label for="sla_default"></label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <b-field :label="translations.shared.fields.body">
@@ -193,3 +202,8 @@ export default {
         </div>
     </section>
 </template>
+<style scoped>
+    .is-w-100{
+        width: 100%;
+    }
+</style>

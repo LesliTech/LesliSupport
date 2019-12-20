@@ -71,6 +71,9 @@ export default {
                 </b-table-column>
                 <b-table-column field="name" :label="translations.shared.fields.name">
                     {{ props.row.name }}
+                    <span v-if="props.row.default" class="has-text-weight-bold">
+                        ({{translations.shared.default}})
+                    </span>
                 </b-table-column>
                 <b-table-column field="expected_response_time" :label="translations.shared.fields.expected_response_time">
                     {{ props.row.expected_response_time }}

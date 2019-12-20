@@ -1,0 +1,8 @@
+en:
+    activerecord:
+        errors:
+            models:
+                cloud_help/sla:
+                        attributes:
+                            base:
+                                cannot_remove_default: There must be an SLA set as default at all times

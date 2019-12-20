@@ -173,6 +173,24 @@ module CloudHelp
                 )
             )
 
+            Courier::Driver::Calendar.registerEvent(
+                assignment.user, {
+                    title:          I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.title', ticket_id: id),
+                    description:    I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.description'),
+                    time_start:     DateTime.now + detail.workflow.sla.expected_response_time.hour,
+                    url:            "/help/tickets/#{id}"
+                }
+            )
+
+            Courier::Driver::Calendar.registerEvent(
+                assignment.user, {
+                    title:          I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.title', ticket_id: id),
+                    description:    I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.description'),
+                    time_start:     DateTime.now + detail.workflow.sla.expected_resolution_time.hour,
+                    url:            "/help/tickets/#{id}"
+                }
+            )
+
             message = I18n.t(
                 'activerecord.models.cloud_help_ticket.updated.assigned',
                 ticket_id: id,
