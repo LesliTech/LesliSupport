@@ -6,3 +6,4 @@ en:
                         attributes:
                             base:
                                 cannot_remove_default: There must be an SLA set as default at all times
+                                cannot_modify_while_ticket_in_progress: You cannot modify this SLA because there is an active ticket associated to it

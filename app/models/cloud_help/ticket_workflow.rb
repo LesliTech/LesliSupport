@@ -4,6 +4,7 @@ module CloudHelp
         belongs_to :ticket_type, class_name: "CloudHelp::TicketType", foreign_key: "cloud_help_ticket_types_id" 
         belongs_to :ticket_category, class_name: "CloudHelp::TicketCategory", foreign_key: "cloud_help_ticket_categories_id" 
         belongs_to :sla, class_name: "CloudHelp::Sla", foreign_key: "cloud_help_slas_id"
+        has_many :ticket_details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_ticket_workflows_id"
 
         validates :cloud_help_slas_id, presence: true
 
