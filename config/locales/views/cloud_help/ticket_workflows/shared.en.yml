@@ -9,6 +9,7 @@ en:
                     show: Show Workflow
                     reset: Reset Workflow
                     return: Return
+                    set_as_default: Set as Default
                 fields:
                     id: Number
                     default: Default

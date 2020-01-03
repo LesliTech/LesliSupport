@@ -1,0 +1,6 @@
+en:
+    cloud_help:
+        ticket_workflows:
+            show:
+                messages:
+                    set_as_default: This workflow was been successfully set as default

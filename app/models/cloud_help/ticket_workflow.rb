@@ -73,6 +73,7 @@ module CloudHelp
                 ticket_category_name: TicketCategory.find(ticket_category.id).full_path,
                 ticket_type_name: ticket_type.name,
                 cloud_help_slas_id: cloud_help_slas_id,
+                default: default,
                 sla_name: sla.name,
                 details: data
             }
