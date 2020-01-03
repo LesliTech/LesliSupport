@@ -22,7 +22,7 @@ module CloudHelp
                 format.json do
                     set_ticket_workflow
                     if @ticket_workflow
-                        responseWithSuccessful(@ticket_workflow.full_workflow(current_user.account))
+                        responseWithSuccessful(@ticket_workflow.full_workflow)
                     else
                         responseWithError(I18n.t('cloud_help.controllers.ticket_workflows.errors.not_found'))
                     end
@@ -36,32 +36,35 @@ module CloudHelp
 
         # PATCH/PUT /ticket_workflows/1
         def update
-            if @ticket_workflow.replace_workflow(current_user.account, ticket_workflow_params)
-                responseWithSuccessful
-            else
-                responseWithError(@ticket_workflow.errors.full_messages.to_sentence)
+            @ticket_workflow.replace_workflow(current_user.account, ticket_workflow_params[:details_attributes])
+            if ticket_workflow_params[:cloud_help_slas_id]
+                @ticket_workflow.update(cloud_help_slas_id: ticket_workflow_params[:cloud_help_slas_id])
             end
+            
+            return responseWithError(@ticket_workflow.errors.full_messages.to_sentence) if @ticket_workflow.errors.any?
+
+            responseWithSuccessful
         end
 
         private
 
-        # Ticket Workflow Id is the ID of the first node of the workflow (CREATED)
+        # We join with cloud_help_slas to verify the account
         def set_ticket_workflow
-            @ticket_workflow = TicketWorkflow.find_by(id: params[:id])
+            @ticket_workflow = TicketWorkflow.joins(
+                :sla
+            ).where(
+                id: params[:id]
+            ).where(
+                "cloud_help_slas.cloud_help_accounts_id = #{current_user.account.id}"
+            ).first
         end
 
         # Only allow a trusted parameter "white list" through.
         def ticket_workflow_params
-            filtered_params = []
-            params.require(:ticket_workflow).each do |unfiltered_params|
-                filtered_params.push(unfiltered_params.permit(
-                    :id,
-                    :ticket_state_id,
-                    :next_states,
-                    :cloud_help_slas_id
-                ))
-            end
-            filtered_params
+            params.require(:ticket_workflow).permit(
+                :cloud_help_slas_id,
+                details_attributes: %i[id next_states ticket_state_id]
+            )
         end
 
     end

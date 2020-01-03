@@ -14,6 +14,7 @@ en:
                     return: Return
                     delete: Delete SLA
                 fields:
+                    default_sla: Default
                     id: Number
                     name: Name
                     body: Responsabilities Definition

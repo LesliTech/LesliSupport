@@ -112,13 +112,13 @@ export default {
             if(this.selected_state){
                 let state = this.ticket_states.filter(element => element.id === this.selected_state)[0]
                 let new_node = {
-                    next_states: `${this.default_states.closed}`,
+                    next_states: this.default_states.closed.toString(),
                     visited: false,
                     ticket_state_id: state.id,
                     ticket_state_name: state.name
                 }
-                this.ticket_workflow[this.default_states.created].next_states+=`|${state.id}`
-                this.$set(this.ticket_workflow, state.id, new_node)
+                this.ticket_workflow.details[this.default_states.created].next_states+=`|${state.id}`
+                this.$set(this.ticket_workflow.details, state.id, new_node)
                 this.selected_state = null
             }
         },
@@ -128,7 +128,7 @@ export default {
         // · state_id = the id of the state the user wants to remove
         isRemovable(node, state_id){
             if(node.ticket_state_id == this.default_states.created){
-                let initial_node = this.ticket_workflow[this.default_states.created]
+                let initial_node = this.ticket_workflow.details[this.default_states.created]
                 return initial_node.next_states != state_id
             }
             return true
@@ -136,10 +136,10 @@ export default {
 
         deleteStateFromWorkflow(deleted_node){
             let id = deleted_node.ticket_state_id
-            if(this.isRemovable(this.ticket_workflow[this.default_states.created], id)){
-                this.$delete(this.ticket_workflow,id)
-                for(let node_id in this.ticket_workflow){
-                    let node = this.ticket_workflow[node_id]
+            if(this.isRemovable(this.ticket_workflow.details[this.default_states.created], id)){
+                this.$delete(this.ticket_workflow.details,id)
+                for(let node_id in this.ticket_workflow.details){
+                    let node = this.ticket_workflow.details[node_id]
                     if(node.next_states){
                         node.next_states = node.next_states.replace(
                             new RegExp(`([^0-9]${id}$)|(^${id}[^0-9])|(^${id}$)`,'g'), ''
@@ -189,10 +189,10 @@ export default {
         putTicketWorkflow(event){
             event.preventDefault()
             let data = {
-                ticket_workflow: this.propagateSLA(
-                    Object.values(this.ticket_workflow),
-                    this.ticket_workflow[this.default_states.created].cloud_help_slas_id
-                )
+                ticket_workflow: {
+                    cloud_help_slas_id: this.ticket_workflow.cloud_help_slas_id,
+                    details_attributes: Object.values(this.ticket_workflow.details)
+                }
             }
             this.http.put(`/help/ticket_workflows/${this.ticket_workflow_id}`, data).then(result => {
                 if (result.successful) {
@@ -217,7 +217,7 @@ export default {
             return [
                 {id: null, name: this.translations.edit.labels.add_to_workflow}
             ].concat(this.ticket_states.filter((element)=>{
-                return !this.ticket_workflow[element.id]
+                return !this.ticket_workflow.details[element.id]
             }))
         },
         
@@ -226,7 +226,7 @@ export default {
             if(this.selected_node.next_states){
                 let next_states_ids = this.selected_node.next_states.split('|')
                 next_states_ids.forEach((id)=>{
-                    next_states.push(this.ticket_workflow[id])
+                    next_states.push(this.ticket_workflow.details[id])
                 })
             }
             return next_states
@@ -248,7 +248,7 @@ export default {
                     follow_up_states.includes(element.id) ||
                     element.id == this.default_states.created
                 ) && (
-                    this.ticket_workflow[element.id]
+                    this.ticket_workflow.details[element.id]
                 )
             }))
         }
@@ -277,15 +277,15 @@ export default {
             <div class="card-content">
                 <div class="columns">
                     <div class="column">
-                        <p v-if="Object.keys(ticket_workflow).length > 0">
+                        <p>
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.ticket_category_name}:` }}
                             </span>
-                            {{ ticket_workflow[this.default_states.created].ticket_category_name }},
+                            {{ ticket_workflow.ticket_category_name }},
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.ticket_type_name}:` }}
                             </span>
-                            {{ ticket_workflow[this.default_states.created].ticket_type_name }}
+                            {{ ticket_workflow.ticket_type_name }}
                         </p>
                     </div>
                 </div>
@@ -293,7 +293,7 @@ export default {
                     <div class="columns">
                         <div class="column">
                             <b-field :label="translations.shared.fields.sla_name">
-                                <b-select expanded v-model="ticket_workflow[default_states.created].cloud_help_slas_id">
+                                <b-select expanded v-model="ticket_workflow.cloud_help_slas_id">
                                     <option
                                         v-for="sla in slas"
                                         :value="sla.id"
@@ -371,7 +371,7 @@ export default {
                             {{translations.edit.titles.current_state}}:
                             <div class="list is-hoverable">
                                 <a 
-                                    v-for="(node, key) in ticket_workflow"
+                                    v-for="(node, key) in ticket_workflow.details"
                                     :key="key"
                                     class="list-item"
                                     @click="selectNode(node)"
@@ -412,7 +412,7 @@ export default {
                     </div>
                 </form>
                 <hr>
-                <component-workflow-chart :workflow="ticket_workflow" :rerender.sync="rerender_chart">
+                <component-workflow-chart :workflow="ticket_workflow.details" :rerender.sync="rerender_chart">
                 </component-workflow-chart>
             </div>
         </div>

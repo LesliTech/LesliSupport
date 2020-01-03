@@ -34,19 +34,18 @@ CloudHelp::TicketType.all.each do |type|
 
         # Assigning created state first ticket
         CloudHelp::TicketWorkflow.create!(
-            next_states: '2',
             ticket_type: type,
             ticket_category: category,
             sla: default_sla,
-            ticket_state: CloudHelp::TicketState.find_by(id: 1, account: category.account)
-        )
-
-        # Assigning closed state to ticket
-        CloudHelp::TicketWorkflow.create!(
-            ticket_type: type,
-            ticket_category: category,
-            sla: default_sla,
-            ticket_state: CloudHelp::TicketState.find_by(id: 2, account: category.account)
+            details_attributes: [
+                {
+                    ticket_state: CloudHelp::TicketState.find_by(id: 1, account: category.account),
+                    next_states: '2'
+                },
+                {
+                    ticket_state: CloudHelp::TicketState.find_by(id: 2, account: category.account)
+                }
+            ] 
         )
     end
 end

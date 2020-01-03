@@ -8,7 +8,7 @@ class CreateCloudHelpTicketDetails < ActiveRecord::Migration[6.0]
             t.timestamps
         end
         add_reference :cloud_help_ticket_details, :cloud_help_ticket_types, foreign_key: true, index: { name: 'help_ticket_details_types' }
-        add_reference :cloud_help_ticket_details, :cloud_help_ticket_workflows, foreign_key: true, index: { name: 'help_ticket_details_workflows' }
+        add_reference :cloud_help_ticket_details, :cloud_help_ticket_workflow_details, foreign_key: true, index: { name: 'help_ticket_details_workflow_details' }
         add_reference :cloud_help_ticket_details, :cloud_help_ticket_priorities, foreign_key: true, index: { name: 'help_ticket_details_priorities' }
         add_reference :cloud_help_ticket_details, :cloud_help_ticket_sources, foreign_key: true, index: { name: 'help_ticket_details_sources' }
         add_reference :cloud_help_ticket_details, :cloud_help_ticket_categories, foreign_key: true, index: { name: 'help_ticket_details_categories' }

@@ -64,6 +64,9 @@ export default {
             parsed_workflow: []
         }
     },
+    mounted(){
+        this.generateWorkflow()
+    },
     methods: {
         getIcon(node){
             let icon = 'fas:fa-forward'
@@ -76,22 +79,24 @@ export default {
         },
         
         generateWorkflow(){
-            this.$emit('update:rerender', false)
-            let data = []
-            Object.values(this.workflow).forEach( node => {
-                let parsed_node = {
-                    id: node.ticket_state_id,
-                    text: `${this.getIcon(node)} ${this.getNodeName(node)}`
-                }
-                if(node.next_states){
-                    parsed_node.next = node.next_states.split("|")
-                }
-                if(this.selected_node == node.ticket_state_id){
-                    parsed_node.style = 'fill:#EFFD5F,stroke:#FCE205'
-                }
-                data.push(parsed_node)
-            })
-            this.parsed_workflow = data
+            if(this.workflow){
+                this.$emit('update:rerender', false)
+                let data = []
+                Object.values(this.workflow).forEach( node => {
+                    let parsed_node = {
+                        id: node.ticket_state_id,
+                        text: `${this.getIcon(node)} ${this.getNodeName(node)}`
+                    }
+                    if(node.next_states){
+                        parsed_node.next = node.next_states.split("|")
+                    }
+                    if(this.selected_node == node.ticket_state_id){
+                        parsed_node.style = 'fill:#EFFD5F,stroke:#FCE205'
+                    }
+                    data.push(parsed_node)
+                })
+                this.parsed_workflow = data
+            }
         },
 
         getNodeName(node){
@@ -106,15 +111,11 @@ export default {
     },
     watch: {
         selected_node(){
-            if(this.workflow){
-                this.generateWorkflow()
-            }
+            this.generateWorkflow()
         },
 
         workflow(){
-            if(this.workflow){
-                this.generateWorkflow()
-            }
+            this.generateWorkflow()
         },
         
         rerender(){

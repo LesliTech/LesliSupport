@@ -54,7 +54,7 @@ module CloudHelp
             ticket.user = current_user
             ticket.account = current_user.account.help
             ticket.detail.source = TicketSource.cloud_help_source
-            ticket.set_workflow
+            ticket.set_workflow_detail
 
             if ticket.save
                 responseWithSuccessful(ticket)
@@ -85,7 +85,7 @@ module CloudHelp
 
         # GET /api/tickets/1/follow_up_states
         def api_follow_up_states
-            responseWithSuccessful(@ticket.detail.workflow.follow_up_states)
+            responseWithSuccessful(@ticket.detail.workflow_detail.follow_up_states)
         end
 
         private
@@ -109,7 +109,7 @@ module CloudHelp
                     :cloud_help_ticket_types_id,
                     :cloud_help_ticket_priorities_id,
                     :cloud_help_ticket_categories_id,
-                    :cloud_help_ticket_workflows_id
+                    :cloud_help_ticket_workflow_details_id
                 ],
                 subscribers_attributes: [
                     :event,

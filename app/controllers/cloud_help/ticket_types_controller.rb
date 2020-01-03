@@ -49,7 +49,7 @@ module CloudHelp
             ticket_type.cloud_help_accounts_id = current_user.account.id
 
             if ticket_type.save
-                ticket_type.assign_default_states
+                TicketWorkflow.create_default_workflow(ticket_type, nil)
                 responseWithSuccessful(ticket_type)
             else
                 responseWithError(ticket_type.errors.full_messages.to_sentence)

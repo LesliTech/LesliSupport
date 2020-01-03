@@ -37,10 +37,14 @@ module CloudHelp
         end
 
 
-        def set_workflow
-            detail.workflow = TicketWorkflow.find_by(
+        def set_workflow_detail
+            workflow = TicketWorkflow.find_by(
                 ticket_type: detail.type,
-                ticket_category: detail.category,
+                ticket_category: detail.category
+            )
+
+            detail.workflow_detail = TicketWorkflow::Detail.find_by(
+                ticket_workflow: workflow,
                 ticket_state: TicketState.initial_state
             )
         end
@@ -58,11 +62,15 @@ module CloudHelp
             ).joins(
                 "
                     inner join cloud_help_ticket_workflows CHTW on CHTD.cloud_help_ticket_types_id = CHTW.cloud_help_ticket_types_id and 
-                    CHTD.cloud_help_ticket_categories_id = CHTW.cloud_help_ticket_categories_id and 
-                    CHTD.cloud_help_ticket_workflows_id = CHTW.id
+                    CHTD.cloud_help_ticket_categories_id = CHTW.cloud_help_ticket_categories_id
                 "
             ).joins(
-                "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
+                "
+                    inner join cloud_help_ticket_workflow_details CHTWD on CHTWD.cloud_help_ticket_workflows_id = CHTW.id and
+                    CHTD.cloud_help_ticket_workflow_details_id = CHTWD.id
+                "
+            ).joins(
+                "inner join cloud_help_ticket_states CHTS on CHTWD.cloud_help_ticket_states_id = CHTS.id"
             ).joins( :user ).select(
                 "users.email as email",                         "subject",
                 "description",                                  "CHTD.tags",
@@ -96,11 +104,15 @@ module CloudHelp
             ).joins(
                 "
                     inner join cloud_help_ticket_workflows CHTW on CHTD.cloud_help_ticket_types_id = CHTW.cloud_help_ticket_types_id and 
-                    CHTD.cloud_help_ticket_categories_id = CHTW.cloud_help_ticket_categories_id and 
-                    CHTD.cloud_help_ticket_workflows_id = CHTW.id
+                    CHTD.cloud_help_ticket_categories_id = CHTW.cloud_help_ticket_categories_id
                 "
             ).joins(
-                "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
+                "
+                    inner join cloud_help_ticket_workflow_details CHTWD on CHTWD.cloud_help_ticket_workflows_id = CHTW.id and
+                    CHTD.cloud_help_ticket_workflow_details_id = CHTWD.id
+                "
+            ).joins(
+                "inner join cloud_help_ticket_states CHTS on CHTWD.cloud_help_ticket_states_id = CHTS.id"
             ).joins(
                 "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
             ).select(
@@ -125,15 +137,15 @@ module CloudHelp
         
         def after_update_actions
 
-            workflow_change = detail.saved_changes["cloud_help_ticket_workflows_id"]
+            workflow_change = detail.saved_changes["cloud_help_ticket_workflow_details_id"]
             if workflow_change
-                if TicketWorkflow.find(workflow_change[0]).ticket_state.is_final?
+                if TicketWorkflow::Detail.find(workflow_change[0]).ticket_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
                 action_verify_ticket_workflow(workflow_change[0], workflow_change[1])
             else
-                if detail.workflow.ticket_state.is_final?
+                if detail.workflow_detail.ticket_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
@@ -152,16 +164,22 @@ module CloudHelp
             end
             
             type_change = detail.saved_changes["cloud_help_ticket_types_id"]
+            if type_change
+                action_register_type_transfer(type_change[0], type_change[1])
+            end
+            
             category_change = detail.saved_changes["cloud_help_ticket_categories_id"]
+            if category_change
+                action_register_category_transfer(category_change[0], category_change[1])
+            end
 
             if type_change || category_change
-                action_register_transfer(type_change[0], type_change[1], category_change[0], category_change[1])
+                action_assign_new_workflow
             end
 
             if detail.saved_changes["deadline"] 
                 action_register_ticket_deadline
-            end
-                
+            end 
         end
 
         def action_register_assignment_change
@@ -177,7 +195,7 @@ module CloudHelp
                 assignment.user, {
                     title:          I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.title', ticket_id: id),
                     description:    I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.description'),
-                    time_start:     DateTime.now + detail.workflow.sla.expected_response_time.hour,
+                    time_start:     DateTime.now + detail.workflow_detail.ticket_workflow.sla.expected_response_time.hour,
                     url:            "/help/tickets/#{id}"
                 }
             )
@@ -186,7 +204,7 @@ module CloudHelp
                 assignment.user, {
                     title:          I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.title', ticket_id: id),
                     description:    I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.description'),
-                    time_start:     DateTime.now + detail.workflow.sla.expected_resolution_time.hour,
+                    time_start:     DateTime.now + detail.workflow_detail.ticket_workflow.sla.expected_resolution_time.hour,
                     url:            "/help/tickets/#{id}"
                 }
             )
@@ -199,14 +217,11 @@ module CloudHelp
             notify_subscribers(message, :assignment_updated)
         end
 
-        def action_verify_ticket_workflow(old_workflow_id, new_workflow_id)
-            old_workflow = TicketWorkflow.find(old_workflow_id)
-            new_workflow = TicketWorkflow.find_by(
-                id: new_workflow_id,
-                cloud_help_ticket_categories_id: detail.cloud_help_ticket_categories_id,
-                cloud_help_ticket_types_id: detail.cloud_help_ticket_types_id
-            )
-            unless new_workflow
+        def action_verify_ticket_workflow(old_workflow_detail_id, new_workflow_detail_id)
+
+            old_workflow_detail = TicketWorkflow::Detail.find(old_workflow_detail_id)
+            new_workflow_detail = TicketWorkflow::Detail.find(new_workflow_detail_id)
+            unless old_workflow_detail.next_states.split("|").include? new_workflow_detail.cloud_help_ticket_states_id.to_s   
                 errors.add(:base, :invalid_workflow_transition)
                 raise ActiveRecord::RecordInvalid, self
             end
@@ -214,16 +229,16 @@ module CloudHelp
             timeline_action = Ticket::Timeline.actions[:state_changed]
             timeline_description = I18n.t(
                 'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
-                old_state_name: old_workflow.ticket_state.name,
-                new_state_name: new_workflow.ticket_state.name
+                old_state_name: old_workflow_detail.ticket_state.name,
+                new_state_name: new_workflow_detail.ticket_state.name
             )
             message = I18n.t(
                 'activerecord.models.cloud_help_ticket.updated.workflow',
                 ticket_id: id,
-                state_name: new_workflow.ticket_state.name
+                state_name: new_workflow_detail.ticket_state.name
             )
 
-            if new_workflow.ticket_state.is_final?
+            if new_workflow_detail.ticket_state.is_final?
                 timeline_action = Ticket::Timeline.actions[:closed]
                 timeline_description = I18n.t(
                     'activerecord.models.cloud_help/ticket/timeline.actions.closed',
@@ -240,50 +255,57 @@ module CloudHelp
         end
 
 
-        def action_register_transfer(old_type, new_type, old_category, new_category)
+        def action_register_type_transfer(old_type, new_type)
             old_type = TicketType.find(old_type)
             new_type = TicketType.find(new_type)
+            
+            # Adding type transfer to timeline
+            timelines.create(
+                action: Ticket::Timeline.actions[:type_transferred],
+                description: I18n.t(
+                    'activerecord.models.cloud_help/ticket/timeline.actions.type_transferred',
+                    old_type_name: old_type.name,
+                    new_type_name: new_type.name
+                )
+            )
+        end
+
+        def action_register_category_transfer(old_category, new_category)
             old_category = TicketCategory.find(old_category)
             new_category = TicketCategory.find(new_category)
-            new_workflow = TicketWorkflow.find_by(ticket_type: new_type, ticket_category: new_category, ticket_state: TicketState.initial_state)
             
-            if detail.update(workflow: new_workflow)
-                
-                # Adding type transfer to timeline
-                timelines.create(
-                    action: Ticket::Timeline.actions[:type_transferred],
-                    description: I18n.t(
-                        'activerecord.models.cloud_help/ticket/timeline.actions.type_transferred',
-                        old_type_name: old_type.name,
-                        new_type_name: new_type.name
-                    )
-                ) unless old_type.id == new_type.id
+            # Adding category transfer to timeline
+            timelines.create(
+                action: Ticket::Timeline.actions[:category_transferred],
+                description: I18n.t(
+                    'activerecord.models.cloud_help/ticket/timeline.actions.category_transferred',
+                    old_category_name: old_category.name,
+                    new_category_name: new_category.name
+                )
+            )
+        end
 
-                # Adding category transfer to timeline
-                timelines.create(
-                    action: Ticket::Timeline.actions[:category_transferred],
-                    description: I18n.t(
-                        'activerecord.models.cloud_help/ticket/timeline.actions.category_transferred',
-                        old_category_name: old_category.name,
-                        new_category_name: new_category.name
-                    )
-                ) unless old_category.id == new_category.id
+        def action_assign_new_workflow
+            assignment.destroy if assignment
+            category = detail.category
+            type = detail.type
 
-                assignment.destroy
+            new_workflow = TicketWorkflow.find_by(ticket_type: type, ticket_category: category)
+            new_workflow_detail = new_workflow.details.find_by( ticket_state: TicketState.initial_state )
+
+            if detail.update(workflow_detail: new_workflow_detail)
                 message = I18n.t(
                     'activerecord.models.cloud_help_ticket.updated.transferred',
                     ticket_id: id,
-                    type_name: new_type.name,
-                    category_name: new_category.name
+                    type_name: type.name,
+                    category_name: category.name
                 )
                 notify_subscribers(message, :type_category_updated)
-
                 return true
             else
                 raise ActiveRecord::RecordInvalid, self
             end
         end
-
 
         def action_register_priority_change(old_priority, new_priority)
             old_priority = TicketPriority.find(old_priority)
