@@ -27,7 +27,6 @@ Building a better future, one line of code at a time.
 
 =end
 
-load "#{Rails.root}/engines/CloudHelp/db/seed/development/accounts.rb"
 load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_states.rb"
 load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_sources.rb"
 load "#{Rails.root}/engines/CloudHelp/db/seed/development/ticket_categories.rb"
