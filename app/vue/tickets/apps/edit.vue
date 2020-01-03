@@ -131,8 +131,9 @@ export default {
                     </div>
                     <div class="card-content">
                         <component-workflow-chart 
+                            v-if="ticket_workflow"
                             :rerender.sync="rerender_chart"
-                            :workflow="ticket_workflow"
+                            :workflow="ticket_workflow.details"
                             :selected_node="ticket.detail_attributes.cloud_help_ticket_states_id"
                         >
                         </component-workflow-chart>

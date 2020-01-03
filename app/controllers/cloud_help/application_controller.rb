@@ -8,9 +8,9 @@ module CloudHelp
             if current_user.account.help.blank?
 
                 # insert reference to the core account
-                current_user.account.help = CloudHelp::Account.new
-                current_user.account.help.account = current_user.account
-                current_user.account.help.save!
+                account = CloudHelp::Account.new(account: current_user.account)
+                current_user.account.help = account
+                account.save!
 
             end
 

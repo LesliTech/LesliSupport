@@ -108,7 +108,7 @@ export default {
                 if (result.successful) {
                     this.ticket_follow_up_states = result.data
                     if(result.data.length > 0){
-                        this.ticket_follow_up_state = result.data[0].workflow_id
+                        this.ticket_follow_up_state = result.data[0].workflow_detail_id
                     }
                 } else {
                     this.alert(result.error.message, 'danger')
@@ -205,20 +205,20 @@ export default {
             let data = {
                 ticket: {
                     detail_attributes: {
-                        cloud_help_ticket_workflows_id: this.ticket_follow_up_state
+                        cloud_help_ticket_workflow_details_id: this.ticket_follow_up_state
                     }
                 }
             }
             this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result =>{
                 if (result.successful) {
-                    let state = this.ticket_follow_up_states.filter (state => state.workflow_id == this.ticket_follow_up_state)[0]
+                    let state = this.ticket_follow_up_states.filter (state => state.workflow_detail_id == this.ticket_follow_up_state)[0]
                     if(state.id == this.default_states.closed){
                         this.alert(this.translations.form.messages.close.successful)
                         this.$router.push(`/${this.ticket_id}`)
                     }else{
                         this.alert(this.translations.form.messages.update_workflow.successful)
                     }
-                    this.ticket.detail_attributes.cloud_help_ticket_workflows_id = this.ticket_follow_up_state
+                    this.ticket.detail_attributes.cloud_help_ticket_workflow_details_id = this.ticket_follow_up_state
                     this.getFollowUpStates()
                     this.$emit('update-ticket-workflow', state)
                 } else {
@@ -460,10 +460,10 @@ export default {
                                         >
                                             <option
                                                 v-for="state in ticket_follow_up_states"
-                                                :key="state.workflow_id"
-                                                :value="state.workflow_id"
+                                                :key="state.workflow_detail_id"
+                                                :value="state.workflow_detail_id"
                                             >
-                                                <component-ticket-state-name :name="state.state_name"/>
+                                                <component-ticket-state-name :name="state.name"/>
                                             </option>
                                         </b-select>
                                     </div>

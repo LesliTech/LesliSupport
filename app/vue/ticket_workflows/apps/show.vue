@@ -41,11 +41,7 @@ export default {
                 shared: I18n.t('cloud_help.ticket_workflows.shared')
             },
             ticket_workflow: {},
-            ticket_workflow_id: null,
-            default_states: {
-                created: 1,
-                closed: 2
-            }
+            ticket_workflow_id: null
         }
     },
     mounted() {
@@ -101,21 +97,21 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ translations.shared.fields.ticket_category_name }}:
                             </span>
-                            {{ ticket_workflow[this.default_states.created].ticket_category_name }}
+                            {{ ticket_workflow.ticket_category_name }}
                             <br>
                             <span class="has-text-weight-bold">
                                 {{ translations.shared.fields.ticket_type_name }}:
                             </span>
-                            {{ ticket_workflow[this.default_states.created].ticket_type_name }}
+                            {{ ticket_workflow.ticket_type_name }}
                             <br>
                             <span class="has-text-weight-bold">
                                 {{ translations.shared.fields.sla_name }}:
                             </span>
-                            {{ ticket_workflow[this.default_states.created].sla_name }}
+                            {{ ticket_workflow.sla_name }}
                         </p>
                     </div>
                 </div>
-                <component-workflow-chart :workflow="ticket_workflow">
+                <component-workflow-chart :workflow="ticket_workflow.details">
                 </component-workflow-chart>
             </div>
         </div>

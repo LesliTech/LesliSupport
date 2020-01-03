@@ -29,13 +29,13 @@ en:
                     descalated: Ticket number %{ticket_id} has been de-escalated to %{priority_name} priority
                     closed: Ticket number %{ticket_id} has been closed
                     assigned: Ticket number %{ticket_id} has been assigned to user %{user}
-                    deadline: 'New deadline: %{date}'
+                    deadline: 'New deadline set to ticket %{ticket_id}: %{date}'
         errors:
             models:
                 cloud_help/ticket:
                         attributes:
                             base:
-                                invalid_ticket_transition: The selected state does not belong to this workflow
+                                invalid_workflow_transition: The selected state does not belong to this workflow
                                 ticket_already_closed: This ticket is already closed and cannot be modified any further
                                 ticket_at_max_priority: This ticket cannot be escalated any further
                                 ticket_at_min_priority: This ticket cannot be de-escalated any further

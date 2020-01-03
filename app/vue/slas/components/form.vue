@@ -153,7 +153,7 @@ export default {
                         </div>
                         <div class="column is-1">
                             <div class="field">
-                                <label class="label is-w-100">Default</label>
+                                <label class="label is-w-100">{{translations.shared.fields.default_sla}}</label>
                                 <div class="has-text-centered">
                                     <input id="sla_default" class="is-checkradio" type="checkbox" v-model="sla.default">
                                     <label for="sla_default"></label>
