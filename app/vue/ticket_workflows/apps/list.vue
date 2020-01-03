@@ -77,6 +77,10 @@ export default {
                 <b-table-column field="sla_name" :label="translations.shared.fields.sla_name">
                     {{ props.row.sla_name }}
                 </b-table-column>
+                <b-table-column field="default" :label="translations.shared.fields.default">
+                    <span v-if="props.row.default">{{translations.shared.default.true}}</span>
+                    <span v-else class="has-font-weight-bold">{{translations.shared.default.false}}</span>
+                </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">
                     {{ date.toLocalFormat(props.row.created_at, true) }}
                 </b-table-column>

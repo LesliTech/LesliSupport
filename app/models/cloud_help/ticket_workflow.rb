@@ -29,6 +29,7 @@ module CloudHelp
                 :sla
             ).select(
                 "cloud_help_ticket_workflows.id",
+                "cloud_help_ticket_workflows.default",
                 "cloud_help_ticket_workflows.created_at",
                 "cloud_help_ticket_workflows.updated_at",
                 "cloud_help_ticket_types.name as ticket_type_name",
