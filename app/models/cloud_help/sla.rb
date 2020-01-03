@@ -41,5 +41,13 @@ module CloudHelp
             end
         end
     end
+
+    def destroy
+        if default
+            errors.add(:base, :cannot_delete_default)
+            return false
+        end
+        super
+    end
   end
 end
