@@ -3,6 +3,8 @@ module CloudHelp
         belongs_to :ticket_type, class_name: "CloudHelp::TicketType", foreign_key: "cloud_help_ticket_types_id" 
         belongs_to :ticket_category, class_name: "CloudHelp::TicketCategory", foreign_key: "cloud_help_ticket_categories_id" 
         belongs_to :sla, class_name: "CloudHelp::Sla", foreign_key: "cloud_help_slas_id"
+
+        after_update :verify_default_workflow
         
         has_many(
             :details,
@@ -146,5 +148,16 @@ module CloudHelp
                 end
             end
         end
+
+        def verify_default_workflow
+            default_change = saved_changes["default"]
+            return unless default_change
+            
+            if default_change[1]
+                # default changed from false to true
+                raise ActiveRecord::RecordInvalid, self unless TicketWorkflow.where(default: true).where.not(id: id).update(default: false)
+            end
+        end
+
     end
 end
