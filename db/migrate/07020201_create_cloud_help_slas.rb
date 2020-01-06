@@ -7,7 +7,7 @@ class CreateCloudHelpSlas < ActiveRecord::Migration[6.0]
             t.integer :expected_resolution_time
             t.text :provider_repercussions
             t.text :exceptions
-            t.boolean :default
+            t.boolean :default, default: false
             t.timestamps
         end
         add_reference :cloud_help_slas, :cloud_help_accounts, foreign_key: true

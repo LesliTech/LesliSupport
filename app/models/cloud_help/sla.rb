@@ -9,9 +9,11 @@ module CloudHelp
         ticket_count = Sla.joins(
             "inner join cloud_help_ticket_workflows CHTW on CHTW.cloud_help_slas_id = cloud_help_slas.id"
         ).joins(
-            "inner join cloud_help_ticket_details CHTD on CHTD.cloud_help_ticket_workflows_id = CHTW.id"
+            "inner join cloud_help_ticket_workflow_details CHTWD on CHTWD.cloud_help_ticket_workflows_id = CHTW.id"
         ).joins(
-            "inner join cloud_help_ticket_states CHTS on CHTW.cloud_help_ticket_states_id = CHTS.id"
+            "inner join cloud_help_ticket_details CHTD on CHTD.cloud_help_ticket_workflow_details_id = CHTWD.id"
+        ).joins(
+            "inner join cloud_help_ticket_states CHTS on CHTWD.cloud_help_ticket_states_id = CHTS.id"
         ).where(
             "CHTS.final = false"
         ).count
@@ -38,6 +40,14 @@ module CloudHelp
                 return false
             end
         end
+    end
+
+    def destroy
+        if default
+            errors.add(:base, :cannot_delete_default)
+            return false
+        end
+        super
     end
   end
 end

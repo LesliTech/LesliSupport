@@ -38,7 +38,8 @@ export default {
     data() {
         return {
             translations: {
-                shared: I18n.t('cloud_help.ticket_workflows.shared')
+                shared: I18n.t('cloud_help.ticket_workflows.shared'),
+                show: I18n.t('cloud_help.ticket_workflows.show')
             },
             ticket_workflow: {},
             ticket_workflow_id: null
@@ -61,7 +62,25 @@ export default {
             this.http.get(`/help/ticket_workflows/${this.ticket_workflow_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_workflow = result.data
-                }else{
+                } else {
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        patchTicketWorkflow() {
+            let data = {
+                ticket_workflow: {
+                    default: true
+                }
+            }
+            this.http.patch(`/help/ticket_workflows/${this.ticket_workflow_id}`, data).then(result => {
+                if(result.successful){
+                    this.ticket_workflow.default = true
+                    this.alert(this.translations.show.messages.set_as_default, 'success')
+                } else {
                     this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
@@ -79,7 +98,12 @@ export default {
                     {{ translations.shared.name }}
                 </h2>
                 <div class="card-header-icon">
+                    <a href="javascript:void(0)" @click="patchTicketWorkflow">
+                        <i class="fas fa-check-circle"></i>
+                        {{ translations.shared.actions.set_as_default}}
+                    </a>
                     <router-link :to="`/${ticket_workflow_id}/edit`">
+                        &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-edit"></i>
                         {{ translations.shared.actions.edit }}
                     </router-link>
@@ -108,6 +132,12 @@ export default {
                                 {{ translations.shared.fields.sla_name }}:
                             </span>
                             {{ ticket_workflow.sla_name }}
+                            <br>
+                            <span class="has-text-weight-bold">
+                                {{ translations.shared.fields.default }}:
+                                <span v-if="ticket_workflow.default">{{translations.shared.default.true}}</span>
+                                <span v-else>{{translations.shared.default.false}}</span>
+                            </span>
                         </p>
                     </div>
                 </div>

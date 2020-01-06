@@ -36,10 +36,13 @@ module CloudHelp
 
         # PATCH/PUT /ticket_workflows/1
         def update
-            @ticket_workflow.replace_workflow(current_user.account, ticket_workflow_params[:details_attributes])
-            if ticket_workflow_params[:cloud_help_slas_id]
-                @ticket_workflow.update(cloud_help_slas_id: ticket_workflow_params[:cloud_help_slas_id])
+            workflow_params = ticket_workflow_params
+            if workflow_params[:details_attributes]
+                @ticket_workflow.replace_workflow(current_user.account, workflow_params[:details_attributes])
+                workflow_params = workflow_params.except(:details_attributes)
             end
+
+            @ticket_workflow.update(workflow_params)
             
             return responseWithError(@ticket_workflow.errors.full_messages.to_sentence) if @ticket_workflow.errors.any?
 
@@ -63,6 +66,7 @@ module CloudHelp
         def ticket_workflow_params
             params.require(:ticket_workflow).permit(
                 :cloud_help_slas_id,
+                :default,
                 details_attributes: %i[id next_states ticket_state_id]
             )
         end

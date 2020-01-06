@@ -3,6 +3,8 @@ module CloudHelp
         belongs_to :ticket_type, class_name: "CloudHelp::TicketType", foreign_key: "cloud_help_ticket_types_id" 
         belongs_to :ticket_category, class_name: "CloudHelp::TicketCategory", foreign_key: "cloud_help_ticket_categories_id" 
         belongs_to :sla, class_name: "CloudHelp::Sla", foreign_key: "cloud_help_slas_id"
+
+        after_update :verify_default_workflow
         
         has_many(
             :details,
@@ -29,6 +31,7 @@ module CloudHelp
                 :sla
             ).select(
                 "cloud_help_ticket_workflows.id",
+                "cloud_help_ticket_workflows.default",
                 "cloud_help_ticket_workflows.created_at",
                 "cloud_help_ticket_workflows.updated_at",
                 "cloud_help_ticket_types.name as ticket_type_name",
@@ -72,6 +75,7 @@ module CloudHelp
                 ticket_category_name: TicketCategory.find(ticket_category.id).full_path,
                 ticket_type_name: ticket_type.name,
                 cloud_help_slas_id: cloud_help_slas_id,
+                default: default,
                 sla_name: sla.name,
                 details: data
             }
@@ -105,7 +109,43 @@ module CloudHelp
         end
 
         def self.create_default_workflow(ticket_type, ticket_category)
+            default_workflow = TicketWorkflow.find_by(default: true)
+            default_sla = Sla.find_by(default: true)
 
+            if default_workflow
+                details_attributes = []
+                default_workflow.details.each do |detail|
+                    details_attributes.push({
+                        cloud_help_ticket_states_id: detail.cloud_help_ticket_states_id,
+                        next_states: detail.next_states
+                    })
+                end
+
+                if ticket_type
+                    TicketCategory.all.each do |category|
+                        TicketWorkflow.create!(
+                            sla: default_sla,
+                            ticket_type: ticket_type,
+                            ticket_category: category,
+                            details_attributes: details_attributes
+                        )
+                    end
+                elsif ticket_category
+                    TicketType.all.each do |type|
+                        TicketWorkflow.create!(
+                            sla: default_sla,
+                            ticket_type: type,
+                            ticket_category: ticket_category,
+                            details_attributes: details_attributes
+                        )
+                    end
+                end
+            else
+                TicketWorkflow.create_dummy_workflow(ticket_type, ticket_category)
+            end
+        end
+
+        def self.create_dummy_workflow(ticket_type, ticket_category)
             initial_state = TicketState.find_by(initial: true)
             final_state = TicketState.find_by(final: true)
             default_sla = Sla.find_by(default: true)
@@ -144,5 +184,16 @@ module CloudHelp
                 end
             end
         end
+
+        def verify_default_workflow
+            default_change = saved_changes["default"]
+            return unless default_change
+            
+            if default_change[1]
+                # default changed from false to true
+                raise ActiveRecord::RecordInvalid, self unless TicketWorkflow.where(default: true).where.not(id: id).update(default: false)
+            end
+        end
+
     end
 end
