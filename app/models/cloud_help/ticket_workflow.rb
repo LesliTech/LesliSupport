@@ -109,7 +109,43 @@ module CloudHelp
         end
 
         def self.create_default_workflow(ticket_type, ticket_category)
+            default_workflow = TicketWorkflow.find_by(default: true)
+            default_sla = Sla.find_by(default: true)
 
+            if default_workflow
+                details_attributes = []
+                default_workflow.details.each do |detail|
+                    details_attributes.push({
+                        cloud_help_ticket_states_id: detail.cloud_help_ticket_states_id,
+                        next_states: detail.next_states
+                    })
+                end
+
+                if ticket_type
+                    TicketCategory.all.each do |category|
+                        TicketWorkflow.create!(
+                            sla: default_sla,
+                            ticket_type: ticket_type,
+                            ticket_category: category,
+                            details_attributes: details_attributes
+                        )
+                    end
+                elsif ticket_category
+                    TicketType.all.each do |type|
+                        TicketWorkflow.create!(
+                            sla: default_sla,
+                            ticket_type: type,
+                            ticket_category: ticket_category,
+                            details_attributes: details_attributes
+                        )
+                    end
+                end
+            else
+                TicketWorkflow.create_dummy_workflow(ticket_type, ticket_category)
+            end
+        end
+
+        def self.create_dummy_workflow(ticket_type, ticket_category)
             initial_state = TicketState.find_by(initial: true)
             final_state = TicketState.find_by(final: true)
             default_sla = Sla.find_by(default: true)
