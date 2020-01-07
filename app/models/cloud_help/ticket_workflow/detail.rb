@@ -5,9 +5,8 @@ module CloudHelp
         has_many :ticket_details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_ticket_details_id"
         
         def follow_up_states
-            unless next_states
-                return []
-            end
+            return [] unless next_states
+            
             ids = next_states.split('|').map(&:to_i)
             ticket_workflow.details.where(cloud_help_ticket_states_id: ids).map do |workflow_detail|
                 ticket_state = workflow_detail.ticket_state

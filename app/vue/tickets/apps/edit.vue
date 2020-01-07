@@ -34,6 +34,7 @@ import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.
 import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
 import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
 import componentFileList from 'LesliCloud/vue/components/lists/file.vue'
+import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
 import componentFormStatus from '../components/status.vue'
 import componentFormTag from '../components/tag.vue'
 import componentForm from '../components/form.vue'
@@ -50,6 +51,7 @@ export default {
         'component-discussion-list': componentDiscussionList,
         'component-action-list': componentActionList,
         'component-file-list': componentFileList,
+        "component-subscriptions": componentSubscriptions,
         'component-form-status': componentFormStatus,
         'component-form-tag': componentFormTag,
         'component-form': componentForm,
@@ -142,6 +144,10 @@ export default {
                 <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
                 <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             </div>
+            <component-subscriptions
+                :cloud-id="ticket_id"
+                cloud-module="help/ticket"
+            />
             <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>

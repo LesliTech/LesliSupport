@@ -28,14 +28,14 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
-import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue";
-import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue";
-import componentActionList from "LesliCloud/vue/components/lists/action.vue";
-import componentFileList from "LesliCloud/vue/components/lists/file.vue";
-import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue";
-import componentTimeline from "../components/timeline.vue";
-import componentTicketStateName from "../../components/ticket_state_name.vue";
-import componentDeadline from "../components/deadline.vue";
+import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue"
+import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue"
+import componentActionList from "LesliCloud/vue/components/lists/action.vue"
+import componentFileList from "LesliCloud/vue/components/lists/file.vue"
+import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
+import componentTimeline from "../components/timeline.vue"
+import componentTicketStateName from "../../components/ticket_state_name.vue"
+import componentDeadline from "../components/deadline.vue"
 import componentAssignment from "../components/assignment.vue"
 
 // · Component show
@@ -61,10 +61,7 @@ export default {
                 closed: 2
             },
             ticket_id: null,
-            ticket: null,
-            subscriptions: {
-                active: false
-            }
+            ticket: null
         }
     },
     mounted() {
@@ -113,11 +110,6 @@ export default {
 </script>
 <template>
     <div class="section">
-        <component-subscriptions
-            :active.sync="subscriptions.active"
-            :cloud-id="ticket_id"
-            cloud-module="help/ticket"
-        />
         <div class="columns" v-if="ticket">
             <div class="column is-8">
                 <div class="card box">
@@ -214,6 +206,10 @@ export default {
             <component-assignment :current-assignable="ticket.assignment_attributes.users_id"/>
             <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-subscriptions
+                cloud-module="help/ticket"
+                :cloud-id="ticket_id"
+            />
         </div>
     </div>
 </template>

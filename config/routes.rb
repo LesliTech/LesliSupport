@@ -16,8 +16,7 @@ CloudHelp::Engine.routes.draw do
         
         scope module: :ticket do
             resources :timelines, only: [:index]   
-            resources :subscribers, only: [:index]
-            resources :assignments, only: [:index]
+            resources :subscribers, only: [:index, :create, :update, :destroy]
             resources :assignments, only: [:index]
             resources :discussions
             resources :files
