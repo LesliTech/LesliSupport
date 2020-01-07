@@ -1,6 +1,5 @@
 module CloudHelp
-    class Ticket  < ApplicationRecord 
-        include Subscribable
+    class Ticket  < ApplicationRecord
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         belongs_to :user, class_name: 'User', foreign_key: 'users_id'
@@ -16,7 +15,6 @@ module CloudHelp
 
         accepts_nested_attributes_for :detail, update_only: true
         accepts_nested_attributes_for :assignment, update_only: true
-        accepts_nested_attributes_for :subscribers, allow_destroy: true
 
         after_update :after_update_actions
 
@@ -214,7 +212,7 @@ module CloudHelp
                 ticket_id: id,
                 user: assignment.user.email
             )
-            notify_subscribers(message, :assignment_updated)
+            Ticket::Subscriber.notify_subscribers(self, message, :assignment_updated)
         end
 
         def action_verify_ticket_workflow(old_workflow_detail_id, new_workflow_detail_id)
@@ -251,7 +249,7 @@ module CloudHelp
             end
 
             timelines.create( action: timeline_action, description: timeline_description )
-            notify_subscribers(message, :workflow_updated)
+            Ticket::Subscriber.notify_subscribers(self, message, :workflow_updated)
         end
 
 
@@ -300,7 +298,7 @@ module CloudHelp
                     type_name: type.name,
                     category_name: category.name
                 )
-                notify_subscribers(message, :type_category_updated)
+                Ticket::Subscriber.notify_subscribers(self, message, :type_category_updated)
                 return true
             else
                 raise ActiveRecord::RecordInvalid, self
@@ -339,7 +337,7 @@ module CloudHelp
                 ticket_id: id,
                 priority_name: new_priority.name
             )
-            notify_subscribers(message, :priority_updated)
+            Ticket::Subscriber.notify_subscribers(self, message, :priority_updated)
         end
 
 
@@ -370,7 +368,7 @@ module CloudHelp
                     ticket_id: id,
                     date: detail.deadline
                 )
-                notify_subscribers(message, :deadline_updated)
+                Ticket::Subscriber.notify_subscribers(self, message, :deadline_updated)
             else
                 errors.add(:base, :cannot_add_deadline_without_assigned_user)
                 raise ActiveRecord::RecordInvalid, self

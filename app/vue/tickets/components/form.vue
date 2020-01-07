@@ -217,10 +217,10 @@ export default {
                         this.$router.push(`/${this.ticket_id}`)
                     }else{
                         this.alert(this.translations.form.messages.update_workflow.successful)
+                        this.ticket.detail_attributes.cloud_help_ticket_workflow_details_id = this.ticket_follow_up_state
+                        this.getFollowUpStates()
+                        this.$emit('update-ticket-workflow', state)
                     }
-                    this.ticket.detail_attributes.cloud_help_ticket_workflow_details_id = this.ticket_follow_up_state
-                    this.getFollowUpStates()
-                    this.$emit('update-ticket-workflow', state)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }

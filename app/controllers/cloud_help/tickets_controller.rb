@@ -58,8 +58,9 @@ module CloudHelp
 
             if ticket.save
                 responseWithSuccessful(ticket)
-                ticket.add_subscriber(current_user)
-                ticket.notify_subscribers(
+                Ticket::Subscriber.add_subscriber(ticket, current_user)
+                Ticket::Subscriber.notify_subscribers(
+                    ticket,
                     I18n.t('cloud_help.controllers.tickets.notifications.created', ticket_id: ticket.id),
                     :ticket_created
                 )
@@ -99,7 +100,7 @@ module CloudHelp
         
         # Setting up the white list for tickets
         def ticket_params
-            accepted_params = params.require(:ticket).permit(
+            params.require(:ticket).permit(
                 detail_attributes: [
                     :id,
                     :subject,
@@ -111,24 +112,12 @@ module CloudHelp
                     :cloud_help_ticket_categories_id,
                     :cloud_help_ticket_workflow_details_id
                 ],
-                subscribers_attributes: [
-                    :event,
-                    :notification_type,
-                    :id,
-                    :_destroy
-                ],
                 assignment_attributes: [
                     :users_id,
                     :cloud_teams_teams_id,
                     :assignation_type
                 ]
             )
-            if accepted_params[:subscribers_attributes]
-                accepted_params[:subscribers_attributes].each do |attributes|
-                    attributes[:users_id] = current_user.id
-                end
-            end
-            accepted_params
         end
 
     end
