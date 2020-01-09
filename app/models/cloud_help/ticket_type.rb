@@ -31,7 +31,7 @@ Building a better future, one line of code at a time.
         has_many :workflows, class_name: 'CloudHelp::TicketWorkflow',  foreign_key: 'cloud_help_ticket_types_id', dependent: :destroy
 
 =begin
-@return [boolean] Wheter the ticket type was deleted or not
+@return [Boolean] Wheter the ticket type was deleted or not
 @description Attempts to delete this ticket type along with it's associated *workflow*.
     However, if there is a *ticket* associated to this *type*, it will not be deleted
     and an error will be added to the *errors* parameter

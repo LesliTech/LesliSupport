@@ -103,7 +103,7 @@ Building a better future, one line of code at a time.
 =begin
 @controller_action_param :name [String] The name of the new type
 @return [Json] Json that contains wheter the creation of the ticket type was successful or not. 
-    If it is not successful, it returs an error message
+    If it is not successful, it returns an error message
 @description Creates a new ticket type associated to the *current_user*'s *account*. If the type is
     successfully created, a new *ticket* *workflow* is created for each existing *ticket* *category* and
     this new *ticket type*
@@ -131,7 +131,7 @@ Building a better future, one line of code at a time.
 =begin
 @controller_action_param :name [String] The name of the type
 @return [Json] Json that contains wheter the ticket type was successfully updated or not. 
-    If it it not successful, it returs an error message
+    If it it not successful, it returns an error message
 @description Updates an existing ticket type associated to the *current_user*'s *account*.
 @example
     # Executing this controller's action from javascript's frontend
@@ -153,7 +153,7 @@ Building a better future, one line of code at a time.
 
 =begin
 @return [Json] Json that contains wheter the ticket type was successfully deleted or not. 
-    If it it not successful, it returs an error message
+    If it it not successful, it returns an error message
 @description Deletes an existing *ticket* *type* associated to the *current_user*'s *account*.
     Since each ticket type has a *ticket* *workflow* associated, the workflow is also deleted. However, if there
     is an existing *ticket* associated to the *ticket* *type*, it cannot be deleted
