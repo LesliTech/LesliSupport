@@ -82,8 +82,8 @@ Building a better future, one line of code at a time.
         end
 
 =begin
-@return [HTML] HTML view for creating a new ticket states
-@description returns an HTML view with a form so users can create a new ticket states
+@return [HTML] HTML view for creating a new ticket state
+@description returns an HTML view with a form so users can create a new ticket state
 @example
     # Executing this controller's action from javascript's frontend
     this.url.go('/help/ticket_states/new')
