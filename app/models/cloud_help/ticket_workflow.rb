@@ -1,4 +1,31 @@
 module CloudHelp
+=begin
+
+Lesli
+
+Copyright (c) 2020, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@author   Carlos Hermosilla
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+@description Model for ticket workflows. Each workflow is associated to one type and one category,
+    and has several details. Each one if these details is accessed only through this model, and
+    represents one *ticket* *state*. Each detail also contains information about transitions to
+    other details
+=end
     class TicketWorkflow < ApplicationRecord
         belongs_to :ticket_type, class_name: "CloudHelp::TicketType", foreign_key: "cloud_help_ticket_types_id" 
         belongs_to :ticket_category, class_name: "CloudHelp::TicketCategory", foreign_key: "cloud_help_ticket_categories_id" 
@@ -17,11 +44,17 @@ module CloudHelp
         validates :cloud_help_slas_id, presence: true
         accepts_nested_attributes_for :details
 
-        DEFAULT_STATES = {
-            initial: 1,
-            final: 2
-        }
-
+=begin
+@param account [Account] Account from current user
+@return [Array] Array of workflows. 
+@description Retrieves and returns all workflows from an *Account*.
+    Each workflow contains fields to be displayed in
+    a table, including the *category* and *type* of the workflow, as well as the
+    *SLA* associated to it
+@example
+    account = current_user.account
+    workflows = CloudHelp::TicketWorkflow.detailed_info(account)
+=end
         def self.detailed_info(account)
             result = TicketWorkflow.joins(
                 :ticket_type
@@ -50,6 +83,14 @@ module CloudHelp
             result
         end
 
+=begin
+@return [Hash] Hash of containing the information of the workflow and its details. 
+@description Returns a hash with information about the workflow (*SLA*, *category*, etc.)
+    and all its *details* that contain the transitions between *states*
+@example
+    workflow = CloudHelp::TicketWorkflow.first.full_workflow
+    responseWithSuccessful(workflow)
+=end
         def full_workflow
             data = {}
             nodes = TicketWorkflow::Detail.joins(
@@ -81,20 +122,58 @@ module CloudHelp
             }
         end
 
+=begin
+@param account [Account] Account from current user
+@param new_workflow [Hash] A hash containing all the information of the
+    changes made to the workflow in the same format as the rails standard
+@return [Boolean] Whether the workflow was successfully updated or not
+@description Updates the workflow with new states and transitions. The detail 
+    associated with the *final* *state* can never change. The detail associated
+    with the *initial* *state* can only change it's transitions, and all other
+    details are destroyed and reinserted in the database. If an error ocurrs,
+    a message is added to the *errors* param of the workflow
+@example
+    workflow_data  = {
+        ticket_workflow:{
+            cloud_help_slas_id:1,
+            "details_attributes:[
+                {
+                    id:1,
+                    next_states:"4",
+                    ticket_state_id:1
+                },{
+                    id:2,
+                    next_states:null
+                    ticket_state_id:2
+                },{
+                    id:14,
+                    next_states:"2",
+                    ticket_state_id:4
+                }
+            ]
+        }
+    }
+    workflow = CloudHelp::TicketWorkflow.find(4)
+    if workflow.replace_workflow(workflow_data)
+        puts "Ticket workflow was successfully replaced"
+    else
+        puts "Ticket workflow was not replaced"
+        puts workflow.errors.full_messages.to_sentence
+    end
+=end
         def replace_workflow(account, new_workflow)
             begin
+                initial_state_id = TicketState.initial_state.id
+                final_state_id = TicketState.final_state.id
                 details.where(
-                    "cloud_help_ticket_states_id != #{TicketWorkflow::DEFAULT_STATES[:initial]}"
+                    "cloud_help_ticket_states_id != #{initial_state_id}"
                 ).where(
-                    "cloud_help_ticket_states_id != #{TicketWorkflow::DEFAULT_STATES[:final]}"
+                    "cloud_help_ticket_states_id != #{final_state_id}"
                 ).destroy_all
                 new_workflow.each do |node|
                     # created or closed
-                    if (
-                        node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:initial] ||
-                        node[:ticket_state_id] == TicketWorkflow::DEFAULT_STATES[:final]
-                    )
-                        details.where(id: node[:id]).update( next_states: node[:next_states] )
+                    if node[:ticket_state_id] == initial_state_id || node[:ticket_state_id] == final_state_id
+                        details.where(id: node[:id]).update(next_states: node[:next_states])
                     else
                         details.create(
                             cloud_help_ticket_states_id: node[:ticket_state_id],
@@ -108,6 +187,22 @@ module CloudHelp
             end
         end
 
+=begin
+@param ticket_type [CloudHelp::TicketType] The type of the created workflow
+@param ticket_category [CloudHelp::TicketCategory] The category of the created workflow
+@return [void]
+@description Creates a workflow associated to the *type* and *category* received.
+    The new workflow is either a copy of the *default* *workflow*, or a *dummy* *workflow*
+    A *dummy* *workflow* is a simple workflow that goes from the *created* *state* to the *closed* *state*.
+    If either *ticket_type* or *ticket_category* is nil, all *types* or *categories* are used
+@example
+    CloudHelp::TicketWorkflow.create_default_workflow(
+        CloudHelp::TicketType.first,
+        CloudHelp::TicketCategory.first
+    )
+    # This will create a new workflow, with either the default transitions, or the dummy transitions, if
+    # there is not default workflow
+=end
         def self.create_default_workflow(ticket_type, ticket_category)
             default_workflow = TicketWorkflow.find_by(default: true)
             default_sla = Sla.find_by(default: true)
@@ -145,6 +240,21 @@ module CloudHelp
             end
         end
 
+private
+
+=begin
+@param ticket_type [CloudHelp::TicketType] The type of the created workflow
+@param ticket_category [CloudHelp::TicketCategory] The category of the created workflow
+@return [void]
+@description Creates a dummy workflow associated to the *type* and *category* received.
+    A *dummy* *workflow* is a simple workflow that goes from the *created* *state* to the *closed* *state*.
+@example
+    CloudHelp::TicketWorkflow.create_default_workflow(
+        CloudHelp::TicketType.first,
+        CloudHelp::TicketCategory.first
+    )
+    # This will create a new dummy workflow only if there is not default workflow set
+=end
         def self.create_dummy_workflow(ticket_type, ticket_category)
             initial_state = TicketState.find_by(initial: true)
             final_state = TicketState.find_by(final: true)
@@ -185,6 +295,12 @@ module CloudHelp
             end
         end
 
+=begin
+@return [void]
+@description Checks if a workflow was changed to default. If it was, marks the previously
+    default workflow as not detault. If it is unable to do it, raises an exception that
+    triggers a rollback
+=end
         def verify_default_workflow
             default_change = saved_changes["default"]
             return unless default_change
