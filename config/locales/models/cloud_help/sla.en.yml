@@ -5,6 +5,7 @@ en:
                 cloud_help/sla:
                         attributes:
                             base:
+                                foreign_key_prevents_destruction: Please verify that there are no tickets with this SLA before attempting to delete it
                                 cannot_delete_default: Please set another SLA as default before attemptiong to delete this one
                                 cannot_remove_default: There must be an SLA set as default at all times
                                 cannot_modify_while_ticket_in_progress: You cannot modify this SLA because there is an active ticket associated to it
