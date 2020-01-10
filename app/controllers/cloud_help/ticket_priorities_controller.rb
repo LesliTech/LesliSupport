@@ -96,7 +96,7 @@ Building a better future, one line of code at a time.
 @example
     # Executing this controller's action from javascript's frontend
     let ticket_priority_id = 3;
-    this.url.go(`/help/ticket_prioritys/${ticket_priorities_id}/edit`)
+    this.url.go(`/help/ticket_priorities/${ticket_priority_id}/edit`)
 =end
         def edit
         end
