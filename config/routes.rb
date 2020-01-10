@@ -12,8 +12,6 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_workflows, except: [:new, :create, :destroy]
 
     resources :tickets, except: [:destroy] do
-        get '/activities', to: 'tickets#activities'
-        
         scope module: :ticket do
             resources :timelines, only: [:index]   
             resources :subscribers, only: [:index, :create, :update, :destroy]
@@ -21,11 +19,8 @@ CloudHelp::Engine.routes.draw do
             resources :discussions
             resources :files
             resources :actions
+            resources :activities
         end
-    end
-    
-    namespace :ticket do
-        resources :activities
     end
 
     scope :api do
