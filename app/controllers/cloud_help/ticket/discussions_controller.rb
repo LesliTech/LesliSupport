@@ -1,6 +1,7 @@
-=begin
+require_dependency "cloud_help/application_controller"
 
-~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ License ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+module CloudHelp
+=begin
 
 Lesli
 
@@ -19,26 +20,12 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-Converts the object into textual markup given a specific format.
-
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-
-~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ General Description ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-Discussions Controller. A discussion can be a single comment or a threaed of comments with multiple responses
-
-~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ External Requirements ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-lesli.cloud/app/controllers/cloud_object/discussion.rb
-lesli.cloud/engines/CloudHelp/app/controllers/cloud_help/application_controller.rb
-
+@description Controller for the *discussions* core entities. It inherits all its functionality
+    from the *CloudObject::DiscussionsController* class
 =end
-
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
     class Ticket::DiscussionsController < CloudObject::DiscussionsController   
     end
 end
