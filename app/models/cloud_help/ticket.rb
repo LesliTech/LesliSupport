@@ -1,4 +1,29 @@
 module CloudHelp
+=begin
+
+Lesli
+
+Copyright (c) 2020, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@author   Carlos Hermosilla
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+@description Model for ticket. Each has it's own *detail* containing it's information.
+    Tickets are the core *object* of the *CloudHelp* module
+=end
     class Ticket  < ApplicationRecord
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
@@ -18,7 +43,27 @@ module CloudHelp
 
         after_update :after_update_actions
 
-
+=begin
+@return [Boolean] Whether this ticket was successfully saved or not. If it was not saved,
+    an error is added to the *ticket*'s *errors* attribute
+@description saves a ticket based on the params allowed by *CloudHelp::TicketsController*. 
+    If the ticket is new, creates an entry in the timeline. Also, depending on which 
+    attributes where updated, notifications are sent and entries are added to the timeline
+@example
+    ticket_params = {
+        detail_attributes: {
+            cloud_help_ticket_priorities_id: 1,
+            cloud_help_ticket_categories_id: 1,
+            cloud_help_ticket_types_id: 1
+        }
+    }
+    ticket = CloudHelp::Ticket.new(ticket_params)
+    if ticket.save
+        responseWithSuccessful
+    else
+        responseWithError(ticket.errors.full_messages.to_sentence)
+    end
+=end
         def save
             if new_record?
                 if super
@@ -34,7 +79,27 @@ module CloudHelp
             super
         end
 
-
+=begin
+@return [void]
+@description Adds the "workflow_detail" attribute to an existing *ticket*.
+    It is the *detail* associated to the initial *state*, based on the
+    *ticket*'s *type*/*priority* 
+@example
+    ticket_params = {
+        detail_attributes: {
+            cloud_help_ticket_priorities_id: 1,
+            cloud_help_ticket_categories_id: 1,
+            cloud_help_ticket_types_id: 1
+        }
+    }
+    ticket = CloudHelp::Ticket.new(ticket_params)
+    ticket.set_workflow_detail
+    if ticket.save
+        responseWithSuccessful
+    else
+        responseWithError(ticket.errors.full_messages.to_sentence)
+    end
+=end
         def set_workflow_detail
             workflow = TicketWorkflow.find_by(
                 ticket_type: detail.type,
@@ -47,7 +112,40 @@ module CloudHelp
             )
         end
 
-
+=begin
+@return [Hash] Detailed information about the ticket. Including, *priority*,
+    *full* *category* *path*, *type*, *creation* *user*, *assignation* *type*
+    and *workflow* *state*
+@description Creates a query that selects all ticket information from several tables
+    and returns it in a hash
+@example
+    ticket = CloudHelp::Ticket.find(43)
+    puts ticket.detailed_info
+    # will print something like: {
+    #    id:6,
+    #    created_at:"2020-01-12T17:31:25.005Z",
+    #    detail_attributes:{
+    #        email:"admin@lesli.cloud",
+    #        subject:"subject",
+    #        description:"description",
+    #        tags:"tags",
+    #        priority:"Medium",
+    #        type:"Change Request",
+    #        state:"created",
+    #        cloud_help_ticket_priorities_id:2,
+    #        cloud_help_ticket_types_id:2,
+    #        cloud_help_ticket_workflows_id:4,
+    #        cloud_help_ticket_categories_id:1,
+    #        cloud_help_ticket_states_id:1,
+    #        deadline:null,
+    #        priority_weight:100,
+    #        category:"Company System"
+    #    },
+    #    assignment_attributes:{
+    #        assignation_type:"none"
+    #    }
+    #}
+=end
         def detailed_info
             data = Ticket.joins(
                 "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
@@ -89,7 +187,35 @@ module CloudHelp
             }
         end
 
-
+=begin
+@param help_account [Account] The account associated to *current_user*
+@return [Hash] Detailed information about all the tickets. Including, *priority*,
+    *full* *category* *path*, *type*, *creation* *user*, *assignation* *type*
+    and *workflow* *state*
+@description Creates a query that selects all the tickets information from several tables
+    and returns it in a hash
+@example
+    tickets_info = CloudHelp::Ticket.detailed_info(current_user.account)
+    puts tickets_info.to_json
+    # will print something like: [
+    #    {
+    #        "id":1,                     "created_at":"2020-01-08T16:23:10.976Z",
+    #        "priority":"Low",           "type":"Issue",
+    #        "state":"created",          "category":"Company System",
+    #        "assignation_type":null,    "subject":"Testing Ticket"
+    #    },{
+    #        "id":2,                     "created_at":"2020-01-08T16:43:30.470Z",
+    #        "priority":"Low",           "type":"Issue",
+    #        "state":"closed",           "category":"Company System",
+    #        "assignation_type":"user",  "subject":"Testin"
+    #    },{
+    #        "id":3,                     "created_at":"2020-01-09T18:08:27.622Z",
+    #        "priority":"Low",           "type":"Change Request",
+    #        "state":"In Progress",      "category":"Company System, Books Module",
+    #        "assignation_type":null,    "subject":"Testing"
+    #    }
+    #]
+=end
         def self.detailed_info(help_account)
             Ticket.joins(
                 "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
@@ -129,12 +255,49 @@ module CloudHelp
             end
         end
 
-
         private
 
-        
-        def after_update_actions
+=begin
+@return [Hash] Assignment information about this ticket
+@description Retrievies and returns assignment information about this ticket.
+    If there is no assigment, returns a hash containing a "none" in the
+    *assignation_type* attribute
+@todo Implement support for *team* assigmation type
+@example 
+    puts self.assignation_info
+    #will print something similar to {
+    #    assignable_name: "john.doe@email.com",
+    #    assignation_type: "user"
+    #}
+=end
+        def assignment_info
+            return {
+                assignation_type: 'none'
+            } unless assignment
 
+            if assignment.user?
+                assignment.attributes.merge({
+                    assignable_name: assignment.user.email
+                })
+            end
+        end
+
+=begin
+@return [void]
+@description After a *ticket* is updated, this method triggers. It checks for the changes
+    made and based on them, adds entries to the timeline and notifies users. The possible changes are:
+    - A change in workflow
+    - An asigment
+    - A priority change
+    - A type change
+    - A category change
+    - A deadline added
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update(detail_attributes: {cloud_help_ticket_priorities_id: 4})
+    # after the update, this method is executed automatically
+=end
+        def after_update_actions
             workflow_change = detail.saved_changes["cloud_help_ticket_workflow_details_id"]
             if workflow_change
                 if TicketWorkflow::Detail.find(workflow_change[0]).ticket_state.is_final?
@@ -180,6 +343,17 @@ module CloudHelp
             end 
         end
 
+=begin
+@return [void]
+@description If the user assigned to this *ticket* changed, 
+    a new entry is recorded to the timeline, a notification is sent to
+    the subscribers, and a new entry is recorded in the *CloudDriver* module,
+    if it exists.
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update({ assignment_attributes: { users_id: User.last.id } })
+    # the *after_update_actions* method will call this method after the update
+=end
         def action_register_assignment_change
             timelines.create(
                 action: Ticket::Timeline.actions[:assigned_to_user],
@@ -215,6 +389,17 @@ module CloudHelp
             Ticket::Subscriber.notify_subscribers(self, message, :assignment_updated)
         end
 
+=begin
+@return [void]
+@description If this ticket changes *state*, 
+    a new entry is recorded to the timeline and a notification is sent to
+    the subscribers. Both the timeline entry and the notification change
+    if the ticket changed to a *closed* state or not
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update({ detail_attributes: { cloud_help_ticket_workflow_details_id: 4 } })
+    # the *after_update_actions* method will call this method after the update
+=end
         def action_verify_ticket_workflow(old_workflow_detail_id, new_workflow_detail_id)
 
             old_workflow_detail = TicketWorkflow::Detail.find(old_workflow_detail_id)
@@ -252,7 +437,16 @@ module CloudHelp
             Ticket::Subscriber.notify_subscribers(self, message, :workflow_updated)
         end
 
-
+=begin
+@return [void]
+@description If the type of this *ticket* is changed, 
+    a new entry is recorded to the timeline. Notifications are sent in 
+    the *action_assign_new_workflow* method.
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update({ detail_attributes: { cloud_help_ticket_types_id: 1 } })
+    # the *after_update_actions* method will call this method after the update
+=end
         def action_register_type_transfer(old_type, new_type)
             old_type = TicketType.find(old_type)
             new_type = TicketType.find(new_type)
@@ -268,6 +462,16 @@ module CloudHelp
             )
         end
 
+=begin
+@return [void]
+@description If the category of this *ticket* is changed, 
+    a new entry is recorded to the timeline. Notifications are sent in 
+    the *action_assign_new_workflow* method.
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update({ detail_attributes: { cloud_help_ticket_categories: 1 } })
+    # the *after_update_actions* method will call this method after the update
+=end
         def action_register_category_transfer(old_category, new_category)
             old_category = TicketCategory.find(old_category)
             new_category = TicketCategory.find(new_category)
@@ -283,6 +487,18 @@ module CloudHelp
             )
         end
 
+=begin
+@return [void]
+@description If the category or the tipe of this *ticket* are changed,
+    a new workflow detail, associated to the *initial* *state*, is assigned.
+    If this update fails, a rollback is ussued and a error message is added to
+    this *ticket*'s *errors* attribute. If the update is successful, a notification is sent
+    to all subscribers
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update({ detail_attributes: { cloud_help_ticket_categories: 1 } })
+    # the *after_update_actions* method will call this method after the update
+=end
         def action_assign_new_workflow
             assignment.destroy if assignment
             category = detail.category
@@ -305,6 +521,17 @@ module CloudHelp
             end
         end
 
+=begin
+@return [void]
+@description If this ticket's priority is changed, 
+    a new entry is recorded to the timeline and a notification is sent to
+    the subscribers. The messages change depending if the priority weight is
+    increased or decreased
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update({ detail_attributes: { cloud_help_ticket_priorities_id: 4 } })
+    # the *after_update_actions* method will call this method after the update
+=end
         def action_register_priority_change(old_priority, new_priority)
             old_priority = TicketPriority.find(old_priority)
             new_priority = TicketPriority.find(new_priority)
@@ -340,7 +567,18 @@ module CloudHelp
             Ticket::Subscriber.notify_subscribers(self, message, :priority_updated)
         end
 
-
+=begin
+@return [void]
+@description If this ticket's deadline is changed, 
+    a new entry is recorded to the timeline and a notification is sent to
+    the subscribers. Also, an entry is recorded in the *CloudDriver* module, if it
+    exists. If there is no user assigned, an error message is added to this
+    *ticket*'s *errors* attribute, and an rollback is issued
+@example
+    ticket = CloudHelp::Ticket.first
+    ticket.update({ detail_attributes: { deadline: Datetime.now } })
+    # the *after_update_actions* method will call this method after the update
+=end
         def action_register_ticket_deadline
             if assignment
                 Courier::Driver::Calendar.registerEvent(
@@ -374,20 +612,5 @@ module CloudHelp
                 raise ActiveRecord::RecordInvalid, self
             end
         end
-
-
-        def assignment_info
-            return {
-                assignation_type: 'none'
-            } unless assignment
-
-            if assignment.user?
-                assignment.attributes.merge({
-                    assignable_name: assignment.user.email
-                })
-            end
-        end
-
-
     end
 end
