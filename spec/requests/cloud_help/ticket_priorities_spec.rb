@@ -63,7 +63,7 @@ RSpec.describe "CloudHelp::TicketPriorities", type: :request do
             expect(response.headers["Content-Type"]).to eq "text/html; charset=utf-8"
         end
 
-        it "test valid json request" do
+        it "test valid request" do
             login_admin
             create_account
 
@@ -81,11 +81,29 @@ RSpec.describe "CloudHelp::TicketPriorities", type: :request do
             expect(response_json["successful"]).to be true
         end
 
-        it "test invalid json request (unexistant priority)" do
+        it "test invalid request (unexistant priority)" do
             login_admin
             create_account
 
             get "/help/ticket_priorities/#{Faker::Number.number(digits: 6)}.json"
+            response_json = JSON.parse(response.body)
+
+            expect(response.status).to be 404
+        end
+
+        it "test invalid request (requesting priority from another account)" do
+            login_admin
+            create_account
+
+            other_main_account = Account.create!(id: Account.order(id: :asc).last.id + 1)
+            other_help_account = CloudHelp::Account.create!(id: other_main_account.id)
+            ticket_priority = CloudHelp::TicketPriority.create!(
+                name: Faker::Verb.base,
+                weight: Faker::Number.number(digits: 6),
+                account: other_help_account
+            )
+
+            get "/help/ticket_priorities/#{ticket_priority.id}.json"
             response_json = JSON.parse(response.body)
 
             expect(response.status).to be 404
@@ -257,6 +275,29 @@ RSpec.describe "CloudHelp::TicketPriorities", type: :request do
 
             expect(response.status).to be 404
         end
+
+        it "test invalid request (updating priority from another account)" do
+            login_admin
+            create_account
+
+            other_main_account = Account.create!(id: Account.order(id: :asc).last.id + 1)
+            other_help_account = CloudHelp::Account.create!(id: other_main_account.id)
+            ticket_priority = CloudHelp::TicketPriority.create!(
+                name: Faker::Verb.base,
+                weight: Faker::Number.number(digits: 6),
+                account: other_help_account
+            )
+
+            request_json = {
+                weight: Faker::Verb.base,
+                name: Faker::Verb.base
+            }.to_json
+            headers = json_headers
+
+            put "/help/ticket_priorities/#{ticket_priority.id}", params: request_json, headers: headers
+
+            expect(response.status).to be 404
+        end
     end
 
     describe "DESTROY integration test" do
@@ -343,6 +384,23 @@ RSpec.describe "CloudHelp::TicketPriorities", type: :request do
 
             expect(response.status).to be 200
             expect(response_json["successful"]).to be false
+        end
+
+        it "test invalid request (deleting priority from another account)" do
+            login_admin
+            create_account
+
+            other_main_account = Account.create!(id: Account.order(id: :asc).last.id + 1)
+            other_help_account = CloudHelp::Account.create!(id: other_main_account.id)
+            ticket_priority = CloudHelp::TicketPriority.create!(
+                name: Faker::Verb.base,
+                weight: Faker::Number.number(digits: 6),
+                account: other_help_account
+            )
+
+            delete "/help/ticket_priorities/#{ticket_priority.id}"
+
+            expect(response.status).to be 404
         end
     end
 end
