@@ -26,9 +26,11 @@ Building a better future, one line of code at a time.
 =end
     class TicketPriority < ApplicationRecord
 
-        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
+        belongs_to :account, class_name: "CloudHelp::Account", foreign_key: "cloud_help_accounts_id"
+        has_many :details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_ticket_priorities_id"
 
-        has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_priorities_id'
+        validates :name, presence: true
+        validates :weight, presence: true
 
 =begin
 @return [Boolean] Wheter the ticket priority was deleted or not
