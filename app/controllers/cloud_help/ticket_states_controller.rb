@@ -72,11 +72,9 @@ Building a better future, one line of code at a time.
                 format.html {}
                 format.json do
                     set_ticket_state
-                    if @ticket_state
-                        responseWithSuccessful(@ticket_state)
-                    else
-                        responseWithError(I18n.t('cloud_help.controllers.ticket_states.errors.not_found'))
-                    end
+                    return responseWithNotFound unless @ticket_state
+
+                    responseWithSuccessful(@ticket_state)
                 end
             end
         end
@@ -143,6 +141,8 @@ Building a better future, one line of code at a time.
     this.http.put(`127.0.0.1/help/ticket_states/${ticket_state_id}`, data);
 =end
         def update
+            return responseWithNotFound unless @ticket_state
+
             if @ticket_state.update(ticket_state_params)
                 responseWithSuccessful(@ticket_state)
             else
@@ -161,9 +161,8 @@ Building a better future, one line of code at a time.
     this.http.delete(`127.0.0.1/help/ticket_states/${ticket_state_id}`);
 =end
         def destroy
-            unless @ticket_state
-                return responseWithError(I18n.t('cloud_help.controllers.ticket_states.errors.not_found'))
-            end
+            return responseWithNotFound unless @ticket_state
+            
             if @ticket_state.destroy
                 responseWithSuccessful
             else
