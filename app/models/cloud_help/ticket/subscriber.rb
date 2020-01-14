@@ -25,25 +25,25 @@ Building a better future, one line of code at a time.
     to an event. If a user is subscribed to multiple events, multiple records are created.
     This class inherits all its functionality from the *CloudObject::Subscriber* class
 =end
-  class Ticket::Subscriber < CloudObject::Subscriber
-    belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: 'cloud_help_tickets_id'
+    class Ticket::Subscriber < CloudObject::Subscriber
+        belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: 'cloud_help_tickets_id'
 
 =begin
 @attribute [Enumerable<Symbol>] event
     @return [:ticket_created, :ticket_closed, :comment_created, :action_created, :file_created, :activity_created, :workflow_updated, :priority_updated, :type_category_updated, :assignment_updated, :deadline_updated ]
 =end
-    enum event: [
-        :ticket_created,
-        :ticket_closed,
-        :comment_created,
-        :action_created,
-        :file_created,
-        :activity_created,
-        :workflow_updated,
-        :priority_updated,
-        :type_category_updated,
-        :assignment_updated,
-        :deadline_updated
-    ]
-  end
+        enum event: [
+            :ticket_created,
+            :ticket_closed,
+            :comment_created,
+            :action_created,
+            :file_created,
+            :activity_created,
+            :workflow_updated,
+            :priority_updated,
+            :type_category_updated,
+            :assignment_updated,
+            :deadline_updated
+        ]
+    end
 end
