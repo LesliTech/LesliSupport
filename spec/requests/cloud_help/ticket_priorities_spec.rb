@@ -260,7 +260,7 @@ RSpec.describe "CloudHelp::TicketPriorities", type: :request do
             expect(response_json["successful"]).to be false
         end
 
-        it "test invalid request (unexistent priority)" do
+        it "test invalid request (unexistant priority)" do
             login_admin
             create_account
 
@@ -319,15 +319,14 @@ RSpec.describe "CloudHelp::TicketPriorities", type: :request do
             expect(response_json["successful"]).to be true
         end
 
-        it "test invalid request (unexistent priority)" do
+        it "test invalid request (unexistant priority)" do
             login_admin
             create_account
 
             delete "/help/ticket_priorities/#{Faker::Number.number(digits: 10)}"
             response_json = JSON.parse(response.body)
 
-            expect(response.status).to be 200
-            expect(response_json["successful"]).to be false
+            expect(response.status).to be 404
         end
 
         it "test invalid request (ticket associated to priority)" do

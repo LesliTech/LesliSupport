@@ -71,11 +71,9 @@ Building a better future, one line of code at a time.
                 format.html {}
                 format.json do
                     set_ticket_priority
-                    if @ticket_priority
-                        responseWithSuccessful(@ticket_priority)
-                    else
-                        responseWithError(I18n.t('cloud_help.controllers.ticket_priorities.errors.not_found'))
-                    end
+                    return responseWithNotFound unless @ticket_priority
+
+                    responseWithSuccessful(@ticket_priority)
                 end
             end
         end
@@ -147,6 +145,8 @@ Building a better future, one line of code at a time.
     this.http.put(`127.0.0.1/help/ticket_priorities/${ticket_priority_id}`, data);
 =end
         def update
+            return responseWithNotFound unless @ticket_priority
+
             if @ticket_priority.update(ticket_priority_params)
                 responseWithSuccessful(@ticket_priority)
             else
@@ -165,9 +165,8 @@ Building a better future, one line of code at a time.
     this.http.delete(`127.0.0.1/help/ticket_priorities/${ticket_priority_id}`);
 =end
         def destroy
-            unless @ticket_priority
-                return responseWithError(I18n.t('cloud_help.controllers.ticket_priorities.errors.not_found'))
-            end
+            return responseWithNotFound unless @ticket_priority
+
             if @ticket_priority.destroy
                 responseWithSuccessful
             else
