@@ -25,11 +25,12 @@ Building a better future, one line of code at a time.
 
 =end
     class TicketType < ApplicationRecord
+
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
-        
         has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_types_id'
         has_many :workflows, class_name: 'CloudHelp::TicketWorkflow',  foreign_key: 'cloud_help_ticket_types_id', dependent: :destroy
 
+        validates :name, presence: true
 =begin
 @return [Boolean] Wheter the ticket type was deleted or not
 @description Attempts to delete this ticket type along with it's associated *workflow*.

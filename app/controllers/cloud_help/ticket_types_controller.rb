@@ -70,11 +70,9 @@ Building a better future, one line of code at a time.
                 format.html {}
                 format.json do
                     set_ticket_type
-                    if @ticket_type
-                        responseWithSuccessful(@ticket_type)
-                    else
-                        responseWithError(I18n.t('cloud_help.controllers.ticket_types.errors.not_found'))
-                    end
+                    return responseWithNotFound unless @ticket_type
+
+                    responseWithSuccessful(@ticket_type)
                 end
             end
         end
@@ -144,6 +142,8 @@ Building a better future, one line of code at a time.
     this.http.patch(`127.0.0.1/help/ticket_types/${ticket_type_id}`, data);
 =end
         def update
+            return responseWithNotFound unless @ticket_type
+
             if @ticket_type.update(ticket_type_params)
                 responseWithSuccessful(@ticket_type)
             else
@@ -163,9 +163,8 @@ Building a better future, one line of code at a time.
     this.http.delete(`127.0.0.1/help/ticket_types/${ticket_type_id}`);
 =end
         def destroy
-            unless @ticket_type
-                return responseWithError(I18n.t('cloud_help.controllers.ticket_types.errors.not_found'))
-            end
+            return responseWithNotFound unless @ticket_type
+
             if @ticket_type.destroy
                 responseWithSuccessful
             else
