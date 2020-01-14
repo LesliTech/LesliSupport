@@ -25,11 +25,11 @@ Building a better future, one line of code at a time.
 
 =end
     class TicketState < ApplicationRecord
-        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
-        
+        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id' 
         has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_states_id'
         has_many :ticket_workflow_details, class_name: 'CloudHelp::TicketWorkflow::Detail', foreign_key: 'cloud_help_ticket_states_id'
 
+        validates :name, presence: true
 =begin
 @return [Boolean] Wheter the ticket state was deleted or not
 @description Attempts to delete this ticket state.
