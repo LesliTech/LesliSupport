@@ -115,14 +115,6 @@ Building a better future, one line of code at a time.
 @controller_action_param :cloud_help_ticket_workflow_details_id [Integer] The id of the
     workflow_detail associated to this ticket. The workflow detail must be a detail of the
     workflow associated to this ticket's type and category
-@controller_action_param :assignment_attributes [Hash] The fields of the assignment record 
-    associated to this ticket
-@controller_action_param :assignment_attributes.users_id [Integer] The id of the user
-    assigned to work on this ticket
-@controller_action_param :assigment_attributes.cloud_team_teams_id [Integer] *(Not* *yet*
-    *supported)* The id of the team asssigned to work on this ticket
-@controller_action_param :assignment_attributes.assignmation_type [String] A string
-    representing a valid assignation types. At this moment only "*user*" is supported
 @return [Json] Json that contains wheter the creation of the ticket was successful or not. 
     If it is not successful, it returns an error message
 @description Creates a new ticket associated to the *current_user*'s *account*. After creating
@@ -187,14 +179,6 @@ Building a better future, one line of code at a time.
 @controller_action_param :cloud_help_ticket_workflow_details_id [Integer] The id of the
     workflow_detail associated to this ticket. The workflow detail must be a detail of the
     workflow associated to this ticket's type and category
-@controller_action_param :assignment_attributes [Hash] The fields of the assignment record 
-    associated to this ticket
-@controller_action_param :assignment_attributes.users_id [Integer] The id of the user
-    assigned to work on this ticket
-@controller_action_param :assigment_attributes.cloud_team_teams_id [Integer] (*Not* *yet*
-    *supported*) The id of the team asssigned to work on this ticket
-@controller_action_param :assignment_attributes.assignmation_type [String] A string
-    representing a valid assignation types. At this moment only "*user*" is supported
 @return [Json] Json that contains wheter the creation of the ticket was successful or not. 
     If it is not successful, it returns an error message
 @description Updates an existing ticket associated to the *current_user*'s *account*. 
@@ -320,13 +304,11 @@ Building a better future, one line of code at a time.
 =begin
 @return [Parameters] Allowed parameters for the ticket
 @description Sanitizes the parameters received from an HTTP call to only allow the
-    specified ones. Allowed params are :detail_attributes, and :assignment_attributes.
+    specified ones. Allowed params are :detail_attributes.
     :detail_attributes must be a Hash containing the next attributes: 
     (:id, :subject, :description, :tags, :deadline, :cloud_help_ticket_types_id, 
     :cloud_help_ticket_priorities_id, :cloud_help_ticket_categories_id, 
     :cloud_help_ticket_worklfow_details_id)
-    :assignment_attributes must be a Hash containing the next attributes:
-    (:users_id, :cloud_team_teams_id, :assignation_type)
 @example
     # supose params contains {
     #    "ticket": {
@@ -334,10 +316,6 @@ Building a better future, one line of code at a time.
     #       "detail_attributes":{
     #            name: "My ticket",
     #            tags: "Important, Company"
-    #        },
-    #        "assignment_attributes":{
-    #            users_id: 4,
-    #            users_name: "John Doe"
     #        }
     #    }
     #}
@@ -346,9 +324,6 @@ Building a better future, one line of code at a time.
     # will remove the id and only print {
     #   "detail_attributes":{
     #        tags: "Important, Company"
-    #    },
-    #    "assignment_attributes":{
-    #        users_id: 4
     #    }
     #}
 =end
@@ -364,11 +339,6 @@ Building a better future, one line of code at a time.
                     :cloud_help_ticket_priorities_id,
                     :cloud_help_ticket_categories_id,
                     :cloud_help_ticket_workflow_details_id
-                ],
-                assignment_attributes: [
-                    :users_id,
-                    :cloud_team_teams_id,
-                    :assignation_type
                 ]
             )
         end
