@@ -30,7 +30,7 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import VueTrix from "vue-trix"
+import componentRichTextEditor from "LesliCloud/vue/components/forms/rich-text-editor.vue"
 import componentTicketStateName from "../../components/ticket_state_name.vue"
 
 
@@ -39,7 +39,7 @@ import componentTicketStateName from "../../components/ticket_state_name.vue"
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-trix-editor': VueTrix,
+        'component-rich-text-editor': componentRichTextEditor,
         'component-ticket-state-name': componentTicketStateName
     },
     data() {
@@ -440,11 +440,14 @@ export default {
                     </div>
                     <div class="field">
                         <label class="label">{{translations.shared.fields.description}}</label>
-                        <div class="control">
-                            <component-trix-editor 
-                                :disabledEditor="$route.params.id != null"
+                        <div class="control" v-if="$route.params.id == null">
+                            <component-rich-text-editor
                                 v-model="ticket.detail_attributes.description"
-                            ></component-trix-editor>
+                            />
+                        </div>
+                        <div class="control" v-else>
+                            <div v-html="ticket.detail_attributes.description">
+                            </div>
                         </div>
                     </div>
                     <div v-if="ticket_id">

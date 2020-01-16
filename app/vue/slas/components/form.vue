@@ -30,11 +30,11 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import VueTrix from "vue-trix"
+import componentRichTextEditor from "LesliCloud/vue/components/forms/rich-text-editor.vue"
 
 export default {
     components: {
-        'component-trix-editor': VueTrix
+        'component-rich-text-editor': componentRichTextEditor
     },
     data() {
         return {
@@ -162,13 +162,13 @@ export default {
                         </div>
                     </div>
                     <b-field :label="translations.shared.fields.body">
-                        <component-trix-editor v-model="sla.body" />
+                        <component-rich-text-editor v-model="sla.body" />
                     </b-field>
                     <b-field :label="translations.shared.fields.provider_repercussions">
-                        <component-trix-editor v-model="sla.provider_repercussions" />
+                        <component-rich-text-editor v-model="sla.provider_repercussions" />
                     </b-field>
                     <b-field :label="translations.shared.fields.exceptions">
-                        <component-trix-editor v-model="sla.exceptions" />
+                        <component-rich-text-editor v-model="sla.exceptions" />
                     </b-field>
                     <div class="columns">
                         <div v-if="sla_id" class="column">
