@@ -4,7 +4,7 @@
 	</a>
 </p>
 
-<h3 align="center">CloudHelp - Support Ticket System</h3>
+<h3 align="center">CloudHelp - Support ticket system for LesliCloud</h3>
 
 <hr/>
 
@@ -12,7 +12,7 @@ Version 0.1.0-alpha
 
 #### Website & documentation
 -------
-
+	
 LesliCloud is proprietary software
 
 * Website: [https://lesli.cloud](https://lesli.cloud)
@@ -21,9 +21,11 @@ LesliCloud is proprietary software
 
 * Documentation: [https://github.com/LesliTech/lesli.cloud/wiki](https://github.com/LesliTech/lesli.cloud/wiki)
 
+* Documentation (mirror): [https://cloud.lesli.tech/kb](https://cloud.lesli.tech/kb)
+
 #### License
 -------
-Copyright (c) 2019, Lesli Technologies, S. A.
+Copyright (c) 2020, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
