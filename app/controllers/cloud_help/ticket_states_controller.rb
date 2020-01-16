@@ -203,9 +203,7 @@ Building a better future, one line of code at a time.
     filtered_params = ticket_state_params
     puts filtered_params
     # will remove the id and only print {
-    #    "ticket_state": {
-    #        "name": "Reviewing Changes"
-    #    }
+    #    "name": "Reviewing Changes"
     #}
 =end
         def ticket_state_params

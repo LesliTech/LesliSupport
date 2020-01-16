@@ -42,6 +42,21 @@ Building a better future, one line of code at a time.
 
         private
 
+=begin
+@return [void]
+@description After the assignation is created or updated, registers en entry in the timeline
+    of the ticket, adds some events in CloudDriver and sends a notification to all subscribers.
+    The events registered are:
+    - Expected response time
+    - Expected resolution time
+@example
+    assignment_params = {
+        users_id: User.first.id,
+        assignation_type: 'user'
+    }
+    CloudHelp::Ticket.find(1).create_assignment(assignment_params)
+    # The notifications will be sent automatically after the update
+=end
         def create_notifications_events
             user_change = saved_changes["users_id"]
             if user_change
