@@ -13,9 +13,9 @@ CloudHelp::Engine.routes.draw do
 
     resources :tickets, except: [:destroy] do
         scope module: :ticket do
+            resource :assignment, only: [:create, :show, :update, :destroy]
             resources :timelines, only: [:index]   
             resources :subscribers, only: [:index, :create, :update, :destroy]
-            resources :assignments, only: [:index, :create, :update, :destroy]
             resources :discussions
             resources :files
             resources :actions

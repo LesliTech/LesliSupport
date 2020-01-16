@@ -52,15 +52,17 @@ export default {
     mounted(){
         this.bus.subscribe("show:/help/ticket/assignment", () => this.show = !this.show )
         this.ticket_id = this.$route.params.id
-        this.getTicketAssignments()
+        this.getTicketAssignment()
     },
 
     methods: {
         
-        getTicketAssignments() {
-            this.http.get(`/help/tickets/${this.ticket_id}/assignments`).then(result => {
+        getTicketAssignment() {
+            this.http.get(`/help/tickets/${this.ticket_id}/assignment`).then(result => {
                 if (result.successful) {
-                    this.assignables = result.data;
+                    console.log(JSON.stringify(result.data))
+
+                    //this.assignables = result.data;
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -81,7 +83,7 @@ export default {
                 }
                 this.modal.active = false
                 this.show = false
-                this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result => {
+                this.http.patch(`/help/tickets/${this.ticket_id}/assignments`, data).then(result => {
                     if (result.successful) {
                         this.alert(this.translations.assignment.messages.assignment.user.successful)
                         this.bus.publish('patch:/help/ticket/assignment', result.data.assignment_attributes)
