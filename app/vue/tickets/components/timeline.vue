@@ -55,6 +55,9 @@ export default {
             this.bus.subscribe('patch:/help/ticket/assignment', ()=>{
                 this.getTicketTimeline()
             })
+            this.bus.subscribe('post:/help/ticket/assignment', ()=>{
+                this.getTicketTimeline()
+            })
             this.bus.subscribe('patch:/help/ticket/deadline', ()=>{
                 this.getTicketTimeline()
             })

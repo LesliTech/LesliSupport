@@ -104,6 +104,9 @@ export default {
             this.bus.subscribe('patch:/help/ticket/assignment', (assignment)=>{
                 this.ticket.assignment_attributes = assignment
             })
+            this.bus.subscribe('post:/help/ticket/assignment', (assignment)=>{
+                this.ticket.assignment_attributes = assignment
+            })
         }
     }
 };
@@ -203,7 +206,7 @@ export default {
                 <component-timeline class="card box" />
             </div>
             <component-deadline :ticket-deadline="ticket.detail_attributes.deadline"/>
-            <component-assignment :current-assignable="ticket.assignment_attributes.users_id"/>
+            <component-assignment :assigned-to="ticket.assignment_attributes.users_id"/>
             <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-subscriptions

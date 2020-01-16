@@ -30,11 +30,54 @@ Building a better future, one line of code at a time.
         belongs_to :ticket, inverse_of: :assignment, foreign_key: 'cloud_help_tickets_id'
         belongs_to :user, class_name: 'User', foreign_key: 'users_id'
 
+        after_create :create_notifications_events
+        after_update :create_notifications_events
+
 =begin
 @attribute [Enumerable<Symbol>] assignation_type
     @return [ :user, :team ]
 =end
         enum assignation_type: [:user, :team]
         validates :assignation_type, presence: true, inclusion: { in: :assignation_type }
+
+        private
+
+        def create_notifications_events
+            user_change = saved_changes["users_id"]
+            if user_change
+                ticket.timelines.create(
+                    action: Ticket::Timeline.actions[:assigned_to_user],
+                    description: I18n.t(
+                        'activerecord.models.cloud_help/ticket/timeline.actions.assigned_to_user',
+                        user: user.email
+                    )
+                )
+        
+                Courier::Driver::Calendar.registerEvent(
+                    user, {
+                        title:          I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.title', ticket_id: ticket.id),
+                        description:    I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.description'),
+                        time_start:     DateTime.now + ticket.detail.workflow_detail.ticket_workflow.sla.expected_response_time.hour,
+                        url:            "/help/tickets/#{id}"
+                    }
+                )
+        
+                Courier::Driver::Calendar.registerEvent(
+                    user, {
+                        title:          I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.title', ticket_id: ticket.id),
+                        description:    I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.description'),
+                        time_start:     DateTime.now + ticket.detail.workflow_detail.ticket_workflow.sla.expected_resolution_time.hour,
+                        url:            "/help/tickets/#{id}"
+                    }
+                )
+        
+                message = I18n.t(
+                    'activerecord.models.cloud_help_ticket.updated.assigned',
+                    ticket_id: ticket.id,
+                    user: user.email
+                )
+                Ticket::Subscriber.notify_subscribers(ticket, message, :assignment_updated)
+            end
+        end
     end
 end

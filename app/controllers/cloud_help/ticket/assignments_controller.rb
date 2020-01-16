@@ -27,16 +27,36 @@ Building a better future, one line of code at a time.
 
 =end
     class Ticket::AssignmentsController < ApplicationController
-        before_action :set_ticket_assignment, only: [:update, :destroy]
+        before_action :set_ticket_assignment, only: [:show, :update, :destroy]
 
         def create
+            ticket = CloudHelp::Ticket.find_by(
+                id: params[:ticket_id],
+                cloud_help_accounts_id: current_user.account.id
+            )
+            if ticket.create_assignment(ticket_assignment_params)
+                responseWithSuccessful(ticket.assignment)
+            else
+                responseWithError(ticket.error.full_messages.to_sentece)
+            end
         end
 
         def show
-            responseWithSuccessful
+            if @ticket_assignment
+                responseWithSuccessful(@ticket_assignment)
+            else
+                responseWithSuccessful
+            end
         end
 
         def update
+            return responseWithNotFound unless @ticket_assignment
+
+            if @ticket_assignment.update(ticket_assignment_params)
+                responseWithSuccessful(@ticket_assignment)
+            else
+                responseWithError(ticket.error.full_messages.to_sentece)
+            end
         end
 
         def destroy
@@ -50,7 +70,7 @@ Building a better future, one line of code at a time.
 @example
     possible_users = Courier::Core::Users.list
 =end
-        def assignments_options
+        def assignment_options
             responseWithSuccessful(Courier::Core::Users.list)
         end
 
@@ -64,52 +84,7 @@ Building a better future, one line of code at a time.
         end
 
         def ticket_assignment_params
+            params.fetch(:assignment, {}).permit(:users_id, :cloud_team_teams_id, :assignation_type)
         end
     end
 end
-
-=begin
-,
-                assignment_attributes: [
-                    :users_id,
-                    :cloud_team_teams_id,
-                    :assignation_type
-                ]
-=end
-
-=begin
-    def action_register_assignment_change
-        timelines.create(
-            action: Ticket::Timeline.actions[:assigned_to_user],
-            description: I18n.t(
-                'activerecord.models.cloud_help/ticket/timeline.actions.assigned_to_user',
-                user: assignment.user.email
-            )
-        )
-
-        Courier::Driver::Calendar.registerEvent(
-            assignment.user, {
-                title:          I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.title', ticket_id: id),
-                description:    I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.description'),
-                time_start:     DateTime.now + detail.workflow_detail.ticket_workflow.sla.expected_response_time.hour,
-                url:            "/help/tickets/#{id}"
-            }
-        )
-
-        Courier::Driver::Calendar.registerEvent(
-            assignment.user, {
-                title:          I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.title', ticket_id: id),
-                description:    I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.description'),
-                time_start:     DateTime.now + detail.workflow_detail.ticket_workflow.sla.expected_resolution_time.hour,
-                url:            "/help/tickets/#{id}"
-            }
-        )
-
-        message = I18n.t(
-            'activerecord.models.cloud_help_ticket.updated.assigned',
-            ticket_id: id,
-            user: assignment.user.email
-        )
-        Ticket::Subscriber.notify_subscribers(self, message, :assignment_updated)
-    end
-=end
