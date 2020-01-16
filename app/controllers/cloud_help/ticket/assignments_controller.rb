@@ -27,7 +27,7 @@ Building a better future, one line of code at a time.
 
 =end
     class Ticket::AssignmentsController < ApplicationController
-        before_action :set_ticket_assignment, only: [:show, :update, :destroy]
+        before_action :set_ticket_assignment, only: [:show, :update]
 
         def create
             ticket = CloudHelp::Ticket.find_by(
@@ -58,10 +58,6 @@ Building a better future, one line of code at a time.
                 responseWithError(ticket.error.full_messages.to_sentece)
             end
         end
-
-        def destroy
-        end
-
         
 =begin
 @return [JSON] Json that contains a list of all users to wich a ticket can be assigned to.
