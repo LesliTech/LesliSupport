@@ -39,7 +39,6 @@ Building a better future, one line of code at a time.
         has_one :assignment, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'  
 
         accepts_nested_attributes_for :detail, update_only: true
-        accepts_nested_attributes_for :assignment, update_only: true
 
         after_update :after_update_actions
 
@@ -287,7 +286,6 @@ Building a better future, one line of code at a time.
 @description After a *ticket* is updated, this method triggers. It checks for the changes
     made and based on them, adds entries to the timeline and notifies users. The possible changes are:
     - A change in workflow
-    - An asigment
     - A priority change
     - A type change
     - A category change
@@ -309,13 +307,6 @@ Building a better future, one line of code at a time.
                 if detail.workflow_detail.ticket_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
-                end
-            end
-
-            if assignment
-                assignment_change = assignment.saved_changes["users_id"]
-                if assignment_change
-                    action_register_assignment_change()
                 end
             end
             
@@ -341,52 +332,6 @@ Building a better future, one line of code at a time.
             if detail.saved_changes["deadline"] 
                 action_register_ticket_deadline
             end 
-        end
-
-=begin
-@return [void]
-@description If the user assigned to this *ticket* changed, 
-    a new entry is recorded to the timeline, a notification is sent to
-    the subscribers, and a new entry is recorded in the *CloudDriver* module,
-    if it exists.
-@example
-    ticket = CloudHelp::Ticket.first
-    ticket.update({ assignment_attributes: { users_id: User.last.id } })
-    # the *after_update_actions* method will call this method after the update
-=end
-        def action_register_assignment_change
-            timelines.create(
-                action: Ticket::Timeline.actions[:assigned_to_user],
-                description: I18n.t(
-                    'activerecord.models.cloud_help/ticket/timeline.actions.assigned_to_user',
-                    user: assignment.user.email
-                )
-            )
-
-            Courier::Driver::Calendar.registerEvent(
-                assignment.user, {
-                    title:          I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.title', ticket_id: id),
-                    description:    I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.description'),
-                    time_start:     DateTime.now + detail.workflow_detail.ticket_workflow.sla.expected_response_time.hour,
-                    url:            "/help/tickets/#{id}"
-                }
-            )
-
-            Courier::Driver::Calendar.registerEvent(
-                assignment.user, {
-                    title:          I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.title', ticket_id: id),
-                    description:    I18n.t('activerecord.models.cloud_help_ticket.expected_resolution_time.description'),
-                    time_start:     DateTime.now + detail.workflow_detail.ticket_workflow.sla.expected_resolution_time.hour,
-                    url:            "/help/tickets/#{id}"
-                }
-            )
-
-            message = I18n.t(
-                'activerecord.models.cloud_help_ticket.updated.assigned',
-                ticket_id: id,
-                user: assignment.user.email
-            )
-            Ticket::Subscriber.notify_subscribers(self, message, :assignment_updated)
         end
 
 =begin
@@ -556,9 +501,9 @@ Building a better future, one line of code at a time.
                     new_priority_weight: new_priority.weight
                 )
             )
-            if assignment
-                assignment.destroy
-            end
+
+            assignment.destroy if assignment
+
             message = I18n.t(
                 notification_translation,
                 ticket_id: id,

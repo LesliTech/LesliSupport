@@ -28,7 +28,7 @@ Building a better future, one line of code at a time.
 
 export default {
     props: {
-        currentAssignable: {
+        assignedTo: {
             required: true
         }
     },
@@ -41,8 +41,9 @@ export default {
                 shared: I18n.t('cloud_help.tickets.shared'),
                 assignment: I18n.t('cloud_help.tickets.assignment')
             },
-            assignable: null,
-            assignables: null,
+            assignment: {},
+            users: [],
+            user: null,
             modal: {
                 active: false
             }
@@ -52,15 +53,16 @@ export default {
     mounted(){
         this.bus.subscribe("show:/help/ticket/assignment", () => this.show = !this.show )
         this.ticket_id = this.$route.params.id
-        this.getTicketAssignments()
+        this.getTicketAssignment()
+        this.getTicketAssignmentOptions()
     },
 
     methods: {
         
-        getTicketAssignments() {
-            this.http.get(`/help/tickets/${this.ticket_id}/assignments`).then(result => {
+        getTicketAssignment() {
+            this.http.get(`/help/tickets/${this.ticket_id}/assignment`).then(result => {
                 if (result.successful) {
-                    this.assignables = result.data;
+                    this.assignment = result.data || {}
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -69,22 +71,41 @@ export default {
             })
         },
 
-        patchTicketAssignment() {
-            if(this.assignable){
-                let data = {
-                    ticket: {
-                        assignment_attributes: {
-                            assignation_type: 'user',
-                            users_id:  this.assignable.id
-                        }
-                    }
+        getTicketAssignmentOptions() {
+            this.http.get(`/help/tickets/${this.ticket_id}/assignment/options`).then(result => {
+                if (result.successful) {
+                    this.users = result.data
+                }else{
+                    this.alert(result.error.message,'danger')
                 }
+            }).catch(error => {
+                console.log(error);
+            })
+        },
+
+        submitTicketAssignment(){
+            if(this.assignment.id){
+                this.patchTicketAssignment()
+            }else{
+                this.postTicketAssignment()
+            }
+        },
+
+        postTicketAssignment(){
+            if(this.user){
+                this.assignment = {
+                    assignation_type: 'user',
+                    users_id: this.user.id,
+                    assignable_name: this.user.email
+                }
+
                 this.modal.active = false
                 this.show = false
-                this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result => {
+                this.http.post(`/help/tickets/${this.ticket_id}/assignment`, this.assignment).then(result => {
                     if (result.successful) {
                         this.alert(this.translations.assignment.messages.assignment.user.successful)
-                        this.bus.publish('patch:/help/ticket/assignment', result.data.assignment_attributes)
+                        this.assignment.id = result.data.id
+                        this.bus.publish('post:/help/ticket/assignment', this.assignment)
                     }else{
                         this.alert(result.error.message,'danger')
                     }
@@ -96,27 +117,49 @@ export default {
             }
         },
 
-        setTicketAssignable(){
-            if(this.assignables && this.currentAssignable){
-                this.assignable = this.assignables.filter( assignable => {
-                    return assignable.id == this.currentAssignable
+        patchTicketAssignment() {
+            if(this.user){
+                this.assignment.users_id = this.user.id
+                this.assignment.assignable_name = this.user.email
+
+                this.modal.active = false
+                this.show = false
+                this.http.patch(`/help/tickets/${this.ticket_id}/assignment`, this.assignment).then(result => {
+                    if (result.successful) {
+                        this.alert(this.translations.assignment.messages.assignment.user.successful)
+                        this.bus.publish('patch:/help/ticket/assignment', this.assignment)
+                    }else{
+                        this.alert(result.error.message,'danger')
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            }else{
+                this.alert(this.translations.assignment.messages.assignment.user.uselected, 'danger')
+            }
+        },
+
+        setTicketUser(){
+            if(this.users && this.assignedTo){
+                this.user = this.users.filter( user => {
+                    return user.id == this.assignedTo
                 })[0]
             }
         }
     },
 
     watch: {
-        assignables(){
-            this.setTicketAssignable()
+        users(){
+            this.setTicketUser()
         },
-        currentAssignable(){
-            this.setTicketAssignable()
+        assignedTo(){
+            this.setTicketUser()
         }
     }
 }
 </script>
 <template>
-    <section v-if="this.assignables">
+    <section v-if="users">
         <div :class="[{ 'is-active': show }, 'quickview']">
             <header class="quickview-header" @click="show = false">
                 <p class="title">
@@ -144,7 +187,7 @@ export default {
                                     {{ translations.assignment.modals.user.body }}
                                 </div>
                                 <div class="card-footer has-text-right">
-                                    <button class="card-footer-item button is-danger" @click="patchTicketAssignment">
+                                    <button class="card-footer-item button is-danger" @click="submitTicketAssignment">
                                         {{ translations.assignment.modals.user.actions.assign }}
                                     </button>
                                     <button class="card-footer-item button is-secondary" @click="modal.active = false">
@@ -154,8 +197,8 @@ export default {
                             </div>
                         </b-modal>
                         <b-table
-                            :data="assignables"
-                            :selected.sync="assignable"
+                            :data="users"
+                            :selected.sync="user"
                             :paginated="true"
                             :per-page="10"
                             :pagination-simple="true"
