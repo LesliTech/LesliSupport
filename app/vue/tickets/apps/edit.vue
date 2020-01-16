@@ -30,16 +30,15 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentDiscussionList from 'LesliCloud/vue/components/lists/discussion.vue'
-import componentDiscussionForm from 'LesliCloud/vue/components/forms/discussion.vue'
-import componentActionList from 'LesliCloud/vue/components/lists/action.vue'
-import componentFileList from 'LesliCloud/vue/components/lists/file.vue'
+import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue"
+import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue"
+import componentActionList from "LesliCloud/vue/components/lists/action.vue"
+import componentFileList from "LesliCloud/vue/components/lists/file.vue"
 import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
-import componentFormStatus from '../components/status.vue'
-import componentFormTag from '../components/tag.vue'
-import componentForm from '../components/form.vue'
-import componentWorkflowChart from '../../components/workflow_chart.vue'
-import VueTrix from "vue-trix"
+import componentFormStatus from "../components/status.vue"
+import componentFormTag from "../components/tag.vue"
+import componentForm from "../components/form.vue"
+import componentWorkflowChart from "../../components/workflow_chart.vue"
 
 
 
@@ -55,8 +54,7 @@ export default {
         'component-form-status': componentFormStatus,
         'component-form-tag': componentFormTag,
         'component-form': componentForm,
-        'component-workflow-chart': componentWorkflowChart,
-        'component-trix-editor': VueTrix
+        'component-workflow-chart': componentWorkflowChart
     },
     data() {
         return {
