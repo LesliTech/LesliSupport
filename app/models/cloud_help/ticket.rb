@@ -107,7 +107,7 @@ Building a better future, one line of code at a time.
 
             detail.workflow_detail = TicketWorkflow::Detail.find_by(
                 ticket_workflow: workflow,
-                ticket_state: TicketState.initial_state
+                ticket_state: TicketState.initial_state(account)
             )
         end
 
@@ -450,7 +450,7 @@ Building a better future, one line of code at a time.
             type = detail.type
 
             new_workflow = TicketWorkflow.find_by(ticket_type: type, ticket_category: category)
-            new_workflow_detail = new_workflow.details.find_by( ticket_state: TicketState.initial_state )
+            new_workflow_detail = new_workflow.details.find_by( ticket_state: TicketState.initial_state(account) )
 
             if detail.update(workflow_detail: new_workflow_detail)
                 message = I18n.t(

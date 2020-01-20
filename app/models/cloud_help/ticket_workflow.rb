@@ -163,8 +163,8 @@ Building a better future, one line of code at a time.
 =end
         def replace_workflow(account, new_workflow)
             begin
-                initial_state_id = TicketState.initial_state.id
-                final_state_id = TicketState.final_state.id
+                initial_state_id = TicketState.initial_state(account).id
+                final_state_id = TicketState.final_state(account).id
                 details.where(
                     "cloud_help_ticket_states_id != #{initial_state_id}"
                 ).where(
@@ -236,7 +236,7 @@ Building a better future, one line of code at a time.
                     end
                 end
             else
-                TicketWorkflow.create_dummy_workflow(ticket_type, ticket_category)
+                create_dummy_workflow(ticket_type, ticket_category)
             end
         end
 
@@ -255,9 +255,9 @@ private
     )
     # This will create a new dummy workflow only if there is not default workflow set
 =end
-        def self.create_dummy_workflow(ticket_type, ticket_category)
-            initial_state = TicketState.find_by(initial: true)
-            final_state = TicketState.find_by(final: true)
+        def create_dummy_workflow(ticket_type, ticket_category)
+            initial_state = TicketState.initial_state(account)
+            final_state = TicketState.final_state(account)
             default_sla = Sla.find_by(default: true)
 
             if ticket_type

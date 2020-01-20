@@ -32,6 +32,9 @@ default_sla = CloudHelp::Sla.find_by(default: true)
 CloudHelp::TicketType.all.each do |type|
     CloudHelp::TicketCategory.all.each do |category|
 
+        initial_state = CloudHelp::TicketState.initial_state(category.account)
+        final_state = CloudHelp::TicketState.final_state(category.account)
+
         # Assigning created state first ticket
         CloudHelp::TicketWorkflow.create!(
             ticket_type: type,
@@ -39,11 +42,11 @@ CloudHelp::TicketType.all.each do |type|
             sla: default_sla,
             details_attributes: [
                 {
-                    ticket_state: CloudHelp::TicketState.find_by(id: 1, account: category.account),
-                    next_states: '2'
+                    ticket_state: initial_state,
+                    next_states: "#{final_state.id}"
                 },
                 {
-                    ticket_state: CloudHelp::TicketState.find_by(id: 2, account: category.account)
+                    ticket_state: final_state
                 }
             ] 
         )
