@@ -30,11 +30,11 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentTicketStateName from "../../components/ticket_state_name.vue"
+import componentStateName from "LesliCloud/vue/cloud_object/states/components/state-name.vue"
 
 export default {
     components: {
-        'component-ticket-state-name': componentTicketStateName
+        'component-state-name': componentStateName
     },
     data() {
         return {

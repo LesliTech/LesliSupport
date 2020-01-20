@@ -30,11 +30,11 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentTicketStateName from "../../components/ticket_state_name.vue"
+import componentStateName from "LesliCloud/vue/cloud_object/states/components/state-name.vue"
 
 export default {
     components: {
-        'component-ticket-state-name': componentTicketStateName
+        'component-state-name': componentStateName
     },
     props: {
         state: {
@@ -61,8 +61,10 @@ export default {
     <div class="card">
         <div class="card-header">
             <h4 class="card-header-title">
-                <component-ticket-state-name :name="state">
-                </component-ticket-state-name>
+                <component-state-name
+                    :name="state"
+                    :translations-shared-path="'cloud_help.ticket_states.shared'"
+                />
             </h4>
         </div>
         <div class="card-content">

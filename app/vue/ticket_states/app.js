@@ -34,24 +34,50 @@ import app from 'LesliCloud/vue/app'
 
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList from './apps/list.vue'
-import appNew from './apps/new.vue'
-import appShow from './apps/show.vue'
-import appEdit from './apps/edit.vue'
+import appList from 'LesliCloud/vue/cloud_object/states/apps/list.vue'
+import appNew from 'LesliCloud/vue/cloud_object/states/apps/new.vue'
+import appShow from 'LesliCloud/vue/cloud_object/states/apps/show.vue'
+import appEdit from 'LesliCloud/vue/cloud_object/states/apps/edit.vue'
 
 
-// · 
+// ·
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|show|edit]", "help/ticket_states", [{
-    path: "/",
+app('CloudHelp', '[list|new|show|edit]', 'help/ticket_states', [{
+    path: '/',
     component: appList,
+    props: {
+        cloudModule: 'help',
+        cloudObject: 'ticket',
+        translationsSharedPath: 'cloud_help.ticket_states.shared'
+    }
 },{
-    path: "/new",
-    component: appNew
+    path: '/new',
+    component: appNew,
+    props: {
+        cloudModule: 'help',
+        cloudObject: 'ticket',
+        translationsSharedPath: 'cloud_help.ticket_states.shared',
+        translationsFormPath: 'cloud_help.ticket_states.form'
+    }
 },{
-    path: "/:id",
-    component: appShow
+    path: '/:id',
+    component: appShow,
+    props: {
+        cloudModule: 'help',
+        cloudObject: 'ticket',
+        translationsSharedPath: 'cloud_help.ticket_states.shared',
+        translationsShowPath: 'cloud_help.ticket_states.show'
+    }
 },{
-    path: "/:id/edit",
-    component: appEdit
+    path: '/:id/edit',
+    component: appEdit,
+    props: {
+        cloudModule: 'help',
+        cloudObject: 'ticket',
+        translationsSharedPath: 'cloud_help.ticket_states.shared',
+        translationsFormPath: 'cloud_help.ticket_states.form'
+    }
 }])
+
+
+                

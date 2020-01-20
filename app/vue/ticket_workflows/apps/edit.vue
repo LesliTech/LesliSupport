@@ -29,13 +29,13 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentStateName from "LesliCloud/vue/cloud_object/states/components/state-name.vue"
 import componentWorkflowChart from '../../components/workflow_chart.vue'
-import componentTicketStateName from '../../components/ticket_state_name.vue'
 
 export default {
     components: {
         'component-workflow-chart': componentWorkflowChart,
-        'component-ticket-state-name': componentTicketStateName
+        'component-state-name': componentStateName
     },
     data() {
         return {
@@ -346,12 +346,13 @@ export default {
                                                 :hidden="ticket_state.id == null"
                                                 :disbled="ticket_state.id == null"  
                                             >
-                                                <component-ticket-state-name 
+                                                <component-state-name
+                                                    :translations-shared-path="'cloud_help.ticket_states.shared'"
                                                     :name="ticket_state.name"
                                                     :initial="ticket_state.initial"
                                                     :final="ticket_state.final"
                                                 >
-                                                </component-ticket-state-name>
+                                                </component-state-name>
                                             </option>
                                         </b-select>
                                     </b-field>
@@ -377,8 +378,10 @@ export default {
                                     @click="selectNode(node)"
                                     :class="{'is-active':selected_node.ticket_state_id == node.ticket_state_id}"
                                 >
-                                    <component-ticket-state-name :name="node.ticket_state_name">
-                                    </component-ticket-state-name>
+                                    <component-state-name
+                                        :name="node.ticket_state_name"
+                                        :translations-shared-path="'cloud_help.ticket_states.shared'"
+                                    />
                                     <button 
                                         v-if="node.ticket_state_id != default_states.created && node.ticket_state_id != default_states.closed"
                                         type="button"
@@ -392,8 +395,10 @@ export default {
                             {{translations.edit.titles.follow_up}}:
                             <div class="list is-hoverable">
                                 <a v-for="(node, key) in nextStatesOfSelectedNode" :key="key" class="list-item">
-                                    <component-ticket-state-name :name="node.ticket_state_name">
-                                    </component-ticket-state-name>
+                                    <component-state-name
+                                        :name="node.ticket_state_name"
+                                        :translations-shared-path="'cloud_help.ticket_states.shared'"
+                                    />
                                     <button type="button" class="delete is-pulled-right" @click="deleteFollowUpState(node)"></button>
                                 </a>
                             </div>

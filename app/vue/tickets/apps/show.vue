@@ -33,8 +33,8 @@ import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.
 import componentActionList from "LesliCloud/vue/components/lists/action.vue"
 import componentFileList from "LesliCloud/vue/components/lists/file.vue"
 import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
+import componentStateName from "LesliCloud/vue/cloud_object/states/components/state-name.vue"
 import componentTimeline from "../components/timeline.vue"
-import componentTicketStateName from "../../components/ticket_state_name.vue"
 import componentDeadline from "../components/deadline.vue"
 import componentAssignment from "../components/assignment.vue"
 
@@ -47,11 +47,11 @@ export default {
         "component-action-list": componentActionList,
         "component-file-list": componentFileList,
         "component-timeline": componentTimeline,
-        "component-ticket-info": componentTicketStateName,
+        "component-ticket-info": componentStateName,
         "component-subscriptions": componentSubscriptions,
         "component-deadline": componentDeadline,
         "component-assignment": componentAssignment,
-        "component-ticket-state-name": componentTicketStateName
+        "component-state-name": componentStateName
     },
     data() {
         return {
@@ -160,7 +160,10 @@ export default {
                                 <span
                                     class="has-text-weight-bold"
                                 >{{translations.fields.state}}:</span>
-                                <component-ticket-state-name :name="ticket.detail_attributes.state"></component-ticket-state-name>
+                                <component-state-name 
+                                    :name="ticket.detail_attributes.state"
+                                    :translations-shared-path="'cloud_help.ticket_states.shared'"
+                                />
                             </div>
                             <div class="column is-4 has-text-right">
                                 <span class="has-text-weight-bold is-size-5">

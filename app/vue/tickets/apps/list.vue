@@ -29,10 +29,10 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentTicketStateName from '../../components/ticket_state_name.vue'
+import componentStateName from 'LesliCloud/vue/cloud_object/states/components/state-name.vue'
 export default {
     components: {
-        'component-ticket-state-name': componentTicketStateName
+        'component-state-name': componentStateName
     },
     data() {
         return {
@@ -94,8 +94,10 @@ export default {
                     </span>
                 </b-table-column>
                 <b-table-column field="state" :label="translations.shared.fields.state">
-                    <component-ticket-state-name :name="props.row.state">
-                    </component-ticket-state-name>
+                    <component-state-name
+                        :name="props.row.state"
+                        :translations-shared-path="'cloud_help.ticket_states.shared'"
+                    />
                 </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">
                     {{ date.toLocalFormat(props.row.created_at,true) }}
