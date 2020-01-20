@@ -30,12 +30,8 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentStateName from "LesliCloud/vue/cloud_object/states/components/state-name.vue"
 
 export default {
-    components: {
-        'component-state-name': componentStateName
-    },
     data() {
         return {
             ticket_id: null,

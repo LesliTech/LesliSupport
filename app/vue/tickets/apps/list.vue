@@ -29,10 +29,10 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentStateName from 'LesliCloud/vue/cloud_object/states/components/state-name.vue'
+import componentWorkflowStateName from 'LesliCloud/vue/cloud_object/workflow_states/components/state-name.vue'
 export default {
     components: {
-        'component-state-name': componentStateName
+        'component-workflow-state-name': componentWorkflowStateName
     },
     data() {
         return {
@@ -94,7 +94,7 @@ export default {
                     </span>
                 </b-table-column>
                 <b-table-column field="state" :label="translations.shared.fields.state">
-                    <component-state-name
+                    <component-workflow-state-name
                         :name="props.row.state"
                         :translations-shared-path="'cloud_help.ticket_states.shared'"
                     />

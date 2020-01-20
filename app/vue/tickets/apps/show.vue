@@ -33,7 +33,7 @@ import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.
 import componentActionList from "LesliCloud/vue/components/lists/action.vue"
 import componentFileList from "LesliCloud/vue/components/lists/file.vue"
 import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
-import componentStateName from "LesliCloud/vue/cloud_object/states/components/state-name.vue"
+import componentWorkflowStateName from "LesliCloud/vue/cloud_object/workflow_states/components/state-name.vue"
 import componentTimeline from "../components/timeline.vue"
 import componentDeadline from "../components/deadline.vue"
 import componentAssignment from "../components/assignment.vue"
@@ -47,11 +47,11 @@ export default {
         "component-action-list": componentActionList,
         "component-file-list": componentFileList,
         "component-timeline": componentTimeline,
-        "component-ticket-info": componentStateName,
+        "component-ticket-info": componentWorkflowStateName,
         "component-subscriptions": componentSubscriptions,
         "component-deadline": componentDeadline,
         "component-assignment": componentAssignment,
-        "component-state-name": componentStateName
+        "component-workflow-state-name": componentWorkflowStateName
     },
     data() {
         return {
@@ -160,7 +160,7 @@ export default {
                                 <span
                                     class="has-text-weight-bold"
                                 >{{translations.fields.state}}:</span>
-                                <component-state-name 
+                                <component-workflow-state-name 
                                     :name="ticket.detail_attributes.state"
                                     :translations-shared-path="'cloud_help.ticket_states.shared'"
                                 />

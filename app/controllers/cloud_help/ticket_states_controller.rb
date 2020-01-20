@@ -26,7 +26,7 @@ Building a better future, one line of code at a time.
 @description Controller for ticket states. Uses base class CloudObject::StatesController
 
 =end
-    class TicketStatesController < CloudObject::StatesController
+    class TicketStatesController < CloudObject::WorkflowStatesController
 
     end
 end

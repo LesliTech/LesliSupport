@@ -34,10 +34,10 @@ import app from 'LesliCloud/vue/app'
 
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList from 'LesliCloud/vue/cloud_object/states/apps/list.vue'
-import appNew from 'LesliCloud/vue/cloud_object/states/apps/new.vue'
-import appShow from 'LesliCloud/vue/cloud_object/states/apps/show.vue'
-import appEdit from 'LesliCloud/vue/cloud_object/states/apps/edit.vue'
+import appList from 'LesliCloud/vue/cloud_object/workflow_states/apps/list.vue'
+import appNew from 'LesliCloud/vue/cloud_object/workflow_states/apps/new.vue'
+import appShow from 'LesliCloud/vue/cloud_object/workflow_states/apps/show.vue'
+import appEdit from 'LesliCloud/vue/cloud_object/workflow_states/apps/edit.vue'
 
 
 // ·

@@ -31,7 +31,7 @@ Building a better future, one line of code at a time.
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import componentRichTextEditor from "LesliCloud/vue/components/forms/rich-text-editor.vue"
-import componentStateName from "LesliCloud/vue/cloud_object/states/components/state-name.vue"
+import componentWorkflowStateName from "LesliCloud/vue/cloud_object/workflow_states/components/state-name.vue"
 
 
 
@@ -40,7 +40,7 @@ import componentStateName from "LesliCloud/vue/cloud_object/states/components/st
 export default {
     components: {
         'component-rich-text-editor': componentRichTextEditor,
-        'component-state-name': componentStateName
+        'component-workflow-state-name': componentWorkflowStateName
     },
     data() {
         return {
@@ -466,7 +466,7 @@ export default {
                                                 :key="state.workflow_detail_id"
                                                 :value="state.workflow_detail_id"
                                             >
-                                                <component-state-name
+                                                <component-workflow-state-name
                                                     :name="state.name"                    
                                                     :translations-shared-path="'cloud_help.ticket_states.shared'"
                                                 />
