@@ -68,18 +68,14 @@ export default {
     <section class="section">
         <b-table :data="ticket_workflows" @click="showTicketWorkflow" :hoverable="true">
             <template slot-scope="props">
-                <b-table-column field="ticket_type_name" :label="translations.shared.fields.ticket_type_name">
-                    {{ props.row.ticket_type_name }}
+                <b-table-column field="id" :label="translations.shared.fields.id">
+                    {{ props.row.id }}
                 </b-table-column>
-                <b-table-column field="ticket_category_name" :label="translations.shared.fields.ticket_category_name">
-                    {{ props.row.ticket_category_name }}
-                </b-table-column>
-                <b-table-column field="sla_name" :label="translations.shared.fields.sla_name">
-                    {{ props.row.sla_name }}
-                </b-table-column>
-                <b-table-column field="default" :label="translations.shared.fields.default">
-                    <span v-if="props.row.default">{{translations.shared.default.true}}</span>
-                    <span v-else class="has-font-weight-bold">{{translations.shared.default.false}}</span>
+                <b-table-column field="name" :label="translations.shared.fields.name">
+                    {{ props.row.name}}
+                    <span v-if="props.row.default" class="has-text-weight-bold">
+                        ({{translations.shared.fields.default}})
+                    </span>
                 </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">
                     {{ date.toLocalFormat(props.row.created_at, true) }}

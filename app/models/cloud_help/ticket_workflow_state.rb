@@ -1,8 +1,9 @@
+module CloudHelp
 =begin
 
 Lesli
 
-Copyright (c) 2019, Lesli Technologies, S. A.
+Copyright (c) 2020, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -17,23 +18,15 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   LesliTech <hello@lesli.tech>
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
-@version  GIT: 1.0.0 alpha
-
-// · 
-// · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
+@version  0.1.0-alpha
+@description Model for ticket priorities
 
 =end
-
-CloudHelp::Account.all.each do |account|
-    CloudHelp::Sla.create!(
-        name: 'Dummy SLA',
-        account: account,
-        expected_response_time: 1000,
-        expected_resolution_time: 2000,
-        default: true
-    )
+    class TicketWorkflowState < CloudObject::WorkflowState
+        belongs_to :account, class_name: "CloudHelp::Account", foreign_key: "cloud_help_accounts_id" 
+        has_many :details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_ticket_workflow_states_id"
+        has_many :ticket_workflow_details, class_name: "CloudHelp::TicketWorkflow::Detail", foreign_key: "cloud_help_ticket_workflow_states_id"
+    end
 end
-

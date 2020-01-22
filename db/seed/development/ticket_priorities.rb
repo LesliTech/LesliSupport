@@ -27,6 +27,8 @@ Building a better future, one line of code at a time.
 
 =end
 
-CloudHelp::TicketPriority.create!(name: 'Low', weight: 10, account: CloudHelp::Account.first)
-CloudHelp::TicketPriority.create!(name: 'Medium', weight: 100, account: CloudHelp::Account.first)
-CloudHelp::TicketPriority.create!(name: 'High', weight: 1000, account: CloudHelp::Account.first)
+CloudHelp::Account.all.each do |account|
+    CloudHelp::TicketPriority.create!(name: 'Low', weight: 10, account: account)
+    CloudHelp::TicketPriority.create!(name: 'Medium', weight: 100, account: account)
+    CloudHelp::TicketPriority.create!(name: 'High', weight: 1000, account: account)
+end

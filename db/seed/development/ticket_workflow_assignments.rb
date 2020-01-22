@@ -26,14 +26,17 @@ Building a better future, one line of code at a time.
 // · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
 
 =end
-
 CloudHelp::Account.all.each do |account|
-    CloudHelp::Sla.create!(
-        name: 'Dummy SLA',
-        account: account,
-        expected_response_time: 1000,
-        expected_resolution_time: 2000,
-        default: true
-    )
-end
+    default_workflow = CloudHelp::TicketWorkflow.find_by(account: account, default: true)
 
+    CloudHelp::TicketType.where(account: account).each do |type|
+        CloudHelp::TicketCategory.where(account: account).each do |category|
+            CloudHelp::TicketWorkflowAssignment.create!(
+                account: account,
+                ticket_type: type,
+                ticket_category: category,
+                ticket_workflow: default_workflow
+            )
+        end
+    end
+end

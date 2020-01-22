@@ -1,9 +1,8 @@
-module CloudHelp
-=begin
-
+<script>
+/*
 Lesli
 
-Copyright (c) 2020, Lesli Technologies, S. A.
+Copyright (c) 2019, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -18,15 +17,27 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   Carlos Hermosilla
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description Model for ticket priorities
 
-=end
-    class TicketState < CloudObject::WorkflowState
-        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id' 
-        has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_states_id'
-        has_many :ticket_workflow_details, class_name: 'CloudHelp::TicketWorkflow::Detail', foreign_key: 'cloud_help_ticket_states_id'
-    end
-end
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+*/
+
+
+// · Component list
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentForm from '../components/form.vue'
+
+
+export default {
+    components: {
+        'component-form': componentForm
+    }
+}
+</script>
+<template>
+    <component-form></component-form>
+</template>

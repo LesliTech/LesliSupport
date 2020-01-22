@@ -1,6 +1,6 @@
 en:
     cloud_help:
-        ticket_states:
+        ticket_workflow_states:
             shared:
                 name: Ticket State
                 actions:

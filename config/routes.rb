@@ -3,18 +3,17 @@ CloudHelp::Engine.routes.draw do
     root to: 'dashboards#default'
     
     resources :slas
-    resources :ticket_types
     resources :ticket_sources
-    resources :ticket_states
     resources :ticket_priorities
+    resources :ticket_types
     resources :ticket_categories
-    resources :ticket_tags
-    resources :ticket_workflows, except: [:new, :create, :destroy]
+    resources :ticket_workflows
+    resources :ticket_workflow_states
 
     resources :tickets, except: [:destroy] do
         scope module: :ticket do
             resource :assignment, only: [:create, :show, :update] do
-                get "options", to: "assignments#assignment_options"
+                get "/options", to: "assignments#assignment_options"
             end
             resources :timelines, only: [:index]   
             resources :subscribers, only: [:index, :create, :update, :destroy]

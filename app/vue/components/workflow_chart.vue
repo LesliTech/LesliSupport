@@ -49,18 +49,18 @@ export default {
             type: Boolean,
             default: false
         },
-        ticket_state_created_id: {
+        workflowStateInitialId: {
             type:Number,
-            default: 1
+            required: true
         },
-        ticket_state_closed_id: {
+        workflowStateFinalId: {
             type: Number,
-            default: 2
+            required: true
         }
     },
     data(){
         return {
-            translations: I18n.t('cloud_help.ticket_states.shared'),
+            translations: I18n.t('cloud_help.ticket_workflow_states.shared'),
             parsed_workflow: []
         }
     },
@@ -84,13 +84,13 @@ export default {
                 let data = []
                 Object.values(this.workflow).forEach( node => {
                     let parsed_node = {
-                        id: node.ticket_state_id,
+                        id: node.workflow_state_id,
                         text: `${this.getIcon(node)} ${this.getNodeName(node)}`
                     }
                     if(node.next_states){
                         parsed_node.next = node.next_states.split("|")
                     }
-                    if(this.selected_node == node.ticket_state_id){
+                    if(this.selected_node == node.workflow_state_id){
                         parsed_node.style = 'fill:#EFFD5F,stroke:#FCE205'
                     }
                     data.push(parsed_node)
@@ -100,13 +100,13 @@ export default {
         },
 
         getNodeName(node){
-            if(node.ticket_state_id == this.ticket_state_created_id){
+            if(node.workflow_state_id == this.workflowStateInitialId){
                 return this.translations.default.names.created
             }
-            if(node.ticket_state_id == this.ticket_state_closed_id){
+            if(node.workflow_state_id == this.workflowStateFinalId){
                 return this.translations.default.names.closed
             }
-            return node.ticket_state_name
+            return node.workflow_state_name
         }
     },
     watch: {

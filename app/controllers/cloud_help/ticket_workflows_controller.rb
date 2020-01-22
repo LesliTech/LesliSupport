@@ -75,6 +75,48 @@ Building a better future, one line of code at a time.
         end
 
 =begin
+@controller_action_param :name [String] The name of the new workflow
+@controller_action_param :default [Boolean] A flag that marks this workflow as default or not
+@controller_action_param :details_attributes [Array] Array of hashes, containing the information of the new attributes
+@controller_action_param :details_attributes.next_states [String] Transitions to the next state. The format is 
+    "[state_id]|[state_id]|..."
+@controller_action_param :details_attributes.cloud_help_ticket_workflow_states_id [Integer] The id of the state associated
+    to this detail
+    
+@return [Json] Json that contains wheter the creation of the workflow was successful or not. 
+    If it is not successful, it returns an error message
+@description Creates a new workflow associated to the *current_user*'s *account*
+@example
+    # Executing this controller's action from javascript's frontend
+    let data = {
+        ticket_workflow: {
+            name: "Important",
+            default: true,
+            details_attributes: [
+                {
+                    cloud_help_ticket_workflow_states_id: 4,
+                    next_states: "6"
+                },{
+                    cloud_help_ticket_workflow_states_id: 6,
+                    next_states: null
+                }
+            ]
+        }
+    };
+    this.http.post('127.0.0.1/help/ticket_workflows', data);
+=end
+        def create
+            ticket_workflow = TicketWorkflow.new(ticket_workflow_params)
+            ticket_workflow.cloud_help_accounts_id = current_user.account.id
+
+            if ticket_workflow.save
+                responseWithSuccessful(ticket_workflow)
+            else
+                responseWithError(ticket_workflow.errors.full_messages.to_sentence)
+            end
+        end
+
+=begin
 @return [HTML] HTML view for editing the ticket workflow
 @description returns an HTML view with a form so users edit an existing ticket workflow
 @example
@@ -137,6 +179,27 @@ Building a better future, one line of code at a time.
             responseWithSuccessful
         end
 
+=begin
+@return [Json] Json that contains wheter the workflow was successfully deleted or not. 
+    If it it not successful, it returns an error message
+@description Deletes an existing *workflow* associated to the *current_user*'s *account*.
+    Since the workflow has details, these are also deleted. However, if there
+    is an existing *cloud_object* associated to the *workflow*, it cannot be deleted
+@example
+    # Executing this controller's action from javascript's frontend
+    let ticket_workflow_id = 4;
+    this.http.delete(`127.0.0.1/help/ticket_types/${ticket_workflow_id}`);
+=end
+def destroy
+    return responseWithNotFound unless @ticket_workflow
+
+    if @ticket_workflow.destroy
+        responseWithSuccessful
+    else
+        responseWithError(@ticket_workflow.errors.full_messages.to_sentence)
+    end
+end
+
         private
 
 =begin
@@ -150,13 +213,10 @@ Building a better future, one line of code at a time.
     puts @ticket_workflow # will display an instance of CloudHelp:TicketWorkflow
 =end
         def set_ticket_workflow
-            @ticket_workflow = TicketWorkflow.joins(
-                :sla
-            ).where(
-                id: params[:id]
-            ).where(
-                "cloud_help_slas.cloud_help_accounts_id = #{current_user.account.id}"
-            ).first
+            @ticket_workflow = TicketWorkflow.find_by(
+                id: params[:id],
+                cloud_help_accounts_id: current_user.account.id
+            )
         end
 
 =begin
@@ -193,9 +253,9 @@ Building a better future, one line of code at a time.
 =end
         def ticket_workflow_params
             params.require(:ticket_workflow).permit(
-                :cloud_help_slas_id,
+                :name,
                 :default,
-                details_attributes: %i[id next_states ticket_state_id]
+                details_attributes: %i[id next_states cloud_help_ticket_workflow_states_id]
             )
         end
 

@@ -26,29 +26,23 @@ Building a better future, one line of code at a time.
 // · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
 
 =end
+CloudHelp::Account.all.each do |account|
+    initial_state = CloudHelp::TicketWorkflowState.initial_state(account)
+    final_state = CloudHelp::TicketWorkflowState.final_state(account)
+    default_sla = CloudHelp::Sla.find_by(account: account, default: true)
 
-default_sla = CloudHelp::Sla.find_by(default: true)
-
-CloudHelp::TicketType.all.each do |type|
-    CloudHelp::TicketCategory.all.each do |category|
-
-        initial_state = CloudHelp::TicketState.initial_state(category.account)
-        final_state = CloudHelp::TicketState.final_state(category.account)
-
-        # Assigning created state first ticket
-        CloudHelp::TicketWorkflow.create!(
-            ticket_type: type,
-            ticket_category: category,
-            sla: default_sla,
-            details_attributes: [
-                {
-                    ticket_state: initial_state,
-                    next_states: "#{final_state.id}"
-                },
-                {
-                    ticket_state: final_state
-                }
-            ] 
-        )
-    end
+    workflow = CloudHelp::TicketWorkflow.create!(
+        name: "Dummy Workflow",
+        default: true,
+        account: account,
+        details_attributes: [
+            {
+                cloud_help_ticket_workflow_states_id: initial_state.id,
+                next_states: "#{final_state.id}"
+            },
+            {
+                cloud_help_ticket_workflow_states_id: final_state.id
+            }
+        ]
+    )
 end

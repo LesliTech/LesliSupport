@@ -27,11 +27,7 @@ Building a better future, one line of code at a time.
     other details
 =end
     class TicketWorkflow < ApplicationRecord
-        belongs_to :ticket_type, class_name: "CloudHelp::TicketType", foreign_key: "cloud_help_ticket_types_id" 
-        belongs_to :ticket_category, class_name: "CloudHelp::TicketCategory", foreign_key: "cloud_help_ticket_categories_id" 
-        belongs_to :sla, class_name: "CloudHelp::Sla", foreign_key: "cloud_help_slas_id"
-
-        after_update :verify_default_workflow
+        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         
         has_many(
             :details,
@@ -41,46 +37,56 @@ Building a better future, one line of code at a time.
             dependent: :delete_all
         )
 
-        validates :cloud_help_slas_id, presence: true
         accepts_nested_attributes_for :details
+
+        after_update :verify_default_workflow
 
 =begin
 @param account [Account] Account from current user
 @return [Array] Array of workflows. 
 @description Retrieves and returns all workflows from an *Account*.
-    Each workflow contains fields to be displayed in
-    a table, including the *category* and *type* of the workflow, as well as the
-    *SLA* associated to it
+    Each workflow contains only the fields to be displayed in
+    a table
 @example
     account = current_user.account
     workflows = CloudHelp::TicketWorkflow.detailed_info(account)
 =end
         def self.detailed_info(account)
-            result = TicketWorkflow.joins(
-                :ticket_type
-            ).joins(
-                :ticket_category
-            ).joins(
-                :sla
+            TicketWorkflow.where(
+                cloud_help_accounts_id: account.id
             ).select(
-                "cloud_help_ticket_workflows.id",
-                "cloud_help_ticket_workflows.default",
-                "cloud_help_ticket_workflows.created_at",
-                "cloud_help_ticket_workflows.updated_at",
-                "cloud_help_ticket_types.name as ticket_type_name",
-                "cloud_help_ticket_categories.name as ticket_category_name",
-                "cloud_help_ticket_categories.id as ticket_category_id",
-                "cloud_help_slas.name as sla_name"
-            ).where(
-                "cloud_help_slas.cloud_help_accounts_id = #{account.id}"
-            ).order(
-                "ticket_type_name asc",
-                "ticket_category_name asc"
+                :id,            :default,
+                :name,          :created_at,
+                :updated_at
             )
-            result.each do |ticket_workflow|
-                ticket_workflow.ticket_category_name = TicketCategory.find(ticket_workflow.ticket_category_id).full_path
+        end
+
+=begin
+@return [Boolean] Wheter the workflow was deleted or not
+@description Attempts to delete this workflow.
+    However, if there is a *cloud_object* associated to this *workflow*, it 
+    will not be deleted and an error will be added to the *errors* parameter
+@example
+    my_workflow = CloudHelp::TicketWorkflow.first
+    if my_workflow.destroy
+        puts "workflow successfully destroyed"
+    else
+        puts "workflow was not destroyed"
+        puts my_workflow.errors.full_messages.to_sentence
+    end
+=end
+        def destroy
+            if default
+                errors.add(:base, :cannot_delete_default_workflow)
+                false
+            else
+                begin
+                    super
+                rescue ActiveRecord::InvalidForeignKey
+                    errors.add(:base, :foreign_key_prevents_destruction)
+                    false
+                end
             end
-            result
         end
 
 =begin
@@ -96,28 +102,29 @@ Building a better future, one line of code at a time.
             nodes = TicketWorkflow::Detail.joins(
                 :ticket_workflow
             ).joins(
-                :ticket_state
+                :ticket_workflow_state
             ).select(
                 "cloud_help_ticket_workflow_details.id",
-                "cloud_help_ticket_states.initial",
-                "cloud_help_ticket_states.final",
+                "cloud_help_ticket_workflow_states.initial",
+                "cloud_help_ticket_workflow_states.final",
                 "cloud_help_ticket_workflow_details.next_states",
-                "cloud_help_ticket_states.id as ticket_state_id",
-                "cloud_help_ticket_states.name as ticket_state_name"
+                "cloud_help_ticket_workflow_states.id as workflow_state_id",
+                "cloud_help_ticket_workflow_states.name as workflow_state_name"
             ).where(
                 "cloud_help_ticket_workflows.id = #{id}"
             )
+
             nodes.each do |node|
                 node = node.attributes
                 node["visited"] = false
-                data[node["ticket_state_id"]] = node
+                data[node["workflow_state_id"]] = node
             end
+
             {
-                ticket_category_name: TicketCategory.find(ticket_category.id).full_path,
-                ticket_type_name: ticket_type.name,
-                cloud_help_slas_id: cloud_help_slas_id,
+                name: name,
                 default: default,
-                sla_name: sla.name,
+                created_at: created_at,
+                updated_at: updated_at,
                 details: data
             }
         end
@@ -140,15 +147,15 @@ Building a better future, one line of code at a time.
                 {
                     id:1,
                     next_states:"4",
-                    ticket_state_id:1
+                    workflow_state_id:1
                 },{
                     id:2,
                     next_states:null
-                    ticket_state_id:2
+                    workflow_state_id:2
                 },{
                     id:14,
                     next_states:"2",
-                    ticket_state_id:4
+                    workflow_state_id:4
                 }
             ]
         }
@@ -163,20 +170,20 @@ Building a better future, one line of code at a time.
 =end
         def replace_workflow(account, new_workflow)
             begin
-                initial_state_id = TicketState.initial_state(account).id
-                final_state_id = TicketState.final_state(account).id
+                initial_state_id = TicketWorkflowState.initial_state(account).id
+                final_state_id = TicketWorkflowState.final_state(account).id
                 details.where(
-                    "cloud_help_ticket_states_id != #{initial_state_id}"
+                    "cloud_help_ticket_workflow_states_id != #{initial_state_id}"
                 ).where(
-                    "cloud_help_ticket_states_id != #{final_state_id}"
+                    "cloud_help_ticket_workflow_states_id != #{final_state_id}"
                 ).destroy_all
                 new_workflow.each do |node|
                     # created or closed
-                    if node[:ticket_state_id] == initial_state_id || node[:ticket_state_id] == final_state_id
+                    if node[:cloud_help_ticket_workflow_states_id] == initial_state_id || node[:cloud_help_ticket_workflow_states_id] == final_state_id
                         details.where(id: node[:id]).update(next_states: node[:next_states])
                     else
                         details.create(
-                            cloud_help_ticket_states_id: node[:ticket_state_id],
+                            cloud_help_ticket_workflow_states_id: node[:cloud_help_ticket_workflow_states_id],
                             next_states: node[:next_states]
                         )
                     end
@@ -187,113 +194,7 @@ Building a better future, one line of code at a time.
             end
         end
 
-=begin
-@param ticket_type [CloudHelp::TicketType] The type of the created workflow
-@param ticket_category [CloudHelp::TicketCategory] The category of the created workflow
-@return [void]
-@description Creates a workflow associated to the *type* and *category* received.
-    The new workflow is either a copy of the *default* *workflow*, or a *dummy* *workflow*
-    A *dummy* *workflow* is a simple workflow that goes from the *created* *state* to the *closed* *state*.
-    If either *ticket_type* or *ticket_category* is nil, all *types* or *categories* are used
-@example
-    CloudHelp::TicketWorkflow.create_default_workflow(
-        CloudHelp::TicketType.first,
-        CloudHelp::TicketCategory.first
-    )
-    # This will create a new workflow, with either the default transitions, or the dummy transitions, if
-    # there is not default workflow
-=end
-        def self.create_default_workflow(ticket_type, ticket_category)
-            default_workflow = TicketWorkflow.find_by(default: true)
-            default_sla = Sla.find_by(default: true)
-
-            if default_workflow
-                details_attributes = []
-                default_workflow.details.each do |detail|
-                    details_attributes.push({
-                        cloud_help_ticket_states_id: detail.cloud_help_ticket_states_id,
-                        next_states: detail.next_states
-                    })
-                end
-
-                if ticket_type
-                    TicketCategory.all.each do |category|
-                        TicketWorkflow.create!(
-                            sla: default_sla,
-                            ticket_type: ticket_type,
-                            ticket_category: category,
-                            details_attributes: details_attributes
-                        )
-                    end
-                elsif ticket_category
-                    TicketType.all.each do |type|
-                        TicketWorkflow.create!(
-                            sla: default_sla,
-                            ticket_type: type,
-                            ticket_category: ticket_category,
-                            details_attributes: details_attributes
-                        )
-                    end
-                end
-            else
-                create_dummy_workflow(ticket_type, ticket_category)
-            end
-        end
-
 private
-
-=begin
-@param ticket_type [CloudHelp::TicketType] The type of the created workflow
-@param ticket_category [CloudHelp::TicketCategory] The category of the created workflow
-@return [void]
-@description Creates a dummy workflow associated to the *type* and *category* received.
-    A *dummy* *workflow* is a simple workflow that goes from the *created* *state* to the *closed* *state*.
-@example
-    CloudHelp::TicketWorkflow.create_default_workflow(
-        CloudHelp::TicketType.first,
-        CloudHelp::TicketCategory.first
-    )
-    # This will create a new dummy workflow only if there is not default workflow set
-=end
-        def create_dummy_workflow(ticket_type, ticket_category)
-            initial_state = TicketState.initial_state(account)
-            final_state = TicketState.final_state(account)
-            default_sla = Sla.find_by(default: true)
-
-            if ticket_type
-                TicketCategory.all.each do |category|
-                    TicketWorkflow.create!(
-                        sla: default_sla,
-                        ticket_type: ticket_type,
-                        ticket_category: category,
-                        details_attributes: [
-                            {
-                                ticket_state: initial_state,
-                                next_states: "#{final_state.id}"
-                            },{
-                                ticket_state: final_state
-                            }
-                        ]
-                    )
-                end
-            elsif ticket_category
-                TicketType.all.each do |type|
-                    TicketWorkflow.create!(
-                        sla: default_sla,
-                        ticket_type:type,
-                        ticket_category: ticket_category,
-                        details_attributes: [
-                            {
-                                ticket_state: initial_state,
-                                next_states: "#{final_state.id}"
-                            },{
-                                ticket_state: final_state
-                            }
-                        ]
-                    )
-                end
-            end
-        end
 
 =begin
 @return [void]
