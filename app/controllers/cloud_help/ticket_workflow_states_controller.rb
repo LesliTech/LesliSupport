@@ -27,6 +27,5 @@ Building a better future, one line of code at a time.
 
 =end
     class TicketWorkflowStatesController < CloudObject::WorkflowStatesController
-
     end
 end

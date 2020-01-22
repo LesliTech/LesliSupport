@@ -41,11 +41,11 @@ export default {
             type: String,
             default: 'created'
         },
-        creation_date: {
+        creationDate: {
             type: String,
             default: '2019-01-01'
         },
-        resolution_date: {
+        resolutionDate: {
             type: String,
             default: '2019-01-01'
         }
@@ -63,20 +63,20 @@ export default {
             <h4 class="card-header-title">
                 <component-workflow-state-name
                     :name="state"
-                    :translations-shared-path="'cloud_help.ticket_states.shared'"
+                    :translations-shared-path="`cloud_help.ticket_workflow_states.shared`"
                 />
             </h4>
         </div>
         <div class="card-content">
             <div class="field">
                 <i class="fas fa-info-circle has-text-link"></i>
-                <label for="">{{translations.creation_date}}</label>
-                <p>{{date.toLocalFormat(creation_date, false, true)}}</p>
+                <label for="">{{translations.creation_data}}</label>
+                <p>{{date.toLocalFormat(creationDate, false, true)}}</p>
             </div>
             <div class="field">
                 <i class="fas fa-info-circle has-text-link"></i>
                 <label for="">{{translations.due_date}}</label>
-                <p>{{date.toLocalFormat(resolution_date, false, true)}}</p>
+                <p>{{date.toLocalFormat(resolutionDate, false, true)}}</p>
             </div>
         </div>
     </div>

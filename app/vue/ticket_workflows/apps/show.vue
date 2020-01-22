@@ -202,6 +202,8 @@ export default {
                     :workflow="ticket_workflow.details"
                     :workflow-state-initial-id="default_workflow_states.initial"
                     :workflow-state-final-id="default_workflow_states.final"
+                    :cloud-module="'help'"
+                    :cloud-object="'ticket'"
                 >
                 </component-workflow-chart>
                 <div class="columns">

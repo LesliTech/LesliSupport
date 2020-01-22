@@ -49,25 +49,45 @@ export default {
             type: Boolean,
             default: false
         },
+        cloudModule: {
+            type: String,
+            required: true
+        },
+        cloudObject: {
+            type: String,
+            required: true
+        },
         workflowStateInitialId: {
             type:Number,
-            required: true
+            default: null
         },
         workflowStateFinalId: {
             type: Number,
-            required: true
+            default: null
         }
     },
     data(){
         return {
             translations: I18n.t('cloud_help.ticket_workflow_states.shared'),
-            parsed_workflow: []
+            parsed_workflow: [],
+            default_states: {
+                initial: null,
+                final: null
+            }
         }
     },
     mounted(){
+        this.setDefaultStatesIds()
+        this.verifyDefaultStates()
         this.generateWorkflow()
     },
     methods: {
+
+        setDefaultStatesIds(){
+            this.default_states.initial = this.workflowStateInitialId,
+            this.default_states.final = this.workflowStateFinalId
+        },
+
         getIcon(node){
             let icon = 'fas:fa-forward'
             if(node.initial){
@@ -77,9 +97,27 @@ export default {
             }
             return icon
         },
+
+        verifyDefaultStates(){
+            if(! this.default_states.initial || ! this.default_states.final){
+                this.http.get(`/${this.cloudModule}/${this.cloudObject}_workflow_states.json`).then(result => {
+                    if (result.successful) {
+
+                        this.default_states.initial = result.data.filter( state => state.initial)[0].id
+                        this.default_states.final = result.data.filter( state => state.final)[0].id
+
+                        this.generateWorkflow()
+                    }else{
+                        this.alert(result.error.message,'danger')
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
+        },
         
         generateWorkflow(){
-            if(this.workflow){
+            if(this.workflow && this.default_states.initial && this.default_states.final){
                 this.$emit('update:rerender', false)
                 let data = []
                 Object.values(this.workflow).forEach( node => {
@@ -100,10 +138,10 @@ export default {
         },
 
         getNodeName(node){
-            if(node.workflow_state_id == this.workflowStateInitialId){
+            if(node.workflow_state_id == this.default_states.initial){
                 return this.translations.default.names.created
             }
-            if(node.workflow_state_id == this.workflowStateFinalId){
+            if(node.workflow_state_id == this.default_states.final){
                 return this.translations.default.names.closed
             }
             return node.workflow_state_name
@@ -128,6 +166,7 @@ export default {
 </script>
 <template>
     <vue-mermaid
+        v-if="workflow && default_states.initial && default_states.final"
         :nodes="parsed_workflow"
         type="graph LR"
     >

@@ -57,8 +57,8 @@ export default {
         return {
             translations: I18n.t("cloud_help.tickets.shared"),
             default_states: {
-                created: 1,
-                closed: 2
+                initial: null,
+                final: null
             },
             ticket_id: null,
             ticket: null
@@ -67,6 +67,7 @@ export default {
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
+        this.getWorkflowDefaultStates()
         this.subscribeToDeadline()
         this.subscribeToAssignment()
     },
@@ -84,6 +85,24 @@ export default {
             .catch(error => {
                 console.log(error);
             });
+        },
+
+        getWorkflowDefaultStates(){
+            this.http.get(`/help/ticket_workflow_states.json`).then(result => {
+                if (result.successful) {
+                    let initial_state = result.data.filter( state => state.initial)[0]
+                    let final_state = result.data.filter( state => state.final)[0]
+
+                    this.default_states = {
+                        initial: initial_state.id,
+                        final: final_state.id
+                    }
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
         },
 
         showDeadlineForm(){
@@ -119,7 +138,7 @@ export default {
                     <div class="card-header">
                         <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
                         <div class="card-header-icon">
-                            <div v-if="ticket.detail_attributes.cloud_help_ticket_states_id != default_states.closed">
+                            <div v-if="ticket.detail_attributes.cloud_help_ticket_states_id != default_states.final">
                                 <a @click="showDeadlineForm()">
                                     <b-icon icon="calendar-times" size="is-small" />
                                     {{translations.actions.deadline}}
@@ -162,7 +181,7 @@ export default {
                                 >{{translations.fields.state}}:</span>
                                 <component-workflow-state-name 
                                     :name="ticket.detail_attributes.state"
-                                    :translations-shared-path="'cloud_help.ticket_states.shared'"
+                                    :translations-shared-path="'cloud_help.ticket_workflow_states.shared'"
                                 />
                             </div>
                             <div class="column is-4 has-text-right">

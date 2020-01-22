@@ -468,6 +468,8 @@ export default {
                     :rerender.sync="rerender_chart"
                     :workflow-state-initial-id="default_workflow_states.initial"
                     :workflow-state-final-id="default_workflow_states.final"
+                    :cloudModule="'help'"
+                    :cloudObject="'ticket'"
                 />
             </div>
         </div>

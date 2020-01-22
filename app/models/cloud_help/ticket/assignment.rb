@@ -44,6 +44,7 @@ Building a better future, one line of code at a time.
 
 =begin
 @return [void]
+@todo Create notifications after the SLA assignment has been made
 @description After the assignation is created or updated, registers en entry in the timeline
     of the ticket, adds some events in CloudDriver and sends a notification to all subscribers.
     The events registered are:
@@ -67,7 +68,7 @@ Building a better future, one line of code at a time.
                         user: user.email
                     )
                 )
-        
+=begin
                 Courier::Driver::Calendar.registerEvent(
                     user, {
                         title:          I18n.t('activerecord.models.cloud_help_ticket.expected_response_time.title', ticket_id: ticket.id),
@@ -85,7 +86,7 @@ Building a better future, one line of code at a time.
                         url:            "/help/tickets/#{id}"
                     }
                 )
-        
+=end
                 message = I18n.t(
                     'activerecord.models.cloud_help_ticket.updated.assigned',
                     ticket_id: ticket.id,

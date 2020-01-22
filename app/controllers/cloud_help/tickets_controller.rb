@@ -30,8 +30,7 @@ Building a better future, one line of code at a time.
 
         before_action :set_ticket, only: [
             :update,
-            :activities,
-            :api_follow_up_states
+            :workflow_options
         ]
 
 =begin
@@ -214,13 +213,11 @@ Building a better future, one line of code at a time.
         end
 
 =begin
-@deprecated As of next update, this method will be renamed to *options*, and accessed
-    throught the */help/tickets/options* url
 @description Retrieves a list of *ticket* *types*, *ticket* *categories* and *ticket*
     *priorities* needed to create a new ticket.
 @example
     # Executing this controller's action from javascript's frontend
-    this.http.get('127.0.0.1/help/api/ticket/options').then(response => {
+    this.http.get('127.0.0.1/help/tickets/options').then(response => {
         if( response.successful ){
             console.log(JSON.stringify(response.data))
             # This will print something similar to
@@ -251,7 +248,7 @@ Building a better future, one line of code at a time.
         }
     });
 =end
-        def api_options
+        def ticket_options
             account = current_user.account
             responseWithSuccessful({
                 types: TicketType.where(account: current_user.account.help).select(:id, :name),
@@ -267,7 +264,7 @@ Building a better future, one line of code at a time.
 @example
     # Executing this controller's action from javascript's frontend
     let ticket_id = 6
-    this.http.get(`127.0.0.1/help/api/tickets/${ticket_id}/api_follow_up_states`).then(response => {
+    this.http.get(`127.0.0.1/help/tickets/${ticket_id}/workflow_options`).then(response => {
         if( response.successful ){
             console.log(JSON.stringify(response.data))
             # This will print something similar to
@@ -279,8 +276,8 @@ Building a better future, one line of code at a time.
         }
     });
 =end
-        def api_follow_up_states
-            responseWithSuccessful(@ticket.detail.workflow_detail.follow_up_states)
+        def workflow_options
+            responseWithSuccessful(@ticket.detail.workflow_detail.next_workflow_states)
         end
 
         private

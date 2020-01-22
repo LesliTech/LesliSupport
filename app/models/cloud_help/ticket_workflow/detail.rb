@@ -38,8 +38,8 @@ Building a better future, one line of code at a time.
     *id* of the workflow detail
 @example
     workflow = CloudHelp::TicketWorkflow.find(1)
-    initial_detail = workflow.details.where(ticket_state: CloudHelp::TicketState.initial_state)
-    transitions = initial_detail.follow_up_states
+    initial_detail = workflow.details.where(workflow_state: CloudHelp::TicketState.initial_state)
+    transitions = initial_detail.next_states
     puts transitions.to_json # will print something like
     #[
     #    {
@@ -49,15 +49,15 @@ Building a better future, one line of code at a time.
     #    }
     #]
 =end
-        def follow_up_states
+        def next_workflow_states
             return [] unless next_states
             
             ids = next_states.split('|').map(&:to_i)
-            ticket_workflow.details.where(cloud_help_ticket_states_id: ids).map do |workflow_detail|
-                ticket_state = workflow_detail.ticket_state
+            ticket_workflow.details.where(cloud_help_ticket_workflow_states_id: ids).map do |workflow_detail|
+                workflow_state = workflow_detail.ticket_workflow_state
                 {
-                    id: ticket_state.id,
-                    name: ticket_state.name,
+                    id: workflow_state.id,
+                    name: workflow_state.name,
                     workflow_detail_id: workflow_detail.id
                 }
             end
