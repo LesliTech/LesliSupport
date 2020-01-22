@@ -27,11 +27,14 @@ Building a better future, one line of code at a time.
     class TicketCategory < ApplicationRecord
         acts_as_tree
 
-        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
-        has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_categories_id'
-        has_many :workflows, class_name: 'CloudHelp::TicketWorkflow',  foreign_key: 'cloud_help_ticket_categories_id', dependent: :destroy
+        belongs_to :account, class_name: "CloudHelp::Account", foreign_key: "cloud_help_accounts_id"
+        has_many :details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_ticket_categories_id"
+        has_many :workflow_assignments, class_name: "CloudHelp::TicketWorkflowAssignment", foreign_key: "cloud_help_ticket_categories_id", dependent: :destroy
 
         validates :name, presence: true
+
+        after_save :assign_workflow_if_created
+
 =begin
 @return [Boolean] Wheter the ticket category was deleted or not
 @description Attempts to delete this ticket category along with it's associated *workflow*.
@@ -131,7 +134,34 @@ Building a better future, one line of code at a time.
             data
         end
 
-        private
+        protected
+
+=begin
+@return [Void]
+@description Checks if the recently saved record is new, if it is new, creates one
+    TicketWorkflowAssignment for each existent type, using the default workflow
+@example
+    my_category = CloudHelp::TicketCategory.new(name: "Sales")
+    if my_category.save # This method is executed at the end of save.
+        puts "Assignments have been created"
+    else
+        puts "Assignments were not created yet"
+    end
+=end
+        def assign_workflow_if_created
+            id_changes = saved_changes["id"]
+            if id_changes
+                default_workflow = TicketWorkflow.find_by(account: account, default: true)
+                TicketType.where(account: account).all.each do |type|
+                    TicketWorkflowAssignment.create(
+                        account: account,
+                        ticket_category: self,
+                        ticket_type: type,
+                        ticket_workflow: default_workflow
+                    )
+                end
+            end
+        end
 
 =begin
 @param root [TicketCategory] The category taken as root

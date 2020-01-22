@@ -28,9 +28,13 @@ Building a better future, one line of code at a time.
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_types_id'
-        has_many :workflows, class_name: 'CloudHelp::TicketWorkflow',  foreign_key: 'cloud_help_ticket_types_id', dependent: :destroy
+        has_many :workflow_assignments, class_name: "CloudHelp::TicketWorkflowAssignment", foreign_key: "cloud_help_ticket_types_id", dependent: :destroy
+
 
         validates :name, presence: true
+
+        after_save :assign_workflow_if_created
+
 =begin
 @return [Boolean] Wheter the ticket type was deleted or not
 @description Attempts to delete this ticket type along with it's associated *workflow*.
@@ -54,5 +58,33 @@ Building a better future, one line of code at a time.
             end
         end
 
+        protected
+
+=begin
+@return [Void]
+@description Checks if the recently saved record is new, if it is new, creates one
+    TicketWorkflowAssignment for each existent category, using the default workflow
+@example
+    my_type = CloudHelp::TicketType.new(name: "Complain")
+    if my_type.save # This method is executed at the end of save.
+        puts "Assignments have been created"
+    else
+        puts "Assignments were not created yet"
+    end
+=end
+        def assign_workflow_if_created
+            id_changes = saved_changes["id"]
+            if id_changes
+                default_workflow = TicketWorkflow.find_by(account: account, default: true)
+                TicketCategory.where(account: account).all.each do |category|
+                    TicketWorkflowAssignment.create(
+                        account: account,
+                        ticket_category: category,
+                        ticket_type: self,
+                        ticket_workflow: default_workflow
+                    )
+                end
+            end
+        end
     end
 end
