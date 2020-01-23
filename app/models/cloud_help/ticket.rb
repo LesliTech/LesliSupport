@@ -105,7 +105,7 @@ Building a better future, one line of code at a time.
                 ticket_category: detail.category,
                 account: account
             )
-            workflow = workflow_assignment.ticket_workflow
+            workflow = workflow_assignment.workflow
 
             detail.workflow_detail = TicketWorkflow::Detail.find_by(
                 workflow: workflow,
@@ -456,7 +456,7 @@ Building a better future, one line of code at a time.
             type = detail.type
 
             workflow_assignment = TicketWorkflowAssignment.find_by(ticket_type: type, ticket_category: category)
-            new_workflow = workflow_assignment.ticket_workflow
+            new_workflow = workflow_assignment.workflow
             new_workflow_detail = new_workflow.details.find_by(workflow_state: TicketWorkflowState.initial_state(account))
             if detail.update!(workflow_detail: new_workflow_detail)
                 message = I18n.t(

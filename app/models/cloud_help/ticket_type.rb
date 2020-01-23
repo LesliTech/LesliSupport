@@ -79,9 +79,9 @@ Building a better future, one line of code at a time.
                 TicketCategory.where(account: account).all.each do |category|
                     TicketWorkflowAssignment.create(
                         account: account,
+                        workflow: default_workflow,
                         ticket_category: category,
                         ticket_type: self,
-                        ticket_workflow: default_workflow
                     )
                 end
             end

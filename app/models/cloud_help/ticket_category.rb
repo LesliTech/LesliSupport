@@ -155,9 +155,9 @@ Building a better future, one line of code at a time.
                 TicketType.where(account: account).all.each do |type|
                     TicketWorkflowAssignment.create(
                         account: account,
+                        workflow: default_workflow,
                         ticket_category: self,
-                        ticket_type: type,
-                        ticket_workflow: default_workflow
+                        ticket_type: type
                     )
                 end
             end

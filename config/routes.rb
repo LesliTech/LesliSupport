@@ -8,10 +8,14 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_types
     resources :ticket_categories
     resources :ticket_workflow_states, except: [:new, :show, :edit]
+    resources :ticket_workflow_assignments, only: [:index, :update]
     resources :ticket_workflows do
         get "/options", to: "ticket_workflows#workflow_options"
     end
 
+    scope :ticket_workflow_assignments do
+        get "/options", to: "ticket_workflow_assignments#workflow_assignment_options"
+    end
     scope :tickets do 
         get "/options", to: "tickets#ticket_options"
     end

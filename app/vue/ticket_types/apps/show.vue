@@ -25,9 +25,14 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
+import componentWorkflowAssignments from 'LesliCloud/vue/cloud_object/workflows/components/assignments.vue'
 
 
 export default {
+    components: {
+        'component-workflow-assignments': componentWorkflowAssignments
+    },
+
     data() {
         return {
             translations: {
@@ -41,10 +46,12 @@ export default {
             }
         }
     },
+
     mounted() {
         // · SetTicketTypeId calls getTicketType
         this.setTicketTypeId()
     },
+
     methods: {
         
         setTicketTypeId(){
@@ -78,6 +85,10 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        emitShowWorkflowAssignments(){
+            this.bus.publish('show:/module/app/workflow-assignments')
         }
     }
 }
@@ -116,7 +127,12 @@ export default {
                     {{ translations.shared.name }}
                 </h2>
                 <div class="card-header-icon">
+                    <a tabindex="0" role="button" @click="emitShowWorkflowAssignments">
+                        <i class="fas fa-project-diagram"></i>
+                        {{ translations.shared.actions.assign_workflow }}
+                    </a>
                     <router-link :to="`/${ticket_type_id}/edit`">
+                        &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-edit"></i>
                         {{ translations.shared.actions.edit }}
                     </router-link>
@@ -164,5 +180,10 @@ export default {
                 </div>
             </div>
         </div>
+        <component-workflow-assignments
+            :cloud-module="'help'"
+            :cloud-object="'ticket'"
+            :cloud-workflow-key-name="'type'"
+        />
     </section>
 </template>
