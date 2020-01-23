@@ -102,7 +102,7 @@ export default {
         },
 
         updateTicketWorkflow(state) {
-            this.ticket.detail_attributes.cloud_help_ticket_states_id = state.id
+            this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
             this.ticket.detail_attributes.state = state.state_name
             this.rerender_chart = true
         }
@@ -117,7 +117,7 @@ export default {
                 <component-form v-on:update-ticket-workflow="updateTicketWorkflow"/>
             </div>
             <div class="column is-4">
-                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation_date="ticket.created_at"/>
+                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation-date="ticket.created_at"/>
                 <component-form-tag class="box" :ticket="ticket"/>
             </div>
         </div>
@@ -134,9 +134,10 @@ export default {
                             v-if="ticket_workflow"
                             :rerender.sync="rerender_chart"
                             :workflow="ticket_workflow.details"
-                            :selected_node="ticket.detail_attributes.cloud_help_ticket_states_id"
-                        >
-                        </component-workflow-chart>
+                            :selected_node="ticket.detail_attributes.cloud_help_ticket_workflow_states_id"
+                            :cloudModule="'help'"
+                            :cloudObject="'ticket'"
+                        />
                     </div>
                 </div>
                 <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>

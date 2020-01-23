@@ -35,15 +35,19 @@ import app from 'LesliCloud/vue/app'
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import appList from './apps/list.vue'
+import appNew from './apps/new.vue'
 import appShow from './apps/show.vue'
 import appEdit from './apps/edit.vue'
 
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|show|edit]", "help/ticket_workflows", [{
+app("CloudHelp", "[list|new|show|edit]", "help/ticket_workflows", [{
     path: "/",
     component: appList,
+},{
+    path: "/new",
+    component: appNew
 },{
     path: "/:id",
     component: appShow

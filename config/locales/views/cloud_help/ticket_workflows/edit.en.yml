@@ -3,6 +3,7 @@ en:
         ticket_workflows:
             edit:
                 actions:
+                    create: Create Workflow
                     update: Update workflow
                     add_state: Add state
                     add_follow_up: Add follow up
@@ -12,6 +13,8 @@ en:
                     current_state: Select a state to add follow ups
                     follow_up: Follow up states
                 messages:
+                    name:
+                        successfull: Workflow name successfully updated
                     update:
                         successful: Ticket workflow was updated successfully
                 errors:

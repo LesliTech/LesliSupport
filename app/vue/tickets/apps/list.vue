@@ -96,7 +96,7 @@ export default {
                 <b-table-column field="state" :label="translations.shared.fields.state">
                     <component-workflow-state-name
                         :name="props.row.state"
-                        :translations-shared-path="'cloud_help.ticket_states.shared'"
+                        :translations-shared-path="'cloud_help.ticket_workflow_states.shared'"
                     />
                 </b-table-column>
                 <b-table-column field="created_at" :label="translations.shared.fields.created_at">

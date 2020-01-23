@@ -49,10 +49,7 @@ export default {
                 form: I18n.t('cloud_help.tickets.form'),
                 modals: I18n.t('cloud_help.tickets.modals')
             },
-            default_states: {
-                created: 1,
-                closed: 2
-            },
+            default_states: null,
             ticket_options: {
                 types: [],
                 categories: [],
@@ -73,14 +70,42 @@ export default {
         }
     },
     mounted() {
-        this.ticket_id = this.$route.params.id
-        if( this.ticket_id ){
-            this.bus.subscribe("get:/help/ticket", this.setTicket)
-            this.getFollowUpStates()
-        }
+        this.setTicketId()
+        this.setSubscriptions()
         this.getTicketOptions()
+        this.getWorkflowDefaultStates()
     },
     methods: {
+        setTicketId(){
+            this.ticket_id = this.$route.params.id
+        },
+        
+        setSubscriptions(){
+            if( this.ticket_id ){
+                this.bus.subscribe("get:/help/ticket", (ticket)=>{
+                    this.ticket = ticket
+                    this.getFollowUpStates()
+                })
+            }
+        },
+        
+        getWorkflowDefaultStates(){
+            this.http.get(`/help/ticket_workflow_states.json`).then(result => {
+                if (result.successful) {
+                    let initial_state = result.data.filter( state => state.initial)[0]
+                    let final_state = result.data.filter( state => state.final)[0]
+
+                    this.default_states = {
+                        initial: initial_state.id,
+                        final: final_state.id
+                    }
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
 
         postTicket(e) {
             if (e) { e.preventDefault() }
@@ -99,16 +124,14 @@ export default {
             })
         },
 
-        setTicket(ticket) {
-            this.ticket = ticket
-        },
-
         getFollowUpStates() {
-            this.http.get(`/help/api/tickets/${this.ticket_id}/follow_up_states`).then(result =>{
+            this.http.get(`/help/tickets/${this.ticket_id}/workflow_options`).then(result =>{
                 if (result.successful) {
-                    this.ticket_follow_up_states = result.data
-                    if(result.data.length > 0){
+                    if(result.data && result.data.length > 0){
+                        this.ticket_follow_up_states = result.data
                         this.ticket_follow_up_state = result.data[0].workflow_detail_id
+                    }else{
+                        this.ticket_follow_up_states = []
                     }
                 } else {
                     this.alert(result.error.message, 'danger')
@@ -119,7 +142,7 @@ export default {
         },
 
         getTicketOptions() {
-            this.http.get('/help/api/tickets/options').then(result => {
+            this.http.get('/help/tickets/options').then(result => {
                 if (result.successful) {
                     this.ticket_options = result.data
                 } else {
@@ -212,7 +235,7 @@ export default {
             this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result =>{
                 if (result.successful) {
                     let state = this.ticket_follow_up_states.filter (state => state.workflow_detail_id == this.ticket_follow_up_state)[0]
-                    if(state.id == this.default_states.closed){
+                    if(state.id == this.default_states.final){
                         this.alert(this.translations.form.messages.close.successful)
                         this.$router.push(`/${this.ticket_id}`)
                     }else{
@@ -233,7 +256,7 @@ export default {
 }
 </script>
 <template>
-    <section>
+    <section v-if="default_states">
         <b-modal 
             :active.sync="modals.escalate"
             has-modal-card
@@ -468,7 +491,7 @@ export default {
                                             >
                                                 <component-workflow-state-name
                                                     :name="state.name"                    
-                                                    :translations-shared-path="'cloud_help.ticket_states.shared'"
+                                                    :translations-shared-path="'cloud_help.ticket_workflow_states.shared'"
                                                 />
                                             </option>
                                         </b-select>
@@ -501,7 +524,7 @@ export default {
                                 {{translations.form.actions.descalate}}
                             </button>
                             <button 
-                                v-if="ticket.detail_attributes.cloud_help_ticket_states_id == default_states.created"
+                                v-if="ticket.detail_attributes.cloud_help_ticket_workflow_states_id == default_states.initial"
                                 class="button is-danger"
                                 type="button" @click="modals.transfer = true"
                             >

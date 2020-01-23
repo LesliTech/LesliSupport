@@ -27,5 +27,13 @@ Building a better future, one line of code at a time.
 
 =end
 
-CloudHelp::Sla.create!(name: 'Default', account: CloudHelp::Account.first, expected_response_time: 1000, expected_resolution_time: 2000, default: true)
+CloudHelp::Account.all.each do |account|
+    CloudHelp::Sla.create!(
+        name: 'Dummy SLA',
+        account: account,
+        expected_response_time: 1000,
+        expected_resolution_time: 2000,
+        default: true
+    )
+end
 

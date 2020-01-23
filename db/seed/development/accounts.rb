@@ -1,1 +1,3 @@
-CloudHelp::Account.create!(account: Account.first)
+Account.all.each do |account|
+    CloudHelp::Account.create!(account: account)
+end

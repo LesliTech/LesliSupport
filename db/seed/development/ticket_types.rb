@@ -27,5 +27,7 @@ Building a better future, one line of code at a time.
 
 =end
 
-CloudHelp::TicketType.create!(name: 'Issue', account: CloudHelp::Account.first)
-CloudHelp::TicketType.create!(name: 'Change Request', account: CloudHelp::Account.first)
+CloudHelp::Account.all.each do |account|
+    CloudHelp::TicketType.create!(name: 'Issue', account: account)
+    CloudHelp::TicketType.create!(name: 'Change Request', account: account)
+end

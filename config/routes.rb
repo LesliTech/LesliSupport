@@ -1,20 +1,27 @@
 CloudHelp::Engine.routes.draw do
 
-    root to: 'dashboards#default'
+    root to: "dashboards#default"
     
     resources :slas
-    resources :ticket_types
     resources :ticket_sources
-    resources :ticket_states
     resources :ticket_priorities
+    resources :ticket_types
     resources :ticket_categories
-    resources :ticket_tags
-    resources :ticket_workflows, except: [:new, :create, :destroy]
+    resources :ticket_workflow_states, except: [:new, :show, :edit]
+    resources :ticket_workflows do
+        get "/options", to: "ticket_workflows#workflow_options"
+    end
+
+    scope :tickets do 
+        get "/options", to: "tickets#ticket_options"
+    end
 
     resources :tickets, except: [:destroy] do
+        get "/workflow_options", to: "tickets#workflow_options"
+
         scope module: :ticket do
             resource :assignment, only: [:create, :show, :update] do
-                get "options", to: "assignments#assignment_options"
+                get "/options", to: "assignments#assignment_options"
             end
             resources :timelines, only: [:index]   
             resources :subscribers, only: [:index, :create, :update, :destroy]
@@ -26,11 +33,7 @@ CloudHelp::Engine.routes.draw do
     end
 
     scope :api do
-        scope :tickets do
-            get '/options', to: 'tickets#api_options'
-            get '/:id/follow_up_states', to: 'tickets#api_follow_up_states'
-        end
-        get '/ticket_categories/:id/tree', to: 'ticket_categories#api_tree'
+        get "/ticket_categories/:id/tree", to: "ticket_categories#api_tree"
     end
     
 end

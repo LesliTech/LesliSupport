@@ -115,7 +115,6 @@ Building a better future, one line of code at a time.
         ticket_category.cloud_help_accounts_id = current_user.account.id
         
         if ticket_category.save
-            TicketWorkflow.create_default_workflow(nil, ticket_category)
             responseWithSuccessful(ticket_category)
         else
             responseWithError(ticket_category.errors.full_messages.to_sentence)

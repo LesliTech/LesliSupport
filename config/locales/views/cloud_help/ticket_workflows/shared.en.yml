@@ -4,7 +4,8 @@ en:
             shared:
                 name: Ticket Workflow
                 actions:
-                    new: ''
+                    delete: Delete Workflow
+                    new: New Workflow
                     edit: Edit Workflow
                     show: Show Workflow
                     reset: Reset Workflow
@@ -13,10 +14,7 @@ en:
                 fields:
                     id: Number
                     default: Default
-                    ticket_type_name: Ticket Type
-                    ticket_category_name: Ticket Category
-                    sla_name: Service Level Agreement (SLA)
-                    states_count: Number of States
+                    name: Name
                     created_at: Created at
                     updated_at: Updated at
                 default:

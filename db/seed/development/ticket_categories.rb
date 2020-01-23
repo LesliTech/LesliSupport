@@ -27,6 +27,8 @@ Building a better future, one line of code at a time.
 
 =end
 
-category = CloudHelp::TicketCategory.create!(name: 'Company System', account: CloudHelp::Account.first)
-CloudHelp::TicketCategory.create!(name: 'Books Module', parent: category, account: CloudHelp::Account.first)
-CloudHelp::TicketCategory.create!(name: 'Human Resources', account: CloudHelp::Account.first)
+CloudHelp::Account.all.each do |account|
+    category = CloudHelp::TicketCategory.create!(name: 'Company System', account: account)
+    CloudHelp::TicketCategory.create!(name: 'Books Module', parent: category, account: account)
+    CloudHelp::TicketCategory.create!(name: 'Human Resources', account: account)
+end

@@ -49,25 +49,45 @@ export default {
             type: Boolean,
             default: false
         },
-        ticket_state_created_id: {
-            type:Number,
-            default: 1
+        cloudModule: {
+            type: String,
+            required: true
         },
-        ticket_state_closed_id: {
+        cloudObject: {
+            type: String,
+            required: true
+        },
+        workflowStateInitialId: {
+            type:Number,
+            default: null
+        },
+        workflowStateFinalId: {
             type: Number,
-            default: 2
+            default: null
         }
     },
     data(){
         return {
-            translations: I18n.t('cloud_help.ticket_states.shared'),
-            parsed_workflow: []
+            translations: I18n.t('cloud_help.ticket_workflow_states.shared'),
+            parsed_workflow: [],
+            default_states: {
+                initial: null,
+                final: null
+            }
         }
     },
     mounted(){
+        this.setDefaultStatesIds()
+        this.verifyDefaultStates()
         this.generateWorkflow()
     },
     methods: {
+
+        setDefaultStatesIds(){
+            this.default_states.initial = this.workflowStateInitialId,
+            this.default_states.final = this.workflowStateFinalId
+        },
+
         getIcon(node){
             let icon = 'fas:fa-forward'
             if(node.initial){
@@ -77,20 +97,38 @@ export default {
             }
             return icon
         },
+
+        verifyDefaultStates(){
+            if(! this.default_states.initial || ! this.default_states.final){
+                this.http.get(`/${this.cloudModule}/${this.cloudObject}_workflow_states.json`).then(result => {
+                    if (result.successful) {
+
+                        this.default_states.initial = result.data.filter( state => state.initial)[0].id
+                        this.default_states.final = result.data.filter( state => state.final)[0].id
+
+                        this.generateWorkflow()
+                    }else{
+                        this.alert(result.error.message,'danger')
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
+        },
         
         generateWorkflow(){
-            if(this.workflow){
+            if(this.workflow && this.default_states.initial && this.default_states.final){
                 this.$emit('update:rerender', false)
                 let data = []
                 Object.values(this.workflow).forEach( node => {
                     let parsed_node = {
-                        id: node.ticket_state_id,
+                        id: node.workflow_state_id,
                         text: `${this.getIcon(node)} ${this.getNodeName(node)}`
                     }
                     if(node.next_states){
                         parsed_node.next = node.next_states.split("|")
                     }
-                    if(this.selected_node == node.ticket_state_id){
+                    if(this.selected_node == node.workflow_state_id){
                         parsed_node.style = 'fill:#EFFD5F,stroke:#FCE205'
                     }
                     data.push(parsed_node)
@@ -100,13 +138,13 @@ export default {
         },
 
         getNodeName(node){
-            if(node.ticket_state_id == this.ticket_state_created_id){
+            if(node.workflow_state_id == this.default_states.initial){
                 return this.translations.default.names.created
             }
-            if(node.ticket_state_id == this.ticket_state_closed_id){
+            if(node.workflow_state_id == this.default_states.final){
                 return this.translations.default.names.closed
             }
-            return node.ticket_state_name
+            return node.workflow_state_name
         }
     },
     watch: {
@@ -128,6 +166,7 @@ export default {
 </script>
 <template>
     <vue-mermaid
+        v-if="workflow && default_states.initial && default_states.final"
         :nodes="parsed_workflow"
         type="graph LR"
     >

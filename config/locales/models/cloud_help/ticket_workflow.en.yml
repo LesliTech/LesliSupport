@@ -5,4 +5,5 @@ en:
                 cloud_help/ticket_workflow:
                         attributes:
                             base:
-                                foreign_key_prevents_destruction: Please verify that there are no tickets in this workflow before attempting to modify it
+                                foreign_key_prevents_destruction: Please verify that this workflow is not associated to any ticket, type or category before attempting to delete it
+                                cannot_delete_default_workflow: Please select another workflow as default before attempting to delete this one
