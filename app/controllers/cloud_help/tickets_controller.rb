@@ -277,6 +277,14 @@ Building a better future, one line of code at a time.
     });
 =end
         def workflow_options
+            puts "--------------------------------------------------- 1"
+            puts @ticket
+            puts "--------------------------------------------------- 2"
+            puts @ticket.detail
+            puts "--------------------------------------------------- 3"
+            puts @ticket.detail.workflow_detail
+            puts "--------------------------------------------------- 4"
+            puts @ticket.detail.workflow_detail.next_workflow_states
             responseWithSuccessful(@ticket.detail.workflow_detail.next_workflow_states)
         end
 

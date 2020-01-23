@@ -138,7 +138,7 @@ export default {
                     <div class="card-header">
                         <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
                         <div class="card-header-icon">
-                            <div v-if="ticket.detail_attributes.cloud_help_ticket_states_id != default_states.final">
+                            <div v-if="ticket.detail_attributes.cloud_help_ticket_workflow_states_id != default_states.final">
                                 <a @click="showDeadlineForm()">
                                     <b-icon icon="calendar-times" size="is-small" />
                                     {{translations.actions.deadline}}
@@ -166,7 +166,7 @@ export default {
                             <div class="column is-8">
                                 <span class="has-text-weight-bold">
                                     {{translations.fields.id}}:
-                                    {{ ticket.id}}
+                                    {{ticket.id}}
                                 </span>
                                 <br>
                                 <span class="has-text-weight-bold">{{translations.fields.category}}:</span>

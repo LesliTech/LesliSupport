@@ -25,43 +25,9 @@ Building a better future, one line of code at a time.
     represents one *ticket* *state*. Each detail also contains information about transitions to
     other details
 =end
-    class TicketWorkflow::Detail < ApplicationRecord
-        belongs_to :ticket_workflow, inverse_of: :details, class_name: "CloudHelp::TicketWorkflow", foreign_key: "cloud_help_ticket_workflows_id"
-        belongs_to :ticket_workflow_state, class_name: "CloudHelp::TicketWorkflowState", foreign_key: "cloud_help_ticket_workflow_states_id"
-        has_many :ticket_details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_ticket_details_id"
-        
-=begin
-@return [Array] List of hashes. Each hash represents an transition from this detail to
-    another one.
-@description Returns a list of all the transitions from the *state* associated to this detail,
-    to other details. The fields of each hash are *id* of the detail, *name* of the state and
-    *id* of the workflow detail
-@example
-    workflow = CloudHelp::TicketWorkflow.find(1)
-    initial_detail = workflow.details.where(workflow_state: CloudHelp::TicketState.initial_state)
-    transitions = initial_detail.next_states
-    puts transitions.to_json # will print something like
-    #[
-    #    {
-    #        "id": 2,                     # The id of the state
-    #        "name": "closed",            # The name of the state
-    #        "workflow_detail_id": 34     # the id of the workflow detail
-    #    }
-    #]
-=end
-        def next_workflow_states
-            return [] unless next_states
-            
-            ids = next_states.split('|').map(&:to_i)
-            ticket_workflow.details.where(cloud_help_ticket_workflow_states_id: ids).map do |workflow_detail|
-                workflow_state = workflow_detail.ticket_workflow_state
-                {
-                    id: workflow_state.id,
-                    name: workflow_state.name,
-                    workflow_detail_id: workflow_detail.id
-                }
-            end
-        end
-
+    class TicketWorkflow::Detail < CloudObject::Workflow::Detail
+        belongs_to :workflow, inverse_of: :details, class_name: "CloudHelp::TicketWorkflow", foreign_key: "cloud_help_ticket_workflows_id"
+        belongs_to :workflow_state, class_name: "CloudHelp::TicketWorkflowState", foreign_key: "cloud_help_ticket_workflow_states_id"
+        has_many :cloud_object_details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_ticket_details_id"
     end
 end

@@ -7,7 +7,7 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_priorities
     resources :ticket_types
     resources :ticket_categories
-    resources :ticket_workflow_states
+    resources :ticket_workflow_states, except: [:new, :show, :edit]
     resources :ticket_workflows do
         get "/options", to: "ticket_workflows#workflow_options"
     end

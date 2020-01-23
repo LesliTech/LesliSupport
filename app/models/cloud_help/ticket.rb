@@ -108,8 +108,8 @@ Building a better future, one line of code at a time.
             workflow = workflow_assignment.ticket_workflow
 
             detail.workflow_detail = TicketWorkflow::Detail.find_by(
-                ticket_workflow: workflow,
-                ticket_workflow_state: TicketWorkflowState.initial_state(account)
+                workflow: workflow,
+                workflow_state: TicketWorkflowState.initial_state(account)
             )
         end
 
@@ -304,13 +304,13 @@ Building a better future, one line of code at a time.
         def after_update_actions
             workflow_change = detail.saved_changes["cloud_help_ticket_workflow_details_id"]
             if workflow_change
-                if TicketWorkflow::Detail.find(workflow_change[0]).ticket_workflow_state.is_final?
+                if TicketWorkflow::Detail.find(workflow_change[0]).workflow_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
                 action_verify_ticket_workflow(workflow_change[0], workflow_change[1])
             else
-                if detail.workflow_detail.ticket_workflow_state.is_final?
+                if detail.workflow_detail.workflow_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
@@ -363,16 +363,16 @@ Building a better future, one line of code at a time.
             timeline_action = Ticket::Timeline.actions[:state_changed]
             timeline_description = I18n.t(
                 'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
-                old_state_name: old_workflow_detail.ticket_workflow_state.name,
-                new_state_name: new_workflow_detail.ticket_workflow_state.name
+                old_state_name: old_workflow_detail.workflow_state.name,
+                new_state_name: new_workflow_detail.workflow_state.name
             )
             message = I18n.t(
                 'activerecord.models.cloud_help_ticket.updated.workflow',
                 ticket_id: id,
-                state_name: new_workflow_detail.ticket_workflow_state.name
+                state_name: new_workflow_detail.workflow_state.name
             )
 
-            if new_workflow_detail.ticket_workflow_state.is_final?
+            if new_workflow_detail.workflow_state.is_final?
                 timeline_action = Ticket::Timeline.actions[:closed]
                 timeline_description = I18n.t(
                     'activerecord.models.cloud_help/ticket/timeline.actions.closed',
@@ -457,7 +457,7 @@ Building a better future, one line of code at a time.
 
             workflow_assignment = TicketWorkflowAssignment.find_by(ticket_type: type, ticket_category: category)
             new_workflow = workflow_assignment.ticket_workflow
-            new_workflow_detail = new_workflow.details.find_by(ticket_workflow_state: TicketWorkflowState.initial_state(account))
+            new_workflow_detail = new_workflow.details.find_by(workflow_state: TicketWorkflowState.initial_state(account))
             if detail.update!(workflow_detail: new_workflow_detail)
                 message = I18n.t(
                     'activerecord.models.cloud_help_ticket.updated.transferred',
