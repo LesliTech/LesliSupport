@@ -12,6 +12,7 @@ en:
                     show: Show Category
                     return: Return
                     delete: Delete Category
+                    assign_workflow: Assign Workflow
                 fields:
                     id: Number
                     parent_category: Parent Category

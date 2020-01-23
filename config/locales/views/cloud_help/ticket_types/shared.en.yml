@@ -9,6 +9,7 @@ en:
                     show: Show Type
                     return: Return
                     delete: Delete Type
+                    assign_workflow: Assign Workflow
                 fields:
                     id: Number
                     name: Name

@@ -29,10 +29,16 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import treeList from '../components/tree_list.vue'
+import componentWorkflowAssignments from 'LesliCloud/vue/cloud_object/workflows/components/assignments.vue'
+import componentTreeList from '../components/tree_list.vue'
 
 
 export default {
+    components: {
+        'component-tree-list': componentTreeList,
+        'component-workflow-assignments': componentWorkflowAssignments
+    },
+
     data() {
         return {
             translations: {
@@ -47,13 +53,12 @@ export default {
             }
         }
     },
-    components: {
-        'tree-list': treeList
-    },
+
     mounted() {
         // · SetTicketCategoryId calls getTicketCategory
         this.setTicketCategoryId()
     },
+    
     methods: {
         
         setTicketCategoryId(){
@@ -100,6 +105,10 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        emitShowWorkflowAssignments(){
+            this.bus.publish('show:/module/app/workflow-assignments')
         }
     }
 }
@@ -138,7 +147,12 @@ export default {
                     {{ translations.shared.name }}
                 </h2>
                 <div class="card-header-icon">
+                    <a tabindex="0" role="button" @click="emitShowWorkflowAssignments">
+                        <i class="fas fa-project-diagram"></i>
+                        {{ translations.shared.actions.assign_workflow }}
+                    </a>
                     <router-link :to="`/${ticket_category_id}/edit`">
+                        &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-edit"></i>
                         {{ translations.shared.actions.edit }}
                     </router-link>
@@ -161,8 +175,8 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.path}:` }}
                             </span>
-                            <tree-list :trees="ticket_path" :scrollable="true">
-                            </tree-list>
+                            <component-tree-list :trees="ticket_path" :scrollable="true">
+                            </component-tree-list>
                         </p>
                     </div>
                 </div>
@@ -192,6 +206,11 @@ export default {
                 </div>
             </div>
         </div>
+        <component-workflow-assignments
+            :cloud-module="'help'"
+            :cloud-object="'ticket'"
+            :cloud-workflow-key-name="'category'"
+        />
     </section>
 </template>
 <style scoped>

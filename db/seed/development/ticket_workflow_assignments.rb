@@ -33,9 +33,9 @@ CloudHelp::Account.all.each do |account|
         CloudHelp::TicketCategory.where(account: account).each do |category|
             CloudHelp::TicketWorkflowAssignment.create!(
                 account: account,
+                workflow: default_workflow,
                 ticket_type: type,
-                ticket_category: category,
-                ticket_workflow: default_workflow
+                ticket_category: category
             )
         end
     end
