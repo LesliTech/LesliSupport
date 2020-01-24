@@ -34,10 +34,10 @@ import app from 'LesliCloud/vue/app'
 
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList from './apps/list.vue'
-import appNew from './apps/new.vue'
-import appShow from './apps/show.vue'
-import appEdit from './apps/edit.vue'
+import appList from 'LesliCloud/vue/cloud_object/workflows/apps/list.vue'
+import appNew from 'LesliCloud/vue/cloud_object/workflows/apps/new.vue'
+import appShow from 'LesliCloud/vue/cloud_object/workflows/apps/show.vue'
+import appEdit from 'LesliCloud/vue/cloud_object/workflows/apps/edit.vue'
 
 
 // · 
@@ -45,13 +45,25 @@ import appEdit from './apps/edit.vue'
 app("CloudHelp", "[list|new|show|edit]", "help/ticket_workflows", [{
     path: "/",
     component: appList,
+    props: {
+        cloudModule: 'help/ticket'
+    }
 },{
     path: "/new",
-    component: appNew
+    component: appNew,
+    props: {
+        cloudModule: 'help/ticket'
+    }
 },{
     path: "/:id",
-    component: appShow
+    component: appShow,
+    props: {
+        cloudModule: 'help/ticket'
+    }
 },{
     path: "/:id/edit",
-    component: appEdit
+    component: appEdit,
+    props: {
+        cloudModule: 'help/ticket'
+    }
 }])

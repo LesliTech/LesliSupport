@@ -94,7 +94,7 @@ export default {
 }
 </script>
 <template>
-    <section>
+    <section v-if="ticket_type_id">
         <b-modal 
             :active.sync="modal.active"
             has-modal-card
@@ -181,9 +181,9 @@ export default {
             </div>
         </div>
         <component-workflow-assignments
-            :cloud-module="'help'"
-            :cloud-object="'ticket'"
-            :cloud-workflow-key-name="'type'"
+            :cloud-module="'help/ticket'"
+            :cloud-association-id="ticket_type_id"
+            :workflow-key-name="'type'"
         />
     </section>
 </template>
