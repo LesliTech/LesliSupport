@@ -125,7 +125,7 @@ export default {
         },
 
         getFollowUpStates() {
-            this.http.get(`/help/tickets/${this.ticket_id}/workflow_options`).then(result =>{
+            this.http.get(`/help/options/tickets/${this.ticket_id}/workflows`).then(result =>{
                 if (result.successful) {
                     if(result.data && result.data.length > 0){
                         this.ticket_follow_up_states = result.data
@@ -142,7 +142,7 @@ export default {
         },
 
         getTicketOptions() {
-            this.http.get('/help/tickets/options').then(result => {
+            this.http.get('/help/options/tickets').then(result => {
                 if (result.successful) {
                     this.ticket_options = result.data
                 } else {

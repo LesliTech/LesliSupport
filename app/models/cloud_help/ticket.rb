@@ -24,7 +24,7 @@ Building a better future, one line of code at a time.
 @description Model for ticket. Each has it's own *detail* containing it's information.
     Tickets are the core *object* of the *CloudHelp* module
 =end
-    class Ticket  < ApplicationRecord
+    class Ticket  < CloudObject::Base
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         belongs_to :user, class_name: 'User', foreign_key: 'users_id'
@@ -76,41 +76,6 @@ Building a better future, one line of code at a time.
                 end
             end
             super
-        end
-
-=begin
-@return [void]
-@description Adds the "workflow_detail" attribute to an existing *ticket*.
-    It is the *detail* associated to the initial *state*, based on the
-    *ticket*'s *type*/*priority* 
-@example
-    ticket_params = {
-        detail_attributes: {
-            cloud_help_ticket_priorities_id: 1,
-            cloud_help_ticket_categories_id: 1,
-            cloud_help_ticket_types_id: 1
-        }
-    }
-    ticket = CloudHelp::Ticket.new(ticket_params)
-    ticket.set_workflow_detail
-    if ticket.save
-        responseWithSuccessful
-    else
-        responseWithError(ticket.errors.full_messages.to_sentence)
-    end
-=end
-        def set_workflow_detail
-            workflow_assignment = TicketWorkflowAssignment.find_by(
-                ticket_type: detail.type,
-                ticket_category: detail.category,
-                account: account
-            )
-            workflow = workflow_assignment.workflow
-
-            detail.workflow_detail = TicketWorkflow::Detail.find_by(
-                workflow: workflow,
-                workflow_state: TicketWorkflowState.initial_state(account)
-            )
         end
 
 =begin

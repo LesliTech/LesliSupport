@@ -72,7 +72,7 @@ export default {
         },
 
         getTicketAssignmentOptions() {
-            this.http.get(`/help/tickets/${this.ticket_id}/assignment/options`).then(result => {
+            this.http.get(`/help/options/tickets/assignments`).then(result => {
                 if (result.successful) {
                     this.users = result.data
                 }else{

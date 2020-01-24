@@ -38,5 +38,6 @@ Building a better future, one line of code at a time.
         )
 
         accepts_nested_attributes_for :details
+
     end
 end
