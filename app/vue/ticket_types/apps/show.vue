@@ -25,7 +25,7 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
-import componentWorkflowAssignments from 'LesliCloud/vue/cloud_object/workflows/components/assignments.vue'
+import componentWorkflowAssignments from 'LesliCoreVue/cloud_objects/workflows/components/assignments.vue'
 
 
 export default {

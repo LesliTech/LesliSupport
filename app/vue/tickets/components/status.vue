@@ -30,7 +30,7 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentWorkflowStateName from "LesliCloud/vue/cloud_object/workflow_states/components/state-name.vue"
+import componentWorkflowStateName from "LesliCoreVue/cloud_objects/workflow_states/components/name.vue"
 
 export default {
     components: {

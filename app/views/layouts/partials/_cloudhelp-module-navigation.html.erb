@@ -6,7 +6,7 @@
         <%= link_to "Categories", ticket_categories_path, class: "navbar-item" %>
         <%= link_to "Types", ticket_types_path, class: "navbar-item" %>
         <%= link_to "Priorities", ticket_priorities_path, class: "navbar-item" %>
-        <%= link_to "Workflows", ticket_workflows_path, class: "navbar-item" %>
+        <%= link_to "Workflows", workflows_path, class: "navbar-item" %>
     </template>
     <template v-slot:left>
         <router-link v-if="$route" class="navbar-item" :to="'/new'">

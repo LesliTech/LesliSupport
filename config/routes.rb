@@ -8,9 +8,11 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_types
     resources :ticket_categories
 
-    resources :ticket_workflow_states, except: [:new, :show, :edit]
+    resources :workflows
+    resources :workflow_states, except: [:new, :show, :edit]
+    
     resources :ticket_workflow_assignments, only: [:index, :update]
-    resources :ticket_workflows
+    
 
     resources :tickets, except: [:destroy] do
         scope module: :ticket do

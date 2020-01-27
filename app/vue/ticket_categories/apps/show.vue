@@ -29,7 +29,7 @@ Building a better future, one line of code at a time.
 
 // · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentWorkflowAssignments from 'LesliCloud/vue/cloud_object/workflows/components/assignments.vue'
+import componentWorkflowAssignments from 'LesliCoreVue/cloud_objects/workflows/components/assignments.vue'
 import componentTreeList from '../components/tree_list.vue'
 
 

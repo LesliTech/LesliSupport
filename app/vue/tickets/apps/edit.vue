@@ -30,16 +30,18 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentWorkflowTransition from "LesliCloud/vue/cloud_object/workflows/components/transition.vue"
-import componentWorkflowChart from "LesliCloud/vue/cloud_object/workflows/components/chart.vue"
-import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue"
-import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue"
-import componentActionList from "LesliCloud/vue/components/lists/action.vue"
-import componentFileList from "LesliCloud/vue/components/lists/file.vue"
-import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
-import componentFormStatus from "../components/status.vue"
-import componentFormTag from "../components/tag.vue"
-import componentForm from "../components/form.vue"
+import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
+import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
+import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
+import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
+import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
+import componentWorkflowTransition from 'LesliCoreVue/cloud_objects/workflows/components/transition.vue'
+import componentWorkflowChart from 'LesliCoreVue/cloud_objects/workflows/components/chart.vue'
+import componentFormStatus from '../components/status.vue'
+import componentFormTag from '../components/tag.vue'
+import componentForm from '../components/form.vue'
+
+
 
 
 
@@ -47,11 +49,10 @@ import componentForm from "../components/form.vue"
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-discussion-form': componentDiscussionForm,
-        'component-discussion-list': componentDiscussionList,
-        'component-action-list': componentActionList,
-        'component-file-list': componentFileList,
-        "component-subscriptions": componentSubscriptions,
+        'component-discussion': componentDiscussion,
+        'component-action': componentAction,
+        'component-file': componentFile,
+        'component-subscription': componentSubscription,
         'component-form-status': componentFormStatus,
         'component-form-tag': componentFormTag,
         'component-form': componentForm,
@@ -150,15 +151,14 @@ export default {
         </div>
         <div class="columns">
             <div class="column">
-                <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
-                <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+                <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id"/>
             </div>
-            <component-subscriptions
+            <component-subscription
                 :cloud-id="ticket_id"
                 cloud-module="help/ticket"
             />
-            <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-action cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-file cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
     </section>
 </template>

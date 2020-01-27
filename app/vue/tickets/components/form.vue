@@ -30,8 +30,8 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentRichTextEditor from "LesliCloud/vue/components/forms/rich-text-editor.vue"
-import componentWorkflowStateName from "LesliCloud/vue/cloud_object/workflow_states/components/state-name.vue"
+import componentRichTextEditor from "LesliCoreVue/components/forms/rich-text-editor.vue"
+import componentWorkflowStateName from "LesliCoreVue/cloud_objects/workflow_states/components/name.vue"
 
 
 

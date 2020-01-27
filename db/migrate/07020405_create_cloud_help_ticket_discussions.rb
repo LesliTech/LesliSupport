@@ -1,6 +1,6 @@
 class CreateCloudHelpTicketDiscussions < ActiveRecord::Migration[6.0]
     def change
-        table_base_structure = JSON.parse(File.read(Rails.root.join('db','structure','00000000_discussions.json')))
+        table_base_structure = JSON.parse(File.read(Rails.root.join('db','structure','00000005_discussions.json')))
         create_table :cloud_help_ticket_discussions do |t|
             table_base_structure.each do |column|
                 t.send(
