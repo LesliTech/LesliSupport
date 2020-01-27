@@ -30,6 +30,7 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentWorkflowChart from "LesliCloud/vue/cloud_object/workflows/components/chart.vue"
 import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue"
 import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue"
 import componentActionList from "LesliCloud/vue/components/lists/action.vue"
@@ -38,7 +39,6 @@ import componentSubscriptions from "LesliCloud/vue/components/forms/subscription
 import componentFormStatus from "../components/status.vue"
 import componentFormTag from "../components/tag.vue"
 import componentForm from "../components/form.vue"
-import componentWorkflowChart from "../../components/workflow_chart.vue"
 
 
 
@@ -103,7 +103,7 @@ export default {
 
         updateTicketWorkflow(state) {
             this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
-            this.ticket.detail_attributes.state = state.state_name
+            this.ticket.detail_attributes.state = state.name
             this.rerender_chart = true
         }
 
@@ -134,9 +134,8 @@ export default {
                             v-if="ticket_workflow"
                             :rerender.sync="rerender_chart"
                             :workflow="ticket_workflow.details"
-                            :selected_node="ticket.detail_attributes.cloud_help_ticket_workflow_states_id"
-                            :cloudModule="'help'"
-                            :cloudObject="'ticket'"
+                            :selected-workflow-state="ticket.detail_attributes.cloud_help_ticket_workflow_states_id"
+                            cloud-module="help/ticket"
                         />
                     </div>
                 </div>
