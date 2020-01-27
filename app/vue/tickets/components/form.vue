@@ -56,8 +56,6 @@ export default {
                 priorities: []
             },
             ticket_id: null,
-            ticket_follow_up_states: [],
-            ticket_follow_up_state: null,
             ticket: {
                 detail_attributes: {}
             },
@@ -81,12 +79,16 @@ export default {
         },
         
         setSubscriptions(){
-            if( this.ticket_id ){
-                this.bus.subscribe("get:/help/ticket", (ticket)=>{
-                    this.ticket = ticket
-                    this.getFollowUpStates()
-                })
-            }
+            this.bus.subscribe('get:/help/ticket', (ticket)=>{
+                this.ticket = ticket
+            })
+            
+            this.bus.subscribe('update:/help/ticket/workflow', (state)=>{
+                this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
+                this.ticket.detail_attributes.state = state.name
+                this.ticket.detail_attributes.state_initial = state.initial
+                this.rerender_chart = true
+            })
         },
         
         getWorkflowDefaultStates(){
@@ -116,23 +118,6 @@ export default {
                     this.ticket = result.data
                     this.alert(this.translations.form.messages.create.successful)
                     this.$router.push(`/${this.ticket.id}`)
-                } else {
-                    this.alert(result.error.message, 'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
-        getFollowUpStates() {
-            this.http.get(`/help/options/tickets/${this.ticket_id}/workflows`).then(result =>{
-                if (result.successful) {
-                    if(result.data && result.data.length > 0){
-                        this.ticket_follow_up_states = result.data
-                        this.ticket_follow_up_state = result.data[0].workflow_detail_id
-                    }else{
-                        this.ticket_follow_up_states = []
-                    }
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -222,41 +207,12 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-        },
-
-        patchTicketWorkflow(){
-            let data = {
-                ticket: {
-                    detail_attributes: {
-                        cloud_help_ticket_workflow_details_id: this.ticket_follow_up_state
-                    }
-                }
-            }
-            this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result =>{
-                if (result.successful) {
-                    let state = this.ticket_follow_up_states.filter (state => state.workflow_detail_id == this.ticket_follow_up_state)[0]
-                    if(state.id == this.default_states.final){
-                        this.alert(this.translations.form.messages.close.successful)
-                        this.$router.push(`/${this.ticket_id}`)
-                    }else{
-                        this.alert(this.translations.form.messages.update_workflow.successful)
-                        this.ticket.detail_attributes.cloud_help_ticket_workflow_details_id = this.ticket_follow_up_state
-                        this.getFollowUpStates()
-                        this.$emit('update-ticket-workflow', state)
-                    }
-                } else {
-                    this.alert(result.error.message, 'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
         }
-
     }
 }
 </script>
 <template>
-    <section v-if="default_states">
+    <div class="card">
         <b-modal 
             :active.sync="modals.escalate"
             has-modal-card
@@ -378,164 +334,126 @@ export default {
                 </div>
             </div>
         </b-modal>
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    {{translations.shared.name}}
-                </h2>
-                <div class="card-header-icon">
-                    <router-link v-if="ticket_id" :to="`/${ticket_id}`">
-                        <i class="fas fa-eye"></i>
-                        {{translations.shared.actions.show}}
-                    </router-link>
-                    <router-link :to="`/`">
-                        &nbsp;&nbsp;&nbsp;
-                        <i class="fas fa-undo"></i>
-                        {{translations.shared.actions.return}}
-                    </router-link>
-                </div>
-            </div>
-            <div class="card-content">
-                <form>
-                    <div class="columns">
-                        <div class="column is-12">
-                            <b-field :label="translations.shared.fields.subject">
-                                <b-input v-model="ticket.detail_attributes.subject" :readonly="ticket_id != null"></b-input>
-                            </b-field>
-                        </div>
-                    </div>
-                    <div class="columns">
-                        <div class="column is-4">
-                            <b-field :label="translations.shared.fields.type">
-                                <b-select 
-                                    :placeholder="translations.form.placeholders.select_type"
-                                    expanded
-                                    v-model="ticket.detail_attributes.cloud_help_ticket_types_id"
-                                >
-                                    <option
-                                        v-for="type in ticket_options.types"
-                                        :key="type.id"
-                                        :value="type.id"
-                                        :disabled="ticket_id != null"
-                                    >
-                                        {{type.name}}
-                                    </option>
-                                </b-select>
-                            </b-field>
-                        </div>
-                        <div class="column is-4">
-                            <b-field :label="translations.shared.fields.category">
-                                <b-select
-                                    :placeholder="translations.form.placeholders.select_category"
-                                    expanded
-                                    v-model="ticket.detail_attributes.cloud_help_ticket_categories_id"
-                                >
-                                    <option
-                                        v-for="category in ticket_options.categories"
-                                        :key="category.id"
-                                        :value="category.id"
-                                        :disabled="ticket_id != null"
-                                    >   
-                                        <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
-                                        {{category.name}}
-                                    </option>
-                                </b-select>
-                            </b-field>
-                        </div>
-                        <div class="column is-4">
-                            <b-field :label="translations.shared.fields.priority">
-                                <b-select
-                                    :placeholder="translations.form.placeholders.select_priority"
-                                    expanded
-                                    v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id"
-                                >
-                                    <option
-                                        v-for="priority in ticket_options.priorities"
-                                        :key="priority.id"
-                                        :value="priority.id"
-                                        :disabled="ticket_id != null"
-                                    >
-                                        {{priority.name}}
-                                    </option>
-                                </b-select>
-                            </b-field>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">{{translations.shared.fields.description}}</label>
-                        <div class="control" v-if="$route.params.id == null">
-                            <component-rich-text-editor
-                                v-model="ticket.detail_attributes.description"
-                            />
-                        </div>
-                        <div class="control" v-else>
-                            <div v-html="ticket.detail_attributes.description">
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="ticket_id">
-                        <label class="label">{{translations.form.labels.move_to_another_state}}</label>
-                        <div class="columns">
-                            <div class="column is-9">
-                                <div class="field">
-                                    <div class="control">
-                                        <b-select
-                                            :placeholder="translations.form.placeholders.select_category"
-                                            expanded
-                                            v-model="ticket_follow_up_state"
-                                        >
-                                            <option
-                                                v-for="state in ticket_follow_up_states"
-                                                :key="state.workflow_detail_id"
-                                                :value="state.workflow_detail_id"
-                                            >
-                                                <component-workflow-state-name
-                                                    :name="state.name"                    
-                                                    :translations-shared-path="'cloud_help.ticket_workflow_states.shared'"
-                                                />
-                                            </option>
-                                        </b-select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column is-3">
-                                <div class="field">
-                                    <div class="actions has-text-right">
-                                        <button class="button is-primary is-fullwidth" type="button" @click="patchTicketWorkflow">
-                                            {{translations.form.actions.update}}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr v-if="ticket_id" class="is-divider">
-                    <div class="field">
-                        <div v-if="!ticket_id" class="actions has-text-right">
-                            <button class="button is-primary" type="submit" @click="postTicket">
-                                {{translations.form.actions.create}}
-                            </button>
-                        </div>
-                        <div v-else class="actions has-text-right">
-                            <button class="button is-danger" type="button" @click="modals.escalate = true">
-                                {{translations.form.actions.escalate}}
-                            </button>
-                            <button class="button is-danger" type="button" @click="modals.descalate = true">
-                                {{translations.form.actions.descalate}}
-                            </button>
-                            <button 
-                                v-if="ticket.detail_attributes.cloud_help_ticket_workflow_states_id == default_states.initial"
-                                class="button is-danger"
-                                type="button" @click="modals.transfer = true"
-                            >
-                                {{translations.form.actions.transfer}}
-                            </button>
-                        </div>
-                    </div>
-                </form>
+        <div class="card-header">
+            <h2 class="card-header-title">
+                {{translations.shared.name}}
+            </h2>
+            <div class="card-header-icon">
+                <router-link v-if="ticket_id" :to="`/${ticket_id}`">
+                    <i class="fas fa-eye"></i>
+                    {{translations.shared.actions.show}}
+                </router-link>
+                <router-link :to="`/`">
+                    &nbsp;&nbsp;&nbsp;
+                    <i class="fas fa-undo"></i>
+                    {{translations.shared.actions.return}}
+                </router-link>
             </div>
         </div>
-    </section>
+        <div class="card-content">
+            <form>
+                <div class="columns">
+                    <div class="column is-12">
+                        <b-field :label="translations.shared.fields.subject">
+                            <b-input v-model="ticket.detail_attributes.subject" :readonly="ticket_id != null"></b-input>
+                        </b-field>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-4">
+                        <b-field :label="translations.shared.fields.type">
+                            <b-select 
+                                :placeholder="translations.form.placeholders.select_type"
+                                expanded
+                                v-model="ticket.detail_attributes.cloud_help_ticket_types_id"
+                            >
+                                <option
+                                    v-for="type in ticket_options.types"
+                                    :key="type.id"
+                                    :value="type.id"
+                                    :disabled="ticket_id != null"
+                                >
+                                    {{type.name}}
+                                </option>
+                            </b-select>
+                        </b-field>
+                    </div>
+                    <div class="column is-4">
+                        <b-field :label="translations.shared.fields.category">
+                            <b-select
+                                :placeholder="translations.form.placeholders.select_category"
+                                expanded
+                                v-model="ticket.detail_attributes.cloud_help_ticket_categories_id"
+                            >
+                                <option
+                                    v-for="category in ticket_options.categories"
+                                    :key="category.id"
+                                    :value="category.id"
+                                    :disabled="ticket_id != null"
+                                >   
+                                    <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
+                                    {{category.name}}
+                                </option>
+                            </b-select>
+                        </b-field>
+                    </div>
+                    <div class="column is-4">
+                        <b-field :label="translations.shared.fields.priority">
+                            <b-select
+                                :placeholder="translations.form.placeholders.select_priority"
+                                expanded
+                                v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id"
+                            >
+                                <option
+                                    v-for="priority in ticket_options.priorities"
+                                    :key="priority.id"
+                                    :value="priority.id"
+                                    :disabled="ticket_id != null"
+                                >
+                                    {{priority.name}}
+                                </option>
+                            </b-select>
+                        </b-field>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">{{translations.shared.fields.description}}</label>
+                    <div class="control" v-if="$route.params.id == null">
+                        <component-rich-text-editor
+                            v-model="ticket.detail_attributes.description"
+                        />
+                    </div>
+                    <div class="control" v-else>
+                        <div v-html="ticket.detail_attributes.description">
+                        </div>
+                    </div>
+                </div>
+                <hr v-if="ticket_id" class="is-divider" />
+                <div class="field">
+                    <div v-if="!ticket_id" class="actions has-text-right">
+                        <button class="button is-primary" type="submit" @click="postTicket">
+                            {{translations.form.actions.create}}
+                        </button>
+                    </div>
+                    <div v-else class="actions has-text-right">
+                        <button class="button is-danger" type="button" @click="modals.escalate = true">
+                            {{translations.form.actions.escalate}}
+                        </button>
+                        <button class="button is-danger" type="button" @click="modals.descalate = true">
+                            {{translations.form.actions.descalate}}
+                        </button>
+                        <button 
+                            v-if="ticket.detail_attributes.state_initial"
+                            class="button is-danger"
+                            type="button" @click="modals.transfer = true"
+                        >
+                            {{translations.form.actions.transfer}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 <style scoped>
 .is-divider {

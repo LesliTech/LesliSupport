@@ -30,6 +30,7 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentWorkflowTransition from "LesliCloud/vue/cloud_object/workflows/components/transition.vue"
 import componentWorkflowChart from "LesliCloud/vue/cloud_object/workflows/components/chart.vue"
 import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue"
 import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue"
@@ -54,7 +55,8 @@ export default {
         'component-form-status': componentFormStatus,
         'component-form-tag': componentFormTag,
         'component-form': componentForm,
-        'component-workflow-chart': componentWorkflowChart
+        'component-workflow-chart': componentWorkflowChart,
+        'component-workflow-transition': componentWorkflowTransition
     },
     data() {
         return {
@@ -70,8 +72,18 @@ export default {
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
+        this.setSubscriptions()
     },
     methods: {
+
+        setSubscriptions(){
+            this.bus.subscribe('update:/help/ticket/workflow', (state)=>{
+                this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
+                this.ticket.detail_attributes.state = state.name
+                this.ticket.detail_attributes.state_initial = state.initial
+                this.rerender_chart = true
+            })
+        },
 
         getTicketWorkflow() {
             let id = this.ticket.detail_attributes.cloud_help_ticket_workflows_id
@@ -91,7 +103,7 @@ export default {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
-                    this.bus.publish("get:/help/ticket", this.ticket)
+                    this.bus.publish('get:/help/ticket', this.ticket)
                     this.getTicketWorkflow()
                 }else{
                     this.alert(result.error.message,'danger')
@@ -99,12 +111,6 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-        },
-
-        updateTicketWorkflow(state) {
-            this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
-            this.ticket.detail_attributes.state = state.name
-            this.rerender_chart = true
         }
 
     }
@@ -114,15 +120,7 @@ export default {
     <section v-if="ticket">
         <div class="columns">
             <div class="column is-8">
-                <component-form v-on:update-ticket-workflow="updateTicketWorkflow"/>
-            </div>
-            <div class="column is-4">
-                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation-date="ticket.created_at"/>
-                <component-form-tag class="box" :ticket="ticket"/>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
+                <component-form class="box" />
                 <div class="card box">
                     <div class="card-header">
                         <h4 class="card-header-title">
@@ -139,6 +137,19 @@ export default {
                         />
                     </div>
                 </div>
+            </div>
+            <div class="column is-4">
+                <component-workflow-transition
+                    class="box"
+                    cloud-module="help/ticket"
+                    :cloud-id="ticket_id"
+                />
+                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation-date="ticket.created_at"/>
+                <component-form-tag class="box" :ticket="ticket"/>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
                 <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
                 <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             </div>

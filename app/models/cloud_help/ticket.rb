@@ -142,7 +142,8 @@ Building a better future, one line of code at a time.
                 "CHTWS.name as state",                          "CHTP.id as cloud_help_ticket_priorities_id",
                 "CHTT.id as cloud_help_ticket_types_id",        "CHTW.id as cloud_help_ticket_workflows_id",
                 "CHTC.id as cloud_help_ticket_categories_id",   "CHTWS.id as cloud_help_ticket_workflow_states_id",
-                "deadline"                                  ,   "CHTP.weight as priority_weight"
+                "deadline"                                  ,   "CHTP.weight as priority_weight",
+                "CHTWS.initial as state_initial"            ,   "CHTWS.final as state_final"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
             return {
