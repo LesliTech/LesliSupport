@@ -42,6 +42,13 @@ export default {
         'component-rich-text-editor': componentRichTextEditor,
         'component-workflow-state-name': componentWorkflowStateName
     },
+
+    props: {
+        ticketData: {
+            default: null
+        }
+    },
+
     data() {
         return {
             translations:{
@@ -49,7 +56,6 @@ export default {
                 form: I18n.t('cloud_help.tickets.form'),
                 modals: I18n.t('cloud_help.tickets.modals')
             },
-            default_states: null,
             ticket_options: {
                 types: [],
                 categories: [],
@@ -69,43 +75,28 @@ export default {
     },
     mounted() {
         this.setTicketId()
+        this.setTicket()
         this.setSubscriptions()
         this.getTicketOptions()
-        this.getWorkflowDefaultStates()
     },
     methods: {
         setTicketId(){
             this.ticket_id = this.$route.params.id
         },
+
+        setTicket(){
+            if(this.ticketData){
+                this.ticket = {... this.ticketData}
+            }
+        },
         
         setSubscriptions(){
-            this.bus.subscribe('get:/help/ticket', (ticket)=>{
-                this.ticket = ticket
-            })
             
             this.bus.subscribe('update:/help/ticket/workflow', (state)=>{
                 this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
                 this.ticket.detail_attributes.state = state.name
                 this.ticket.detail_attributes.state_initial = state.initial
                 this.rerender_chart = true
-            })
-        },
-        
-        getWorkflowDefaultStates(){
-            this.http.get(`/help/ticket_workflow_states.json`).then(result => {
-                if (result.successful) {
-                    let initial_state = result.data.filter( state => state.initial)[0]
-                    let final_state = result.data.filter( state => state.final)[0]
-
-                    this.default_states = {
-                        initial: initial_state.id,
-                        final: final_state.id
-                    }
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
             })
         },
 
@@ -115,9 +106,8 @@ export default {
                 ticket: this.ticket
             }).then(result => {
                 if (result.successful) {
-                    this.ticket = result.data
                     this.alert(this.translations.form.messages.create.successful)
-                    this.$router.push(`/${this.ticket.id}`)
+                    this.$router.push(`/${result.data.id}`)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }

@@ -55,10 +55,6 @@ export default {
     data() {
         return {
             translations: I18n.t("cloud_help.tickets.shared"),
-            default_states: {
-                initial: null,
-                final: null
-            },
             ticket_id: null,
             ticket: null
         }
@@ -66,7 +62,6 @@ export default {
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
-        this.getWorkflowDefaultStates()
         this.subscribeToDeadline()
         this.subscribeToAssignment()
     },
@@ -84,24 +79,6 @@ export default {
             .catch(error => {
                 console.log(error);
             });
-        },
-
-        getWorkflowDefaultStates(){
-            this.http.get(`/help/ticket_workflow_states.json`).then(result => {
-                if (result.successful) {
-                    let initial_state = result.data.filter( state => state.initial)[0]
-                    let final_state = result.data.filter( state => state.final)[0]
-
-                    this.default_states = {
-                        initial: initial_state.id,
-                        final: final_state.id
-                    }
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
         },
 
         showDeadlineForm(){
@@ -137,7 +114,7 @@ export default {
                     <div class="card-header">
                         <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
                         <div class="card-header-icon">
-                            <div v-if="ticket.detail_attributes.cloud_help_ticket_workflow_states_id != default_states.final">
+                            <div v-if="! ticket.detail_attributes.state_final">
                                 <a @click="showDeadlineForm()">
                                     <b-icon icon="calendar-times" size="is-small" />
                                     {{translations.actions.deadline}}
@@ -220,7 +197,7 @@ export default {
                         </div>
                     </div>
                 </div>
-                <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" />
+                <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id" />
             </div>
             <div class="column is-4">
                 <component-timeline class="card box" />

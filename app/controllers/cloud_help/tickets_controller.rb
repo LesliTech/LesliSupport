@@ -312,7 +312,7 @@ Building a better future, one line of code at a time.
                     :cloud_help_ticket_types_id,
                     :cloud_help_ticket_priorities_id,
                     :cloud_help_ticket_categories_id,
-                    :cloud_help_ticket_workflow_details_id
+                    :cloud_help_workflow_details_id
                 ]
             )
         end

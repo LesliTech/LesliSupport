@@ -75,7 +75,7 @@ Building a better future, one line of code at a time.
         def assign_workflow_if_created
             id_changes = saved_changes["id"]
             if id_changes
-                default_workflow = TicketWorkflow.find_by(account: account, default: true)
+                default_workflow = Workflow.find_by(account: account, default: true)
                 TicketCategory.where(account: account).all.each do |category|
                     TicketWorkflowAssignment.create(
                         account: account,

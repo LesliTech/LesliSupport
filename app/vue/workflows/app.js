@@ -42,7 +42,7 @@ import appEdit from 'LesliCoreVue/cloud_objects/workflows/apps/edit.vue'
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|show|edit]", "help/ticket_workflows", [{
+app("CloudHelp", "[list|new|show|edit]", "help/workflows", [{
     path: "/",
     component: appList,
     props: {

@@ -62,11 +62,8 @@ export default {
     data() {
         return {
             translations: I18n.t('cloud_help.tickets.edit'),
-            ticket_workflow: null,
             ticket_id: null,
-            ticket: {
-                detail_attributes: {}
-            },
+            ticket: null,
             rerender_chart: false
         }
     },
@@ -79,23 +76,9 @@ export default {
 
         setSubscriptions(){
             this.bus.subscribe('update:/help/ticket/workflow', (state)=>{
-                this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
+                this.ticket.detail_attributes.cloud_help_workflow_states_id = state.id
                 this.ticket.detail_attributes.state = state.name
                 this.ticket.detail_attributes.state_initial = state.initial
-                this.rerender_chart = true
-            })
-        },
-
-        getTicketWorkflow() {
-            let id = this.ticket.detail_attributes.cloud_help_ticket_workflows_id
-            this.http.get(`/help/ticket_workflows/${id}.json`).then(result => {
-                if (result.successful) {
-                    this.ticket_workflow = result.data
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
             })
         },
 
@@ -104,8 +87,6 @@ export default {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
-                    this.bus.publish('get:/help/ticket', this.ticket)
-                    this.getTicketWorkflow()
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -121,7 +102,9 @@ export default {
     <section v-if="ticket">
         <div class="columns">
             <div class="column is-8">
-                <component-form class="box" />
+                <component-form class="box"
+                    :ticket-data="ticket"
+                />
                 <div class="card box">
                     <div class="card-header">
                         <h4 class="card-header-title">
@@ -129,11 +112,10 @@ export default {
                         </h4>
                     </div>
                     <div class="card-content">
-                        <component-workflow-chart 
-                            v-if="ticket_workflow"
+                        <component-workflow-chart
                             :rerender.sync="rerender_chart"
-                            :workflow="ticket_workflow.details"
-                            :selected-workflow-state="ticket.detail_attributes.cloud_help_ticket_workflow_states_id"
+                            :workflow-id="ticket.detail_attributes.cloud_help_workflows_id"
+                            :selected-workflow-state="ticket.detail_attributes.cloud_help_workflow_states_id"
                             cloud-module="help/ticket"
                         />
                     </div>

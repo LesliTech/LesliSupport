@@ -27,7 +27,7 @@ Building a better future, one line of code at a time.
 
 =end
 CloudHelp::Account.all.each do |account|
-    default_workflow = CloudHelp::TicketWorkflow.find_by(account: account, default: true)
+    default_workflow = CloudHelp::Workflow.find_by(account: account, default: true)
 
     CloudHelp::TicketType.where(account: account).each do |type|
         CloudHelp::TicketCategory.where(account: account).each do |category|
