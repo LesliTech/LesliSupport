@@ -1,0 +1,17 @@
+<%= form_with(model: workflow, local: true) do |form| %>
+  <% if workflow.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(workflow.errors.count, "error") %> prohibited this workflow from being saved:</h2>
+
+      <ul>
+        <% workflow.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

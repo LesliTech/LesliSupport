@@ -1,4 +1,4 @@
 module CloudHelp
-    module Workflow::DetailsHelper
-    end
+  module Workflow::DetailsHelper
+  end
 end

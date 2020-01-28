@@ -1,5 +1,5 @@
 CloudHelp::Engine.routes.draw do
-
+  
     root to: "dashboards#default"
     
     resources :slas
@@ -10,7 +10,6 @@ CloudHelp::Engine.routes.draw do
 
     resources :workflows
     resources :workflow_states, except: [:new, :show, :edit]
-    
     resources :ticket_workflow_assignments, only: [:index, :update]
     
 

@@ -1,32 +1,4 @@
 module CloudHelp
-=begin
-
-Lesli
-
-Copyright (c) 2020, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
-transmission, publication is strictly forbidden.
-For more information read the license file including with this software.
-
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description Model for workflow details. Each detail is accessed only through its *workflow*, and
-    represents one *workflow* *state*. Each detail also contains information about transitions to
-    other details
-=end
-    class Workflow::Detail < CloudObject::Workflow::Detail
-        belongs_to :workflow, inverse_of: :details, class_name: "CloudHelp::Workflow", foreign_key: "cloud_help_workflows_id"
-        belongs_to :workflow_state, class_name: "CloudHelp::WorkflowState", foreign_key: "cloud_help_workflow_states_id"
-    end
+  class Workflow::Detail < ApplicationRecord
+  end
 end
