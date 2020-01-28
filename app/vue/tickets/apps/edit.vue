@@ -30,15 +30,18 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue"
-import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue"
-import componentActionList from "LesliCloud/vue/components/lists/action.vue"
-import componentFileList from "LesliCloud/vue/components/lists/file.vue"
-import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
-import componentFormStatus from "../components/status.vue"
-import componentFormTag from "../components/tag.vue"
-import componentForm from "../components/form.vue"
-import componentWorkflowChart from "../../components/workflow_chart.vue"
+import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
+import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
+import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
+import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
+import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
+import componentWorkflowTransition from 'LesliCoreVue/cloud_objects/workflows/components/transition.vue'
+import componentWorkflowChart from 'LesliCoreVue/cloud_objects/workflows/components/chart.vue'
+import componentFormStatus from '../components/status.vue'
+import componentFormTag from '../components/tag.vue'
+import componentForm from '../components/form.vue'
+
+
 
 
 
@@ -46,43 +49,36 @@ import componentWorkflowChart from "../../components/workflow_chart.vue"
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-discussion-form': componentDiscussionForm,
-        'component-discussion-list': componentDiscussionList,
-        'component-action-list': componentActionList,
-        'component-file-list': componentFileList,
-        "component-subscriptions": componentSubscriptions,
+        'component-discussion': componentDiscussion,
+        'component-action': componentAction,
+        'component-file': componentFile,
+        'component-subscription': componentSubscription,
         'component-form-status': componentFormStatus,
         'component-form-tag': componentFormTag,
         'component-form': componentForm,
-        'component-workflow-chart': componentWorkflowChart
+        'component-workflow-chart': componentWorkflowChart,
+        'component-workflow-transition': componentWorkflowTransition
     },
     data() {
         return {
             translations: I18n.t('cloud_help.tickets.edit'),
-            ticket_workflow: null,
             ticket_id: null,
-            ticket: {
-                detail_attributes: {}
-            },
+            ticket: null,
             rerender_chart: false
         }
     },
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
+        this.setSubscriptions()
     },
     methods: {
 
-        getTicketWorkflow() {
-            let id = this.ticket.detail_attributes.cloud_help_ticket_workflows_id
-            this.http.get(`/help/ticket_workflows/${id}.json`).then(result => {
-                if (result.successful) {
-                    this.ticket_workflow = result.data
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
+        setSubscriptions(){
+            this.bus.subscribe('update:/help/ticket/workflow', (state)=>{
+                this.ticket.detail_attributes.cloud_help_workflow_states_id = state.id
+                this.ticket.detail_attributes.state = state.name
+                this.ticket.detail_attributes.state_initial = state.initial
             })
         },
 
@@ -91,20 +87,12 @@ export default {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = result.data
-                    this.bus.publish("get:/help/ticket", this.ticket)
-                    this.getTicketWorkflow()
                 }else{
                     this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
-        },
-
-        updateTicketWorkflow(state) {
-            this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
-            this.ticket.detail_attributes.state = state.state_name
-            this.rerender_chart = true
         }
 
     }
@@ -114,15 +102,9 @@ export default {
     <section v-if="ticket">
         <div class="columns">
             <div class="column is-8">
-                <component-form v-on:update-ticket-workflow="updateTicketWorkflow"/>
-            </div>
-            <div class="column is-4">
-                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation-date="ticket.created_at"/>
-                <component-form-tag class="box" :ticket="ticket"/>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
+                <component-form class="box"
+                    :ticket-data="ticket"
+                />
                 <div class="card box">
                     <div class="card-header">
                         <h4 class="card-header-title">
@@ -130,25 +112,35 @@ export default {
                         </h4>
                     </div>
                     <div class="card-content">
-                        <component-workflow-chart 
-                            v-if="ticket_workflow"
+                        <component-workflow-chart
                             :rerender.sync="rerender_chart"
-                            :workflow="ticket_workflow.details"
-                            :selected_node="ticket.detail_attributes.cloud_help_ticket_workflow_states_id"
-                            :cloudModule="'help'"
-                            :cloudObject="'ticket'"
+                            :workflow-id="ticket.detail_attributes.cloud_help_workflows_id"
+                            :selected-workflow-state="ticket.detail_attributes.cloud_help_workflow_states_id"
+                            cloud-module="help/ticket"
                         />
                     </div>
                 </div>
-                <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box"/>
-                <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
             </div>
-            <component-subscriptions
+            <div class="column is-4">
+                <component-workflow-transition
+                    class="box"
+                    cloud-module="help/ticket"
+                    :cloud-id="ticket_id"
+                />
+                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation-date="ticket.created_at"/>
+                <component-form-tag class="box" :ticket="ticket"/>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id"/>
+            </div>
+            <component-subscription
                 :cloud-id="ticket_id"
                 cloud-module="help/ticket"
             />
-            <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-action cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-file cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
     </section>
 </template>

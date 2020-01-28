@@ -28,38 +28,33 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
-import componentDiscussionList from "LesliCloud/vue/components/lists/discussion.vue"
-import componentDiscussionForm from "LesliCloud/vue/components/forms/discussion.vue"
-import componentActionList from "LesliCloud/vue/components/lists/action.vue"
-import componentFileList from "LesliCloud/vue/components/lists/file.vue"
-import componentSubscriptions from "LesliCloud/vue/components/forms/subscriptions.vue"
-import componentWorkflowStateName from "LesliCloud/vue/cloud_object/workflow_states/components/state-name.vue"
-import componentTimeline from "../components/timeline.vue"
-import componentDeadline from "../components/deadline.vue"
-import componentAssignment from "../components/assignment.vue"
+import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
+import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
+import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
+import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
+import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
+import componentWorkflowStateName from 'LesliCoreVue/cloud_objects/workflow_states/components/name.vue'
+import componentTimeline from '../components/timeline.vue'
+import componentDeadline from '../components/deadline.vue'
+import componentAssignment from '../components/assignment.vue'
 
 // · Component show
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
 export default {
     components: {
-        "component-discussion-form": componentDiscussionForm,
-        "component-discussion-list": componentDiscussionList,
-        "component-action-list": componentActionList,
-        "component-file-list": componentFileList,
-        "component-timeline": componentTimeline,
-        "component-ticket-info": componentWorkflowStateName,
-        "component-subscriptions": componentSubscriptions,
-        "component-deadline": componentDeadline,
-        "component-assignment": componentAssignment,
-        "component-workflow-state-name": componentWorkflowStateName
+        'component-discussion': componentDiscussion,
+        'component-action': componentAction,
+        'component-file': componentFile,
+        'component-timeline': componentTimeline,
+        'component-ticket-info': componentWorkflowStateName,
+        'component-subscription': componentSubscription,
+        'component-deadline': componentDeadline,
+        'component-assignment': componentAssignment,
+        'component-workflow-state-name': componentWorkflowStateName
     },
     data() {
         return {
             translations: I18n.t("cloud_help.tickets.shared"),
-            default_states: {
-                initial: null,
-                final: null
-            },
             ticket_id: null,
             ticket: null
         }
@@ -67,7 +62,6 @@ export default {
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
-        this.getWorkflowDefaultStates()
         this.subscribeToDeadline()
         this.subscribeToAssignment()
     },
@@ -85,24 +79,6 @@ export default {
             .catch(error => {
                 console.log(error);
             });
-        },
-
-        getWorkflowDefaultStates(){
-            this.http.get(`/help/ticket_workflow_states.json`).then(result => {
-                if (result.successful) {
-                    let initial_state = result.data.filter( state => state.initial)[0]
-                    let final_state = result.data.filter( state => state.final)[0]
-
-                    this.default_states = {
-                        initial: initial_state.id,
-                        final: final_state.id
-                    }
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
         },
 
         showDeadlineForm(){
@@ -138,7 +114,7 @@ export default {
                     <div class="card-header">
                         <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
                         <div class="card-header-icon">
-                            <div v-if="ticket.detail_attributes.cloud_help_ticket_workflow_states_id != default_states.final">
+                            <div v-if="! ticket.detail_attributes.state_final">
                                 <a @click="showDeadlineForm()">
                                     <b-icon icon="calendar-times" size="is-small" />
                                     {{translations.actions.deadline}}
@@ -221,17 +197,16 @@ export default {
                         </div>
                     </div>
                 </div>
-                <component-discussion-form cloud-module="help/ticket" :cloud-id="ticket_id" class="box" />
-                <component-discussion-list cloud-module="help/ticket" :cloud-id="ticket_id" />
+                <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id" />
             </div>
             <div class="column is-4">
                 <component-timeline class="card box" />
             </div>
             <component-deadline :ticket-deadline="ticket.detail_attributes.deadline"/>
             <component-assignment :assigned-to="ticket.assignment_attributes.users_id"/>
-            <component-action-list cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-file-list cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-subscriptions
+            <component-action cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-file cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-subscription
                 cloud-module="help/ticket"
                 :cloud-id="ticket_id"
             />

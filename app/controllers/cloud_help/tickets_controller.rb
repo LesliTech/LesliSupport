@@ -141,10 +141,10 @@ Building a better future, one line of code at a time.
 =end
         def create
             ticket = Ticket.new(ticket_params)
+            ticket.detail.source = TicketSource.cloud_help_source
             ticket.user = current_user
             ticket.account = current_user.account.help
-            ticket.detail.source = TicketSource.cloud_help_source
-            ticket.set_workflow_detail
+            ticket.set_workflow
 
             if ticket.save
                 responseWithSuccessful(ticket)
@@ -257,29 +257,6 @@ Building a better future, one line of code at a time.
             })
         end
 
-=begin
-@deprecated As of next update, this method will be moved to the *workflows* controller and renamed 
-    to *options*. The url will also be changed to */help/tickets/:ticket_id/ticket_workflows/options*
-@description Retrieves a list of possible transitions the the *ticket*, depending on the *state* they are actually in.
-@example
-    # Executing this controller's action from javascript's frontend
-    let ticket_id = 6
-    this.http.get(`127.0.0.1/help/tickets/${ticket_id}/workflow_options`).then(response => {
-        if( response.successful ){
-            console.log(JSON.stringify(response.data))
-            # This will print something similar to
-            #[
-            #    {"id":2,"name":"closed","workflow_detail_id":8},
-            #    {"id":3,"name":"In progress","workflow_detail_id":9}
-            #]
-            # where "id" is the id of the ticket state
-        }
-    });
-=end
-        def workflow_options
-            responseWithSuccessful(@ticket.detail.workflow_detail.next_workflow_states)
-        end
-
         private
 
 =begin
@@ -335,7 +312,7 @@ Building a better future, one line of code at a time.
                     :cloud_help_ticket_types_id,
                     :cloud_help_ticket_priorities_id,
                     :cloud_help_ticket_categories_id,
-                    :cloud_help_ticket_workflow_details_id
+                    :cloud_help_workflow_details_id
                 ]
             )
         end

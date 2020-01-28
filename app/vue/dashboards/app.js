@@ -27,7 +27,7 @@ Building a better future, one line of code at a time.
 
 // · Import main app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCloud/vue/app'
+import app from 'LesliCoreVue/app'
 
 
 

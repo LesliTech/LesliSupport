@@ -1,9 +1,0 @@
-en:
-    activerecord:
-        errors:
-            models:
-                cloud_help/ticket_workflow_state:
-                        attributes:
-                            base:
-                                destroy_attempt_on_default_state: This state cannot be deleted
-                                foreign_key_prevents_destruction: Please verify that there are no workflows associated with this state before attempting to delete it

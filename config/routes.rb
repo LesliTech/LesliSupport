@@ -1,5 +1,5 @@
 CloudHelp::Engine.routes.draw do
-
+  
     root to: "dashboards#default"
     
     resources :slas
@@ -7,32 +7,31 @@ CloudHelp::Engine.routes.draw do
     resources :ticket_priorities
     resources :ticket_types
     resources :ticket_categories
-    resources :ticket_workflow_states, except: [:new, :show, :edit]
-    resources :ticket_workflow_assignments, only: [:index, :update]
-    resources :ticket_workflows do
-        get "/options", to: "ticket_workflows#workflow_options"
-    end
 
-    scope :ticket_workflow_assignments do
-        get "/options", to: "ticket_workflow_assignments#workflow_assignment_options"
-    end
-    scope :tickets do 
-        get "/options", to: "tickets#ticket_options"
-    end
+    resources :workflows
+    resources :workflow_states, except: [:new, :show, :edit]
+    resources :ticket_workflow_assignments, only: [:index, :update]
+    
 
     resources :tickets, except: [:destroy] do
-        get "/workflow_options", to: "tickets#workflow_options"
-
         scope module: :ticket do
-            resource :assignment, only: [:create, :show, :update] do
-                get "/options", to: "assignments#assignment_options"
-            end
             resources :timelines, only: [:index]   
             resources :subscribers, only: [:index, :create, :update, :destroy]
             resources :discussions
             resources :files
             resources :actions
             resources :activities
+            resource :assignment, only: [:create, :show, :update]
+        end
+    end
+
+    scope :options do
+        get "/ticket_workflow_assignments", to: "ticket_workflow_assignments#workflow_assignment_options"
+        get "/tickets", to: "tickets#ticket_options"
+        get "/workflows/:cloud_object_name/:cloud_object_id", to: "workflows#workflow_options"
+
+        scope :tickets, module: :ticket do
+            get "/assignments", to: "assignments#assignment_options"
         end
     end
 

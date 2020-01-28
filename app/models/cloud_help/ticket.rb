@@ -24,7 +24,7 @@ Building a better future, one line of code at a time.
 @description Model for ticket. Each has it's own *detail* containing it's information.
     Tickets are the core *object* of the *CloudHelp* module
 =end
-    class Ticket  < ApplicationRecord
+    class Ticket  < CloudObject::Base
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         belongs_to :user, class_name: 'User', foreign_key: 'users_id'
@@ -79,41 +79,6 @@ Building a better future, one line of code at a time.
         end
 
 =begin
-@return [void]
-@description Adds the "workflow_detail" attribute to an existing *ticket*.
-    It is the *detail* associated to the initial *state*, based on the
-    *ticket*'s *type*/*priority* 
-@example
-    ticket_params = {
-        detail_attributes: {
-            cloud_help_ticket_priorities_id: 1,
-            cloud_help_ticket_categories_id: 1,
-            cloud_help_ticket_types_id: 1
-        }
-    }
-    ticket = CloudHelp::Ticket.new(ticket_params)
-    ticket.set_workflow_detail
-    if ticket.save
-        responseWithSuccessful
-    else
-        responseWithError(ticket.errors.full_messages.to_sentence)
-    end
-=end
-        def set_workflow_detail
-            workflow_assignment = TicketWorkflowAssignment.find_by(
-                ticket_type: detail.type,
-                ticket_category: detail.category,
-                account: account
-            )
-            workflow = workflow_assignment.workflow
-
-            detail.workflow_detail = TicketWorkflow::Detail.find_by(
-                workflow: workflow,
-                workflow_state: TicketWorkflowState.initial_state(account)
-            )
-        end
-
-=begin
 @return [Hash] Detailed information about the ticket. Including, *priority*,
     *full* *category* *path*, *type*, *creation* *user*, *assignation* *type*
     and *workflow* *state*
@@ -162,22 +127,23 @@ Building a better future, one line of code at a time.
                     CHTWA.cloud_help_ticket_types_id = CHTT.id and CHTWA.cloud_help_ticket_categories_id = CHTC.id
                 "
             ).joins(
-                "inner join cloud_help_ticket_workflows CHTW on CHTWA.cloud_help_ticket_workflows_id = CHTW.id"
+                "inner join cloud_help_workflows CHW on CHTWA.cloud_help_workflows_id = CHW.id"
             ).joins(
                 "
-                    inner join cloud_help_ticket_workflow_details CHTWD on CHTWD.cloud_help_ticket_workflows_id = CHTW.id and
-                    CHTD.cloud_help_ticket_workflow_details_id = CHTWD.id
+                    inner join cloud_help_workflow_details CHWD on CHWD.cloud_help_workflows_id = CHW.id and
+                    CHTD.cloud_help_workflow_details_id = CHWD.id
                 "
             ).joins(
-                "inner join cloud_help_ticket_workflow_states CHTWS on CHTWD.cloud_help_ticket_workflow_states_id = CHTWS.id"
+                "inner join cloud_help_workflow_states CHWS on CHWD.cloud_help_workflow_states_id = CHWS.id"
             ).joins( :user ).select(
                 "users.email as email",                         "subject",
                 "description",                                  "CHTD.tags",
                 "CHTP.name as priority",                        "CHTT.name as type",
-                "CHTWS.name as state",                          "CHTP.id as cloud_help_ticket_priorities_id",
-                "CHTT.id as cloud_help_ticket_types_id",        "CHTW.id as cloud_help_ticket_workflows_id",
-                "CHTC.id as cloud_help_ticket_categories_id",   "CHTWS.id as cloud_help_ticket_workflow_states_id",
-                "deadline"                                  ,   "CHTP.weight as priority_weight"
+                "CHWS.name as state",                           "CHTP.id as cloud_help_ticket_priorities_id",
+                "CHTT.id as cloud_help_ticket_types_id",        "CHW.id as cloud_help_workflows_id",
+                "CHTC.id as cloud_help_ticket_categories_id",   "CHWS.id as cloud_help_workflow_states_id",
+            "deadline"                                  ,       "CHTP.weight as priority_weight",
+                "CHWS.initial as state_initial"            ,    "CHWS.final as state_final"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
             return {
@@ -234,19 +200,19 @@ Building a better future, one line of code at a time.
                     CHTWA.cloud_help_ticket_types_id = CHTT.id and CHTWA.cloud_help_ticket_categories_id = CHTC.id
                 "
             ).joins(
-                "inner join cloud_help_ticket_workflows CHTW on CHTWA.cloud_help_ticket_workflows_id = CHTW.id"
+                "inner join cloud_help_workflows CHW on CHTWA.cloud_help_workflows_id = CHW.id"
             ).joins(
                 "
-                    inner join cloud_help_ticket_workflow_details CHTWD on CHTWD.cloud_help_ticket_workflows_id = CHTW.id and
-                    CHTD.cloud_help_ticket_workflow_details_id = CHTWD.id
+                    inner join cloud_help_workflow_details CHWD on CHWD.cloud_help_workflows_id = CHW.id and
+                    CHTD.cloud_help_workflow_details_id = CHWD.id
                 "
             ).joins(
-                "inner join cloud_help_ticket_workflow_states CHTWS on CHTWD.cloud_help_ticket_workflow_states_id = CHTWS.id"
+                "inner join cloud_help_workflow_states CHWS on CHWD.cloud_help_workflow_states_id = CHWS.id"
             ).joins(
                 "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
             ).select(
                 "id",                                           "CHTP.name as priority",
-                "CHTT.name as type",                           "CHTWS.name as state",
+                "CHTT.name as type",                           "CHWS.name as state",
                 "CHTC.name as category",                        "CHTA.assignation_type",
                 "subject",                                      "CHTC.id as cloud_help_ticket_categories_id",
                 "created_at"
@@ -302,13 +268,13 @@ Building a better future, one line of code at a time.
     # after the update, this method is executed automatically
 =end
         def after_update_actions
-            workflow_change = detail.saved_changes["cloud_help_ticket_workflow_details_id"]
+            workflow_change = detail.saved_changes["cloud_help_workflow_details_id"]
             if workflow_change
-                if TicketWorkflow::Detail.find(workflow_change[0]).workflow_state.is_final?
+                if Workflow::Detail.find(workflow_change[0]).workflow_state.is_final?
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
-                action_verify_ticket_workflow(workflow_change[0], workflow_change[1])
+                action_verify_workflow(workflow_change[0], workflow_change[1])
             else
                 if detail.workflow_detail.workflow_state.is_final?
                     errors.add(:base, :ticket_already_closed)
@@ -351,11 +317,11 @@ Building a better future, one line of code at a time.
     ticket.update({ detail_attributes: { cloud_help_ticket_workflow_details_id: 4 } })
     # the *after_update_actions* method will call this method after the update
 =end
-        def action_verify_ticket_workflow(old_workflow_detail_id, new_workflow_detail_id)
+        def action_verify_workflow(old_workflow_detail_id, new_workflow_detail_id)
 
-            old_workflow_detail = TicketWorkflow::Detail.find(old_workflow_detail_id)
-            new_workflow_detail = TicketWorkflow::Detail.find(new_workflow_detail_id)
-            unless old_workflow_detail.next_states.split("|").include? new_workflow_detail.cloud_help_ticket_workflow_states_id.to_s   
+            old_workflow_detail = Workflow::Detail.find(old_workflow_detail_id)
+            new_workflow_detail = Workflow::Detail.find(new_workflow_detail_id)
+            unless old_workflow_detail.next_states.split("|").include? new_workflow_detail.cloud_help_workflow_states_id.to_s   
                 errors.add(:base, :invalid_workflow_transition)
                 raise ActiveRecord::RecordInvalid, self
             end
@@ -457,7 +423,7 @@ Building a better future, one line of code at a time.
 
             workflow_assignment = TicketWorkflowAssignment.find_by(ticket_type: type, ticket_category: category)
             new_workflow = workflow_assignment.workflow
-            new_workflow_detail = new_workflow.details.find_by(workflow_state: TicketWorkflowState.initial_state(account))
+            new_workflow_detail = new_workflow.details.find_by(workflow_state: WorkflowState.initial_state(account))
             if detail.update!(workflow_detail: new_workflow_detail)
                 message = I18n.t(
                     'activerecord.models.cloud_help_ticket.updated.transferred',
