@@ -26,7 +26,7 @@ Building a better future, one line of code at a time.
 =end
     class WorkflowState < CloudObject::WorkflowState
         belongs_to :account, class_name: "CloudHelp::Account", foreign_key: "cloud_help_accounts_id" 
-        has_many :details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_workflow_states_id"
+        has_many :ticket_details, class_name: "CloudHelp::Ticket::Detail", foreign_key: "cloud_help_workflow_states_id"
         has_many :workflow_details, class_name: "CloudHelp::Workflow::Detail", foreign_key: "cloud_help_workflow_states_id"
     end
 end
