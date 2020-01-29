@@ -23,7 +23,7 @@ Building a better future, one line of code at a time.
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description Controller for the *subsciribers* core entities. It inherits all its functionality
+@description Controller for the *subscribers* core entities. It inherits all its functionality
     from the *CloudObject::SubscribersController* class
 =end
     class Ticket::SubscribersController < CloudObject::SubscribersController

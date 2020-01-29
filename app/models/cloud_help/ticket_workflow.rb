@@ -1,5 +1,5 @@
 module CloudHelp
-    class TicketWorkflowAssignment < CloudObject::WorkflowAssignment
+    class TicketWorkflow < CloudObject::ObjectWorkflow
         belongs_to :account, class_name: "CloudHelp::Account", foreign_key: "cloud_help_accounts_id"
         belongs_to :workflow, class_name: "CloudHelp::Workflow", foreign_key: "cloud_help_workflows_id"
         

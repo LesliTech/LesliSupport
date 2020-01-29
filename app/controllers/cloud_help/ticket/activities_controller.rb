@@ -27,6 +27,6 @@ Building a better future, one line of code at a time.
 @todo Define the activities controller in the *CloudObject::ActivitiesController* *core* class
     and inherit that class from here.
 =end
-  class Ticket::ActivitiesController < ApplicationController
-  end
+    class Ticket::ActivitiesController < ApplicationController
+    end
 end

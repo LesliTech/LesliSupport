@@ -1,11 +1,8 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
 
 Lesli
 
-Copyright (c) 2020, Lesli Technologies, S. A.
+Copyright (c) 2019, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -20,12 +17,26 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
+@author   LesliTech <hello@lesli.tech>
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description Controller for assigning workflows to tickets, based on type and category. 
-    Uses base class CloudObject::WorkflowsAssignnmentsController
+@version  GIT: 1.0.0 alpha
+
+// · 
+// · ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~        ~·~
+
 =end
-    class TicketWorkflowAssignmentsController < CloudObject::WorkflowAssignmentsController
+CloudHelp::Account.all.each do |account|
+    default_workflow = CloudHelp::Workflow.find_by(account: account, default: true)
+
+    CloudHelp::TicketType.where(account: account).each do |type|
+        CloudHelp::TicketCategory.where(account: account).each do |category|
+            CloudHelp::TicketWorkflow.create!(
+                account: account,
+                workflow: default_workflow,
+                ticket_type: type,
+                ticket_category: category
+            )
+        end
     end
 end
