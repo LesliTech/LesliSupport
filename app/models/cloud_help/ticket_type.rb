@@ -28,7 +28,7 @@ Building a better future, one line of code at a time.
 
         belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
         has_many :details, class_name: 'CloudHelp::Ticket::Detail', foreign_key: 'cloud_help_ticket_types_id'
-        has_many :workflow_assignments, class_name: "CloudHelp::TicketWorkflowAssignment", foreign_key: "cloud_help_ticket_types_id", dependent: :destroy
+        has_many :ticket_workflows, class_name: "CloudHelp::TicketWorkflow", foreign_key: "cloud_help_ticket_types_id", dependent: :destroy
 
 
         validates :name, presence: true
@@ -63,7 +63,7 @@ Building a better future, one line of code at a time.
 =begin
 @return [Void]
 @description Checks if the recently saved record is new, if it is new, creates one
-    TicketWorkflowAssignment for each existent category, using the default workflow
+    TicketWorkflow for each existent category, using the default workflow
 @example
     my_type = CloudHelp::TicketType.new(name: "Complain")
     if my_type.save # This method is executed at the end of save.
@@ -77,7 +77,7 @@ Building a better future, one line of code at a time.
             if id_changes
                 default_workflow = Workflow.find_by(account: account, default: true)
                 TicketCategory.where(account: account).all.each do |category|
-                    TicketWorkflowAssignment.create(
+                    TicketWorkflow.create(
                         account: account,
                         workflow: default_workflow,
                         ticket_category: category,
