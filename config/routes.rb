@@ -28,8 +28,8 @@ CloudHelp::Engine.routes.draw do
     end
 
     scope :options do
-        get "/ticket_workflows", to: "ticket_workflows#workflow_options"
         get "/tickets", to: "tickets#ticket_options"
+        get "/ticket_workflows", to: "ticket_workflows#workflow_options"
         get "/workflows/:cloud_object_name/:cloud_object_id", to: "workflows#workflow_options"
 
         scope :tickets, module: :ticket do

@@ -123,11 +123,11 @@ Building a better future, one line of code at a time.
                 "inner join cloud_help_ticket_categories CHTC on CHTD.cloud_help_ticket_categories_id = CHTC.id"
             ).joins(
                 "
-                    inner join cloud_help_ticket_workflow_assignments CHTWA on 
-                    CHTWA.cloud_help_ticket_types_id = CHTT.id and CHTWA.cloud_help_ticket_categories_id = CHTC.id
+                    inner join cloud_help_ticket_workflows CHTW on 
+                    CHTW.cloud_help_ticket_types_id = CHTT.id and CHTW.cloud_help_ticket_categories_id = CHTC.id
                 "
             ).joins(
-                "inner join cloud_help_workflows CHW on CHTWA.cloud_help_workflows_id = CHW.id"
+                "inner join cloud_help_workflows CHW on CHTW.cloud_help_workflows_id = CHW.id"
             ).joins(
                 "
                     inner join cloud_help_workflow_details CHWD on CHWD.cloud_help_workflows_id = CHW.id and
@@ -196,11 +196,11 @@ Building a better future, one line of code at a time.
                 "inner join cloud_help_ticket_categories CHTC on CHTD.cloud_help_ticket_categories_id = CHTC.id"
             ).joins(
                 "
-                    inner join cloud_help_ticket_workflow_assignments CHTWA on 
-                    CHTWA.cloud_help_ticket_types_id = CHTT.id and CHTWA.cloud_help_ticket_categories_id = CHTC.id
+                    inner join cloud_help_ticket_workflows CHTW on 
+                    CHTW.cloud_help_ticket_types_id = CHTT.id and CHTW.cloud_help_ticket_categories_id = CHTC.id
                 "
             ).joins(
-                "inner join cloud_help_workflows CHW on CHTWA.cloud_help_workflows_id = CHW.id"
+                "inner join cloud_help_workflows CHW on CHTW.cloud_help_workflows_id = CHW.id"
             ).joins(
                 "
                     inner join cloud_help_workflow_details CHWD on CHWD.cloud_help_workflows_id = CHW.id and
@@ -421,7 +421,7 @@ Building a better future, one line of code at a time.
             category = detail.category
             type = detail.type
 
-            workflow_assignment = TicketWorkflowAssignment.find_by(ticket_type: type, ticket_category: category)
+            workflow_assignment = TicketWorkflow.find_by(ticket_type: type, ticket_category: category)
             new_workflow = workflow_assignment.workflow
             new_workflow_detail = new_workflow.details.find_by(workflow_state: WorkflowState.initial_state(account))
             if detail.update!(workflow_detail: new_workflow_detail)
