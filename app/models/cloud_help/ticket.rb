@@ -268,6 +268,8 @@ Building a better future, one line of code at a time.
     # after the update, this method is executed automatically
 =end
         def after_update_actions
+            super
+            
             workflow_change = detail.saved_changes["cloud_help_workflow_details_id"]
             if workflow_change
                 if Workflow::Detail.find(workflow_change[0]).workflow_state.is_final?
