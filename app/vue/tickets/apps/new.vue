@@ -7,5 +7,7 @@ export default {
 }
 </script>
 <template>
-    <component-form></component-form>
+    <section class="section">
+    <component-form />
+    </section>
 </template>

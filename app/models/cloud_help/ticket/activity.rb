@@ -21,10 +21,11 @@ Building a better future, one line of code at a time.
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description Model for ticket activities. This class is not yet implemented
-@todo Define the activities in the *CloudObject::Activity* *core* class and inherit 
-    that class from here.
+@description Model for Ticket activities. This class inherits all its functionality from the 
+    *CloudObject::Activity* class
 =end
-  class Ticket::Activity < ApplicationRecord
-  end
+    class Ticket::Activity < CloudObject::Activity
+        belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: "cloud_help_tickets_id", optional: true
+    end
 end
+    
