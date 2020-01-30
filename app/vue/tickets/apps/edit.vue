@@ -49,15 +49,16 @@ import componentForm from '../components/form.vue'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-discussion': componentDiscussion,
-        'component-action': componentAction,
-        'component-file': componentFile,
+        'component-workflow-transition': componentWorkflowTransition,
+        'component-workflow-chart': componentWorkflowChart,
         'component-subscription': componentSubscription,
         'component-form-status': componentFormStatus,
+        'component-discussion': componentDiscussion,
+        'component-activity': componentActivity,
         'component-form-tag': componentFormTag,
-        'component-form': componentForm,
-        'component-workflow-chart': componentWorkflowChart,
-        'component-workflow-transition': componentWorkflowTransition
+        'component-action': componentAction,
+        'component-file': componentFile,
+        'component-form': componentForm
     },
     data() {
         return {
@@ -135,12 +136,10 @@ export default {
             <div class="column">
                 <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id"/>
             </div>
-            <component-subscription
-                :cloud-id="ticket_id"
-                cloud-module="help/ticket"
-            />
+            <component-subscription cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-action cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-file cloud-module="help/ticket" :cloud-id="ticket_id" />
+            <component-activity cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
     </section>
 </template>

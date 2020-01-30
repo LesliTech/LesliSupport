@@ -28,29 +28,30 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
+import componentWorkflowStateName from 'LesliCoreVue/cloud_objects/workflow_states/components/name.vue'
 import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
 import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
 import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
 import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
 import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
-import componentWorkflowStateName from 'LesliCoreVue/cloud_objects/workflow_states/components/name.vue'
+import componentAssignment from '../components/assignment.vue'
 import componentTimeline from '../components/timeline.vue'
 import componentDeadline from '../components/deadline.vue'
-import componentAssignment from '../components/assignment.vue'
 
 // · Component show
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
 export default {
     components: {
-        'component-discussion': componentDiscussion,
-        'component-action': componentAction,
-        'component-file': componentFile,
-        'component-timeline': componentTimeline,
+        'component-workflow-state-name': componentWorkflowStateName,
         'component-ticket-info': componentWorkflowStateName,
         'component-subscription': componentSubscription,
-        'component-deadline': componentDeadline,
         'component-assignment': componentAssignment,
-        'component-workflow-state-name': componentWorkflowStateName
+        'component-discussion': componentDiscussion,
+        'component-activity': componentActivity,
+        'component-timeline': componentTimeline,
+        'component-deadline': componentDeadline,
+        'component-action': componentAction,
+        'component-file': componentFile
     },
     data() {
         return {
@@ -204,6 +205,7 @@ export default {
             </div>
             <component-deadline :ticket-deadline="ticket.detail_attributes.deadline"/>
             <component-assignment :assigned-to="ticket.assignment_attributes.users_id"/>
+            <component-activity cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-action cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-file cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-subscription

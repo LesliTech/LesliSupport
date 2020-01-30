@@ -73,11 +73,19 @@ Building a better future, one line of code at a time.
             depth = 0
             path.each do |node|
                 if node.id == id
-                    data.push(node.attributes.merge({
+                    node_attributes = node.attributes.merge({
                         'has_children'=>false,
                         'active'=>true,
                         'depth'=>depth
-                    }))
+                    })
+
+                    if node.parent
+                        node_attributes = node_attributes.merge({'parent_id' => node.parent.id})
+                    else
+                        node_attributes = node_attributes.merge({'parent_id' => nil})
+                    end
+
+                    data.push(node_attributes)
                 else
                     data.push(
                         node.attributes.slice('id','name','ancestry').merge({

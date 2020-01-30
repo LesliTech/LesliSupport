@@ -1,6 +1,5 @@
 CloudHelp::Engine.routes.draw do
-  
-    
+
     root to: "dashboards#default"
     
     resources :ticket_sources
@@ -37,8 +36,4 @@ CloudHelp::Engine.routes.draw do
         end
     end
 
-    scope :api do
-        get "/ticket_categories/:id/tree", to: "ticket_categories#api_tree"
-    end
-    
 end

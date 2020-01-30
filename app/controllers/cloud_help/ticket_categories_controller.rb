@@ -51,7 +51,8 @@ Building a better future, one line of code at a time.
 
 =begin
 @return [HTML|Json] HTML view showing the requested ticket category or a Json that contains the
-    information of the ticket category. If there is an error, an explanation message is sent
+    information of the ticket category and all its parent categories. 
+    If there is an error, an explanation message is sent
 @description Retrieves and returns the requested ticket category. The id of the 
     category is within the *params* attribute of the controller. The HTTP request has to specify
     wheter the HTML or the JSON text should be rendered
@@ -67,7 +68,7 @@ Building a better future, one line of code at a time.
                 set_ticket_category
                 return responseWithNotFound unless @ticket_category
 
-                responseWithSuccessful(@ticket_category)
+                responseWithSuccessful(@ticket_category.tree)
             end
         end
     end
@@ -167,22 +168,6 @@ Building a better future, one line of code at a time.
         else
             responseWithError(@ticket_category.errors.full_messages.to_sentence)
         end
-    end
-
-=begin
-@return [Json] Json that contains the information of the ticket category and all its parent
-    categories. If there is an error, an explanation message is sent
-@description Retrieves and returns the requested ticket category, along with its parent categories.
-    The id of the category is within the *params* attribute of the controller.
-@example
-    # Executing this controller's action from javascript's frontend
-    let ticket_category_id = 1;
-    this.http.get(`127.0.0.1/help/api/ticket_categories/${ticket_category_id}/tree`);
-@deprecated This method will be removed in the next update and it's functionality will be implemented
-    in the *show* method when requesting a Json response.
-=end
-    def api_tree
-        responseWithSuccessful(@ticket_category.tree)
     end
 
     private

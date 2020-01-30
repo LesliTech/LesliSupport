@@ -23,10 +23,9 @@ Building a better future, one line of code at a time.
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description Controller for the *activities* core entities. This class is not yet implemented
-@todo Define the activities controller in the *CloudObject::ActivitiesController* *core* class
-    and inherit that class from here.
-=end
-    class Ticket::ActivitiesController < ApplicationController
+@description Controller for the *activities* core entities. It inherits all its functionality
+    from the *CloudObject::ActivitiesController* class
+=end   
+    class Ticket::ActivitiesController < CloudObject::ActivitiesController
     end
 end
