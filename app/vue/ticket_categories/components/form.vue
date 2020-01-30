@@ -135,7 +135,7 @@ export default {
         getTicketCategory() {
             this.http.get(`/help/ticket_categories/${this.ticket_category_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket_category = result.data
+                    this.ticket_category = result.data.filter(category => category.id == this.ticket_category_id)[0]
                 }else{
                     this.alert(result.error,'danger')
                 }

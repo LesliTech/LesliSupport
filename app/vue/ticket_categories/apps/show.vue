@@ -46,7 +46,7 @@ export default {
                 shared: I18n.t('cloud_help.ticket_categories.shared')
             },
             ticket_category: {},
-            ticket_path: [],
+            category_tree: [],
             ticket_category_id: null,
             modal:{
                 active: false
@@ -67,24 +67,12 @@ export default {
                 this.getTicketCategory()
             }
         },
-
-        getTicketCategory() {
+        
+        getTicketCategory(){
             this.http.get(`/help/ticket_categories/${this.ticket_category_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket_category = result.data
-                    this.getTicketCategoryTree()
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-        
-        getTicketCategoryTree(){
-            this.http.get(`/help/api/ticket_categories/${this.ticket_category_id}/tree`).then(result => {
-                if (result.successful) {
-                    this.ticket_path = result.data;
+                    this.category_tree = result.data
+                    this.ticket_category = this.category_tree.filter(category => category.id == this.ticket_category_id)[0]
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -175,7 +163,7 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ `${translations.shared.fields.path}:` }}
                             </span>
-                            <component-tree-list :trees="ticket_path" :scrollable="true">
+                            <component-tree-list :trees="category_tree" :scrollable="true">
                             </component-tree-list>
                         </p>
                     </div>
