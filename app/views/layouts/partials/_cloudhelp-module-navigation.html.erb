@@ -22,7 +22,7 @@
     <router-link class="navbar-item" v-if="$route" to="/new">New Workflow</router-link>
 <% end %>
 
-<component-layout-navigation>
+<component-layout-module-navigation>
     <template v-slot:left>
         <%= link_to "Dashboards", root_path, class: "navbar-item" %>
         <%= link_to "Tickets", tickets_path, class: "navbar-item" %>
@@ -35,4 +35,4 @@
     <template v-slot:right>
         <%= content_for controller_name.to_sym %>
     </template>
-</component-layout-navigation>
+</component-layout-module-navigation>
