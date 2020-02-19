@@ -10,7 +10,6 @@ CloudHelp::Engine.routes.draw do
 
     resources :workflows do
         scope module: :workflow do
-            resources :statuses
             resources :associations
         end
     end

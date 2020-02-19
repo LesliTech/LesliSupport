@@ -17,7 +17,7 @@ Building a better future, one line of code at a time.
 @author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description Main app for the %humanized_resource model%. Uses Vue-router to render the different views
+@description App that allows the user to create a new Ticket category
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 

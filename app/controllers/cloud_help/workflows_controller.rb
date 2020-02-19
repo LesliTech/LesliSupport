@@ -1,62 +1,31 @@
 require_dependency "cloud_help/application_controller"
 
 module CloudHelp
-  class WorkflowsController < ApplicationController
-    before_action :set_workflow, only: [:show, :edit, :update, :destroy]
+=begin
 
-    # GET /workflows
-    def index
-      @workflows = Workflow.all
+Lesli
+
+Copyright (c) 2020, Lesli Technologies, S. A.
+
+All the information provided by this website is protected by laws of Guatemala related 
+to industrial property, intellectual property, copyright and relative international laws. 
+Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
+rights of the code, texts, trade mark, design, pictures and any other information.
+Without the written permission of Lesli Technologies, S. A., any replication, modification,
+transmission, publication is strictly forbidden.
+For more information read the license file including with this software.
+
+LesliCloud - Your Smart Business Assistant
+
+Powered by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@author   Carlos Hermosilla
+@license  Propietary - all rights reserved.
+@version  0.1.0-alpha
+@description Controller for workflows
+
+=end
+    class WorkflowsController < CloudObject::WorkflowsController
     end
-
-    # GET /workflows/1
-    def show
-    end
-
-    # GET /workflows/new
-    def new
-      @workflow = Workflow.new
-    end
-
-    # GET /workflows/1/edit
-    def edit
-    end
-
-    # POST /workflows
-    def create
-      @workflow = Workflow.new(workflow_params)
-
-      if @workflow.save
-        redirect_to @workflow, notice: 'Workflow was successfully created.'
-      else
-        render :new
-      end
-    end
-
-    # PATCH/PUT /workflows/1
-    def update
-      if @workflow.update(workflow_params)
-        redirect_to @workflow, notice: 'Workflow was successfully updated.'
-      else
-        render :edit
-      end
-    end
-
-    # DELETE /workflows/1
-    def destroy
-      @workflow.destroy
-      redirect_to workflows_url, notice: 'Workflow was successfully destroyed.'
-    end
-
-    private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_workflow
-        @workflow = Workflow.find(params[:id])
-      end
-
-      # Only allow a trusted parameter "white list" through.
-      def workflow_params
-        params.fetch(:workflow, {})
-      end
-  end
 end

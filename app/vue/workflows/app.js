@@ -1,7 +1,5 @@
 /*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
+Copyright (c) 2020, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -16,17 +14,17 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Carlos Hermosilla
-@author   LesliTech <hello@lesli.tech>
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
+@version  0.1.0-alpha
+@description App that allows the user to create a new Ticket category
 
-// · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 
 
-// · Import main app
+// · Import main app from core
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import app from 'LesliCoreVue/app'
 
@@ -42,28 +40,28 @@ import appEdit from 'LesliCoreVue/cloud_objects/workflows/apps/edit.vue'
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|show|edit]", "help/workflows", [{
-    path: "/",
+app('CloudHelp', '[list|new|show|edit]', 'help/workflows', [{
+    path: '/',
     component: appList,
     props: {
-        cloudModule: 'help/ticket'
+        cloudModule: 'help/'
     }
 },{
-    path: "/new",
+    path: '/new',
     component: appNew,
     props: {
-        cloudModule: 'help/ticket'
+        cloudModule: 'help/'
     }
 },{
-    path: "/:id",
+    path: '/:id',
     component: appShow,
     props: {
-        cloudModule: 'help/ticket'
+        cloudModule: 'help/'
     }
 },{
-    path: "/:id/edit",
+    path: '/:id/edit',
     component: appEdit,
     props: {
-        cloudModule: 'help/ticket'
+        cloudModule: 'help/'
     }
 }])
