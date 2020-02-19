@@ -18,90 +18,186 @@ Building a better future, one line of code at a time.
 @author   [AUTHOR_NAME_GOES_HERE]
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description App that retrieves and shows a Ticket category specified by the id in the route
+@description App that allows the user to create a new Ticket category
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
 
 
-// · List of Imported Components
+// · Component list
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentForm from '../components/form.vue'
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentTreeList from '../components/tree_list.vue'
 
 
 export default {
-    props: {
-
-    },
-    
     components: {
-        'component-form': componentForm
+        'component-tree-list': componentTreeList
     },
 
-    // @return [Object] Data used by this component's methods
-    // @description Returns the data needed for this component to work properly
-    // @data_variable main_route [String] the main route to which this component connects to the lesli API
-    // @data_variable ticket_category [Object] An object representing a Ticket category, with
-    //      the same params as the associated rails model
-    // @data_variable ticket_category_id [String|Integer] The id of the Ticket category, as
-    //      obtained from the route using the *Vue-router* *params* 
-    data(){
+    data() {
         return {
-            main_route: '/help/catalog/ticket_categories',
-            ticket_category: null,
-            ticket_category_id: null
+            translations: {
+                show: I18n.t('cloud_help.ticket_categories.show'),
+                shared: I18n.t('cloud_help.ticket_categories.shared')
+            },
+            ticket_category: {},
+            category_tree: [],
+            ticket_category_id: null,
+            modal:{
+                active: false
+            }
         }
     },
 
-    // @return [void]
-    // @description Executes the necessary methods needed to initialize this component
-    mounted(){
+    mounted() {
+        // · SetTicketCategoryId calls getTicketCategory
         this.setTicketCategoryId()
-        this.getTicketCategory()
     },
-
+    
     methods: {
-
-        // @return [void]
-        // @description Retrieves the id of the Ticket category and stores it in the data variable ticket_category_id
-        // @example
-        //      console.log(this.ticket_category_id) // will display null
-        //      this.setTicketCategoryId()
-        //      console.log(this.ticket_category_id) // will display a number, like 5
+        
         setTicketCategoryId(){
-            this.ticket_category_id = this.$route.params.id
+            if (this.$route.params.id) {
+                this.ticket_category_id = this.$route.params.id
+                this.getTicketCategory()
+            }
         },
-
-        // @return [void]
-        // @description Connects to the backend using HTTP and retrieves the Ticket category associated to
-        //      the variable *Ticket category_id*. If the HTTP request fails, an error message is shown
-        // @example
-        //      console.log(this.ticket_category) // will display null
-        //      this.getTicketCategory()
-        //      console.log(this.ticket_category) // will display an object representation of the Ticket category
+        
         getTicketCategory(){
-            let url = `${this.main_route}/${this.ticket_category_id}.json`
-            this.http.get(url).then(result => {
+            this.http.get(`/help/catalog/ticket_categories/${this.ticket_category_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket_category = result.data
+                    this.category_tree = result.data
+                    this.ticket_category = this.category_tree.filter(category => category.id == this.ticket_category_id)[0]
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        deleteTicketCategory(){
+            this.modal.active = false
+            this.http.delete(`/help/catalog/ticket_categories/${this.ticket_category_id}`).then(result => {
+                if(result.successful){
+                    this.alert(this.translations.show.messages.delete.successful,'success')
+                    this.$router.push('/')
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        emitShowWorkflowAssignments(){
+            this.bus.publish('show:/module/app/workflow-assignments')
         }
     }
 }
 </script>
 <template>
-    <section class="section">
-        <component-form v-if="ticket_category" :ticket-category="ticket_category" view-type="show"/>
-        <component-layout-data-loading v-else size="is-medium" />
+    <section class="section" v-if="ticket_category_id">
+        <b-modal 
+            :active.sync="modal.active"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-modal
+        >
+            <div class="card">
+                <div class="card-header is-danger">
+                    <h2 class="card-header-title">
+                        {{ translations.show.modal.title }}
+                    </h2>
+                </div>
+                <div class="card-content">
+                    {{ translations.show.modal.body }}
+                </div>
+                <div class="card-footer has-text-right">
+                    <button class="card-footer-item button is-danger" @click="deleteTicketCategory">
+                        {{ translations.show.modal.actions.delete }}
+                    </button>
+                    <button class="card-footer-item button is-secondary" @click="modal.active=false">
+                        {{ translations.show.modal.actions.cancel }}
+                    </button>
+                </div>
+            </div>
+        </b-modal>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-header-title">
+                    {{ translations.shared.name }}
+                </h2>
+                <div class="card-header-icon">
+                    <router-link :to="`/${ticket_category_id}/edit`">
+                        <i class="fas fa-edit"></i>
+                        {{ translations.shared.actions.edit }}
+                    </router-link>
+                    <router-link to="/">
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="fas fa-undo"></i>
+                        {{ translations.shared.actions.return }}
+                    </router-link>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="columns">
+                    <div class="column">
+                        <p>
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.name}:` }}
+                            </span>
+                            {{ ticket_category.name }}
+                            <br>
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.path}:` }}
+                            </span>
+                            <component-tree-list :trees="category_tree" :scrollable="true">
+                            </component-tree-list>
+                        </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <small>
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.created_at}:` }}
+                            </span>
+                            {{ date.toLocalFormat(ticket_category.created_at, false, true) }}
+                            <br>
+                            <span class="has-text-weight-bold">
+                                {{ `${translations.shared.fields.updated_at}:` }}
+                            </span>
+                            {{ date.toLocalFormat(ticket_category.updated_at, false, true) }}
+                        </small>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <div class="actions has-text-right">
+                                <button class="button is-danger" @click="modal.active = true">
+                                    {{ translations.shared.actions.delete }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </template>
+<style scoped>
+section.scrollable {
+    height: 23rem;
+    overflow-y: scroll;
+}
+.margin-left {
+    margin-left: 2rem;
+}
+.l-shape {
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-bottom: 1px;
+}
+</style>

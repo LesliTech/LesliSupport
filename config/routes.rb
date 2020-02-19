@@ -1,64 +1,52 @@
 CloudHelp::Engine.routes.draw do
 
-  namespace :ticket do
-    resources :custom_fields
-  end
-  namespace :sla do
-    resources :associations
-  end
-  namespace :workflow do
-    resources :associations
-  end
-  namespace :workflow do
-    resources :statuses
-  end
-  resources :workflows
-  resources :catalogs
-  namespace :catalog do
-    resources :ticket_categories
-  end
-  namespace :catalog do
-    resources :ticket_sources
-  end
-  namespace :catalog do
-    resources :ticket_priorities
-  end
-  namespace :catalog do
-    resources :ticket_types
-  end
     root to: "dashboards#default"
-    
-    resources :ticket_sources
-    resources :ticket_priorities
-    resources :ticket_types
-    resources :ticket_categories
 
-    resources :slas
+    scope :catalog, module: :catalog do
+        resources :ticket_priorities
+        resources :ticket_categories
+        resources :ticket_types
+    end
 
-      resources :workflow_states, except: [:new, :show, :edit]
-    resources :ticket_workflows, only: [:index, :update]
-    
+    resources :workflows do
+        scope module: :workflow do
+            resources :statuses
+            resources :associations
+        end
+    end
 
     resources :tickets, except: [:destroy] do
         scope module: :ticket do
-            resources :timelines, only: [:index]   
-            resources :subscribers, only: [:index, :create, :update, :destroy]
-            resources :discussions
-            resources :files
+            resource :assignment, only: [:create, :show, :update]
+            resources :timelines, only: [:index]
+
             resources :actions
             resources :activities
-            resource :assignment, only: [:create, :show, :update]
+            resources :discussions
+            resources :files
+            resources :subscribers, only: [:index, :create, :update, :destroy]
+            resources :custom_fields
+            resources :custom_field_values
+        end
+    end
+
+    resources :slas do
+        scope module: :sla do
+            resources :associations
         end
     end
 
     scope :options do
-        get "/tickets", to: "tickets#ticket_options"
-        get "/ticket_workflows", to: "ticket_workflows#workflow_options"
-        get "/workflows/:cloud_object_name/:cloud_object_id", to: "workflows#workflow_options"
+        scope module: :workflow do
+            get "/workflows/associations", to: "associations#association_options"
+        end
 
         scope :tickets, module: :ticket do
             get "/assignments", to: "assignments#assignment_options"
         end
+
+        get "/workflows/:cloud_object_name/:cloud_object_id", to: "workflows#workflow_options"  # Options to transition from one state to another one
+        get "/tickets", to: "tickets#ticket_options"
     end
 
 end

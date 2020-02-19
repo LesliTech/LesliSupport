@@ -28,7 +28,7 @@ Building a better future, one line of code at a time.
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
+import treeList from '../components/tree_list.vue'
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
@@ -38,7 +38,7 @@ export default {
     },
     
     components: {
-
+        'tree-list': treeList
     },
 
     // @return [Object] Data used by this component's methods
@@ -131,18 +131,17 @@ export default {
                 </div>
             </div>
             <div class="card-content">
-                <b-table :data="ticket_categories" @click="showTicketCategory" :hoverable="true">
-                    <template slot-scope="props">
-                        <b-table-column field="id" label="ID" width="40" numeric centered>
-                            {{ props.row.id }}
-                        </b-table-column>
-
-                        <!------------ ------------------------------------------ ------------>
-                        <!------------ Add other table rows here as you need them ------------>
-                        <!------------ ------------------------------------------ ------------>
-
+                <tree-list :trees="ticket_categories">
+                    <template v-slot:actions="{node}">
+                        <router-link :to="`/${node.id}`" class="button is-info is-small">
+                            <i class="fas fa-eye"></i>&nbsp;Show
+                        </router-link>
+                        &nbsp;
+                        <router-link :to="`/${node.id}/edit`" class="button is-warning is-small">
+                            <i class="fas fa-edit"></i>&nbsp;Edit
+                        </router-link>
                     </template>
-                </b-table>
+                </tree-list>
             </div>
         </div>
     </section>

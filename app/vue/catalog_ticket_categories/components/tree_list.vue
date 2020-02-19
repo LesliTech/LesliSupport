@@ -46,7 +46,7 @@ export default {
     <section :class="{'scrollable': scrollable}">
         <div v-if="default_card">
             <b-collapse>
-                <div class="card">
+                <div>
                     <header class="card-header">
                         <p class="card-header-title">
                             <slot name="default_content">
@@ -64,19 +64,19 @@ export default {
             <b-collapse
                 :open.sync="tree.active"
             >
-                <div class="card">
+                <div>
                     <header class="card-header">
                         <span v-for="level in tree.depth" :key="level">
                             &nbsp;&nbsp;&nbsp;
                         </span>
                         <p class="card-header-title">
-                            <i v-if="tree.children_active" class="fas fa-chevron-down"></i>
-                            <i 
-                                v-else :class="{'has-text-white': !tree.has_children}"
-                                class="fas fa-chevron-right"
-                            ></i>
-                            &nbsp;&nbsp;
                             <a v-if="tree.has_children" @click="toggleSubTrees(tree)" class="has-text-weight-bold">
+                                <i v-if="tree.children_active" class="fas fa-chevron-down"></i>
+                                <i 
+                                    v-else :class="{'has-text-white': !tree.has_children}"
+                                    class="fas fa-chevron-right"
+                                ></i>
+                                &nbsp;&nbsp;
                                 <slot name="content" :node="tree">
                                     {{tree.name}}
                                 </slot>
