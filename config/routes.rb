@@ -1,5 +1,31 @@
 CloudHelp::Engine.routes.draw do
 
+  namespace :ticket do
+    resources :custom_fields
+  end
+  namespace :sla do
+    resources :associations
+  end
+  namespace :workflow do
+    resources :associations
+  end
+  namespace :workflow do
+    resources :statuses
+  end
+  resources :workflows
+  resources :catalogs
+  namespace :catalog do
+    resources :ticket_categories
+  end
+  namespace :catalog do
+    resources :ticket_sources
+  end
+  namespace :catalog do
+    resources :ticket_priorities
+  end
+  namespace :catalog do
+    resources :ticket_types
+  end
     root to: "dashboards#default"
     
     resources :ticket_sources
@@ -9,8 +35,7 @@ CloudHelp::Engine.routes.draw do
 
     resources :slas
 
-    resources :workflows
-    resources :workflow_states, except: [:new, :show, :edit]
+      resources :workflow_states, except: [:new, :show, :edit]
     resources :ticket_workflows, only: [:index, :update]
     
 
