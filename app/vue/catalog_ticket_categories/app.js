@@ -14,7 +14,7 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 @description Main app for the %humanized_resource model%. Uses Vue-router to render the different views

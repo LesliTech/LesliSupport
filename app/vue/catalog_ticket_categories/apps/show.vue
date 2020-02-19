@@ -89,10 +89,6 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-        },
-
-        emitShowWorkflowAssignments(){
-            this.bus.publish('show:/module/app/workflow-assignments')
         }
     }
 }

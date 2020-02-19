@@ -64,9 +64,9 @@ export default {
 
         deleteTicketPriority(){
             this.modal.active = false
-            this.http.delete(`/help/ticket_priorities/${this.ticket_priority_id}`).then(result => {
+            this.http.delete(`/help/catalog/ticket_priorities/${this.ticket_priority_id}`).then(result => {
                 if(result.successful){
-                    this.alert(this.translations.show.messages.delete.successful,'success')
+                    this.alert('Ticket priority deleted successfully','success')
                     this.$router.push('/')
                 }else{
                     this.alert(result.error.message,'danger')

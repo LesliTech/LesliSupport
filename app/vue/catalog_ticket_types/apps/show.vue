@@ -1,6 +1,8 @@
 <script>
 /*
-Copyright (c) 2020, Lesli Technologies, S. A.
+Lesli
+
+Copyright (c) 2019, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -15,82 +17,62 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@dev      Carlos Hermosilla
+@author   LesliTech <hello@lesli.tech>
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description App that retrieves and shows a Ticket type specified by the id in the route
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
 
 
-// · List of Imported Components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentForm from '../components/form.vue'
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
 export default {
-    props: {
 
-    },
-    
-    components: {
-        'component-form': componentForm
-    },
-
-    // @return [Object] Data used by this component's methods
-    // @description Returns the data needed for this component to work properly
-    // @data_variable main_route [String] the main route to which this component connects to the lesli API
-    // @data_variable ticket_type [Object] An object representing a Ticket type, with
-    //      the same params as the associated rails model
-    // @data_variable ticket_type_id [String|Integer] The id of the Ticket type, as
-    //      obtained from the route using the *Vue-router* *params* 
-    data(){
+    data() {
         return {
-            main_route: '/help/catalog/ticket_types',
-            ticket_type: null,
-            ticket_type_id: null
+            ticket_type: {},
+            ticket_type_id: null,
+            modal:{
+                active: false
+            }
         }
     },
 
-    // @return [void]
-    // @description Executes the necessary methods needed to initialize this component
-    mounted(){
+    mounted() {
+        // · SetTicketTypeId calls getTicketType
         this.setTicketTypeId()
-        this.getTicketType()
     },
 
     methods: {
-
-        // @return [void]
-        // @description Retrieves the id of the Ticket type and stores it in the data variable ticket_type_id
-        // @example
-        //      console.log(this.ticket_type_id) // will display null
-        //      this.setTicketTypeId()
-        //      console.log(this.ticket_type_id) // will display a number, like 5
+        
         setTicketTypeId(){
-            this.ticket_type_id = this.$route.params.id
+            if (this.$route.params.id) {
+                this.ticket_type_id = this.$route.params.id
+                this.getTicketType()
+            }
         },
 
-        // @return [void]
-        // @description Connects to the backend using HTTP and retrieves the Ticket type associated to
-        //      the variable *Ticket type_id*. If the HTTP request fails, an error message is shown
-        // @example
-        //      console.log(this.ticket_type) // will display null
-        //      this.getTicketType()
-        //      console.log(this.ticket_type) // will display an object representation of the Ticket type
-        getTicketType(){
-            let url = `${this.main_route}/${this.ticket_type_id}.json`
-            this.http.get(url).then(result => {
+        getTicketType() {
+            this.http.get(`/help/catalog/ticket_types/${this.ticket_type_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_type = result.data
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        deleteTicketType(){
+            this.modal.active = false
+            this.http.delete(`/help/catalog/ticket_types/${this.ticket_type_id}`).then(result => {
+                if(result.successful){
+                    this.alert('Ticket type deleted successfully','success')
+                    this.$router.push('/')
+                }else{
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -100,8 +82,87 @@ export default {
 }
 </script>
 <template>
-    <section class="section">
-        <component-form v-if="ticket_type" :ticket-type="ticket_type" view-type="show"/>
-        <component-layout-data-loading v-else size="is-medium" />
+    <section class="section" v-if="ticket_type_id">
+        <b-modal 
+            :active.sync="modal.active"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-modal
+        >
+            <div class="card">
+                <div class="card-header is-danger">
+                    <h2 class="card-header-title">
+                        Are you sure you want to delete this type? 
+                    </h2>
+                </div>
+                <div class="card-content">
+                    You will only be able to do this if there are no tickets currenty associated to it
+                </div>
+                <div class="card-footer has-text-right">
+                    <button class="card-footer-item button is-danger" @click="deleteTicketType">
+                        Yes, delete it
+                    </button>
+                    <button class="card-footer-item button is-secondary" @click="modal.active=false">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </b-modal>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-header-title">
+                    Ticket Type
+                </h2>
+                <div class="card-header-icon">
+                    <router-link :to="`/${ticket_type_id}/edit`">
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="fas fa-edit"></i>
+                        Edit Ticket Type
+                    </router-link>
+                    <router-link :to="`/`">
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="fas fa-undo"></i>
+                        Return
+                    </router-link>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="columns">
+                    <div class="column">
+                        <p>
+                            <span class="has-text-weight-bold">
+                                Name:
+                            </span>
+                            {{ ticket_type.name }}
+                        </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <small>
+                            <span class="has-text-weight-bold">
+                                Created at:
+                            </span>
+                            {{ date.toLocalFormat(ticket_type.created_at,false,true) }}
+                            <br>
+                            <span class="has-text-weight-bold">
+                                Updated at:
+                            </span>
+                            {{ date.toLocalFormat(ticket_type.updated_at,false,true) }}
+                        </small>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <div class="actions has-text-right">
+                                <button class="button is-danger" @click="modal.active = true">
+                                    Delete Ticket Type
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </template>

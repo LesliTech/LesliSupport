@@ -15,7 +15,7 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 @description Allows the user to either view, or edit a Ticket type and save it in the 
@@ -215,32 +215,53 @@ export default {
         <!--------------------------------------- START CARD CONTENT--------------------------------------->
         <div class="card-content">
             <form @submit="submitTicketType">
-
-                <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
-                <b-field v-if="viewType == 'new' || viewType == 'edit'">
-                    <b-button type="is-primary" native-type="submit">
-                        <span v-if="viewType == 'new'">
-                            Create Ticket type
-                        </span>
-                        <span v-else>
-                            Update Ticket type
-                        </span>
-                    </b-button>
+                <b-field label="Name">
+                    <b-input v-model="ticket_type.name" required="true"></b-input>
                 </b-field>
-                <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
-                
-                <!---------------------------------- START DELETE BUTTON ---------------------------------->
-                <b-field v-if="viewType == 'show'">
-                    <b-button type="is-danger" @click="deleteTicketType">
-                        <span v-if="viewType == 'new'">
-                            Create Ticket type
-                        </span>
-                        <span v-else>
-                            Delete Ticket type
-                        </span>
-                    </b-button>
-                </b-field>
-                <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                <div class="columns">
+                    <div v-if="ticket_type_id" class="column">
+                        <div class="field">
+                            <small>
+                                <span class="has-text-weight-bold">
+                                    Created at:
+                                </span>
+                                {{ date.toLocalFormat(ticket_type.created_at, false, true) }}
+                                <br>
+                                <span class="has-text-weight-bold">
+                                    Updated at:
+                                </span>
+                                {{ date.toLocalFormat(ticket_type.updated_at, false, true) }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="column has-text-right">
+                        <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
+                        <b-field v-if="viewType == 'new' || viewType == 'edit'">
+                            <b-button type="is-primary" native-type="submit">
+                                <span v-if="viewType == 'new'">
+                                    Create Ticket Type
+                                </span>
+                                <span v-else>
+                                    Update Ticket Type
+                                </span>
+                            </b-button>
+                        </b-field>
+                        <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
+                        
+                        <!---------------------------------- START DELETE BUTTON ---------------------------------->
+                        <b-field v-if="viewType == 'show'">
+                            <b-button type="is-danger" @click="deleteTicketType">
+                                <span v-if="viewType == 'new'">
+                                    Create Ticket Type
+                                </span>
+                                <span v-else>
+                                    Delete Ticket Type
+                                </span>
+                            </b-button>
+                        </b-field>
+                        <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                    </div>
+                </div>
             </form>
         </div>
         <!---------------------------------------  END CARD CONTENT --------------------------------------->

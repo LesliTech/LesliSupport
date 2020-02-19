@@ -15,7 +15,7 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 @description App that retrieves and shows list of all the Ticket type associated to 
@@ -133,14 +133,18 @@ export default {
             <div class="card-content">
                 <b-table :data="ticket_types" @click="showTicketType" :hoverable="true">
                     <template slot-scope="props">
-                        <b-table-column field="id" label="ID" width="40" numeric centered>
+                        <b-table-column field="id" label="Number" width="40" numeric centered>
                             {{ props.row.id }}
                         </b-table-column>
-
-                        <!------------ ------------------------------------------ ------------>
-                        <!------------ Add other table rows here as you need them ------------>
-                        <!------------ ------------------------------------------ ------------>
-
+                        <b-table-column field="name" label="Name">
+                            {{ props.row.name }}
+                        </b-table-column>
+                        <b-table-column field="created_at" label="Created at">
+                            {{ date.toLocalFormat(props.row.created_at, true) }}
+                        </b-table-column>
+                        <b-table-column field="updated_at" label="Updated at">
+                            {{ date.toLocalFormat(props.row.updated_at, true) }}
+                        </b-table-column>
                     </template>
                 </b-table>
             </div>
