@@ -15,7 +15,7 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 @description App that retrieves and shows, and allows the user to edit/update a

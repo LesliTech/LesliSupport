@@ -15,82 +15,61 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
-@description App that retrieves and shows a Ticket priority specified by the id in the route
+@description Allows the user to either view, or edit a Ticket priority and save it in the 
+    database using HTTP. This component is intended to be used in conjunction with the main apps:
+    *new*, *show* and *edit*
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
 
 
-// · List of Imported Components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentForm from '../components/form.vue'
-
-
-// · 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
 export default {
-    props: {
-
-    },
-    
-    components: {
-        'component-form': componentForm
-    },
-
-    // @return [Object] Data used by this component's methods
-    // @description Returns the data needed for this component to work properly
-    // @data_variable main_route [String] the main route to which this component connects to the lesli API
-    // @data_variable ticket_priority [Object] An object representing a Ticket priority, with
-    //      the same params as the associated rails model
-    // @data_variable ticket_priority_id [String|Integer] The id of the Ticket priority, as
-    //      obtained from the route using the *Vue-router* *params* 
-    data(){
+    data() {
         return {
-            main_route: '/help/catalog/ticket_priorities',
-            ticket_priority: null,
-            ticket_priority_id: null
+            ticket_priority: {},
+            ticket_priority_id: null,
+            modal:{
+                active: false
+            }
         }
     },
-
-    // @return [void]
-    // @description Executes the necessary methods needed to initialize this component
-    mounted(){
+    mounted() {
+        // · SetTicketPriorityId calls getTicketPriority
         this.setTicketPriorityId()
-        this.getTicketPriority()
     },
-
     methods: {
-
-        // @return [void]
-        // @description Retrieves the id of the Ticket priority and stores it in the data variable ticket_priority_id
-        // @example
-        //      console.log(this.ticket_priority_id) // will display null
-        //      this.setTicketPriorityId()
-        //      console.log(this.ticket_priority_id) // will display a number, like 5
+        
         setTicketPriorityId(){
-            this.ticket_priority_id = this.$route.params.id
+            if (this.$route.params.id) {
+                this.ticket_priority_id = this.$route.params.id
+                this.getTicketPriority()
+            }
         },
 
-        // @return [void]
-        // @description Connects to the backend using HTTP and retrieves the Ticket priority associated to
-        //      the variable *Ticket priority_id*. If the HTTP request fails, an error message is shown
-        // @example
-        //      console.log(this.ticket_priority) // will display null
-        //      this.getTicketPriority()
-        //      console.log(this.ticket_priority) // will display an object representation of the Ticket priority
-        getTicketPriority(){
-            let url = `${this.main_route}/${this.ticket_priority_id}.json`
-            this.http.get(url).then(result => {
+        getTicketPriority() {
+            this.http.get(`/help/catalog/ticket_priorities/${this.ticket_priority_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket_priority = result.data
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        deleteTicketPriority(){
+            this.modal.active = false
+            this.http.delete(`/help/ticket_priorities/${this.ticket_priority_id}`).then(result => {
+                if(result.successful){
+                    this.alert(this.translations.show.messages.delete.successful,'success')
+                    this.$router.push('/')
+                }else{
+                    this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -101,7 +80,89 @@ export default {
 </script>
 <template>
     <section class="section">
-        <component-form v-if="ticket_priority" :ticket-priority="ticket_priority" view-type="show"/>
-        <component-layout-data-loading v-else size="is-medium" />
+        <b-modal 
+            :active.sync="modal.active"
+            has-modal-card
+            trap-focus
+            aria-role="dialog"
+            aria-modal
+        >
+            <div class="card">
+                <div class="card-header is-danger">
+                    <h2 class="card-header-title">
+                        Are you sure you want to delete this priority?
+                    </h2>
+                </div>
+                <div class="card-content">
+                    You will only be able to do this if there are no tickets currenty in this priority. 
+                </div>
+                <div class="card-footer has-text-right">
+                    <button class="card-footer-item button is-danger" @click="deleteTicketPriority">
+                        Yes, delete it
+                    </button>
+                    <button class="card-footer-item button is-secondary" @click="modal.active=false">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </b-modal>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-header-title">
+                    Ticket Priority
+                </h2>
+                <div class="card-header-icon">
+                    <router-link :to="`/${ticket_priority_id}/edit`">
+                        <i class="fas fa-edit"></i>
+                        Edit Ticket Priority
+                    </router-link>
+                    <router-link :to="`/`">
+                        &nbsp;&nbsp;&nbsp;
+                        <i class="fas fa-undo"></i>
+                        Return
+                    </router-link>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="columns">
+                    <div class="column">
+                        <p>
+                            <span class="has-text-weight-bold">
+                                Name:
+                            </span>
+                            {{ ticket_priority.name }},
+                            <span class="has-text-weight-bold">
+                                Weight:
+                            </span>
+                            {{ ticket_priority.weight }}
+                        </p>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <small>
+                            <span class="has-text-weight-bold">
+                                Created at:
+                            </span>
+                            {{ date.toLocalFormat(ticket_priority.created_at, false, true) }}
+                            <br>
+                            <span class="has-text-weight-bold">
+                                Updated at:
+                            </span>
+                            {{ date.toLocalFormat(ticket_priority.updated_at, false, true) }}
+                        </small>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <div class="actions has-text-right">
+                                <button class="button is-danger" @click="modal.active = true">
+                                    Delete Ticket Priority
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </template>

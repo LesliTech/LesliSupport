@@ -28,7 +28,7 @@ Building a better future, one line of code at a time.
         acts_as_tree
 
         belongs_to :account,    class_name: "CloudHelp::Account",   foreign_key: "cloud_help_accounts_id"
-        has_many :tickets,      class_name: "CloudHelp::Ticket",    foreign_key: "cloud_help_ticket_categories_id"
+        has_many :tickets,      class_name: "CloudHelp::Ticket",    foreign_key: "cloud_help_catalog_ticket_categories_id"
 
         validates :name, presence: true
 

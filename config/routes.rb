@@ -3,8 +3,8 @@ CloudHelp::Engine.routes.draw do
     root to: "dashboards#default"
 
     scope :catalog, module: :catalog do
-        resources :ticket_priorities
         resources :ticket_categories
+        resources :ticket_priorities
         resources :ticket_types
     end
 

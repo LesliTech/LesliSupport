@@ -15,7 +15,7 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 @description App that retrieves and shows list of all the Ticket priority associated to 
@@ -132,15 +132,22 @@ export default {
             </div>
             <div class="card-content">
                 <b-table :data="ticket_priorities" @click="showTicketPriority" :hoverable="true">
-                    <template slot-scope="props">
-                        <b-table-column field="id" label="ID" width="40" numeric centered>
-                            {{ props.row.id }}
+                    <template v-slot="props">
+                        <b-table-column field="id" label="Number" width="40" centered numeric>
+                            {{props.row.id}}
                         </b-table-column>
-
-                        <!------------ ------------------------------------------ ------------>
-                        <!------------ Add other table rows here as you need them ------------>
-                        <!------------ ------------------------------------------ ------------>
-
+                        <b-table-column field="name" label="Name" >
+                            {{props.row.name}}
+                        </b-table-column>
+                        <b-table-column field="weight" label="Weight">
+                            {{props.row.weight}}
+                        </b-table-column>
+                        <b-table-column field="created_at" label="Created at">
+                            {{ date.toLocalFormat(props.row.created_at, true) }}
+                        </b-table-column>
+                        <b-table-column field="updated_at" label="Updated at">
+                            {{ date.toLocalFormat(props.row.updated_at, true) }}
+                        </b-table-column>
                     </template>
                 </b-table>
             </div>

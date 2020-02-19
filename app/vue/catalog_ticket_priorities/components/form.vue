@@ -15,7 +15,7 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@author   [AUTHOR_NAME_GOES_HERE]
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
 @description Allows the user to either view, or edit a Ticket priority and save it in the 
@@ -215,32 +215,64 @@ export default {
         <!--------------------------------------- START CARD CONTENT--------------------------------------->
         <div class="card-content">
             <form @submit="submitTicketPriority">
+                <div class="columns">
+                    <div class="column">
+                        <b-field label="Name">
+                            <b-input v-model="ticket_priority.name" required="true"></b-input>
+                        </b-field>
+                    </div>
+                    <div class="column">
+                        <b-field label="Weight">
+                            <b-input max="1000000" min="0" v-model="ticket_priority.weight" type="number" required="true" >
+                            </b-input>
+                        </b-field>
+                    </div>
+                </div>
 
-                <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
-                <b-field v-if="viewType == 'new' || viewType == 'edit'">
-                    <b-button type="is-primary" native-type="submit">
-                        <span v-if="viewType == 'new'">
-                            Create Ticket priority
-                        </span>
-                        <span v-else>
-                            Update Ticket priority
-                        </span>
-                    </b-button>
-                </b-field>
-                <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
-                
-                <!---------------------------------- START DELETE BUTTON ---------------------------------->
-                <b-field v-if="viewType == 'show'">
-                    <b-button type="is-danger" @click="deleteTicketPriority">
-                        <span v-if="viewType == 'new'">
-                            Create Ticket priority
-                        </span>
-                        <span v-else>
-                            Delete Ticket priority
-                        </span>
-                    </b-button>
-                </b-field>
-                <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                <div class="columns">
+                    <div v-if="ticket_priority_id" class="column">
+                        <div class="field">
+                            <small>
+                                <span class="has-text-weight-bold">
+                                    Created at:
+                                </span>
+                                {{ date.toLocalFormat(ticket_priority.created_at, false, true) }}
+                                <br>
+                                <span class="has-text-weight-bold">
+                                    Updated at:
+                                </span>
+                                {{ date.toLocalFormat(ticket_priority.updated_at, false, true) }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="column has-text-right">
+                        <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
+                        <b-field v-if="viewType == 'new' || viewType == 'edit'">
+                            <b-button type="is-primary" native-type="submit">
+                                <span v-if="viewType == 'new'">
+                                    Create Ticket priority
+                                </span>
+                                <span v-else>
+                                    Update Ticket priority
+                                </span>
+                            </b-button>
+                        </b-field>
+                        <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
+                        
+                        <!---------------------------------- START DELETE BUTTON ---------------------------------->
+                        <b-field v-if="viewType == 'show'">
+                            <b-button type="is-danger" @click="deleteTicketPriority">
+                                <span v-if="viewType == 'new'">
+                                    Create Ticket priority
+                                </span>
+                                <span v-else>
+                                    Delete Ticket priority
+                                </span>
+                            </b-button>
+                        </b-field>
+                        <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                    </div>
+                </div>
             </form>
         </div>
         <!---------------------------------------  END CARD CONTENT --------------------------------------->
