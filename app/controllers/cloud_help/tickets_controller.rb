@@ -28,10 +28,7 @@ Building a better future, one line of code at a time.
 =end
     class TicketsController < ApplicationController
 
-        before_action :set_ticket, only: [
-            :update,
-            :workflow_options
-        ]
+        before_action :set_ticket, only: [:update]
 
 =begin
 @return [HTML|JSON] HTML view for listing all tickets or a Json that contains a list 
@@ -47,7 +44,7 @@ Building a better future, one line of code at a time.
             respond_to do |format|
                 format.html { }
                 format.json do
-                    tickets = Ticket.detailed_info(current_user.account.help)
+                    tickets = Ticket.list(current_user.account.help)
                     responseWithSuccessful(tickets) 
                 end
             end
@@ -105,11 +102,11 @@ Building a better future, one line of code at a time.
     Can be an HTML string
 @controller_action_param :tags [String], A small list of words, separated by commas
 @controller_action_param :deadline [Datetime] The date set as this ticket's deadline
-@controller_action_param :cloud_help_ticket_types_id [Integer] The id of the type
+@controller_action_param :cloud_help_catalog_ticket_types_id [Integer] The id of the type
     associated to this ticket
-@controller_action_param :cloud_help_ticket_priorities_id [Integer] The id of the priority
+@controller_action_param :cloud_help_catalog_ticket_priorities_id [Integer] The id of the priority
     associated to this ticket
-@controller_action_param :cloud_help_ticket_categories_id [Integer] The id of the category
+@controller_action_param :cloud_help_catalog_ticket_categories_id [Integer] The id of the category
     associated to this ticket
 @controller_action_param :cloud_help_ticket_workflow_details_id [Integer] The id of the
     workflow_detail associated to this ticket. The workflow detail must be a detail of the
@@ -124,9 +121,9 @@ Building a better future, one line of code at a time.
     let data = {
         ticket:{
             detail_attributes:{
-                cloud_help_ticket_types_id:2,
-                cloud_help_ticket_categories_id:1,
-                cloud_help_ticket_priorities_id:2,
+                cloud_help_catalog_ticket_types_id:2,
+                cloud_help_catalog_ticket_categories_id:1,
+                cloud_help_catalog_ticket_priorities_id:2,
                 subject:I would like a button to print my record,
                 description:`
                     <div>In the <em>show screen</em>, 
@@ -141,8 +138,7 @@ Building a better future, one line of code at a time.
 =end
         def create
             ticket = Ticket.new(ticket_params)
-            ticket.detail.source = TicketSource.cloud_help_source
-            ticket.user = current_user
+            ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
             ticket.account = current_user.account.help
             ticket.set_workflow
 
@@ -169,11 +165,11 @@ Building a better future, one line of code at a time.
     Can be an HTML string
 @controller_action_param :tags [String], A small list of words, separated by commas
 @controller_action_param :deadline [Datetime] The date set as this ticket's deadline
-@controller_action_param :cloud_help_ticket_types_id [Integer] The id of the type
+@controller_action_param :cloud_help_catalog_ticket_types_id [Integer] The id of the type
     associated to this ticket
-@controller_action_param :cloud_help_ticket_priorities_id [Integer] The id of the priority
+@controller_action_param :cloud_help_catalog_ticket_priorities_id [Integer] The id of the priority
     associated to this ticket
-@controller_action_param :cloud_help_ticket_categories_id [Integer] The id of the category
+@controller_action_param :cloud_help_catalog_ticket_categories_id [Integer] The id of the category
     associated to this ticket
 @controller_action_param :cloud_help_ticket_workflow_details_id [Integer] The id of the
     workflow_detail associated to this ticket. The workflow detail must be a detail of the
@@ -189,9 +185,9 @@ Building a better future, one line of code at a time.
     let data = {
         ticket:{
             detail_attributes:{
-                cloud_help_ticket_types_id:2,
-                cloud_help_ticket_categories_id:1,
-                cloud_help_ticket_priorities_id:2,
+                cloud_help_catalog_ticket_types_id:2,
+                cloud_help_catalog_ticket_categories_id:1,
+                cloud_help_catalog_ticket_priorities_id:2,
                 subject:I would like a button to print my record,
                 description:`
                     <div>In the <em>show screen</em>, 
@@ -249,11 +245,11 @@ Building a better future, one line of code at a time.
     });
 =end
         def ticket_options
-            account = current_user.account
+            help_account = current_user.account.help
             responseWithSuccessful({
-                types: TicketType.where(account: current_user.account.help).select(:id, :name),
-                categories: TicketCategory.tree(account),
-                priorities: TicketPriority.where(account: current_user.account.help).select(:id, :name, :weight)
+                types: Catalog::TicketType.where(account: help_account).select(:id, :name),
+                categories: Catalog::TicketCategory.tree(current_user.account),
+                priorities: Catalog::TicketPriority.where(account: help_account).select(:id, :name, :weight)
             })
         end
 
@@ -280,8 +276,8 @@ Building a better future, one line of code at a time.
 @description Sanitizes the parameters received from an HTTP call to only allow the
     specified ones. Allowed params are :detail_attributes.
     :detail_attributes must be a Hash containing the next attributes: 
-    (:id, :subject, :description, :tags, :deadline, :cloud_help_ticket_types_id, 
-    :cloud_help_ticket_priorities_id, :cloud_help_ticket_categories_id, 
+    (:id, :subject, :description, :tags, :deadline, :cloud_help_catalog_ticket_types_id, 
+    :cloud_help_catalog_ticket_priorities_id, :cloud_help_catalog_ticket_categories_id, 
     :cloud_help_ticket_worklfow_details_id)
 @example
     # supose params contains {
@@ -303,16 +299,15 @@ Building a better future, one line of code at a time.
 =end
         def ticket_params
             params.require(:ticket).permit(
+                :cloud_help_catalog_ticket_types_id,
+                :cloud_help_catalog_ticket_priorities_id,
+                :cloud_help_catalog_ticket_categories_id,
+                :cloud_help_workflow_statuses_id,
                 detail_attributes: [
-                    :id,
                     :subject,
                     :description,
                     :tags,
-                    :deadline,
-                    :cloud_help_ticket_types_id,
-                    :cloud_help_ticket_priorities_id,
-                    :cloud_help_ticket_categories_id,
-                    :cloud_help_workflow_details_id
+                    :deadline
                 ]
             )
         end

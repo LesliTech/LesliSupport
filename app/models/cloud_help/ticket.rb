@@ -25,18 +25,24 @@ Building a better future, one line of code at a time.
     Tickets are the core *object* of the *CloudHelp* module
 =end
     class Ticket  < CloudObject::Base
+        include ActiveModel::Dirty
 
-        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
-        belongs_to :user, class_name: 'User', foreign_key: 'users_id'
+        belongs_to :account,    class_name: "CloudHelp::Account",                   foreign_key: "cloud_help_accounts_id"
+        belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
+        belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id"
+        belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id"
+        belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id"
+        belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
 
-        has_many :discussions, foreign_key: 'cloud_help_tickets_id'
-        has_many :actions, foreign_key: 'cloud_help_tickets_id'
-        has_many :files, foreign_key: 'cloud_help_tickets_id'
-        has_many :subscribers, foreign_key: 'cloud_help_tickets_id'
-        has_many :timelines, foreign_key: 'cloud_help_tickets_id'
+        has_many :discussions,  foreign_key: "cloud_help_tickets_id"
+        has_many :actions,      foreign_key: "cloud_help_tickets_id"
+        has_many :files,        foreign_key: "cloud_help_tickets_id"
+        has_many :subscribers,  foreign_key: "cloud_help_tickets_id"
+        has_many :timelines,    foreign_key: "cloud_help_tickets_id"
 
-        has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'
-        has_one :assignment, inverse_of: :ticket, autosave: true, foreign_key: 'cloud_help_tickets_id'  
+
+        has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: "cloud_help_tickets_id"
+        has_one :assignment, foreign_key: "cloud_help_tickets_id"  
 
         accepts_nested_attributes_for :detail, update_only: true
 
@@ -51,9 +57,9 @@ Building a better future, one line of code at a time.
 @example
     ticket_params = {
         detail_attributes: {
-            cloud_help_ticket_priorities_id: 1,
-            cloud_help_ticket_categories_id: 1,
-            cloud_help_ticket_types_id: 1
+            cloud_help_catalog_ticket_priorities_id: 1,
+            cloud_help_catalog_ticket_categories_id: 1,
+            cloud_help_catalog_ticket_types_id: 1
         }
     }
     ticket = CloudHelp::Ticket.new(ticket_params)
@@ -98,10 +104,10 @@ Building a better future, one line of code at a time.
     #        priority:"Medium",
     #        type:"Change Request",
     #        state:"created",
-    #        cloud_help_ticket_priorities_id:2,
-    #        cloud_help_ticket_types_id:2,
+    #        cloud_help_catalog_ticket_priorities_id:2,
+    #        cloud_help_catalog_ticket_types_id:2,
     #        cloud_help_ticket_workflows_id:4,
-    #        cloud_help_ticket_categories_id:1,
+    #        cloud_help_catalog_ticket_categories_id:1,
     #        cloud_help_ticket_states_id:1,
     #        deadline:null,
     #        priority_weight:100,
@@ -114,46 +120,33 @@ Building a better future, one line of code at a time.
 =end
         def detailed_info
             data = Ticket.joins(
-                "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
+                "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
             ).joins(
-                "inner join cloud_help_ticket_priorities CHTP on CHTD.cloud_help_ticket_priorities_id = CHTP.id"
+                "inner join cloud_help_catalog_ticket_types CHCTT on cloud_help_tickets.cloud_help_catalog_ticket_types_id = CHCTT.id"
             ).joins(
-                "inner join cloud_help_ticket_types CHTT on CHTD.cloud_help_ticket_types_id = CHTT.id"
+                "inner join cloud_help_catalog_ticket_categories CHCTC on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = CHCTC.id"
             ).joins(
-                "inner join cloud_help_ticket_categories CHTC on CHTD.cloud_help_ticket_categories_id = CHTC.id"
+                "inner join cloud_help_workflow_statuses CHWS on cloud_help_tickets.cloud_help_workflow_statuses_id = CHWS.id"
             ).joins(
-                "
-                    inner join cloud_help_ticket_workflows CHTW on 
-                    CHTW.cloud_help_ticket_types_id = CHTT.id and CHTW.cloud_help_ticket_categories_id = CHTC.id
-                "
+                "inner join cloud_help_workflows CHW on CHWS.cloud_help_workflows_id = CHW.id"
             ).joins(
-                "inner join cloud_help_workflows CHW on CHTW.cloud_help_workflows_id = CHW.id"
-            ).joins(
-                "
-                    inner join cloud_help_workflow_details CHWD on CHWD.cloud_help_workflows_id = CHW.id and
-                    CHTD.cloud_help_workflow_details_id = CHWD.id
-                "
-            ).joins(
-                "inner join cloud_help_workflow_states CHWS on CHWD.cloud_help_workflow_states_id = CHWS.id"
-            ).joins( :user ).select(
-                "users.email as email",                         "subject",
-                "description",                                  "CHTD.tags",
-                "CHTP.name as priority",                        "CHTT.name as type",
-                "CHWS.name as state",                           "CHTP.id as cloud_help_ticket_priorities_id",
-                "CHTT.id as cloud_help_ticket_types_id",        "CHW.id as cloud_help_workflows_id",
-                "CHTC.id as cloud_help_ticket_categories_id",   "CHWS.id as cloud_help_workflow_states_id",
-            "deadline"                                  ,       "CHTP.weight as priority_weight",
-                "CHWS.initial as state_initial"            ,    "CHWS.final as state_final"
+                "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
+            ).select(
+                "cloud_help_tickets.id as id",                      "cloud_help_tickets.created_at as created_at",
+                "CHCTP.name as priority",                           "CHCTT.name as type",
+                "CHWS.name as status",                              "CHCTP.id as cloud_help_catalog_ticket_priorities_id",
+                "CHCTT.id as cloud_help_catalog_ticket_types_id",   "CHCTC.id as cloud_help_catalog_ticket_categories_id",
+                "CHWS.id as cloud_help_workflow_statuses_id",       "CHCTP.weight as priority_weight",
+                "CHWS.initial as status_initial",                   "CHWS.final as status_final",
+                "CHW.id as cloud_help_workflows_id",                "CHWS.number as status_number"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
-            return {
-                id: id,
-                created_at: created_at,
-                detail_attributes: data.merge(
-                    category: detail.category.full_path
-                ),
-                assignment_attributes: assignment_info
-            }
+
+            data[:category] = category.full_path
+            data[:detail_attributes] = detail.attributes
+            data[:assignment_attributes] = assignment_info
+            
+            return data
         end
 
 =begin
@@ -185,43 +178,31 @@ Building a better future, one line of code at a time.
     #    }
     #]
 =end
-        def self.detailed_info(help_account)
+        def self.list(help_account)
             Ticket.joins(
                 "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
             ).joins(
-                "inner join cloud_help_ticket_priorities CHTP on CHTD.cloud_help_ticket_priorities_id = CHTP.id"
+                "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
             ).joins(
-                "inner join cloud_help_ticket_types CHTT on CHTD.cloud_help_ticket_types_id = CHTT.id"
+                "inner join cloud_help_catalog_ticket_types CHCTT on cloud_help_tickets.cloud_help_catalog_ticket_types_id = CHCTT.id"
             ).joins(
-                "inner join cloud_help_ticket_categories CHTC on CHTD.cloud_help_ticket_categories_id = CHTC.id"
+                "inner join cloud_help_catalog_ticket_categories CHCTC on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = CHCTC.id"
             ).joins(
-                "
-                    inner join cloud_help_ticket_workflows CHTW on 
-                    CHTW.cloud_help_ticket_types_id = CHTT.id and CHTW.cloud_help_ticket_categories_id = CHTC.id
-                "
-            ).joins(
-                "inner join cloud_help_workflows CHW on CHTW.cloud_help_workflows_id = CHW.id"
-            ).joins(
-                "
-                    inner join cloud_help_workflow_details CHWD on CHWD.cloud_help_workflows_id = CHW.id and
-                    CHTD.cloud_help_workflow_details_id = CHWD.id
-                "
-            ).joins(
-                "inner join cloud_help_workflow_states CHWS on CHWD.cloud_help_workflow_states_id = CHWS.id"
+                "inner join cloud_help_workflow_statuses CHWS on cloud_help_tickets.cloud_help_workflow_statuses_id = CHWS.id"
             ).joins(
                 "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
             ).select(
-                "id",                                           "CHTP.name as priority",
-                "CHTT.name as type",                           "CHWS.name as state",
-                "CHTC.name as category",                        "CHTA.assignation_type",
-                "subject",                                      "CHTC.id as cloud_help_ticket_categories_id",
+                "id",                                           "CHCTP.name as priority",
+                "CHCTT.name as type",                           "CHWS.name as state",
+                "CHCTC.name as category",                        "CHTA.assignation_type",
+                "subject",                                      "CHCTC.id as cloud_help_catalog_ticket_categories_id",
                 "created_at"
             ).where(
                 "cloud_help_tickets.cloud_help_accounts_id = #{help_account.id}"
             ).map do |ticket|
                 ticket.attributes.merge({
                     assignation_type: Ticket::Assignment.assignation_types.key(ticket[:assignation_type]),
-                    category: TicketCategory.find(ticket[:cloud_help_ticket_categories_id]).full_path
+                    category: Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
                 })
             end
         end
@@ -264,37 +245,37 @@ Building a better future, one line of code at a time.
     - A deadline added
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update(detail_attributes: {cloud_help_ticket_priorities_id: 4})
+    ticket.update(detail_attributes: {cloud_help_catalog_ticket_priorities_id: 4})
     # after the update, this method is executed automatically
 =end
         def after_update_actions
             super
             
-            workflow_change = detail.saved_changes["cloud_help_workflow_details_id"]
+            workflow_change = saved_changes["cloud_help_workflow_statuses_id"]
             if workflow_change
-                if Workflow::Detail.find(workflow_change[0]).workflow_state.is_final?
+                if Workflow::Status.find(workflow_change[0]).final
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
                 action_verify_workflow(workflow_change[0], workflow_change[1])
             else
-                if detail.workflow_detail.workflow_state.is_final?
+                if status.final
                     errors.add(:base, :ticket_already_closed)
                     raise ActiveRecord::RecordInvalid, self
                 end
             end
             
-            priority_change = detail.saved_changes["cloud_help_ticket_priorities_id"]
+            priority_change = saved_changes["cloud_help_catalog_ticket_priorities_id"]
             if priority_change
                 action_register_priority_change(priority_change[0], priority_change[1])
             end
             
-            type_change = detail.saved_changes["cloud_help_ticket_types_id"]
+            type_change = saved_changes["cloud_help_catalog_ticket_types_id"]
             if type_change
                 action_register_type_transfer(type_change[0], type_change[1])
             end
             
-            category_change = detail.saved_changes["cloud_help_ticket_categories_id"]
+            category_change = saved_changes["cloud_help_catalog_ticket_categories_id"]
             if category_change
                 action_register_category_transfer(category_change[0], category_change[1])
             end
@@ -303,9 +284,10 @@ Building a better future, one line of code at a time.
                 action_assign_new_workflow
             end
 
-            if detail.saved_changes["deadline"] 
+            deadline_change = detail.saved_changes["deadline"]
+            if deadline_change
                 action_register_ticket_deadline
-            end 
+            end
         end
 
 =begin
@@ -319,11 +301,17 @@ Building a better future, one line of code at a time.
     ticket.update({ detail_attributes: { cloud_help_ticket_workflow_details_id: 4 } })
     # the *after_update_actions* method will call this method after the update
 =end
-        def action_verify_workflow(old_workflow_detail_id, new_workflow_detail_id)
+        def action_verify_workflow(old_status_id, new_status_id)
 
-            old_workflow_detail = Workflow::Detail.find(old_workflow_detail_id)
-            new_workflow_detail = Workflow::Detail.find(new_workflow_detail_id)
-            unless old_workflow_detail.next_states.split("|").include? new_workflow_detail.cloud_help_workflow_states_id.to_s   
+            old_workflow_status = Workflow::Status.find(old_status_id)
+            new_workflow_status = Workflow::Status.find(new_status_id)
+
+            # If both statuses are initial, this is a transfer
+            if old_workflow_status.initial && new_workflow_status.initial
+                return
+            end
+
+            unless old_workflow_status.next_statuses.split("|").include? new_workflow_status.number.to_s
                 errors.add(:base, :invalid_workflow_transition)
                 raise ActiveRecord::RecordInvalid, self
             end
@@ -331,16 +319,16 @@ Building a better future, one line of code at a time.
             timeline_action = Ticket::Timeline.actions[:state_changed]
             timeline_description = I18n.t(
                 'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
-                old_state_name: old_workflow_detail.workflow_state.name,
-                new_state_name: new_workflow_detail.workflow_state.name
+                old_state_name: old_workflow_status.name,
+                new_state_name: new_workflow_status.name
             )
             message = I18n.t(
                 'activerecord.models.cloud_help_ticket.updated.workflow',
                 ticket_id: id,
-                state_name: new_workflow_detail.workflow_state.name
+                state_name: new_workflow_status.name
             )
 
-            if new_workflow_detail.workflow_state.is_final?
+            if new_workflow_status.final
                 timeline_action = Ticket::Timeline.actions[:closed]
                 timeline_description = I18n.t(
                     'activerecord.models.cloud_help/ticket/timeline.actions.closed',
@@ -363,12 +351,12 @@ Building a better future, one line of code at a time.
     the *action_assign_new_workflow* method.
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_ticket_types_id: 1 } })
+    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_types_id: 1 } })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_type_transfer(old_type, new_type)
-            old_type = TicketType.find(old_type)
-            new_type = TicketType.find(new_type)
+            old_type = Catalog::TicketType.find(old_type)
+            new_type = Catalog::TicketType.find(new_type)
             
             # Adding type transfer to timeline
             timelines.create(
@@ -388,12 +376,12 @@ Building a better future, one line of code at a time.
     the *action_assign_new_workflow* method.
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_ticket_categories: 1 } })
+    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_categories: 1 } })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_category_transfer(old_category, new_category)
-            old_category = TicketCategory.find(old_category)
-            new_category = TicketCategory.find(new_category)
+            old_category = Catalog::TicketCategory.find(old_category)
+            new_category = Catalog::TicketCategory.find(new_category)
             
             # Adding category transfer to timeline
             timelines.create(
@@ -415,18 +403,13 @@ Building a better future, one line of code at a time.
     to all subscribers
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_ticket_categories: 1 } })
+    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_categories: 1 } })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_assign_new_workflow
             assignment.destroy if assignment
-            category = detail.category
-            type = detail.type
-
-            workflow_assignment = TicketWorkflow.find_by(ticket_type: type, ticket_category: category)
-            new_workflow = workflow_assignment.workflow
-            new_workflow_detail = new_workflow.details.find_by(workflow_state: WorkflowState.initial_state(account))
-            if detail.update!(workflow_detail: new_workflow_detail)
+            set_workflow(true)
+            if save
                 message = I18n.t(
                     'activerecord.models.cloud_help_ticket.updated.transferred',
                     ticket_id: id,
@@ -448,12 +431,12 @@ Building a better future, one line of code at a time.
     increased or decreased
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_ticket_priorities_id: 4 } })
+    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_priorities_id: 4 } })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_priority_change(old_priority, new_priority)
-            old_priority = TicketPriority.find(old_priority)
-            new_priority = TicketPriority.find(new_priority)
+            old_priority = Catalog::TicketPriority.find(old_priority)
+            new_priority = Catalog::TicketPriority.find(new_priority)
 
             action = :priority_decreased
             timeline_translation = 'activerecord.models.cloud_help/ticket/timeline.actions.priority_decreased'
@@ -499,37 +482,21 @@ Building a better future, one line of code at a time.
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_ticket_deadline
-            if assignment
-                Courier::Driver::Calendar.registerEvent(
-                    assignment.user,
-                    {
-                        title:          I18n.t('activerecord.models.cloud_help_ticket.assignation_registry.title', ticket_id: id),
-                        description:    I18n.t('activerecord.models.cloud_help_ticket.assignation_registry.description'),
-                        time_start:     detail.deadline.to_date,
-                        time_end:       detail.deadline.to_date + 1.hour,
-                        url:            "/help/tickets/#{id}"
-                    }
-                )
-
-                # Adding deadline to timeline
-                timelines.create(
-                    action: Ticket::Timeline.actions[:deadline_established],
-                    description: I18n.t(
-                        'activerecord.models.cloud_help/ticket/timeline.actions.deadline_established',
-                        date: detail.deadline
-                    )
-                )
-
-                message = I18n.t(
-                    'activerecord.models.cloud_help_ticket.updated.deadline',
-                    ticket_id: id,
+            # Adding deadline to timeline
+            timelines.create(
+                action: Ticket::Timeline.actions[:deadline_established],
+                description: I18n.t(
+                    'activerecord.models.cloud_help/ticket/timeline.actions.deadline_established',
                     date: detail.deadline
                 )
-                Ticket::Subscriber.notify_subscribers(self, message, :deadline_updated)
-            else
-                errors.add(:base, :cannot_add_deadline_without_assigned_user)
-                raise ActiveRecord::RecordInvalid, self
-            end
-        end
+            )
+
+            message = I18n.t(
+                'activerecord.models.cloud_help_ticket.updated.deadline',
+                ticket_id: id,
+                date: detail.deadline
+            )
+            Ticket::Subscriber.notify_subscribers(self, message, :deadline_updated)
+        end 
     end
 end

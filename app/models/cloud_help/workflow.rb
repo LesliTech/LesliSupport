@@ -27,17 +27,19 @@ Building a better future, one line of code at a time.
     other details
 =end
     class Workflow < CloudObject::Workflow
-        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
+        belongs_to  :account,       class_name: "Account",                  foreign_key: "cloud_help_accounts_id"
+        has_many    :associations,  class_name: "Workflow::Association",    foreign_key: "cloud_help_workflows_id"
+        has_many    :statuses,      class_name: "Workflow::Status",         foreign_key: "cloud_help_workflows_id",    autosave: true,     inverse_of: :workflow
         
         has_many(
-            :details,
+            :statuses,
             inverse_of: :workflow,
-            class_name: "CloudHelp::Workflow::Detail",
+            class_name: "Workflow::Status",
             foreign_key: "cloud_help_workflows_id",
             dependent: :delete_all
         )
 
-        accepts_nested_attributes_for :details
-
+        accepts_nested_attributes_for :statuses, allow_destroy: true
     end
 end
+    

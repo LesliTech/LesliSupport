@@ -98,25 +98,26 @@ export default {
             <div class="quickview-body">
                 <div class="quickview-block">
                     <div class="section">
-                        <form id="form-deadline">
-                            <b-field :label="translations.labels.select_date">
-                                <b-datetimepicker
-                                    v-model="deadline"
-                                    inline
-                                    class="has-text-centered"
-                                    size="is-small"
-                                    icon="calendar-day"
-                                    :min-datetime="new Date()"
-                                />
-                            </b-field>
-                        </form>
+                        <b-field :label="translations.labels.select_date">
+                            <b-datetimepicker
+                                v-model="deadline"
+                                inline
+                                class="has-text-centered"
+                                size="is-small"
+                                icon="calendar-day"
+                                :min-datetime="new Date()"
+                            />
+                        </b-field>
+                        <hr>
+                        <b-field>
+                            <b-button class="card-footer-item button is-primary" @click="putTicketDeadline" expanded>
+                                {{translations.actions.put_deadline}}
+                            </b-button>
+                        </b-field>
                     </div>
                 </div>
             </div>
             <footer class="quickview-footer">
-                <button class="card-footer-item button is-primary" type="button" @click="putTicketDeadline">
-                    {{translations.actions.put_deadline}}
-                </button>
             </footer>
         </div>
     </section>

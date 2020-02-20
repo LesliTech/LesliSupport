@@ -28,7 +28,7 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
-import componentWorkflowStateName from 'LesliCoreVue/cloud_objects/workflow_states/components/name.vue'
+import componentWorkflowStatusName from 'LesliCoreVue/cloud_objects/workflows/components/status-name.vue'
 import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
 import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
 import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
@@ -42,8 +42,8 @@ import componentDeadline from '../components/deadline.vue'
 // · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
 export default {
     components: {
-        'component-workflow-state-name': componentWorkflowStateName,
-        'component-ticket-info': componentWorkflowStateName,
+        'component-workflow-status-name': componentWorkflowStatusName,
+        'component-ticket-info': componentWorkflowStatusName,
         'component-subscription': componentSubscription,
         'component-assignment': componentAssignment,
         'component-discussion': componentDiscussion,
@@ -147,17 +147,17 @@ export default {
                                 </span>
                                 <br>
                                 <span class="has-text-weight-bold">{{translations.fields.category}}:</span>
-                                {{ ticket.detail_attributes.category}}
+                                {{ ticket.category}}
                                 <br>
                                 <span
                                     class="has-text-weight-bold"
                                 >{{translations.fields.type}}:</span>
-                                {{ ticket.detail_attributes.type}},
+                                {{ ticket.type}},
                                 <span
                                     class="has-text-weight-bold"
                                 >{{translations.fields.state}}:</span>
-                                <component-workflow-state-name 
-                                    :name="ticket.detail_attributes.state"
+                                <component-workflow-status-name 
+                                    :name="ticket.status"
                                     :translations-shared-path="'cloud_help.ticket_workflow_states.shared'"
                                 />
                             </div>
@@ -167,7 +167,7 @@ export default {
                                     <span
                                         class="has-text-danger"
                                     >
-                                        {{ticket.detail_attributes.priority}}
+                                        {{ticket.priority}}
                                     </span>
                                 </span>
                             </div>
@@ -178,9 +178,6 @@ export default {
                                 <div v-html="ticket.detail_attributes.description"></div>
                             </div>
                             <div class="column is-12">
-                                <span class="has-text-weight-bold">{{ translations.titles.created_by }}:</span>
-                                {{ ticket.detail_attributes.email}}
-                                <br />
                                 <span class="has-text-weight-bold">{{translations.titles.date}}:</span>
                                 {{ date.toLocalFormat(ticket.created_at, false, true) }}
                                 <br />

@@ -1,7 +1,5 @@
 /*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
+Copyright (c) 2020, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -16,34 +14,31 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
+@author   [AUTHOR_NAME_GOES_HERE]
 @license  Propietary - all rights reserved.
-@version  GIT: 0.1.0 alpha
+@version  0.1.0-alpha
+@description Main app for the %humanized_resource model%. Uses Vue-router to render the different views
 
-// · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 */
 
-
-// · Import main app
+// · Import main app from core
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import app from 'LesliCoreVue/app'
 
 
-
-// · Import apps and components
+// · Import common apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList from './apps/list.vue'
-import appEdit from './apps/edit.vue'
-import appShow from './apps/show.vue'
-import appNew from './apps/new.vue'
-
+import appList  from './apps/list.vue'
+import appEdit  from './apps/edit.vue'
+import appShow  from './apps/show.vue'
+import appNew   from './apps/new.vue'
 
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|edit|show]", "help/tickets", [{
+app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
     path: "/",
     component: appList
 },{
