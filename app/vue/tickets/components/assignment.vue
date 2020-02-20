@@ -212,13 +212,16 @@ export default {
                                 </b-table-column>
                             </template>
                         </b-table>
+                        <hr>
+                        <b-field>
+                            <b-button class="card-footer-item button is-primary" @click="modal.active = true" expanded>
+                                {{translations.assignment.actions.assign_to_user}}
+                            </b-button>
+                        </b-field>
                     </section>
                 </div>
             </div>
             <footer class="quickview-footer">
-                <button class="card-footer-item button is-primary" type="button" @click="modal.active = true">
-                    {{translations.assignment.actions.assign_to_user}}
-                </button>
             </footer>
         </div>
     </section>

@@ -30,8 +30,7 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentRichTextEditor from "LesliCoreVue/components/forms/rich-text-editor.vue"
-import componentWorkflowStateName from "LesliCoreVue/cloud_objects/workflow_states/components/name.vue"
+import componentRichTextEditor from 'LesliCoreVue/components/forms/rich-text-editor.vue'
 
 
 
@@ -39,8 +38,7 @@ import componentWorkflowStateName from "LesliCoreVue/cloud_objects/workflow_stat
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-rich-text-editor': componentRichTextEditor,
-        'component-workflow-state-name': componentWorkflowStateName
+        'component-rich-text-editor': componentRichTextEditor
     },
 
     props: {
@@ -92,17 +90,19 @@ export default {
         
         setSubscriptions(){
             
-            this.bus.subscribe('update:/help/ticket/workflow', (state)=>{
-                this.ticket.detail_attributes.cloud_help_ticket_workflow_states_id = state.id
-                this.ticket.detail_attributes.state = state.name
-                this.ticket.detail_attributes.state_initial = state.initial
+            this.bus.subscribe('update:/help/ticket/workflow', (status)=>{
+                this.ticket.cloud_help_ticket_workflow_statuses_id = status.id
+                this.ticket.status = status.name
+                this.ticket.status_initial = status.initial
+                this.ticket.status_final = status.final
+                this.ticket.status_name = status.name
                 this.rerender_chart = true
             })
         },
 
         postTicket(e) {
             if (e) { e.preventDefault() }
-            this.http.post("/help/tickets", {
+            this.http.post('/help/tickets', {
                 ticket: this.ticket
             }).then(result => {
                 if (result.successful) {
@@ -130,7 +130,7 @@ export default {
 
         escalateTicket(){
             let next_priority = this.ticket_options.priorities.filter( priority => {
-                return priority.weight > this.ticket.detail_attributes.priority_weight
+                return priority.weight > this.ticket.priority_weight
             }).sort()
 
             this.modals.escalate = false
@@ -143,7 +143,7 @@ export default {
 
         descalateTicket(){
             let next_priority = this.ticket_options.priorities.filter( priority => {
-                return priority.weight < this.ticket.detail_attributes.priority_weight
+                return priority.weight < this.ticket.priority_weight
             }).sort( (a, b)=>{
                 return b - a
             })
@@ -160,11 +160,10 @@ export default {
         patchTicketPriority(action, priority){
             let data = {
                 ticket: {
-                    detail_attributes: {
-                        cloud_help_ticket_priorities_id: priority.id
-                    }
+                    cloud_help_catalog_ticket_priorities_id: priority.id
                 }
             }
+
             this.http.patch(`/help/tickets/${this.ticket_id}`, data).then(result => {
                 if (result.successful) {
                     this.alert(this.translations.modals[action].messages.successful)
@@ -181,9 +180,7 @@ export default {
             if (e) { e.preventDefault() }
 
             let data = {
-                ticket: {
-                    detail_attributes: this.transfer
-                }
+                ticket: this.transfer
             }
 
             this.modals.transfer = false
@@ -279,7 +276,7 @@ export default {
                                     <b-select 
                                         :placeholder="translations.form.placeholders.select_type"
                                         expanded
-                                        v-model="transfer.cloud_help_ticket_types_id"
+                                        v-model="transfer.cloud_help_catalog_ticket_types_id"
                                         :required="true"
                                     >
                                         <option
@@ -297,7 +294,7 @@ export default {
                                     <b-select
                                         :placeholder="translations.form.placeholders.select_category"
                                         expanded
-                                        v-model="transfer.cloud_help_ticket_categories_id"
+                                        v-model="transfer.cloud_help_catalog_ticket_categories_id"
                                         :required="true"
                                     >
                                         <option
@@ -355,7 +352,7 @@ export default {
                             <b-select 
                                 :placeholder="translations.form.placeholders.select_type"
                                 expanded
-                                v-model="ticket.detail_attributes.cloud_help_ticket_types_id"
+                                v-model="ticket.cloud_help_catalog_ticket_types_id"
                             >
                                 <option
                                     v-for="type in ticket_options.types"
@@ -373,7 +370,7 @@ export default {
                             <b-select
                                 :placeholder="translations.form.placeholders.select_category"
                                 expanded
-                                v-model="ticket.detail_attributes.cloud_help_ticket_categories_id"
+                                v-model="ticket.cloud_help_catalog_ticket_categories_id"
                             >
                                 <option
                                     v-for="category in ticket_options.categories"
@@ -392,7 +389,7 @@ export default {
                             <b-select
                                 :placeholder="translations.form.placeholders.select_priority"
                                 expanded
-                                v-model="ticket.detail_attributes.cloud_help_ticket_priorities_id"
+                                v-model="ticket.cloud_help_catalog_ticket_priorities_id"
                             >
                                 <option
                                     v-for="priority in ticket_options.priorities"
@@ -433,7 +430,7 @@ export default {
                             {{translations.form.actions.descalate}}
                         </button>
                         <button 
-                            v-if="ticket.detail_attributes.state_initial"
+                            v-if="ticket.status_initial"
                             class="button is-danger"
                             type="button" @click="modals.transfer = true"
                         >

@@ -76,10 +76,13 @@ export default {
     methods: {
 
         setSubscriptions(){
-            this.bus.subscribe('update:/help/ticket/workflow', (state)=>{
-                this.ticket.detail_attributes.cloud_help_workflow_states_id = state.id
-                this.ticket.detail_attributes.state = state.name
-                this.ticket.detail_attributes.state_initial = state.initial
+            this.bus.subscribe('update:/help/ticket/workflow', (status)=>{
+                this.ticket.cloud_help_ticket_workflow_statuses_id = status.id
+                this.ticket.status = status.name
+                this.ticket.status_initial = status.initial
+                this.ticket.status_final = status.final
+                this.ticket.status_name = status.name
+                this.ticket.status_number = status.number
             })
         },
 
@@ -100,7 +103,7 @@ export default {
 }
 </script>
 <template>
-    <section v-if="ticket">
+    <section v-if="ticket" class="section">
         <div class="columns">
             <div class="column is-8">
                 <component-form class="box"
@@ -115,8 +118,8 @@ export default {
                     <div class="card-content">
                         <component-workflow-chart
                             :rerender.sync="rerender_chart"
-                            :workflow-id="ticket.detail_attributes.cloud_help_workflows_id"
-                            :selected-workflow-state="ticket.detail_attributes.cloud_help_workflow_states_id"
+                            :workflow-id="ticket.cloud_help_workflows_id"
+                            :selected-workflow-state="ticket.status_number"
                             cloud-module="help/ticket"
                         />
                     </div>
@@ -128,7 +131,7 @@ export default {
                     cloud-module="help/ticket"
                     :cloud-id="ticket_id"
                 />
-                <component-form-status class="box" :state="ticket.detail_attributes.state" :creation-date="ticket.created_at"/>
+                <component-form-status class="box" :state="ticket.status" :creation-date="ticket.created_at"/>
                 <component-form-tag class="box" :ticket="ticket"/>
             </div>
         </div>

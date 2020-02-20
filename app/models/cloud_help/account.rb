@@ -10,5 +10,20 @@ module CloudHelp
         has_many :ticket_types,         class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_accounts_id"
         has_many :ticket_sources,       class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_accounts_id"
         has_many :slas,                 class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_accounts_id"
+
+        after_create :initialize_account
+
+=begin
+@return [void]
+@description Initializes all required information for this account to work properly
+@example
+    house_account = CloudHouse::Account.new(::Account.find(1))
+    # Rails will automatically execute this method after the account is created
+=end
+        def initialize_account
+            Workflow.initialize_data(self)
+            Catalog::TicketSource.initialize_data(self)
+        end
+
     end
 end
