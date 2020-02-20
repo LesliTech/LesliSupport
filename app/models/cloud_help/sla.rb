@@ -28,9 +28,12 @@ Building a better future, one line of code at a time.
 =end
     class Sla < ApplicationRecord
 
-        belongs_to :account, class_name: 'CloudHelp::Account', foreign_key: 'cloud_help_accounts_id'
-        has_many :ticket_workflows, class_name: 'CloudHelp::TicketWorkflow', foreign_key: 'cloud_help_slas_id'
+        belongs_to  :account,       class_name: "CloudHelp::Account",           foreign_key: "cloud_help_accounts_id"
+        has_many    :associations,  class_name: "CloudHelp::Sla::Association",  foreign_key: "cloud_help_slas_id"
+
+        # @todo See a way to sumarize these parts into one call
         after_update :verify_default_sla
+        after_create :verify_default_sla
 
 =begin
 @return [Boolean] Wheter the SLA was updated or not
@@ -49,18 +52,21 @@ Building a better future, one line of code at a time.
 =end
         def update(params)
             ticket_count = Sla.joins(
-                "inner join cloud_help_ticket_workflows CHTW on CHTW.cloud_help_slas_id = cloud_help_slas.id"
+                "inner join cloud_help_sla_associations CHSA on CHSA.cloud_help_slas_id = cloud_help_slas.id"
             ).joins(
-                "inner join cloud_help_ticket_workflow_details CHTWD on CHTWD.cloud_help_ticket_workflows_id = CHTW.id"
+                "
+                    inner join cloud_help_tickets CHT on 
+                        CHSA.cloud_help_catalog_ticket_types_id = CHT.cloud_help_catalog_ticket_types_id and
+                        CHSA.cloud_help_catalog_ticket_categories_id = CHT.cloud_help_catalog_ticket_categories_id 
+                "
             ).joins(
-                "inner join cloud_help_ticket_details CHTD on CHTD.cloud_help_ticket_workflow_details_id = CHTWD.id"
-            ).joins(
-                "inner join cloud_help_ticket_states CHTS on CHTWD.cloud_help_ticket_states_id = CHTS.id"
+                "inner join cloud_help_workflow_statuses CHWS on CHT.cloud_help_workflow_statuses_id = CHWS.id"
             ).where(
-                "CHTS.final = false"
+                "CHWS.final = false"
             ).where(
                 "cloud_help_slas.id = #{id}"
             ).count
+
             if ticket_count > 0
                 errors.add(:base, :cannot_modify_while_ticket_in_progress)
                 return false
@@ -117,12 +123,19 @@ protected
             default_change = saved_changes["default"]
             return unless default_change
             
+            puts default_change.to_json
             if default_change[1]
-            # default changed from false to true
-                raise ActiveRecord::RecordInvalid, self unless Sla.where(default: true).where.not(id: id).update(default: false)
+                # default changed from false to true
+                raise ActiveRecord::RecordInvalid, self unless Sla.where(
+                    default: true, account: account
+                ).where.not(
+                    id: id
+                ).update(
+                    default: false
+                )
             else
-            # default changed from true to false
-                unless Sla.where(default: true).where.not(id: id).count > 0
+                # default changed from true to false
+                unless Sla.where(default: true, account: account).where.not(id: id).count > 0
                     errors.add(:base, :cannot_remove_default)
                     raise ActiveRecord::RecordInvalid, self
                 end

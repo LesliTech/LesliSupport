@@ -1,8 +1,6 @@
 <script>
 /*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
+Copyright (c) 2020, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -17,18 +15,17 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Carlos Hermosilla
-@author   LesliTech <hello@lesli.tech>
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
+@description Main form in which the user creates and modifies Slas
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
 
 
-
-// · Import modules, components and apps
+// · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import componentRichTextEditor from 'LesliCoreVue/components/forms/rich-text-editor.vue'
 
@@ -116,92 +113,90 @@ export default {
 }
 </script>
 <template>
-    <section>
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    {{translations.shared.name}}
-                </h2>
-                <div class="card-header-icon">
-                    <router-link v-if="sla_id" :to="`/${sla_id}`">
-                        <i class="fas fa-eye"></i>
-                        {{translations.shared.actions.show}}
-                    </router-link>
-                    <router-link :to="`/`">
-                        &nbsp;&nbsp;&nbsp;
-                        <i class="fas fa-undo"></i>
-                        {{translations.shared.actions.return}}
-                    </router-link>
-                </div>
-            </div>
-            <div class="card-content">
-                <form @submit="submitSla">
-                    <div class="columns">
-                        <div class="column is-5">
-                            <b-field :label="translations.shared.fields.name">
-                                <b-input v-model="sla.name" required="true"></b-input>
-                            </b-field>
-                        </div>
-                        <div class="column is-3">
-                            <b-field :label="translations.shared.fields.expected_response_time">
-                                <b-input v-model="sla.expected_response_time" type="number" min="0" required="true"></b-input>
-                            </b-field>
-                        </div>
-                        <div class="column is-3">
-                            <b-field :label="translations.shared.fields.expected_resolution_time">
-                                <b-input v-model="sla.expected_resolution_time" type="number" min="0" required="true"></b-input>
-                            </b-field>
-                        </div>
-                        <div class="column is-1">
-                            <div class="field">
-                                <label class="label is-w-100">{{translations.shared.fields.default_sla}}</label>
-                                <div class="has-text-centered">
-                                    <input id="sla_default" class="is-checkradio" type="checkbox" v-model="sla.default">
-                                    <label for="sla_default"></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <b-field :label="translations.shared.fields.body">
-                        <component-rich-text-editor v-model="sla.body" />
-                    </b-field>
-                    <b-field :label="translations.shared.fields.provider_repercussions">
-                        <component-rich-text-editor v-model="sla.provider_repercussions" />
-                    </b-field>
-                    <b-field :label="translations.shared.fields.exceptions">
-                        <component-rich-text-editor v-model="sla.exceptions" />
-                    </b-field>
-                    <div class="columns">
-                        <div v-if="sla_id" class="column">
-                            <div class="field">
-                                <small>
-                                    <span class="has-text-weight-bold">
-                                        {{ `${translations.shared.fields.created_at}:` }}
-                                    </span>
-                                    {{ date.toLocalFormat(sla.created_at,false,true) }}
-                                    <br>
-                                    <span class="has-text-weight-bold">
-                                        {{ `${translations.shared.fields.updated_at}:` }}
-                                    </span>
-                                    {{ date.toLocalFormat(sla.updated_at,false,true) }}
-                                </small>
-                            </div>
-                        </div>
-                        <div class="column">
-                            <div class="field">
-                                <div class="actions has-text-right">
-                                    <button class="button is-primary" type="submit">
-                                        <span v-if="sla_id">{{translations.form.actions.update}}</span>
-                                        <span v-else>{{translations.form.actions.create}}</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-header-title">
+                {{translations.shared.name}}
+            </h2>
+            <div class="card-header-icon">
+                <router-link v-if="sla_id" :to="`/${sla_id}`">
+                    <i class="fas fa-eye"></i>
+                    {{translations.shared.actions.show}}
+                </router-link>
+                <router-link :to="`/`">
+                    &nbsp;&nbsp;&nbsp;
+                    <i class="fas fa-undo"></i>
+                    {{translations.shared.actions.return}}
+                </router-link>
             </div>
         </div>
-    </section>
+        <div class="card-content">
+            <form @submit="submitSla">
+                <div class="columns">
+                    <div class="column is-5">
+                        <b-field :label="translations.shared.fields.name">
+                            <b-input v-model="sla.name" required="true"></b-input>
+                        </b-field>
+                    </div>
+                    <div class="column is-3">
+                        <b-field :label="translations.shared.fields.expected_response_time">
+                            <b-input v-model="sla.expected_response_time" type="number" min="0" required="true"></b-input>
+                        </b-field>
+                    </div>
+                    <div class="column is-3">
+                        <b-field :label="translations.shared.fields.expected_resolution_time">
+                            <b-input v-model="sla.expected_resolution_time" type="number" min="0" required="true"></b-input>
+                        </b-field>
+                    </div>
+                    <div class="column is-1">
+                        <div class="field">
+                            <label class="label is-w-100">{{translations.shared.fields.default_sla}}</label>
+                            <div class="has-text-centered">
+                                <input id="sla_default" class="is-checkradio" type="checkbox" v-model="sla.default">
+                                <label for="sla_default"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <b-field :label="translations.shared.fields.body">
+                    <component-rich-text-editor v-model="sla.body" />
+                </b-field>
+                <b-field :label="translations.shared.fields.provider_repercussions">
+                    <component-rich-text-editor v-model="sla.provider_repercussions" />
+                </b-field>
+                <b-field :label="translations.shared.fields.exceptions">
+                    <component-rich-text-editor v-model="sla.exceptions" />
+                </b-field>
+                <div class="columns">
+                    <div v-if="sla_id" class="column">
+                        <div class="field">
+                            <small>
+                                <span class="has-text-weight-bold">
+                                    {{ `${translations.shared.fields.created_at}:` }}
+                                </span>
+                                {{ date.toLocalFormat(sla.created_at,false,true) }}
+                                <br>
+                                <span class="has-text-weight-bold">
+                                    {{ `${translations.shared.fields.updated_at}:` }}
+                                </span>
+                                {{ date.toLocalFormat(sla.updated_at,false,true) }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <div class="actions has-text-right">
+                                <button class="button is-primary" type="submit">
+                                    <span v-if="sla_id">{{translations.form.actions.update}}</span>
+                                    <span v-else>{{translations.form.actions.create}}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 <style scoped>
     .is-w-100{

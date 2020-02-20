@@ -1,8 +1,6 @@
 <script>
 /*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
+Copyright (c) 2020, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -17,10 +15,11 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Carlos Hermosilla
-@author   LesliTech <hello@lesli.tech>
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
+@description App that retrieves and shows an Sla associated to 
+    the account of the logged user, ready to be edited and saved
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
@@ -39,5 +38,7 @@ export default {
 }
 </script>
 <template>
-    <component-form></component-form>
+    <section class="section">
+        <component-form></component-form>
+    </section>
 </template>

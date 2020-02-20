@@ -1,8 +1,6 @@
 <script>
 /*
-Lesli
-
-Copyright (c) 2019, Lesli Technologies, S. A.
+Copyright (c) 2020, Lesli Technologies, S. A.
 
 All the information provided by this website is protected by laws of Guatemala related 
 to industrial property, intellectual property, copyright and relative international laws. 
@@ -17,34 +15,63 @@ LesliCloud - Your Smart Business Assistant
 Powered by https://www.lesli.tech
 Building a better future, one line of code at a time.
 
-@dev      Carlos Hermosilla
-@author   LesliTech <hello@lesli.tech>
+@author   Carlos Hermosilla
 @license  Propietary - all rights reserved.
 @version  0.1.0-alpha
+@description App that retrieves and shows list of all the Sla associated to 
+    the account of the logged user
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
 
 
-// · Component list
+// · List of Imported Components
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+
+
+// · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
-    data() {
+    props: {
+
+    },
+    
+    components: {
+
+    },
+
+    // @return [Object] Data used by this component's methods
+    // @description Returns the data needed for this component to work properly
+    // @data_variable main_route [String] the main route to which this component connects to the lesli API
+    // @data_variable slas [Array] An array of objects, each object represents a 
+    //      Sla, with the same params as the associated rails model
+    data(){
         return {
-            translations:{
-                shared: I18n.t('cloud_help.slas.shared')
-            },
-            slas: []
+            main_route: '/help/slas',
+            slas: null,
+            reloading: false
         }
     },
+
+    // @return [void]
+    // @description Executes the necessary functions needed to initialize this component
     mounted() {
-        this.getSlas()
+       this.getSlas()
     },
+
     methods: {
 
+        // @return [void]
+        // @description Connects to the backend using HTTP and retrieves a list of Sla associated to
+        //      the current user's account. If the HTTP request fails, an error message is shown
+        // @example
+        //      console.log(this.slas) // will display null
+        //      this.getSlas()
+        //      console.log(this.slas) // will display an array of objects, each representing a Sla.
         getSlas() {
-            this.http.get("/help/slas.json").then(result => {
+            this.http.get(`${this.main_route}.json`).then(result => {
+                this.reloading = false
                 if (result.successful) {
                     this.slas = result.data
                 }else{
@@ -55,44 +82,85 @@ export default {
             })
         },
         
+        // @return [void]
+        // @param sla [Object] The object representation of the selected Sla
+        // @description Redirects the router to show the selected Sla
+        // @example
+        //      this.showSla(this.slas[1])
+        //      // Asume the id of the Sla is 4
+        //      // The user will be redirected to the url /help/slas/4
         showSla(sla) {
             this.$router.push(`/${sla.id}`)
-        }
+        },
 
+        reloadSlas(){
+            this.reloading = true
+            this.getSlas()
+        }
+    },
+
+    computed: {
+
+        // @return [String] The class that is used to give a spinning animation to the icon (if needed)
+        // @description When the user clicks the 'reload' button, it changes the value of the *reloading*
+        //      data variable. And that is used by this method to change the class of the icon and add it
+        //      the spinning animation
+        reloadingClass(){
+            if(this.reloading){
+                return 'fa-spin'
+            }
+
+            return ''
+        }
     }
 }
 </script>
 <template>
-    <section class="section">
-        <b-table :data="slas" @click="showSla" :hoverable="true">
-            <template slot-scope="props">
-                <b-table-column field="id" :label="translations.shared.fields.id" width="40" numeric centered>
-                    {{ props.row.id }}
-                </b-table-column>
-                <b-table-column field="name" :label="translations.shared.fields.name">
-                    {{ props.row.name }}
-                    <span v-if="props.row.default" class="has-text-weight-bold">
-                        ({{translations.shared.default}})
-                    </span>
-                </b-table-column>
-                <b-table-column field="expected_response_time" :label="translations.shared.fields.expected_response_time">
-                    {{ props.row.expected_response_time }}
-                </b-table-column>
-                <b-table-column field="expected_resolution_time" :label="translations.shared.fields.expected_resolution_time">
-                    {{ props.row.expected_resolution_time }}
-                </b-table-column>
-                <b-table-column field="created_at" :label="translations.shared.fields.created_at">
-                    {{ date.toLocalFormat(props.row.created_at, true) }}
-                </b-table-column>
-                <b-table-column field="updated_at" :label="translations.shared.fields.updated_at">
-                    {{ date.toLocalFormat(props.row.updated_at, true) }}
-                </b-table-column>
-            </template>
-        </b-table>
+    <section class="section" v-if="slas">
+        <component-layout-data-empty v-if="slas.length == 0" />
+        <div class="card" v-if="slas.length > 0">
+            <div class="card-header">
+                <h4 class="card-header-title">
+                    Slas
+                </h4>
+                <div class="buttons">
+                    <button class="button is-white" @click="reloadSlas" :disabled="reloading">
+                        <b-icon icon="sync" size="is-small" :custom-class="reloadingClass" />
+                    </button>
+                    &nbsp;&nbsp;&nbsp;
+                </div>
+            </div>
+            <div class="card-content">
+                <b-table :data="slas" @click="showSla" :hoverable="true">
+                    <template slot-scope="props">
+                        <b-table-column field="id" label="Number" width="40" numeric centered>
+                            {{ props.row.id }}
+                        </b-table-column>
+                        <b-table-column field="name" label="Name">
+                            {{ props.row.name }}
+                            <span v-if="props.row.default" class="has-text-primary">
+                                (Default)
+                            </span>
+                        </b-table-column>
+                        <b-table-column field="expected_response_time" label="Expected response time">
+                            {{ props.row.expected_response_time }}
+                        </b-table-column>
+                        <b-table-column field="expected_resolution_time" label="Expected resolution time">
+                            {{ props.row.expected_resolution_time }}
+                        </b-table-column>
+                        <b-table-column field="created_at" label="Created at">
+                            {{ date.toLocalFormat(props.row.created_at, true) }}
+                        </b-table-column>
+                        <b-table-column field="updated_at" label="Updated at">
+                            {{ date.toLocalFormat(props.row.updated_at, true) }}
+                        </b-table-column>
+                    </template>
+                </b-table>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" v-else>
+        <component-layout-data-loading  size="is-medium" />
     </section>
 </template>
-<style>
-    table tr:hover {
-        cursor: pointer;
-    }
-</style>
