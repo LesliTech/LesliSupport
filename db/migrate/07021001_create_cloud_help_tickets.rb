@@ -1,11 +1,12 @@
 class CreateCloudHelpTickets < ActiveRecord::Migration[6.0]
     def change
         create_table :cloud_help_tickets do |t|
-            # acts_as_paranoid
-            t.datetime  :deleted_at, index: true
 
             # Main user
             t.bigint    :user_main_id
+
+            # acts_as_paranoid
+            t.datetime :deleted_at, index: true
 
             t.timestamps
         end
