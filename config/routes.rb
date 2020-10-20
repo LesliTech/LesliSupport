@@ -19,6 +19,9 @@ For more information read the license file including with this software.
 
 CloudHelp::Engine.routes.draw do
 
+  namespace :workflow do
+    resources :actions
+  end
     root to: "dashboards#show"
 
 end

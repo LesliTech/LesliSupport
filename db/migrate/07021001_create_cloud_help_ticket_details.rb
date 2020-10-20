@@ -1,6 +1,9 @@
 class CreateCloudHelpTicketDetails < ActiveRecord::Migration[6.0]
     def change
         create_table    :cloud_help_ticket_details do |t|
+            # acts_as_paranoid
+            t.datetime  :deleted_at, index: true
+            
             t.string    :subject 
             t.text      :description
             t.datetime  :deadline
