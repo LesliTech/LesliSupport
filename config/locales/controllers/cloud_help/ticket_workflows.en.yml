@@ -1,6 +1,0 @@
-en:
-    cloud_help:
-        controllers:
-            ticket_workflows:
-                errors:
-                    not_found: Ticket workflow not found

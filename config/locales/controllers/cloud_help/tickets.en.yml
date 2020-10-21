@@ -1,6 +1,0 @@
-en:
-    cloud_help:
-        controllers:
-            tickets:
-                notifications:
-                    created: Ticket number %{ticket_id} has been created

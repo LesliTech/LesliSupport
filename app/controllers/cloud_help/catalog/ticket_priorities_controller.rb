@@ -42,15 +42,8 @@ Building a better future, one line of code at a time.
         def index
             respond_to do |format|
                 format.html {}
-                format.json do 
-                    ticket_priorities = current_user.account.help.ticket_priorities.select(
-                        :id,
-                        :name,
-                        :weight,
-                        :created_at,
-                        :updated_at
-                    )
-                    responseWithSuccessful(ticket_priorities)
+                format.json do
+                    responseWithSuccessful(Catalog::TicketPriority.index(current_user, @query))
                 end
             end
         end
@@ -73,7 +66,7 @@ Building a better future, one line of code at a time.
                     set_ticket_priority
                     return responseWithNotFound unless @ticket_priority
 
-                    responseWithSuccessful(@ticket_priority)
+                    responseWithSuccessful(@ticket_priority.show)
                 end
             end
         end

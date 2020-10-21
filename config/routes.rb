@@ -63,13 +63,33 @@ CloudHelp::Engine.routes.draw do
     end
   
     scope :catalog, module: :catalog do
-        resources :ticket_categories
-        resources :ticket_priorities
-        resources :ticket_sources
-        resources :ticket_types
+        resources :ticket_categories do
+            collection do
+                post "list" => :index
+            end
+        end
+
+        resources :ticket_priorities do
+            collection do
+                post "list" => :index
+            end
+        end
+        
+        resources :ticket_sources do
+            collection do
+                post "list" => :index
+            end
+        end
+        
+        resources :ticket_types do
+            collection do
+                post "list" => :index
+            end
+        end
+        
     end
 
-    resources :projects do
+    resources :tickets do
         member do
             get "/resources/files-zip-download",     to: "project/files#zip_download"
         end
@@ -90,6 +110,12 @@ CloudHelp::Engine.routes.draw do
 
             resources :assignments
             resource :timeline
+        end
+    end
+
+    resources :slas do
+        scope module: :slas do
+            resources :associations
         end
     end
 end

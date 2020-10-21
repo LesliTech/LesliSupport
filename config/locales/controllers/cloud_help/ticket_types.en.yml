@@ -1,6 +1,0 @@
-en:
-    cloud_help:
-        controllers:
-            ticket_types:
-                errors:
-                    not_found: Ticket type not found
