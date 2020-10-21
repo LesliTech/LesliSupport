@@ -5,6 +5,10 @@ class CreateCloudHelpTicketDetails < ActiveRecord::Migration[6.0]
             t.text      :description
             t.datetime  :deadline
             t.string    :tags
+            
+            # acts_as_paranoid
+            t.datetime  :deleted_at, index: true
+
             t.timestamps
         end
         

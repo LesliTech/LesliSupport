@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Dashboard Components</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dashboard_components.each do |dashboard_component| %>
+      <tr>
+        <td><%= link_to 'Show', dashboard_component %></td>
+        <td><%= link_to 'Edit', edit_dashboard_component_path(dashboard_component) %></td>
+        <td><%= link_to 'Destroy', dashboard_component, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dashboard Component', new_dashboard_component_path %>

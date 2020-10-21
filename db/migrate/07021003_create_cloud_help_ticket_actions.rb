@@ -10,6 +10,7 @@ class CreateCloudHelpTicketActions < ActiveRecord::Migration[6.0]
             end
             t.timestamps
         end
-        add_reference :cloud_help_ticket_actions, :cloud_help_tickets, foreign_key: true
+        add_reference :cloud_help_ticket_actions, :users, foreign_key: true
+        add_reference :cloud_help_ticket_actions, :cloud_help_tickets, foreign_key: true, index: { name: "help_ticket_actions_tickets" }
     end
 end
