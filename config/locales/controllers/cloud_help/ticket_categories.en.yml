@@ -1,9 +1,0 @@
-en:
-    cloud_help:
-        controllers:
-            ticket_categories:
-                errors:
-                    not_found: Ticket category not found
-                create:
-                    errors:
-                        parent_not_found: Parent category does not exist

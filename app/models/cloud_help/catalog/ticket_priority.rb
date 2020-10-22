@@ -54,6 +54,63 @@ Building a better future, one line of code at a time.
                 false
             end
         end
+
+        def self.index(current_user, query)
+            # Parsing filters
+            filters = query[:filters]
+            filters_query = []
+            
+            # We filter by a text string written by the user
+            if filters["query"] && !filters["query"].empty?
+                query_words = filters["query"].split(" ")
+                query_words.each do |query_word|
+                    query_word = query_word.strip.downcase
+
+                    # first customer
+                    filters_query.push("(LOWER(name) SIMILAR TO '%#{query_word}%')")
+                end
+            end
+
+            # Executing the query
+            ticket_priorities = current_user.account.help.ticket_priorities
+
+            # We apply the previous filters in the main query
+            unless filters_query.empty?
+                ticket_priorities = ticket_priorities.where(filters_query.join(' and '))
+            end
+
+            response = {}
+            # total count
+            response[:total_count] = ticket_priorities.length if filters["get_total_count"]
+
+            # Adding pagination to ticket_priorities
+            pagination = query[:pagination]
+            ticket_priorities = ticket_priorities.page(
+                pagination[:page]
+            ).per(
+                pagination[:perPage]
+            ).order(
+                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
+            )
+
+            # We format the response
+            response[:ticket_priorities] = ticket_priorities.map do |ticket_priority|
+                ticket_priority_attributes = ticket_priority.attributes
+                ticket_priority_attributes["created_at"] = LC::Date.to_string_datetime(ticket_priority_attributes["created_at"])
+
+                ticket_priority_attributes
+            end
+            
+            response
+        end
+
+        def show
+            data = attributes
+            data["created_at"] = LC::Date.to_string_datetime(data["created_at"])
+            data["updated_at"] = LC::Date.to_string_datetime(data["updated_at"])
+
+            data
+        end
         
     end
 end

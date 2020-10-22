@@ -64,7 +64,12 @@ export default {
     data() {
         return {
             main_route: '/help/catalog/ticket_priorities',
-            ticket_priority: null
+            ticket_priority: null,
+            submitting: false,
+            deleting: false,
+            translations: {
+                main: I18n.t('help.catalog/ticket_priorities')
+            }
         }
     },
 
@@ -125,10 +130,12 @@ export default {
                 ticket_priority: this.ticket_priority
             }
             let url = `${this.main_route}.json`
+            this.submitting = true
 
             this.http.post(url, form_data).then(result => {
+                this.submitting = false
                 if (result.successful) {
-                    this.alert('Ticket priority created successfully', 'success')
+                    this.alert(this.translations.main.messages_info_ticket_priority_created, 'success')
                     this.$router.push(`/${result.data.id}`)
                 }else{
                     this.alert(result.error.message,'danger')
@@ -150,11 +157,12 @@ export default {
                 ticket_priority: this.ticket_priority
             }
             let url = `${this.main_route}/${this.ticket_priority_id}.json`
+            this.submitting = true
 
             this.http.put(url, form_data).then(result => {
+                this.submitting = false
                 if (result.successful) {
-                    this.alert('Ticket priority updated successfully', 'success')
-                    this.$router.push(`/${this.ticket_priority.id}`)
+                    this.alert(this.translations.main.messages_info_ticket_priority_updated, 'success')
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -172,10 +180,12 @@ export default {
         //      this.deleteTicketPriority() // will delete the record and redirect to the list app
         deleteTicketPriority() {
             let url = `${this.main_route}/${this.ticket_priority_id}`
+            this.deleting = true
 
             this.http.delete(url).then(result => {
+                this.deleting = false
                 if (result.successful) {
-                    this.alert('Ticket priority deleted successfully', 'success')
+                    this.alert(this.translations.main.messages_info_ticket_priority_destroyed, 'success')
                     this.$router.push('/')
                 }else{
                     this.alert(result.error.message, 'danger')
@@ -192,21 +202,14 @@ export default {
         <!--------------------------------------- START CARD HEADER --------------------------------------->
         <div class="card-header">
             <h2 class="card-header-title">
-                Ticket priority
+                <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
+                <span v-else>{{translations.main.view_title_edit}}</span>
             </h2>
             <div class="card-header-icon">
-                <router-link v-if="viewType == 'edit'" :to="`/${ticket_priority.id}`">
-                    <i class="fas fa-eye"></i>
-                    Show Ticket priority
-                </router-link>
-                <router-link v-if="viewType == 'show'" :to="`/${ticket_priority.id}/edit`">
-                    <i class="fas fa-eye"></i>
-                    Edit Ticket priority
-                </router-link>
                 <router-link to="/">
                     &nbsp;&nbsp;&nbsp;
                     <i class="fas fa-undo"></i>
-                    Return
+                    {{translations.main.view_btn_return}}
                 </router-link>
             </div>
         </div>
@@ -214,66 +217,80 @@ export default {
 
         <!--------------------------------------- START CARD CONTENT--------------------------------------->
         <div class="card-content">
-            <form @submit="submitTicketPriority">
-                <div class="columns">
-                    <div class="column">
-                        <b-field label="Name">
-                            <b-input v-model="ticket_priority.name" required="true"></b-input>
-                        </b-field>
-                    </div>
-                    <div class="column">
-                        <b-field label="Weight">
-                            <b-input max="1000000" min="0" v-model="ticket_priority.weight" type="number" required="true" >
-                            </b-input>
-                        </b-field>
-                    </div>
-                </div>
-
-                <div class="columns">
-                    <div v-if="ticket_priority_id" class="column">
-                        <div class="field">
-                            <small>
-                                <span class="has-text-weight-bold">
-                                    Created at:
-                                </span>
-                                {{ date.toLocalFormat(ticket_priority.created_at, false, true) }}
-                                <br>
-                                <span class="has-text-weight-bold">
-                                    Updated at:
-                                </span>
-                                {{ date.toLocalFormat(ticket_priority.updated_at, false, true) }}
-                            </small>
+            <b-tabs>
+                <b-tab-item :label="translations.main.view_tab_title_information">
+                    <form @submit="submitTicketPriority">
+                        <div class="columns">
+                            <div class="column">
+                                <b-field :label="translations.main.column_name">
+                                    <b-input v-model="ticket_priority.name" required="true"></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column">
+                                <b-field :label="translations.main.column_weight" :message="translations.main.view_text_column_weight_description">
+                                    <b-input max="1000000" min="0" step="1" v-model="ticket_priority.weight" type="number" required="true" >
+                                    </b-input>
+                                </b-field>
+                            </div>
                         </div>
-                    </div>
-                    <div class="column has-text-right">
-                        <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
-                        <b-field v-if="viewType == 'new' || viewType == 'edit'">
-                            <b-button type="is-primary" native-type="submit">
-                                <span v-if="viewType == 'new'">
-                                    Create Ticket priority
-                                </span>
-                                <span v-else>
-                                    Update Ticket priority
-                                </span>
-                            </b-button>
-                        </b-field>
-                        <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
-                        
-                        <!---------------------------------- START DELETE BUTTON ---------------------------------->
-                        <b-field v-if="viewType == 'show'">
-                            <b-button type="is-danger" @click="deleteTicketPriority">
-                                <span v-if="viewType == 'new'">
-                                    Create Ticket priority
-                                </span>
-                                <span v-else>
-                                    Delete Ticket priority
-                                </span>
-                            </b-button>
-                        </b-field>
-                        <!----------------------------------  END DELETE BUTTON  ---------------------------------->
-                    </div>
-                </div>
-            </form>
+
+                        <div class="columns">
+                            <div v-if="ticket_priority_id" class="column">
+                                <div class="field">
+                                    <small>
+                                        <span class="has-text-weight-bold">
+                                            {{translations.main.column_created_at}}:
+                                        </span>
+                                        {{ ticket_priority.created_at }}
+                                        <br>
+                                        <span class="has-text-weight-bold">
+                                            {{translations.main.column_updated_at}}:
+                                        </span>
+                                        {{ ticket_priority.updated_at }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="column has-text-right">
+                                <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
+                                <b-field v-if="viewType == 'new' || viewType == 'edit'">
+                                    <b-button type="is-primary" native-type="submit" :disabled="submitting">
+                                        <span v-if="submitting">
+                                            <i class="fas fa-circle-notch fa-spin"></i>
+                                            &nbsp; {{translations.main.view_btn_saving}}
+                                        </span>
+                                        <span v-else>
+                                            <i class="fas fa-save"></i>
+                                            &nbsp; {{translations.main.view_btn_save}}
+                                        </span>
+                                    </b-button>
+                                </b-field>
+                                <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
+                            </div>
+                        </div>
+                    </form>
+                </b-tab-item>
+                <b-tab-item :label="translations.main.view_tab_title_delete" v-if="viewType != 'new'">
+                    <span class="has-text-danger">
+                        Are you sure you want to delete this priority? This action is permanent. 
+                        All tickets currently associated with it will
+                        remain unchanged, but new tickets will not have this priority available. 
+                    </span>
+                    <br>
+                    <br>
+                    <!---------------------------------- START DELETE BUTTON ---------------------------------->
+                    <b-field v-if="viewType != 'new'">
+                        <b-button type="is-danger" @click="deleteTicketPriority" expanded class="submit-button">
+                            <span v-if="deleting">
+                                <i class="fas fa-spin fa-circle-notch"></i> {{translations.main.view_btn_deleting}}
+                            </span>
+                            <span v-else>
+                                <i class="fas fa-trash-alt"></i> {{translations.main.view_btn_delete}}
+                            </span>
+                        </b-button>
+                    </b-field>
+                    <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                </b-tab-item>
+            </b-tabs>
         </div>
         <!---------------------------------------  END CARD CONTENT --------------------------------------->
     </div>

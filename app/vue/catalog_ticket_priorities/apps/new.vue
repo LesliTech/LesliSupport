@@ -49,7 +49,14 @@ export default {
     //      the same params as the associated rails model
     data(){
         return {
-            ticket_priority: {}
+            translations: {
+                main: I18n.t('help.catalog/ticket_priorities')
+            },
+            ticket_priority: {
+                name: null,
+                weight: null
+            },
+            index_abilities: this.abilities.privilege('tickets', 'cloud_help')
         }
     },
 
@@ -65,7 +72,11 @@ export default {
 }
 </script>
 <template>
-    <section class="section">
+    <section class="application-component">
+        <component-header 
+            :title="translations.main.view_title_main"
+        >
+        </component-header>
         <component-form :ticket-priority="ticket_priority" view-type="new" />
     </section>
 </template>

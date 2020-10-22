@@ -32,13 +32,12 @@ import app from 'LesliCoreVue/app'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import appList  from './apps/list.vue'
 import appEdit  from './apps/edit.vue'
-import appShow  from './apps/show.vue'
 import appNew   from './apps/new.vue'
 
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-app("CloudHelp", "[list|new|edit|show]", "/help/catalog/ticket_priorities", [{
+app("CloudHelp", "[list|new|edit]", "/help/catalog/ticket_priorities", [{
     path: "/",
     component: appList
 },{
@@ -46,8 +45,5 @@ app("CloudHelp", "[list|new|edit|show]", "/help/catalog/ticket_priorities", [{
     component: appNew
 },{
     path: "/:id",
-    component: appShow
-},{
-    path: "/:id/edit",
     component: appEdit
 }])

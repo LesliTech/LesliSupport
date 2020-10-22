@@ -1,0 +1,24 @@
+<% @current_path = request.env['PATH_INFO'] %>
+<% @tabs_granted = {} 
+    [
+        {name: "dashboard", route: "cloud_help/dashboards", privilege: "grant_show"},
+        {name: "dashboards", route: "cloud_help/dashboards"},
+        {name: "ticket_categories", route: "cloud_help/catalog/ticket_categories"},
+        {name: "ticket_priorities", route: "cloud_help/catalog/ticket_priorities"},
+        {name: "ticket_sources", route: "cloud_help/catalog/ticket_sources"},
+        {name: "ticket_types", route: "cloud_help/catalog/ticket_types"},
+        {name: "tickets", route: "cloud_help/tickets"},
+        {name: "slas", route: "cloud_help/slas"},
+        {name: "workflows", route: "cloud_help/workflows"}
+    ].each do |tab|
+        privilege = @account[:current_user][:abilities][tab[:route]]
+        unless privilege.blank?
+            privilege_name = "grant_index"
+            privilege_name = tab[:privilege] if tab[:privilege]
+
+            @tabs_granted[tab[:name]] = privilege[privilege_name]
+        end
+    end
+%>
+<%= render partial: 'layouts/cloud_help/partials/module-app-navigation' %>
+

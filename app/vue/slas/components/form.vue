@@ -27,7 +27,7 @@ Building a better future, one line of code at a time.
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentRichTextEditor from 'LesliCoreVue/components/forms/rich-text-editor.vue'
+import componentRichTextEditor from 'LesliCoreVue/components/forms/richtext-editor.vue'
 
 
 export default {

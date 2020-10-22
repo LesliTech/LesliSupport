@@ -30,7 +30,7 @@ Building a better future, one line of code at a time.
 
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentRichTextEditor from 'LesliCoreVue/components/forms/rich-text-editor.vue'
+import componentRichTextEditor from 'LesliCoreVue/components/forms/richtext-editor.vue'
 
 
 
