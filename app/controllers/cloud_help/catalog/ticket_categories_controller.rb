@@ -26,7 +26,7 @@ Building a better future, one line of code at a time.
 @description Controller for ticket categories
 
 =end
-  class Catalog::TicketCategoriesController < ApplicationController
+  class Catalog::TicketCategoriesController < ApplicationLesliController
     before_action :set_ticket_category, only: [:update, :destroy]
 
 =begin

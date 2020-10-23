@@ -26,7 +26,7 @@ Building a better future, one line of code at a time.
 @description Controller for ticket types
 
 =end
-    class Catalog::TicketTypesController < ApplicationController
+    class Catalog::TicketTypesController < ApplicationLesliController
         before_action :set_ticket_type, only: [:update, :destroy]
 
 =begin
@@ -43,13 +43,7 @@ Building a better future, one line of code at a time.
             respond_to do |format|
                 format.html {}
                 format.json do
-                    ticket_types = current_user.account.help.ticket_types.select(
-                        :id,
-                        :name,
-                        :created_at,
-                        :updated_at
-                    )
-                    responseWithSuccessful(ticket_types) 
+                    responseWithSuccessful(Catalog::TicketType.index(current_user, @query))
                 end
             end
         end
@@ -72,7 +66,7 @@ Building a better future, one line of code at a time.
                     set_ticket_type
                     return responseWithNotFound unless @ticket_type
 
-                    responseWithSuccessful(@ticket_type)
+                    responseWithSuccessful(@ticket_type.show)
                 end
             end
         end
