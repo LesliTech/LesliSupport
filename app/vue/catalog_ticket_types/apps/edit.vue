@@ -38,17 +38,17 @@ export default {
     // @return [Object] Data used by this component's methods
     // @description Returns the data needed for this component to work properly
     // @data_variable main_route [String] the main route to which this component connects to the lesli API
-    // @data_variable ticket_priority [Object] An object representing a Ticket priority, with
+    // @data_variable ticket_type [Object] An object representing a Ticket type, with
     //      the same params as the associated rails model
-    // @data_variable ticket_priority_id [String|Integer] The id of the Ticket priority, as
+    // @data_variable ticket_type_id [String|Integer] The id of the Ticket type, as
     //      obtained from the route using the *Vue-router* *params* 
     data(){
         return {
-            main_route: '/help/catalog/ticket_priorities',
-            ticket_priority: null,
-            ticket_priority_id: null,
+            main_route: '/help/catalog/ticket_types',
+            ticket_type: null,
+            ticket_type_id: null,
             translations: {
-                main: I18n.t('help.catalog/ticket_priorities')
+                main: I18n.t('help.catalog/ticket_types')
             },
             index_abilities: this.abilities.privilege('tickets', 'cloud_help')
         }
@@ -57,33 +57,33 @@ export default {
     // @return [void]
     // @description Executes the necessary methods needed to initialize this component
     mounted(){
-        this.setTicketPriorityId()
-        this.getTicketPriority()
+        this.setTicketTypeId()
+        this.getTicketType()
     },
 
     methods: {
 
         // @return [void]
-        // @description Retrieves the id of the Ticket priority and stores it in the data variable ticket_priority_id
+        // @description Retrieves the id of the Ticket type and stores it in the data variable ticket_type_id
         // @example
-        //      console.log(this.ticket_priority_id) // will display null
-        //      this.setTicketPriorityId()
-        //      console.log(this.ticket_priority_id) // will display a number, like 5
-        setTicketPriorityId(){
-            this.ticket_priority_id = this.$route.params.id
+        //      console.log(this.ticket_type_id) // will display null
+        //      this.setTicketTypeId()
+        //      console.log(this.ticket_type_id) // will display a number, like 5
+        setTicketTypeId(){
+            this.ticket_type_id = this.$route.params.id
         },
 
         // @return [void]
-        // @description Connects to the backend using HTTP and retrieves the Ticket priority associated to
-        //      the variable *Ticket priority_id*. If the HTTP request fails, an error message is shown
+        // @description Connects to the backend using HTTP and retrieves the Ticket type associated to
+        //      the variable *Ticket type_id*. If the HTTP request fails, an error message is shown
         // @example
-        //      console.log(this.ticket_priority) // will display null
-        //      this.getTicketPriority()
-        //      console.log(this.ticket_priority) // will display an object representation of the Ticket priority
-        getTicketPriority(){
-            this.http.get(`${this.main_route}/${this.ticket_priority_id}.json`).then(result => {
+        //      console.log(this.ticket_type) // will display null
+        //      this.getTicketType()
+        //      console.log(this.ticket_type) // will display an object representation of the Ticket type
+        getTicketType(){
+            this.http.get(`${this.main_route}/${this.ticket_type_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket_priority = result.data
+                    this.ticket_type = result.data
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -106,7 +106,7 @@ export default {
                 </router-link>
             </div>
         </component-header>
-        <component-form v-if="ticket_priority" :ticket-priority="ticket_priority" view-type="edit"/>
+        <component-form v-if="ticket_type" :ticket-type="ticket_type" view-type="edit"/>
         <component-data-loading v-else size="is-medium" />
     </section>
 </template>

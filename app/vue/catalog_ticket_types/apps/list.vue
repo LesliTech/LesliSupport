@@ -35,18 +35,19 @@ export default {
     // @return [Object] Data used by this component's methods
     // @description Returns the data needed for this component to work properly
     // @data_variable main_route [String] the main route to which this component connects to the lesli API
-    // @data_variable ticket_priorities [Array] An array of objects, each object represents a 
-    //      Ticket priority, with the same params as the associated rails model
+    // @data_variable ticket_types [Array] An array of objects, each object represents a 
+    //      Ticket type, with the same params as the associated rails model
     data(){
         return {
-            main_route: '/help/catalog/ticket_priorities',
+            main_route: '/help/catalog/ticket_types',
             translations: {
-                main: I18n.t('help.catalog/ticket_priorities')
+                main: I18n.t('help.catalog/ticket_types'),
+                core: I18n.t('core.shared')
             },
-            ticket_priorities: [],
+            ticket_types: [],
             loading: false,
             pagination: {
-                ticket_priorities_count: 0,
+                ticket_types_count: 0,
                 current_page: 1,
                 range_before: 3,
                 range_after: 3
@@ -68,18 +69,18 @@ export default {
     // @description Executes the necessary functions needed to initialize this component
     mounted() {
         this.setSessionStorageFilters()
-       this.getTicketPriorities()
+       this.getTicketTypes()
     },
 
     methods: {
 
         // @return [void]
-        // @description Connects to the backend using HTTP and retrieves a list of TicketPriority associated to
+        // @description Connects to the backend using HTTP and retrieves a list of TicketType associated to
         //      the current user's account. If the HTTP request fails, an error message is shown
         // @example
-        //      console.log(this.ticket_priorities) // will display null
-        //      this.getTicketPriorities()
-        //      console.log(this.ticket_priorities) // will display an array of objects, each representing a TicketPriority.
+        //      console.log(this.ticket_types) // will display null
+        //      this.getTicketTypes()
+        //      console.log(this.ticket_types) // will display an array of objects, each representing a TicketType.
 
         setSessionStorageFilters(){
             let stored_filters = this.storage.local("filters")
@@ -96,13 +97,13 @@ export default {
         },
 
         // @return [void]
-        // @description Connects to the backend using HTTP and retrieves a list of Ticket priority associated to
+        // @description Connects to the backend using HTTP and retrieves a list of Ticket type associated to
         //      the current user's account. If the HTTP request fails, an error message is shown
         // @example
-        //      console.log(this.ticket_priorities) // will display null
-        //      this.getTicketPriorities()
-        //      console.log(this.ticket_priorities) // will display an array of objects, each representing a Ticket priority.
-        getTicketPriorities(reset_current_page = true) {
+        //      console.log(this.ticket_types) // will display null
+        //      this.getTicketTypes()
+        //      console.log(this.ticket_types) // will display an array of objects, each representing a Ticket type.
+        getTicketTypes(reset_current_page = true) {
             this.loading = true
             this.storage.local("filters", this.filters)
             let url = `${this.main_route}/list.json`
@@ -129,10 +130,10 @@ export default {
             this.http.post(url, data).then(result => {
                 this.loading = false
                 if (result.successful) {
-                    this.ticket_priorities = result.data.ticket_priorities
+                    this.ticket_types = result.data.ticket_types
 
                     if(result.data.total_count != null){
-                        this.pagination.ticket_priorities_count = result.data.total_count
+                        this.pagination.ticket_types_count = result.data.total_count
                     }
                 }else{
                     this.alert(result.error.message,'danger')
@@ -143,27 +144,27 @@ export default {
         },
         
         // @return [void]
-        // @param ticket_priority [Object] The object representation of the selected Ticket priority
-        // @description Redirects the router to show the selected Ticket priority
+        // @param ticket_type [Object] The object representation of the selected Ticket type
+        // @description Redirects the router to show the selected Ticket type
         // @example
-        //      this.showTicketPriority(this.ticket_priorities[1])
-        //      // Asume the id of the Ticket priority is 4
-        //      // The user will be redirected to the url /help/catalog/ticket_priorities/4
-        showTicketPriority(ticket_priority) {
-            this.$router.push(`/${ticket_priority.id}`)
+        //      this.showTicketType(this.ticket_types[1])
+        //      // Asume the id of the Ticket type is 4
+        //      // The user will be redirected to the url /help/catalog/ticket_types/4
+        showTicketType(ticket_type) {
+            this.$router.push(`/${ticket_type.id}`)
         },
 
-        reloadTicketPriorities(){
+        reloadTicketTypes(){
             this.loading = true
-            this.getTicketPriorities()
+            this.getTicketTypes()
         },
 
-        searchTicketPriorities(text) {
+        searchTicketTypes(text) {
             this.filters.query = text
-            this.getTicketPriorities()
+            this.getTicketTypes()
         },
 
-        sortTicketPriorities(field, order){
+        sortTicketTypes(field, order){
             if(this.sorting.field == field){
                 if(this.sorting.order == 'asc'){
                     this.sorting.order = 'desc'
@@ -174,20 +175,20 @@ export default {
                 this.sorting.field = field
                 this.sorting.order = 'desc'
             }
-            this.getTicketPriorities()
+            this.getTicketTypes()
         }
     },
 
     watch: {
         'pagination.current_page': function(){
             if(! this.loading){
-                this.getTicketPriorities(false)
+                this.getTicketTypes(false)
             }
         },
         
         'filters.per_page'(){
             if(this.filters_ready){
-                this.getTicketPriorities(true)
+                this.getTicketTypes(true)
             }
         },
     }
@@ -198,9 +199,9 @@ export default {
         <component-header 
             :title="translations.main.view_title_main">
             <div class="buttons">
-                <button class="button" @click="reloadTicketPriorities()">
+                <button class="button" @click="reloadTicketTypes()">
                     <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
-                    <span> {{ translations.main.view_btn_reload }}</span>
+                    <span> {{ translations.core.view_text_btn_reload }}</span>
                 </button>
                 <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
@@ -212,7 +213,7 @@ export default {
         <component-toolbar
             v-if="filters_ready"
             :search-text="translations.main.view_placeholder_text_filter"
-            @search="searchTicketPriorities"
+            @search="searchTicketTypes"
             :initial-value="filters.query"
         >
             <div class="control">
@@ -231,14 +232,14 @@ export default {
             <div class="card-content">
 
                 <component-data-loading v-if="loading" />
-                <component-data-empty v-if="!loading && ticket_priorities.length == 0" />
+                <component-data-empty v-if="!loading && ticket_types.length == 0" />
                 
                 <b-table
-                    :data="ticket_priorities"
-                    @click="showTicketPriority"
+                    :data="ticket_types"
+                    @click="showTicketType"
                     :hoverable="true"
-                    v-if="!loading && ticket_priorities.length > 0"
-                    @sort="sortTicketPriorities"
+                    v-if="!loading && ticket_types.length > 0"
+                    @sort="sortTicketTypes"
                     backend-sorting
                 >
                     <template slot-scope="props">
@@ -290,7 +291,7 @@ export default {
                 <hr>
                 <b-pagination
                     :simple="false"
-                    :total="pagination.ticket_priorities_count"
+                    :total="pagination.ticket_types_count"
                     :current.sync="pagination.current_page"
                     :range-before="pagination.range_before"
                     :range-after="pagination.range_after"

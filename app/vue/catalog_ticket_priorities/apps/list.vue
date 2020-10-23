@@ -41,7 +41,8 @@ export default {
         return {
             main_route: '/help/catalog/ticket_priorities',
             translations: {
-                main: I18n.t('help.catalog/ticket_priorities')
+                main: I18n.t('help.catalog/ticket_priorities'),
+                core: I18n.t('core.shared')
             },
             ticket_priorities: [],
             loading: false,
@@ -204,7 +205,7 @@ export default {
                 </button>
                 <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
-                    <span>{{ translations.main.view_btn_create }}</span>
+                    <span>{{ translations.core.view_text_btn_reload }}</span>
                 </router-link>
             </div>
         </component-header>

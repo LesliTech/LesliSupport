@@ -37,8 +37,5 @@ app("CloudHelp", "[list|new|edit]", "/help/catalog/ticket_types", [{
     component: appNew
 },{
     path: "/:id",
-  component: appShow
-},{
-    path: "/:id/edit",
     component: appEdit
 }])

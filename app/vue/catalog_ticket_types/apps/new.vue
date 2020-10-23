@@ -37,14 +37,14 @@ export default {
 
     // @return [Object] Data used by this component's methods
     // @description Returns the data needed for this component to work properly
-    // @data_variable ticket_priority [Object] An object representing a Ticket priority, with
+    // @data_variable ticket_type [Object] An object representing a Ticket type, with
     //      the same params as the associated rails model
     data(){
         return {
             translations: {
-                main: I18n.t('help.catalog/ticket_priorities')
+                main: I18n.t('help.catalog/ticket_types')
             },
-            ticket_priority: {
+            ticket_type: {
                 name: null,
                 weight: null
             },
@@ -69,6 +69,6 @@ export default {
             :title="translations.main.view_title_main"
         >
         </component-header>
-        <component-form :ticket-priority="ticket_priority" view-type="new" />
+        <component-form :ticket-type="ticket_type" view-type="new" />
     </section>
 </template>
