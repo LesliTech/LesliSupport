@@ -1,28 +1,19 @@
 <script>
 /*
-Copyright (c) 2020, Lesli Technologies, S. A.
+Copyright (c) 2020, all rights reserved.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description App that retrieves and shows list of all the Ticket priority associated to 
-    the account of the logged user
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
@@ -50,7 +41,8 @@ export default {
         return {
             main_route: '/help/catalog/ticket_priorities',
             translations: {
-                main: I18n.t('help.catalog/ticket_priorities')
+                main: I18n.t('help.catalog/ticket_priorities'),
+                core: I18n.t('core.shared')
             },
             ticket_priorities: [],
             loading: false,
@@ -213,7 +205,7 @@ export default {
                 </button>
                 <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
-                    <span>{{ translations.main.view_btn_create }}</span>
+                    <span>{{ translations.core.view_text_btn_reload }}</span>
                 </router-link>
             </div>
         </component-header>

@@ -1,7 +1,7 @@
 require_dependency "cloud_help/application_controller"
 
 module CloudHelp
-  class Catalog::TicketSourcesController < ApplicationController
+  class Catalog::TicketSourcesController < ApplicationLesliController
     before_action :set_catalog_ticket_source, only: [:show, :edit, :update, :destroy]
 
     # GET /catalog/ticket_sources

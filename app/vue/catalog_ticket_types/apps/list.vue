@@ -1,28 +1,19 @@
 <script>
 /*
-Copyright (c) 2020, Lesli Technologies, S. A.
+Copyright (c) 2020, all rights reserved.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description App that retrieves and shows list of all the Ticket type associated to 
-    the account of the logged user
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
@@ -49,18 +40,61 @@ export default {
     data(){
         return {
             main_route: '/help/catalog/ticket_types',
-            ticket_types: null,
-            reloading: false
+            translations: {
+                main: I18n.t('help.catalog/ticket_types'),
+                core: I18n.t('core.shared')
+            },
+            ticket_types: [],
+            loading: false,
+            pagination: {
+                ticket_types_count: 0,
+                current_page: 1,
+                range_before: 3,
+                range_after: 3
+            },
+            filters: {
+                query: '',
+                per_page: 15
+            },
+            filters_ready: false,
+            sorting: {
+                field: 'created_at',
+                order: 'desc'
+            },
+            index_abilities: this.abilities.privilege('tickets', 'cloud_help')
         }
     },
 
     // @return [void]
     // @description Executes the necessary functions needed to initialize this component
     mounted() {
+        this.setSessionStorageFilters()
        this.getTicketTypes()
     },
 
     methods: {
+
+        // @return [void]
+        // @description Connects to the backend using HTTP and retrieves a list of TicketType associated to
+        //      the current user's account. If the HTTP request fails, an error message is shown
+        // @example
+        //      console.log(this.ticket_types) // will display null
+        //      this.getTicketTypes()
+        //      console.log(this.ticket_types) // will display an array of objects, each representing a TicketType.
+
+        setSessionStorageFilters(){
+            let stored_filters = this.storage.local("filters")
+
+            if(stored_filters){
+                for(let key in stored_filters){
+                    this.$set(this.filters, key, stored_filters[key])
+                }
+            }
+            
+            this.$nextTick(()=>{
+                this.filters_ready = true
+            })
+        },
 
         // @return [void]
         // @description Connects to the backend using HTTP and retrieves a list of Ticket type associated to
@@ -69,11 +103,38 @@ export default {
         //      console.log(this.ticket_types) // will display null
         //      this.getTicketTypes()
         //      console.log(this.ticket_types) // will display an array of objects, each representing a Ticket type.
-        getTicketTypes() {
-            this.http.get(`${this.main_route}.json`).then(result => {
-                this.reloading = false
+        getTicketTypes(reset_current_page = true) {
+            this.loading = true
+            this.storage.local("filters", this.filters)
+            let url = `${this.main_route}/list.json`
+
+            let data = {
+                filters: {
+                    statuses: this.filters.statuses,
+                    search_type: this.filters.search_type,
+                    include: this.filters.include,
+                    query: this.filters.query
+                },
+                order: this.sorting.order,
+                orderColumn: this.sorting.field,
+                perPage: this.filters.per_page
+            }
+            if(reset_current_page){
+                this.pagination.current_page = 1
+                data.filters.get_total_count = true
+            }else{
+                data.filters.get_total_count = false
+            }
+            data.page = this.pagination.current_page
+
+            this.http.post(url, data).then(result => {
+                this.loading = false
                 if (result.successful) {
-                    this.ticket_types = result.data
+                    this.ticket_types = result.data.ticket_types
+
+                    if(result.data.total_count != null){
+                        this.pagination.ticket_types_count = result.data.total_count
+                    }
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -94,64 +155,157 @@ export default {
         },
 
         reloadTicketTypes(){
-            this.reloading = true
+            this.loading = true
+            this.getTicketTypes()
+        },
+
+        searchTicketTypes(text) {
+            this.filters.query = text
+            this.getTicketTypes()
+        },
+
+        sortTicketTypes(field, order){
+            if(this.sorting.field == field){
+                if(this.sorting.order == 'asc'){
+                    this.sorting.order = 'desc'
+                }else{
+                    this.sorting.order = 'asc'
+                }
+            }else{
+                this.sorting.field = field
+                this.sorting.order = 'desc'
+            }
             this.getTicketTypes()
         }
     },
 
-    computed: {
-
-        // @return [String] The class that is used to give a spinning animation to the icon (if needed)
-        // @description When the user clicks the 'reload' button, it changes the value of the *reloading*
-        //      data variable. And that is used by this method to change the class of the icon and add it
-        //      the spinning animation
-        reloadingClass(){
-            if(this.reloading){
-                return 'fa-spin'
+    watch: {
+        'pagination.current_page': function(){
+            if(! this.loading){
+                this.getTicketTypes(false)
             }
-
-            return ''
-        }
+        },
+        
+        'filters.per_page'(){
+            if(this.filters_ready){
+                this.getTicketTypes(true)
+            }
+        },
     }
 }
 </script>
 <template>
-    <section class="section" v-if="ticket_types">
-        <component-layout-data-empty v-if="ticket_types.length == 0" />
-        <div class="card" v-if="ticket_types.length > 0">
-            <div class="card-header">
-                <h4 class="card-header-title">
-                    Ticket types
-                </h4>
-                <div class="buttons">
-                    <button class="button is-white" @click="reloadTicketTypes" :disabled="reloading">
-                        <b-icon icon="sync" size="is-small" :custom-class="reloadingClass" />
-                    </button>
-                    &nbsp;&nbsp;&nbsp;
+    <section class="application-component">
+        <component-header 
+            :title="translations.main.view_title_main">
+            <div class="buttons">
+                <button class="button" @click="reloadTicketTypes()">
+                    <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
+                    <span> {{ translations.core.view_text_btn_reload }}</span>
+                </button>
+                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
+                    <b-icon icon="plus" size="is-small" />
+                    <span>{{ translations.main.view_btn_create }}</span>
+                </router-link>
+            </div>
+        </component-header>
+
+        <component-toolbar
+            v-if="filters_ready"
+            :search-text="translations.main.view_placeholder_text_filter"
+            @search="searchTicketTypes"
+            :initial-value="filters.query"
+        >
+            <div class="control">
+                <div class="select">
+                    <select v-model="filters.per_page">
+                        <option :value="10">10</option>
+                        <option :value="15">15</option>
+                        <option :value="30">30</option>
+                        <option :value="50">50</option>
+                    </select>
                 </div>
             </div>
+        </component-toolbar>
+
+        <div class="card">
             <div class="card-content">
-                <b-table :data="ticket_types" @click="showTicketType" :hoverable="true">
+
+                <component-data-loading v-if="loading" />
+                <component-data-empty v-if="!loading && ticket_types.length == 0" />
+                
+                <b-table
+                    :data="ticket_types"
+                    @click="showTicketType"
+                    :hoverable="true"
+                    v-if="!loading && ticket_types.length > 0"
+                    @sort="sortTicketTypes"
+                    backend-sorting
+                >
                     <template slot-scope="props">
-                        <b-table-column field="id" label="Number" width="40" numeric centered>
-                            {{ props.row.id }}
+                        <b-table-column field="id" :label="translations.main.column_id" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="sorting.field == 'id'">
+                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            {{props.row.id}}
                         </b-table-column>
-                        <b-table-column field="name" label="Name">
-                            {{ props.row.name }}
+
+                        <b-table-column field="name" :label="translations.main.column_name" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="sorting.field == 'name'">
+                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            {{props.row.name}}
                         </b-table-column>
-                        <b-table-column field="created_at" label="Created at">
-                            {{ date.toLocalFormat(props.row.created_at, true) }}
+
+                        <b-table-column field="weight" :label="translations.main.column_weight" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="sorting.field == 'weight'">
+                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            {{props.row.weight}}
                         </b-table-column>
-                        <b-table-column field="updated_at" label="Updated at">
-                            {{ date.toLocalFormat(props.row.updated_at, true) }}
+
+                        <b-table-column field="created_at" :label="translations.main.column_created_at" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="sorting.field == 'created_at'">
+                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            {{props.row.created_at}}
                         </b-table-column>
                     </template>
                 </b-table>
+                <hr>
+                <b-pagination
+                    :simple="false"
+                    :total="pagination.ticket_types_count"
+                    :current.sync="pagination.current_page"
+                    :range-before="pagination.range_before"
+                    :range-after="pagination.range_after"
+                    :per-page="filters.per_page"
+                    order="is-centered"
+                    icon-prev="chevron-left"
+                    icon-next="chevron-right"
+                    aria-next-label="Next page"
+                    aria-previous-label="Previous page"
+                    aria-page-label="Page"
+                    aria-current-label="Current page"
+                >
+                </b-pagination>
             </div>
         </div>
-    </section>
-
-    <section class="section" v-else>
-        <component-layout-data-loading  size="is-medium" />
     </section>
 </template>

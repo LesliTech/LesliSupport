@@ -26,7 +26,7 @@ Building a better future, one line of code at a time.
 @description Controller for ticket priorities
 
 =end
-    class Catalog::TicketPrioritiesController < ApplicationController
+    class Catalog::TicketPrioritiesController < ApplicationLesliController
         before_action :set_ticket_priority, only: [:update, :destroy]
 
 =begin

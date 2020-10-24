@@ -24,36 +24,13 @@ Building a better future, one line of code at a time.
 @description Model for ticket priorities
 
 =end
-    class Catalog::TicketPriority < ApplicationRecord
+    class Catalog::TicketPriority < ApplicationLesliRecord
 
         belongs_to  :account, class_name: "CloudHelp::Account", foreign_key: "cloud_help_accounts_id"
         has_many    :tickets, class_name: "CloudHelp::Ticket",  foreign_key: "cloud_help_catalog_ticket_priorities_id"
 
         validates :name, presence: true
         validates :weight, presence: true
-
-=begin
-@return [Boolean] Wheter the ticket priority was deleted or not
-@description Attempts to delete this ticket priority.
-    However, if there is a *ticket* associated to this *priority*, it 
-    will not be deleted and an error will be added to the *errors* parameter
-@example
-    my_priority = CloudHelp::TicketPriority.first
-    if my_priority.destroy
-        puts "Ticket priority successfully destroyed"
-    else
-        puts "Ticket priority was not destroyed"
-        puts my_priority.errors.full_messages.to_sentence
-    end
-=end
-        def destroy
-            begin
-                super
-            rescue ActiveRecord::InvalidForeignKey
-                errors.add(:base, :foreign_key_prevents_destruction)
-                false
-            end
-        end
 
         def self.index(current_user, query)
             # Parsing filters

@@ -1,29 +1,19 @@
 <script>
 /*
-Copyright (c) 2020, Lesli Technologies, S. A.
+Copyright (c) 2020, all rights reserved.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description Allows the user to either view, or edit a Ticket priority and save it in the 
-    database using HTTP. This component is intended to be used in conjunction with the main apps:
-    *new*, *show* and *edit*
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
@@ -68,7 +58,9 @@ export default {
             submitting: false,
             deleting: false,
             translations: {
-                main: I18n.t('help.catalog/ticket_priorities')
+                main: I18n.t('help.catalog/ticket_priorities'),
+                core: I18n.t('core.shared'),
+                shared: I18n.t('help.shared')
             }
         }
     },
@@ -209,7 +201,7 @@ export default {
                 <router-link to="/">
                     &nbsp;&nbsp;&nbsp;
                     <i class="fas fa-undo"></i>
-                    {{translations.main.view_btn_return}}
+                    {{translations.core.view_btn_return}}
                 </router-link>
             </div>
         </div>
@@ -218,7 +210,7 @@ export default {
         <!--------------------------------------- START CARD CONTENT--------------------------------------->
         <div class="card-content">
             <b-tabs>
-                <b-tab-item :label="translations.main.view_tab_title_information">
+                <b-tab-item :label="translations.shared.view_tab_title_information">
                     <form @submit="submitTicketPriority">
                         <div class="columns">
                             <div class="column">
@@ -256,11 +248,11 @@ export default {
                                     <b-button type="is-primary" native-type="submit" :disabled="submitting">
                                         <span v-if="submitting">
                                             <i class="fas fa-circle-notch fa-spin"></i>
-                                            &nbsp; {{translations.main.view_btn_saving}}
+                                            &nbsp; {{translations.core.view_btn_saving}}
                                         </span>
                                         <span v-else>
                                             <i class="fas fa-save"></i>
-                                            &nbsp; {{translations.main.view_btn_save}}
+                                            &nbsp; {{translations.core.view_btn_save}}
                                         </span>
                                     </b-button>
                                 </b-field>
@@ -269,22 +261,20 @@ export default {
                         </div>
                     </form>
                 </b-tab-item>
-                <b-tab-item :label="translations.main.view_tab_title_delete" v-if="viewType != 'new'">
+                <b-tab-item :label="translations.shared.view_tab_title_delete" v-if="viewType != 'new'">
                     <span class="has-text-danger">
-                        Are you sure you want to delete this priority? This action is permanent. 
-                        All tickets currently associated with it will
-                        remain unchanged, but new tickets will not have this priority available. 
+                        {{translations.main.view_text_delete_confirmation}}
                     </span>
                     <br>
                     <br>
                     <!---------------------------------- START DELETE BUTTON ---------------------------------->
                     <b-field v-if="viewType != 'new'">
-                        <b-button type="is-danger" @click="deleteTicketPriority" expanded class="submit-button">
+                        <b-button type="is-danger" @click="deleteTicketPriority" expanded class="submit-button" :disabled="deleting">
                             <span v-if="deleting">
-                                <i class="fas fa-spin fa-circle-notch"></i> {{translations.main.view_btn_deleting}}
+                                <i class="fas fa-spin fa-circle-notch"></i> {{translations.core.view_btn_deleting}}
                             </span>
                             <span v-else>
-                                <i class="fas fa-trash-alt"></i> {{translations.main.view_btn_delete}}
+                                <i class="fas fa-trash-alt"></i> {{translations.core.view_btn_delete}}
                             </span>
                         </b-button>
                     </b-field>

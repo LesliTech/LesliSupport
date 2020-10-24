@@ -1,28 +1,19 @@
 <script>
 /*
-Copyright (c) 2020, Lesli Technologies, S. A.
+Copyright (c) 2020, all rights reserved.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description App that retrieves and shows, and allows the user to edit/update a
-    Ticket type specified by the id in the route.
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
@@ -55,7 +46,11 @@ export default {
         return {
             main_route: '/help/catalog/ticket_types',
             ticket_type: null,
-            ticket_type_id: null
+            ticket_type_id: null,
+            translations: {
+                main: I18n.t('help.catalog/ticket_types')
+            },
+            index_abilities: this.abilities.privilege('tickets', 'cloud_help')
         }
     },
 
@@ -100,8 +95,18 @@ export default {
 }
 </script>
 <template>
-    <section class="section">
+    <section class="application-component">
+        <component-header 
+            :title="translations.main.view_title_main"
+        >
+            <div class="buttons">
+                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
+                    <b-icon icon="plus" size="is-small" />
+                    <span>{{ translations.main.view_btn_create }}</span>
+                </router-link>
+            </div>
+        </component-header>
         <component-form v-if="ticket_type" :ticket-type="ticket_type" view-type="edit"/>
-        <component-layout-data-loading v-else size="is-medium" />
+        <component-data-loading v-else size="is-medium" />
     </section>
 </template>

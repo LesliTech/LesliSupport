@@ -1,29 +1,19 @@
 <script>
 /*
-Copyright (c) 2020, Lesli Technologies, S. A.
+Copyright (c) 2020, all rights reserved.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description Allows the user to either view, or edit a Ticket type and save it in the 
-    database using HTTP. This component is intended to be used in conjunction with the main apps:
-    *new*, *show* and *edit*
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
@@ -64,7 +54,14 @@ export default {
     data() {
         return {
             main_route: '/help/catalog/ticket_types',
-            ticket_type: null
+            ticket_type: null,
+            submitting: false,
+            deleting: false,
+            translations: {
+                main: I18n.t('help.catalog/ticket_types'),
+                core: I18n.t('core.shared'),
+                shared: I18n.t('help.shared')
+            }
         }
     },
 
@@ -125,10 +122,12 @@ export default {
                 ticket_type: this.ticket_type
             }
             let url = `${this.main_route}.json`
+            this.submitting = true
 
             this.http.post(url, form_data).then(result => {
+                this.submitting = false
                 if (result.successful) {
-                    this.alert('Ticket type created successfully', 'success')
+                    this.alert(this.translations.main.messages_info_ticket_type_created, 'success')
                     this.$router.push(`/${result.data.id}`)
                 }else{
                     this.alert(result.error.message,'danger')
@@ -150,11 +149,12 @@ export default {
                 ticket_type: this.ticket_type
             }
             let url = `${this.main_route}/${this.ticket_type_id}.json`
+            this.submitting = true
 
             this.http.put(url, form_data).then(result => {
+                this.submitting = false
                 if (result.successful) {
-                    this.alert('Ticket type updated successfully', 'success')
-                    this.$router.push(`/${this.ticket_type.id}`)
+                    this.alert(this.translations.main.messages_info_ticket_type_updated, 'success')
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -172,10 +172,12 @@ export default {
         //      this.deleteTicketType() // will delete the record and redirect to the list app
         deleteTicketType() {
             let url = `${this.main_route}/${this.ticket_type_id}`
+            this.deleting = true
 
             this.http.delete(url).then(result => {
+                this.deleting = false
                 if (result.successful) {
-                    this.alert('Ticket type deleted successfully', 'success')
+                    this.alert(this.translations.main.messages_info_ticket_type_destroyed, 'success')
                     this.$router.push('/')
                 }else{
                     this.alert(result.error.message, 'danger')
@@ -192,21 +194,14 @@ export default {
         <!--------------------------------------- START CARD HEADER --------------------------------------->
         <div class="card-header">
             <h2 class="card-header-title">
-                Ticket type
+                <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
+                <span v-else>{{translations.main.view_title_edit}}</span>
             </h2>
             <div class="card-header-icon">
-                <router-link v-if="viewType == 'edit'" :to="`/${ticket_type.id}`">
-                    <i class="fas fa-eye"></i>
-                    Show Ticket type
-                </router-link>
-                <router-link v-if="viewType == 'show'" :to="`/${ticket_type.id}/edit`">
-                    <i class="fas fa-eye"></i>
-                    Edit Ticket type
-                </router-link>
                 <router-link to="/">
                     &nbsp;&nbsp;&nbsp;
                     <i class="fas fa-undo"></i>
-                    Return
+                    {{translations.core.view_btn_return}}
                 </router-link>
             </div>
         </div>
@@ -214,55 +209,72 @@ export default {
 
         <!--------------------------------------- START CARD CONTENT--------------------------------------->
         <div class="card-content">
-            <form @submit="submitTicketType">
-                <b-field label="Name">
-                    <b-input v-model="ticket_type.name" required="true"></b-input>
-                </b-field>
-                <div class="columns">
-                    <div v-if="ticket_type_id" class="column">
-                        <div class="field">
-                            <small>
-                                <span class="has-text-weight-bold">
-                                    Created at:
-                                </span>
-                                {{ date.toLocalFormat(ticket_type.created_at, false, true) }}
-                                <br>
-                                <span class="has-text-weight-bold">
-                                    Updated at:
-                                </span>
-                                {{ date.toLocalFormat(ticket_type.updated_at, false, true) }}
-                            </small>
+            <b-tabs>
+                <b-tab-item :label="translations.shared.view_tab_title_information">
+                    <form @submit="submitTicketType">
+                        <div class="columns">
+                            <div class="column">
+                                <b-field :label="translations.main.column_name">
+                                    <b-input v-model="ticket_type.name" required="true"></b-input>
+                                </b-field>
+                            </div>
                         </div>
-                    </div>
-                    <div class="column has-text-right">
-                        <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
-                        <b-field v-if="viewType == 'new' || viewType == 'edit'">
-                            <b-button type="is-primary" native-type="submit">
-                                <span v-if="viewType == 'new'">
-                                    Create Ticket Type
-                                </span>
-                                <span v-else>
-                                    Update Ticket Type
-                                </span>
-                            </b-button>
-                        </b-field>
-                        <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
-                        
-                        <!---------------------------------- START DELETE BUTTON ---------------------------------->
-                        <b-field v-if="viewType == 'show'">
-                            <b-button type="is-danger" @click="deleteTicketType">
-                                <span v-if="viewType == 'new'">
-                                    Create Ticket Type
-                                </span>
-                                <span v-else>
-                                    Delete Ticket Type
-                                </span>
-                            </b-button>
-                        </b-field>
-                        <!----------------------------------  END DELETE BUTTON  ---------------------------------->
-                    </div>
-                </div>
-            </form>
+
+                        <div class="columns">
+                            <div v-if="ticket_type_id" class="column">
+                                <div class="field">
+                                    <small>
+                                        <span class="has-text-weight-bold">
+                                            {{translations.main.column_created_at}}:
+                                        </span>
+                                        {{ ticket_type.created_at }}
+                                        <br>
+                                        <span class="has-text-weight-bold">
+                                            {{translations.main.column_updated_at}}:
+                                        </span>
+                                        {{ ticket_type.updated_at }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="column has-text-right">
+                                <!---------------------------------- START SUBMIT BUTTON ---------------------------------->
+                                <b-field v-if="viewType == 'new' || viewType == 'edit'">
+                                    <b-button type="is-primary" native-type="submit" :disabled="submitting">
+                                        <span v-if="submitting">
+                                            <i class="fas fa-circle-notch fa-spin"></i>
+                                            &nbsp; {{translations.core.view_btn_saving}}
+                                        </span>
+                                        <span v-else>
+                                            <i class="fas fa-save"></i>
+                                            &nbsp; {{translations.core.view_btn_save}}
+                                        </span>
+                                    </b-button>
+                                </b-field>
+                                <!----------------------------------  END SUBMIT BUTTON  ---------------------------------->
+                            </div>
+                        </div>
+                    </form>
+                </b-tab-item>
+                <b-tab-item :label="translations.shared.view_tab_title_delete" v-if="viewType != 'new'">
+                    <span class="has-text-danger">
+                        {{translations.main.view_text_delete_confirmation}}
+                    </span>
+                    <br>
+                    <br>
+                    <!---------------------------------- START DELETE BUTTON ---------------------------------->
+                    <b-field v-if="viewType != 'new'">
+                        <b-button type="is-danger" @click="deleteTicketType" expanded class="submit-button" :disabled="deleting">
+                            <span v-if="deleting">
+                                <i class="fas fa-spin fa-circle-notch"></i> {{translations.core.view_btn_deleting}}
+                            </span>
+                            <span v-else>
+                                <i class="fas fa-trash-alt"></i> {{translations.core.view_btn_delete}}
+                            </span>
+                        </b-button>
+                    </b-field>
+                    <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                </b-tab-item>
+            </b-tabs>
         </div>
         <!---------------------------------------  END CARD CONTENT --------------------------------------->
     </div>
