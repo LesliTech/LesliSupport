@@ -91,16 +91,16 @@ CloudHelp::Engine.routes.draw do
 
     resources :tickets do
         member do
-            get "/resources/files-zip-download",     to: "project/files#zip_download"
+            get "/resources/files-zip-download",     to: "ticket/files#zip_download"
         end
         collection do
             get "search/:text_to_search" => :search
             post "list" => :index
 
             get :options
-            get "/files/options",                   to: "project/files#options"
+            get "/files/options",                   to: "ticket/files#options"
         end
-        scope module: :project do
+        scope module: :ticket do
             resources :actions
             resources :activities
             resources :discussions

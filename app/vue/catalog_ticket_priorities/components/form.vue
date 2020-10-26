@@ -23,8 +23,6 @@ For more information read the license file including with this software.
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
 export default {
     
     // @component_prop TicketPriority [Object] The object representation of the ticket_priority.
@@ -194,6 +192,7 @@ export default {
         <!--------------------------------------- START CARD HEADER --------------------------------------->
         <div class="card-header">
             <h2 class="card-header-title">
+                {{viewType}}
                 <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
                 <span v-else>{{translations.main.view_title_edit}}</span>
             </h2>

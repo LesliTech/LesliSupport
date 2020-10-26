@@ -26,5 +26,11 @@ Building a better future, one line of code at a time.
 =end
     class Ticket::File < CloudObject::File
         belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: 'cloud_help_tickets_id'
+
+        enum file_type: {
+            error_screenshots: "error_screenshots",
+            drafts: "drafts",
+            general_documents: "general_documents"
+        }
     end
 end

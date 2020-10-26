@@ -2,31 +2,23 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
 =begin
+Copyright (c) 2020, all rights reserved.
 
-Lesli
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
 
-Copyright (c) 2020, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description Controller for tickets
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 
 =end
-    class TicketsController < ApplicationController
+    class TicketsController < ApplicationLesliController
 
         before_action :set_ticket, only: [:update]
 
@@ -44,8 +36,8 @@ Building a better future, one line of code at a time.
             respond_to do |format|
                 format.html { }
                 format.json do
-                    tickets = Ticket.list(current_user.account.help)
-                    responseWithSuccessful(tickets) 
+                    tickets = Ticket.index(current_user, @query)
+                    respond_with_successful(tickets) 
                 end
             end
         end
@@ -66,7 +58,7 @@ Building a better future, one line of code at a time.
                 format.html { }
                 format.json do
                     set_ticket
-                    responseWithSuccessful(@ticket.detailed_info)
+                    respond_with_successful(@ticket.show)
                 end
             end
         end
@@ -140,10 +132,11 @@ Building a better future, one line of code at a time.
             ticket = Ticket.new(ticket_params)
             ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
             ticket.account = current_user.account.help
+            ticket.user_creator = current_user
             ticket.set_workflow
 
             if ticket.save
-                responseWithSuccessful(ticket)
+                respond_with_successful(ticket)
                 Ticket::Subscriber.add_subscriber(ticket, current_user)
                 Ticket::Subscriber.notify_subscribers(
                     ticket,
@@ -151,7 +144,7 @@ Building a better future, one line of code at a time.
                     :ticket_created
                 )
             else
-                responseWithError(@ticket.errors.full_messages.to_sentence)
+                responseWithError(ticket.errors.full_messages.to_sentence)
             end
         end
 
@@ -202,7 +195,7 @@ Building a better future, one line of code at a time.
 =end
         def update
             if @ticket.update(ticket_params)
-                responseWithSuccessful(@ticket.detailed_info)
+                respond_with_successful(@ticket.show)
             else
                 responseWithError(@ticket.errors.full_messages.to_sentence)
             end
@@ -244,13 +237,8 @@ Building a better future, one line of code at a time.
         }
     });
 =end
-        def ticket_options
-            help_account = current_user.account.help
-            responseWithSuccessful({
-                types: Catalog::TicketType.where(account: help_account).select(:id, :name),
-                categories: Catalog::TicketCategory.tree(current_user.account),
-                priorities: Catalog::TicketPriority.where(account: help_account).select(:id, :name, :weight)
-            })
+        def options
+            respond_with_successful(Ticket.options(current_user, @query))
         end
 
         private

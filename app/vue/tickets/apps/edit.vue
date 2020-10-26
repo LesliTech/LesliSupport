@@ -31,7 +31,7 @@ Building a better future, one line of code at a time.
 // · Import modules, components and apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
-import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
+import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion-simple.vue'
 import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
 import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
 import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
@@ -62,7 +62,10 @@ export default {
     },
     data() {
         return {
-            translations: I18n.t('cloud_help.tickets.edit'),
+            translations: {
+                main: I18n.t('help.tickets'),
+                core: I18n.t('core.shared')
+            },
             ticket_id: null,
             ticket: null,
             rerender_chart: false
@@ -90,40 +93,61 @@ export default {
         getTicket() {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket = result.data
+                    this.ticket = this.parseBackendData(result.data)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        parseBackendData(ticket){
+            if(ticket.detail_attributes.deadline){
+                ticket.detail_attributes.deadline = new Date(ticket.detail_attributes.deadline)
+            }
+
+            return ticket
         }
 
     }
 }
 </script>
 <template>
-    <section v-if="ticket" class="section">
-        <div class="columns">
-            <div class="column is-8">
-                <component-form class="box"
-                    :ticket-data="ticket"
-                />
-                <div class="card box">
+    <section v-if="ticket" class="application-component">
+        <component-header 
+            :title="`${ticket.id} - ${ticket.detail_attributes.subject}`"
+        >
+        </component-header>
+        <b-tabs vertical>
+            <b-tab-item :label="'Information'">
+                <component-form class="box" :ticket-data="ticket" view-type="edit"></component-form>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_discussions">
+                <div class="card">
                     <div class="card-header">
-                        <h4 class="card-header-title">
-                            {{translations.titles.workflow}}
-                        </h4>
+                        <div class="card-header-title is-shadowless">
+                            <h4 class=" title is-4">
+                                {{translations.core.view_text_discussions}}
+                            </h4>
+                        </div>
                     </div>
                     <div class="card-content">
-                        <component-workflow-chart
-                            :rerender.sync="rerender_chart"
-                            :workflow-id="ticket.cloud_help_workflows_id"
-                            :selected-workflow-state="ticket.status_number"
-                            cloud-module="help/ticket"
-                        />
+                        <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id"></component-discussion>
                     </div>
                 </div>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_files">
+                <component-file cloud-module="help/ticket" :cloud-id="ticket_id"></component-file>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.main.view_btn_status_timeline">
+            </b-tab-item>
+        </b-tabs>
+        <div class="columns">
+            <div class="column is-8">
             </div>
             <div class="column is-4">
                 <component-workflow-transition
@@ -137,11 +161,9 @@ export default {
         </div>
         <div class="columns">
             <div class="column">
-                <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id"/>
             </div>
             <component-subscription cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-action cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-file cloud-module="help/ticket" :cloud-id="ticket_id" />
             <component-activity cloud-module="help/ticket" :cloud-id="ticket_id" />
         </div>
     </section>

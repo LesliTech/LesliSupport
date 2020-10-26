@@ -28,6 +28,8 @@ Building a better future, one line of code at a time.
         include ActiveModel::Dirty
 
         belongs_to :account,    class_name: "CloudHelp::Account",                   foreign_key: "cloud_help_accounts_id"
+        belongs_to :user_creator, class_name: "::User",                             foreign_key: "users_id"
+        belongs_to :user_main,  class_name: "::User",                               foreign_key: "users_id"
         belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id"
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id"
@@ -39,6 +41,7 @@ Building a better future, one line of code at a time.
         has_many :files,        foreign_key: "cloud_help_tickets_id"
         has_many :subscribers,  foreign_key: "cloud_help_tickets_id"
         has_many :timelines,    foreign_key: "cloud_help_tickets_id"
+        has_many :activities,   foreign_key: "cloud_house_projects_id"
 
 
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: "cloud_help_tickets_id"
@@ -86,7 +89,7 @@ Building a better future, one line of code at a time.
 
 =begin
 @return [Hash] Detailed information about the ticket. Including, *priority*,
-    *full* *category* *path*, *type*, *creation* *user*, *assignation* *type*
+    *full* *category* *path*, *type*, *creation* *user*, *assignment* *type*
     and *workflow* *state*
 @description Creates a query that selects all ticket information from several tables
     and returns it in a hash
@@ -114,11 +117,11 @@ Building a better future, one line of code at a time.
     #        category:"Company System"
     #    },
     #    assignment_attributes:{
-    #        assignation_type:"none"
+    #        assignment_type:"none"
     #    }
     #}
 =end
-        def detailed_info
+        def show
             data = Ticket.joins(
                 "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
             ).joins(
@@ -137,8 +140,8 @@ Building a better future, one line of code at a time.
                 "CHWS.name as status",                              "CHCTP.id as cloud_help_catalog_ticket_priorities_id",
                 "CHCTT.id as cloud_help_catalog_ticket_types_id",   "CHCTC.id as cloud_help_catalog_ticket_categories_id",
                 "CHWS.id as cloud_help_workflow_statuses_id",       "CHCTP.weight as priority_weight",
-                "CHWS.initial as status_initial",                   "CHWS.final as status_final",
-                "CHW.id as cloud_help_workflows_id",                "CHWS.number as status_number"
+                "CHWS.status_type as status_type",                  "CHW.id as cloud_help_workflows_id",
+                "CHWS.number as status_number"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
 
@@ -152,7 +155,7 @@ Building a better future, one line of code at a time.
 =begin
 @param help_account [Account] The account associated to *current_user*
 @return [Hash] Detailed information about all the tickets. Including, *priority*,
-    *full* *category* *path*, *type*, *creation* *user*, *assignation* *type*
+    *full* *category* *path*, *type*, *creation* *user*, *assignment* *type*
     and *workflow* *state*
 @description Creates a query that selects all the tickets information from several tables
     and returns it in a hash
@@ -164,22 +167,44 @@ Building a better future, one line of code at a time.
     #        "id":1,                     "created_at":"2020-01-08T16:23:10.976Z",
     #        "priority":"Low",           "type":"Issue",
     #        "state":"created",          "category":"Company System",
-    #        "assignation_type":null,    "subject":"Testing Ticket"
+    #        "assignment_type":null,    "subject":"Testing Ticket"
     #    },{
     #        "id":2,                     "created_at":"2020-01-08T16:43:30.470Z",
     #        "priority":"Low",           "type":"Issue",
     #        "state":"closed",           "category":"Company System",
-    #        "assignation_type":"user",  "subject":"Testin"
+    #        "assignment_type":"user",  "subject":"Testin"
     #    },{
     #        "id":3,                     "created_at":"2020-01-09T18:08:27.622Z",
     #        "priority":"Low",           "type":"Change Request",
     #        "state":"In Progress",      "category":"Company System, Books Module",
-    #        "assignation_type":null,    "subject":"Testing"
+    #        "assignment_type":null,    "subject":"Testing"
     #    }
     #]
 =end
-        def self.list(help_account)
-            Ticket.joins(
+        def self.index(current_user, query)
+            # Parsing filters
+            filters = query[:filters]
+            filters_query = []
+            
+            # We filter by a text string written by the user
+            if filters["query"] && !filters["query"].empty?
+                query_words = filters["query"].split(" ")
+                query_words.each do |query_word|
+                    query_word = query_word.strip.downcase
+
+                    # first customer
+                    filters_query.push("
+                        (LOWER(CHTD.subject) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHTD.description) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHCTC.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHCTT.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHCTP.name) SIMILAR TO '%#{query_word}%')
+                    ")
+                end
+            end
+
+            # Executing the query
+            tickets = current_user.account.help.tickets.joins(
                 "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
             ).joins(
                 "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
@@ -190,21 +215,71 @@ Building a better future, one line of code at a time.
             ).joins(
                 "inner join cloud_help_workflow_statuses CHWS on cloud_help_tickets.cloud_help_workflow_statuses_id = CHWS.id"
             ).joins(
+                "left join users UC on UC.id = cloud_help_tickets.users_id"
+            ).joins(
+                "left join user_details UCD on UCD.users_id = UC.id"
+            ).joins(
+                "left join users UM on UM.id = cloud_help_tickets.user_main_id"
+            ).joins(
+                "left join user_details UMD on UMD.users_id = UM.id"
+            ).joins(
                 "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
             ).select(
-                "id",                                           "CHCTP.name as priority",
-                "CHCTT.name as type",                           "CHWS.name as state",
-                "CHCTC.name as category",                        "CHTA.assignation_type",
-                "subject",                                      "CHCTC.id as cloud_help_catalog_ticket_categories_id",
-                "created_at"
-            ).where(
-                "cloud_help_tickets.cloud_help_accounts_id = #{help_account.id}"
-            ).map do |ticket|
-                ticket.attributes.merge({
-                    assignation_type: Ticket::Assignment.assignation_types.key(ticket[:assignation_type]),
-                    category: Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
-                })
+                "id",                                                   "CHCTP.name as priority",
+                "CHCTT.name as type",                                   "CHWS.name as state",
+                "CHCTC.name as category",                               "CHTA.assignment_type",
+                "subject",                                              "CHCTC.id as cloud_help_catalog_ticket_categories_id",
+                "CHCTP.id as cloud_help_catalog_ticket_priorities_id",  "CHCTT.id as cloud_help_catalog_ticket_types_id",
+                "created_at",                                           "CHCTP.weight as priority_weight",
+                "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
+                "UM.id as user_main_id",                                "CONCAT(UMD.first_name, ' ', UMD.last_name) as user_main",
+                "deadline"
+            )
+
+            # We apply the previous filters in the main query
+            unless filters_query.empty?
+                tickets = tickets.where(filters_query.join(" AND "))
             end
+
+
+            response = {}
+            # total count
+            response[:total_count] = tickets.length if filters["get_total_count"]
+
+            # Adding pagination to tickets
+            pagination = query[:pagination]
+            tickets = tickets.page(
+                pagination[:page]
+            ).per(
+                pagination[:perPage]
+            ).order(
+                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
+            )
+
+            # We format the response
+            response[:tickets] = tickets.map do |ticket|
+                ticket_attributes = ticket.attributes
+                ticket_attributes["deadline"] = LC::Date.to_string(ticket_attributes["deadline"])
+                ticket_attributes["created_at"] = LC::Date.to_string_datetime(ticket_attributes["created_at"])
+                ticket_attributes["assignment_type"] = Ticket::Assignment.assignment_types.key(ticket[:assignment_type])
+                ticket_attributes["category"] = Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
+
+                ticket_attributes
+            end
+            
+            response
+        end
+
+        def self.options(current_user, query)
+            types = current_user.account.help.ticket_types.select(:id, :name)
+            categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
+            priorities = current_user.account.help.ticket_priorities.select(:id, :name, :weight)
+
+            {
+                types: types,
+                categories: categories,
+                priorities: priorities
+            }
         end
 
         private
@@ -213,18 +288,18 @@ Building a better future, one line of code at a time.
 @return [Hash] Assignment information about this ticket
 @description Retrievies and returns assignment information about this ticket.
     If there is no assigment, returns a hash containing a "none" in the
-    *assignation_type* attribute
+    *assignment_type* attribute
 @todo Implement support for *team* assigmation type
 @example 
-    puts self.assignation_info
+    puts self.assignment_info
     #will print something similar to {
     #    assignable_name: "john.doe@email.com",
-    #    assignation_type: "user"
+    #    assignment_type: "user"
     #}
 =end
         def assignment_info
             return {
-                assignation_type: 'none'
+                assignment_type: 'none'
             } unless assignment
 
             if assignment.user?
