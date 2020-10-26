@@ -68,7 +68,7 @@ Building a better future, one line of code at a time.
                 set_ticket_category
                 return responseWithNotFound unless @ticket_category
 
-                responseWithSuccessful(@ticket_category.tree)
+                responseWithSuccessful(@ticket_category.show)
             end
         end
     end

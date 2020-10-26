@@ -61,7 +61,7 @@ export default {
                 field: 'created_at',
                 order: 'desc'
             },
-            index_abilities: this.abilities.privilege('tickets', 'cloud_help')
+            index_abilities: this.abilities.privilege('catalog/ticket_types', 'cloud_help')
         }
     },
 
@@ -110,9 +110,6 @@ export default {
 
             let data = {
                 filters: {
-                    statuses: this.filters.statuses,
-                    search_type: this.filters.search_type,
-                    include: this.filters.include,
                     query: this.filters.query
                 },
                 order: this.sorting.order,
