@@ -69,6 +69,6 @@ export default {
             :title="translations.main.view_title_main"
         >
         </component-header>
-        <component-form :ticket-priority="ticket_priority" view-type="new" />
+        <component-form :ticket-priority="ticket_priority" view-type="new"></component-form>
     </section>
 </template>

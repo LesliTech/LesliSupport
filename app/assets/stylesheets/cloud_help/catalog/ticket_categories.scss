@@ -14,3 +14,27 @@ For more information read the license file including with this software.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 */
+
+@import "lesli/templates/component";
+.submit-button {
+    justify-content: center;
+}
+
+.pagination-link {
+    justify-content: center;
+}
+
+.component-data-empty {
+    .card {
+        box-shadow: none !important;
+    }
+}
+
+.justify-content-right {
+    justify-content: flex-end;
+}
+
+.scrollable {
+    height: 23rem;
+    overflow-y: auto;
+}

@@ -12,6 +12,10 @@ export default {
         default_card: {
             type: Boolean,
             default: false
+        },
+        add_links: {
+            type: Boolean,
+            default: true
         }
     },
     methods: {
@@ -81,7 +85,14 @@ export default {
                                     {{tree.name}}
                                 </slot>
                             </a>
+                            <router-link v-else-if="add_links" :to="`/${tree.id}`">
+                                <span v-if="tree.depth > 0"> &nbsp; &nbsp;&nbsp; &nbsp; </span>
+                                <slot name="content" :node="tree">
+                                    {{tree.name}}
+                                </slot>
+                            </router-link>
                             <span v-else>
+                                <span v-if="tree.depth > 0"> &nbsp; &nbsp;&nbsp; &nbsp; </span>
                                 <slot name="content" :node="tree">
                                     {{tree.name}}
                                 </slot>
@@ -97,9 +108,3 @@ export default {
         </div>
     </section>
 </template>
-<style scoped>
-section.scrollable {
-    height: 23rem;
-    overflow-y: scroll;
-}
-</style>
