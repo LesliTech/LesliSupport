@@ -38,15 +38,13 @@ export default {
     data() {
         return {
             translations: {
-                show: I18n.t('cloud_help.ticket_categories.show'),
-                shared: I18n.t('cloud_help.ticket_categories.shared')
+                main: I18n.t('help.catalog/ticket_categories'),
+                core: I18n.t('core.shared'),
+                shared: I18n.t('help.shared')
             },
             ticket_category: {},
             category_tree: [],
             ticket_category_id: null,
-            modal:{
-                active: false
-            }
         }
     },
 
@@ -75,66 +73,30 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
-        },
-
-        deleteTicketCategory(){
-            this.modal.active = false
-            this.http.delete(`/help/catalog/ticket_categories/${this.ticket_category_id}`).then(result => {
-                if(result.successful){
-                    this.alert(this.translations.show.messages.delete.successful,'success')
-                    this.$router.push('/')
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
         }
     }
 }
 </script>
 <template>
-    <section class="section" v-if="ticket_category_id">
-        <b-modal 
-            :active.sync="modal.active"
-            has-modal-card
-            trap-focus
-            aria-role="dialog"
-            aria-modal
+    <section class="application-component" v-if="ticket_category_id">
+        <component-header 
+            :title="translations.main.view_title_main"
         >
-            <div class="card">
-                <div class="card-header is-danger">
-                    <h2 class="card-header-title">
-                        {{ translations.show.modal.title }}
-                    </h2>
-                </div>
-                <div class="card-content">
-                    {{ translations.show.modal.body }}
-                </div>
-                <div class="card-footer has-text-right">
-                    <button class="card-footer-item button is-danger" @click="deleteTicketCategory">
-                        {{ translations.show.modal.actions.delete }}
-                    </button>
-                    <button class="card-footer-item button is-secondary" @click="modal.active=false">
-                        {{ translations.show.modal.actions.cancel }}
-                    </button>
-                </div>
-            </div>
-        </b-modal>
+        </component-header>
         <div class="card">
             <div class="card-header">
                 <h2 class="card-header-title">
-                    {{ translations.shared.name }}
+                    {{ translations.main.view_title_show }}
                 </h2>
                 <div class="card-header-icon">
                     <router-link :to="`/${ticket_category_id}/edit`">
                         <i class="fas fa-edit"></i>
-                        {{ translations.shared.actions.edit }}
+                        {{translations.core.view_btn_edit}}
                     </router-link>
                     <router-link to="/">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-undo"></i>
-                        {{ translations.shared.actions.return }}
+                        {{translations.core.view_btn_return}}
                     </router-link>
                 </div>
             </div>
@@ -143,12 +105,12 @@ export default {
                     <div class="column">
                         <p>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.shared.fields.name}:` }}
+                                {{ translations.main.column_name }}:
                             </span>
                             {{ ticket_category.name }}
-                            <br>
+                            <hr>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.shared.fields.path}:` }}
+                                {{ translations.main.view_text_category_path }}:
                             </span>
                             <component-tree-list :trees="category_tree" :scrollable="true">
                             </component-tree-list>
@@ -159,24 +121,15 @@ export default {
                     <div class="column">
                         <small>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.shared.fields.created_at}:` }}
+                                {{ translations.main.column_created_at }}:
                             </span>
-                            {{ date.toLocalFormat(ticket_category.created_at, false, true) }}
+                            {{ ticket_category.created_at }}
                             <br>
                             <span class="has-text-weight-bold">
-                                {{ `${translations.shared.fields.updated_at}:` }}
+                                {{ translations.main.column_updated_at }}:
                             </span>
-                            {{ date.toLocalFormat(ticket_category.updated_at, false, true) }}
+                            {{ ticket_category.updated_at }}
                         </small>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <div class="actions has-text-right">
-                                <button class="button is-danger" @click="modal.active = true">
-                                    {{ translations.shared.actions.delete }}
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -184,10 +137,6 @@ export default {
     </section>
 </template>
 <style scoped>
-section.scrollable {
-    height: 23rem;
-    overflow-y: scroll;
-}
 .margin-left {
     margin-left: 2rem;
 }

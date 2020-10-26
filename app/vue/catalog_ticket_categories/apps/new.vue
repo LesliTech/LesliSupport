@@ -33,11 +33,23 @@ import componentForm from '../components/form.vue'
 export default {
     components: {
         'component-form': componentForm
+    },
+
+    data(){
+        return {
+            translations: {
+                main: I18n.t('help.catalog/ticket_categories')
+            }
+        }
     }
 }
 </script>
 <template>
-    <section class="section">
+    <section class="application-component">
+        <component-header 
+            :title="translations.main.view_title_main"
+        >
+        </component-header>
         <component-form></component-form>
     </section>
 </template>

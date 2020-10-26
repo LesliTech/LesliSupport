@@ -61,7 +61,7 @@ export default {
                 field: 'created_at',
                 order: 'desc'
             },
-            index_abilities: this.abilities.privilege('tickets', 'cloud_help')
+            index_abilities: this.abilities.privilege('catalog/ticket_priorities', 'cloud_help')
         }
     },
 
@@ -110,9 +110,6 @@ export default {
 
             let data = {
                 filters: {
-                    statuses: this.filters.statuses,
-                    search_type: this.filters.search_type,
-                    include: this.filters.include,
                     query: this.filters.query
                 },
                 order: this.sorting.order,
@@ -190,7 +187,7 @@ export default {
             if(this.filters_ready){
                 this.getTicketPriorities(true)
             }
-        },
+        }
     }
 }
 </script>
@@ -201,11 +198,11 @@ export default {
             <div class="buttons">
                 <button class="button" @click="reloadTicketPriorities()">
                     <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
-                    <span> {{ translations.main.view_btn_reload }}</span>
+                    <span> {{ translations.core.view_text_btn_reload }}</span>
                 </button>
                 <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
-                    <span>{{ translations.core.view_text_btn_reload }}</span>
+                    <span>{{ translations.main.view_btn_create }}</span>
                 </router-link>
             </div>
         </component-header>

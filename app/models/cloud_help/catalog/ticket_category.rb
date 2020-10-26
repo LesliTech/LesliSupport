@@ -33,29 +33,6 @@ Building a better future, one line of code at a time.
         validates :name, presence: true
 
 =begin
-@return [Boolean] Wheter the ticket category was deleted or not
-@description Attempts to delete this ticket category along with it's associated *workflow*.
-    However, if there is a *ticket* associated to this *category*, it will not be deleted
-    and an error will be added to the *errors* parameter
-@example
-    my_category = CloudHelp::TicketCategory.first
-    if my_category.destroy
-        puts "Ticket category successfully destroyed"
-    else
-        puts "Ticket category was not destroyed"
-        puts my_category.errors.full_messages.to_sentence
-    end
-=end
-        def destroy
-            begin
-                super
-            rescue ActiveRecord::InvalidForeignKey, ActiveRecord::StatementInvalid
-                errors.add(:base, :foreign_key_prevents_destruction)
-                false
-            end
-        end
-
-=begin
 @return [Array] An array that contains a list of the current categories and all its parents.
 @description Creates a list of categories starting from the root parent category and ending in
     the current category. If the current category is a root category, the array will have only
@@ -65,7 +42,7 @@ Building a better future, one line of code at a time.
     category_tree = current_category.tree
     puts category_tree.to_json
 =end
-        def tree
+        def show
             data = []
             depth = 0
             path.each do |node|
@@ -81,7 +58,9 @@ Building a better future, one line of code at a time.
                     else
                         node_attributes = node_attributes.merge({'parent_id' => nil})
                     end
-
+                    
+                    node_attributes["created_at"] = LC::Date.to_string_datetime(node_attributes["created_at"])
+                    node_attributes["updated_at"] = LC::Date.to_string_datetime(node_attributes["updated_at"])
                     data.push(node_attributes)
                 else
                     data.push(
@@ -136,7 +115,10 @@ Building a better future, one line of code at a time.
             roots.each_with_index do |root|
                 data.concat(self.tree_recursion(root, true))
             end
-            data
+            
+            {
+                ticket_categories: data
+            }
         end
 
         protected
