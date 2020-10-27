@@ -44,7 +44,7 @@ export default {
                     subject: null,
                     description: null,
                     deadline: new Date(),
-                    tags: null
+                    tags: []
                 }
             }
         }

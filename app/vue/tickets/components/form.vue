@@ -88,7 +88,6 @@ export default {
                 this.ticket.cloud_help_ticket_workflow_statuses_id = status.id
                 this.ticket.status = status.name
                 this.ticket.status_type = status.status_type
-                this.rerender_chart = true
             })
         },
 
@@ -112,8 +111,9 @@ export default {
                 e.preventDefault()
             }
             let data = {
-                ticket: this.ticket
+                ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
             }
+            data.ticket.detail_attributes.tags = data.ticket.detail_attributes.tags.join(',')
             this.submitting = true
 
             this.http.post(this.main_route, data).then(result => {
@@ -137,8 +137,10 @@ export default {
         //      this.putTicket() // will update the record and redirect to it's show app
         putTicket() {
             let data = {
-                ticket: this.ticket
+                ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
             }
+            data.ticket.detail_attributes.tags = data.ticket.detail_attributes.tags.join(',')
+
             let url = `${this.main_route}/${this.ticket_id}.json`
             this.submitting = true
 
@@ -249,128 +251,6 @@ export default {
 </script>
 <template>
     <div class="card">
-        <b-modal 
-            :active.sync="modals.escalate"
-            has-modal-card
-            trap-focus
-            aria-role="dialog"
-            aria-modal
-        >
-            <div class="card">
-                <div class="card-header is-danger">
-                    <h2 class="card-header-title">
-                        {{ 'translations.modals.escalate.title' }}
-                    </h2>
-                </div>
-                <div class="card-content">
-                    {{ 'translations.modals.escalate.body' }}
-                </div>
-                <div class="card-footer has-text-right">
-                    <button class="card-footer-item button is-danger" @click="escalateTicket">
-                        {{ 'translations.modals.escalate.actions.escalate' }}
-                    </button>
-                    <button class="card-footer-item button is-secondary" @click="modals.escalate=false">
-                        {{ 'translations.modals.escalate.actions.cancel' }}
-                    </button>
-                </div>
-            </div>
-        </b-modal>
-        <b-modal 
-            :active.sync="modals.descalate"
-            has-modal-card
-            trap-focus
-            aria-role="dialog"
-            aria-modal
-        >
-            <div class="card">
-                <div class="card-header is-danger">
-                    <h2 class="card-header-title">
-                        {{ 'translations.modals.descalate.title' }}
-                    </h2>
-                </div>
-                <div class="card-content">
-                    {{ 'translations.modals.descalate.body' }}
-                </div>
-                <div class="card-footer has-text-right">
-                    <button class="card-footer-item button is-danger" @click="descalateTicket">
-                        {{ 'translations.modals.descalate.actions.descalate' }}
-                    </button>
-                    <button class="card-footer-item button is-secondary" @click="modals.descalate=false">
-                        {{ 'translations.modals.descalate.actions.cancel' }}
-                    </button>
-                </div>
-            </div>
-        </b-modal>
-        <b-modal 
-            :active.sync="modals.transfer"
-            has-modal-card
-            trap-focus
-            aria-role="dialog"
-            aria-modal
-        >
-            <div class="card">
-                <div class="card-header is-danger">
-                    <h2 class="card-header-title">
-                        {{ 'translations.modals.transfer.title' }}
-                    </h2>
-                </div>
-                <div class="card-content">
-                    {{ 'translations.modals.transfer.body.warning' }}
-                    {{ 'translations.modals.transfer.body.instructions' }}
-                    <hr>
-                    <form id="form-transfer" @submit="putTicketTransfer">
-                        <div class="columns">
-                            <div class="column is-6">
-                                <b-field :label="'translations.modals.transfer.fields.type'">
-                                    <b-select 
-                                        :placeholder="'translations.form.placeholders.select_type'"
-                                        expanded
-                                        v-model="transfer.cloud_help_catalog_ticket_types_id"
-                                        :required="true"
-                                    >
-                                        <option
-                                            v-for="type in options.types"
-                                            :key="type.id"
-                                            :value="type.id"
-                                        >
-                                            {{type.name}}
-                                        </option>
-                                    </b-select>
-                                </b-field>
-                            </div>
-                            <div class="column is-6">
-                                <b-field :label="'translations.modals.transfer.fields.category'">
-                                    <b-select
-                                        :placeholder="'translations.form.placeholders.select_category'"
-                                        expanded
-                                        v-model="transfer.cloud_help_catalog_ticket_categories_id"
-                                        :required="true"
-                                    >
-                                        <option
-                                            v-for="category in options.categories"
-                                            :key="category.id"
-                                            :value="category.id"
-                                        >   
-                                            <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
-                                            {{category.name}}
-                                        </option>
-                                    </b-select>
-                                </b-field>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="card-footer has-text-right">
-                    <button class="card-footer-item button is-danger" type="submit" form="form-transfer">
-                        {{ 'translations.modals.transfer.actions.transfer' }}
-                    </button>
-                    <button class="card-footer-item button is-secondary" @click="modals.transfer=false">
-                        {{ 'translations.modals.transfer.actions.cancel' }}
-                    </button>
-                </div>
-            </div>
-        </b-modal>
-
         <div class="card-header">
             <h2 class="card-header-title">
                 <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
@@ -396,7 +276,7 @@ export default {
                             <template v-slot:label>
                                 {{translations.main.column_subject}}<sup class="has-text-danger">*</sup>
                             </template>
-                            <b-input v-model="ticket.detail_attributes.subject" :readonly="ticket_id != null" required></b-input>
+                            <b-input v-model="ticket.detail_attributes.subject" required></b-input>
                         </b-field>
                     </div>
                     <div class="column is-3">
@@ -429,7 +309,6 @@ export default {
                                     v-for="type in options.types"
                                     :key="type.id"
                                     :value="type.id"
-                                    :disabled="ticket_id != null"
                                 >
                                     {{type.name}}
                                 </option>
@@ -451,7 +330,6 @@ export default {
                                     v-for="category in options.categories"
                                     :key="category.id"
                                     :value="category.id"
-                                    :disabled="ticket_id != null"
                                 >   
                                     <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
                                     {{category.name}}
@@ -474,7 +352,6 @@ export default {
                                     v-for="priority in options.priorities"
                                     :key="priority.id"
                                     :value="priority.id"
-                                    :disabled="ticket_id != null"
                                 >
                                     {{priority.name}}
                                 </option>
@@ -482,6 +359,11 @@ export default {
                         </b-field>
                     </div>
                 </div>
+
+                <b-field :label="translations.main.column_tags">
+                    <b-taginput v-model="ticket.detail_attributes.tags" ellipsis></b-taginput>
+                </b-field>
+
                 <div class="field">
                     <label class="label">{{translations.main.column_description}}</label>
                     <div class="control">

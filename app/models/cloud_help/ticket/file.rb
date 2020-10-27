@@ -28,9 +28,11 @@ Building a better future, one line of code at a time.
         belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: 'cloud_help_tickets_id'
 
         enum file_type: {
-            error_screenshots: "error_screenshots",
+            screenshots: "screenshots",
+            error_logs: "error_logs",
             drafts: "drafts",
-            general_documents: "general_documents"
+            additional_request_documents: "additional_request_documents",
+            other: "other"
         }
     end
 end

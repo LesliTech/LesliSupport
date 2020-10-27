@@ -27,8 +27,7 @@ Building a better future, one line of code at a time.
     in the ticket (like when a user escalates the ticket)
 
 =end
-  class Ticket::TimelinesController < ApplicationController
-    before_action :set_ticket_timelines, only: [:index]
+    class Ticket::TimelinesController < ApplicationLesliController
 
 =begin
 @return [JSON] Json that contains a list of all events in the ticket timeline
@@ -38,25 +37,8 @@ Building a better future, one line of code at a time.
     # Executing this controller's action from javascript's frontend
     this.http.get(`127.0.0.1/help/ticket_priorities`);
 =end
-    def index
-        responseWithSuccessful(@ticket_timelines)
+        def index
+            responseWithSuccessful(Ticket::Timeline.index(current_user, @query, params[:ticket_id]))
+        end
     end
-
-    private
-
-=begin
-@return [void]
-@description Sets the variable @ticket_timelines. The variable contains an array of 
-    *CloudHelp::Ticket::Timeline* associated to a ticket.
-@example
-    #suppose params[:ticket_id] = 1
-    puts @ticket_timelines # will display nil
-    set_ticket_timelines
-    puts @ticket_timelines # will display an array with several instances of CloudHelp:Ticket::Timeline
-=end
-    def set_ticket_timelines
-        ticket_id = params[:ticket_id]
-        @ticket_timelines = current_user.account.help.tickets.find(ticket_id).timelines
-    end
-  end
 end
