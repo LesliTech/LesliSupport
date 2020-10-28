@@ -45,7 +45,7 @@ Building a better future, one line of code at a time.
 
 
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: "cloud_help_tickets_id"
-        has_one :assignment, foreign_key: "cloud_help_tickets_id"  
+        has_many :assignments, foreign_key: "cloud_help_tickets_id"  
 
         accepts_nested_attributes_for :detail, update_only: true
 
@@ -147,7 +147,7 @@ Building a better future, one line of code at a time.
 
             data[:category] = category.full_path
             data[:detail_attributes] = detail.attributes
-            data[:assignment_attributes] = assignment_info
+            data[:assignment_attributes] = assignments_info
             
             return data
         end
@@ -414,6 +414,28 @@ Building a better future, one line of code at a time.
             )
         end
 
+        def self.log_activity_create_assignment(current_user, ticket, assignment)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_create_assignment",
+                description: assignment.user.full_name,
+                value_to: assignment.user.full_name
+            )
+        end
+
+        def assignments_list
+            assignments.where(assignment_type: "user").map do |assignment|
+                user = assignment.user
+                {
+                    name: user.full_name,
+                    role: user.role.detail.name,
+                    email: user.email,
+                    users_id: user.id,
+                    id: assignment.id
+                }
+            end
+        end
+
         private
 
 =begin
@@ -423,22 +445,27 @@ Building a better future, one line of code at a time.
     *assignment_type* attribute
 @todo Implement support for *team* assigmation type
 @example 
-    puts self.assignment_info
+    puts self.assignments_info
     #will print something similar to {
     #    assignable_name: "john.doe@email.com",
     #    assignment_type: "user"
     #}
 =end
-        def assignment_info
-            return {
-                assignment_type: 'none'
-            } unless assignment
+        def assignments_info
+            assignments_data = []
+            return assignments_data if assignments.empty?
 
-            if assignment.user?
-                assignment.attributes.merge({
-                    assignable_name: assignment.user.email
-                })
+            assignments.each do |assignment|
+                if assignment.user
+                    assignments_data.push(
+                        assignment.attributes.merge({
+                            assignable_name: assignment.user.full_name
+                        })
+                    )
+                end
             end
+
+            assignments_data
         end
 
 =begin

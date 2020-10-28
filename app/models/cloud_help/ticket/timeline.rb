@@ -35,6 +35,7 @@ Building a better future, one line of code at a time.
         enum action: {
             created: "created",
             assigned_to_user: "assigned_to_user",
+            unassigned_from_user: "unassigned_from_user",
             status_changed: "status_changed",
             priority_changed: "priority_changed",
             category_transferred: "category_transferred",
