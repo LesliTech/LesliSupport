@@ -273,7 +273,7 @@ Building a better future, one line of code at a time.
         def self.options(current_user, query)
             types = current_user.account.help.ticket_types.select(:id, :name)
             categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
-            priorities = current_user.account.help.ticket_priorities.select(:id, :name, :weight)
+            priorities = current_user.account.help.ticket_priorities.order(weight: :asc).select(:id, :name, :weight)
 
             {
                 types: types,
@@ -360,6 +360,21 @@ Building a better future, one line of code at a time.
                     value_from: old_status,
                     value_to: new_status
                 )
+            end
+
+            # ticket type, category and priority are special cases because they are foreign keys
+            ["TicketType", "TicketPriority", "TicketCategory"].each do |field|
+                if old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"] != new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
+                    old_value = "CloudHelp::Catalog::#{field}".constantize.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    new_value = "CloudHelp::Catalog::#{field}".constantize.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    ticket.activities.create(
+                        user_creator: current_user,
+                        category: "action_update",
+                        field_name: "cloud_help_catalog_#{field.underscore.pluralize}_id",
+                        value_from: old_value,
+                        value_to: new_value
+                    )
+                end
             end
 
             # Details are a special case but only because they are nested

@@ -33,14 +33,14 @@ Building a better future, one line of code at a time.
     @return [ :status_changed, :priority_increased, :priority_decreased, :category_transferred, :type_transferred, :created, :closed, :assigned_to_user, :deadline_established ]
 =end
         enum action: {
+            created: "created",
+            assigned_to_user: "assigned_to_user",
             status_changed: "status_changed",
             priority_changed: "priority_changed",
             category_transferred: "category_transferred",
             type_transferred: "type_transferred",
-            created: "created",
-            closed: "closed",
-            assigned_to_user: "assigned_to_user",
-            deadline_established: "deadline_established"
+            deadline_established: "deadline_established",
+            closed: "closed"
         }
 
         def self.index(current_user, query, ticket_id)
@@ -55,6 +55,21 @@ Building a better future, one line of code at a time.
             end
 
             timelines
+        end
+
+        def self.options(current_user, query)
+            option_actions = actions.map do |key, value|
+                {
+                    value: key,
+                    text: value
+                }
+            end
+
+            option_actions = option_actions
+
+            {
+                actions: option_actions
+            }
         end
     end
 end

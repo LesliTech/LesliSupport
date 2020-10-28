@@ -109,7 +109,11 @@ CloudHelp::Engine.routes.draw do
             resources :custom_fields
 
             resources :assignments
-            resources :timelines
+            resources :timelines do
+                collection do
+                    get :options
+                end
+            end
         end
     end
 

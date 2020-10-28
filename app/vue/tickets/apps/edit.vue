@@ -22,11 +22,11 @@ For more information read the license file including with this software.
 import componentWorkflowTransition from 'LesliCoreVue/cloud_objects/workflows/components/transition.vue'
 import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
 import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion-simple.vue'
-import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
 import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
 import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
 
 import componentFormStatus from '../components/form-status.vue'
+import componentActivities from '../components/activities.vue'
 import componentTimeline from '../components/timeline.vue'
 import componentTitle from '../components/title.vue'
 import componentForm from '../components/form.vue'
@@ -43,7 +43,7 @@ export default {
         'component-subscription': componentSubscription,
         'component-form-status': componentFormStatus,
         'component-discussion': componentDiscussion,
-        'component-activity': componentActivity,
+        'component-activities': componentActivities,
         'component-action': componentAction,
         'component-timeline': componentTimeline,
         'component-title': componentTitle,
@@ -162,7 +162,7 @@ export default {
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_activities">
-                <component-activity cloud-module="help/ticket" :cloud-id="ticket_id"></component-activity>
+                <component-activities :ticket-id="ticket_id"></component-activities>
             </b-tab-item>
         </b-tabs>
     </section>
