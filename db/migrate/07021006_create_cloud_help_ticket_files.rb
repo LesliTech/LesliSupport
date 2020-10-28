@@ -10,6 +10,7 @@ class CreateCloudHelpTicketFiles < ActiveRecord::Migration[6.0]
             end
             t.timestamps
         end
+        add_reference :cloud_help_ticket_files, :users, foreign_key: true
         add_reference :cloud_help_ticket_files, :cloud_help_tickets, foreign_key: true
     end
 end

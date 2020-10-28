@@ -221,7 +221,7 @@ export default {
         </div>
         <div class="card-content">
             <b-tabs>
-                <b-tab-item :label="translations.shared.view_tab_title_information">
+                <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicketCategory">
                         <b-field>
                             <template v-slot:label>
@@ -296,7 +296,7 @@ export default {
                         </div>
                     </form>
                 </b-tab-item>
-                <b-tab-item :label="translations.shared.view_tab_title_delete" v-if="viewType != 'new'">
+                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType != 'new'">
                     <span class="has-text-danger">
                         {{translations.main.view_text_delete_confirmation}}
                     </span>

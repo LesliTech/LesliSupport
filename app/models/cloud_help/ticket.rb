@@ -28,6 +28,8 @@ Building a better future, one line of code at a time.
         include ActiveModel::Dirty
 
         belongs_to :account,    class_name: "CloudHelp::Account",                   foreign_key: "cloud_help_accounts_id"
+        belongs_to :user_creator, class_name: "::User",                             foreign_key: "users_id"
+        belongs_to :user_main,  class_name: "::User",                               foreign_key: "users_id"
         belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id"
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id"
@@ -39,6 +41,7 @@ Building a better future, one line of code at a time.
         has_many :files,        foreign_key: "cloud_help_tickets_id"
         has_many :subscribers,  foreign_key: "cloud_help_tickets_id"
         has_many :timelines,    foreign_key: "cloud_help_tickets_id"
+        has_many :activities,   foreign_key: "cloud_help_tickets_id"
 
 
         has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: "cloud_help_tickets_id"
@@ -74,7 +77,7 @@ Building a better future, one line of code at a time.
                 if super
                     timelines.create(
                         action: Ticket::Timeline.actions[:created],
-                        description: I18n.t( 'activerecord.models.cloud_help/ticket/timeline.actions.created', id: id )
+                        description: nil
                     )
                     return true
                 else
@@ -86,7 +89,7 @@ Building a better future, one line of code at a time.
 
 =begin
 @return [Hash] Detailed information about the ticket. Including, *priority*,
-    *full* *category* *path*, *type*, *creation* *user*, *assignation* *type*
+    *full* *category* *path*, *type*, *creation* *user*, *assignment* *type*
     and *workflow* *state*
 @description Creates a query that selects all ticket information from several tables
     and returns it in a hash
@@ -114,11 +117,11 @@ Building a better future, one line of code at a time.
     #        category:"Company System"
     #    },
     #    assignment_attributes:{
-    #        assignation_type:"none"
+    #        assignment_type:"none"
     #    }
     #}
 =end
-        def detailed_info
+        def show
             data = Ticket.joins(
                 "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
             ).joins(
@@ -137,8 +140,8 @@ Building a better future, one line of code at a time.
                 "CHWS.name as status",                              "CHCTP.id as cloud_help_catalog_ticket_priorities_id",
                 "CHCTT.id as cloud_help_catalog_ticket_types_id",   "CHCTC.id as cloud_help_catalog_ticket_categories_id",
                 "CHWS.id as cloud_help_workflow_statuses_id",       "CHCTP.weight as priority_weight",
-                "CHWS.initial as status_initial",                   "CHWS.final as status_final",
-                "CHW.id as cloud_help_workflows_id",                "CHWS.number as status_number"
+                "CHWS.status_type as status_type",                  "CHW.id as cloud_help_workflows_id",
+                "CHWS.number as status_number"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
 
@@ -152,7 +155,7 @@ Building a better future, one line of code at a time.
 =begin
 @param help_account [Account] The account associated to *current_user*
 @return [Hash] Detailed information about all the tickets. Including, *priority*,
-    *full* *category* *path*, *type*, *creation* *user*, *assignation* *type*
+    *full* *category* *path*, *type*, *creation* *user*, *assignment* *type*
     and *workflow* *state*
 @description Creates a query that selects all the tickets information from several tables
     and returns it in a hash
@@ -164,22 +167,44 @@ Building a better future, one line of code at a time.
     #        "id":1,                     "created_at":"2020-01-08T16:23:10.976Z",
     #        "priority":"Low",           "type":"Issue",
     #        "state":"created",          "category":"Company System",
-    #        "assignation_type":null,    "subject":"Testing Ticket"
+    #        "assignment_type":null,    "subject":"Testing Ticket"
     #    },{
     #        "id":2,                     "created_at":"2020-01-08T16:43:30.470Z",
     #        "priority":"Low",           "type":"Issue",
     #        "state":"closed",           "category":"Company System",
-    #        "assignation_type":"user",  "subject":"Testin"
+    #        "assignment_type":"user",  "subject":"Testin"
     #    },{
     #        "id":3,                     "created_at":"2020-01-09T18:08:27.622Z",
     #        "priority":"Low",           "type":"Change Request",
     #        "state":"In Progress",      "category":"Company System, Books Module",
-    #        "assignation_type":null,    "subject":"Testing"
+    #        "assignment_type":null,    "subject":"Testing"
     #    }
     #]
 =end
-        def self.list(help_account)
-            Ticket.joins(
+        def self.index(current_user, query)
+            # Parsing filters
+            filters = query[:filters]
+            filters_query = []
+            
+            # We filter by a text string written by the user
+            if filters["query"] && !filters["query"].empty?
+                query_words = filters["query"].split(" ")
+                query_words.each do |query_word|
+                    query_word = query_word.strip.downcase
+
+                    # first customer
+                    filters_query.push("
+                        (LOWER(CHTD.subject) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHTD.description) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHCTC.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHCTT.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHCTP.name) SIMILAR TO '%#{query_word}%')
+                    ")
+                end
+            end
+
+            # Executing the query
+            tickets = current_user.account.help.tickets.joins(
                 "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
             ).joins(
                 "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
@@ -190,21 +215,188 @@ Building a better future, one line of code at a time.
             ).joins(
                 "inner join cloud_help_workflow_statuses CHWS on cloud_help_tickets.cloud_help_workflow_statuses_id = CHWS.id"
             ).joins(
+                "left join users UC on UC.id = cloud_help_tickets.users_id"
+            ).joins(
+                "left join user_details UCD on UCD.users_id = UC.id"
+            ).joins(
+                "left join users UM on UM.id = cloud_help_tickets.user_main_id"
+            ).joins(
+                "left join user_details UMD on UMD.users_id = UM.id"
+            ).joins(
                 "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
             ).select(
-                "id",                                           "CHCTP.name as priority",
-                "CHCTT.name as type",                           "CHWS.name as state",
-                "CHCTC.name as category",                        "CHTA.assignation_type",
-                "subject",                                      "CHCTC.id as cloud_help_catalog_ticket_categories_id",
-                "created_at"
-            ).where(
-                "cloud_help_tickets.cloud_help_accounts_id = #{help_account.id}"
-            ).map do |ticket|
-                ticket.attributes.merge({
-                    assignation_type: Ticket::Assignment.assignation_types.key(ticket[:assignation_type]),
-                    category: Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
-                })
+                "id",                                                   "CHCTP.name as priority",
+                "CHCTT.name as type",                                   "CHWS.name as state",
+                "CHCTC.name as category",                               "CHTA.assignment_type",
+                "subject",                                              "CHCTC.id as cloud_help_catalog_ticket_categories_id",
+                "CHCTP.id as cloud_help_catalog_ticket_priorities_id",  "CHCTT.id as cloud_help_catalog_ticket_types_id",
+                "created_at",                                           "CHCTP.weight as priority_weight",
+                "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
+                "UM.id as user_main_id",                                "CONCAT(UMD.first_name, ' ', UMD.last_name) as user_main",
+                "deadline"
+            )
+
+            # We apply the previous filters in the main query
+            unless filters_query.empty?
+                tickets = tickets.where(filters_query.join(" AND "))
             end
+
+
+            response = {}
+            # total count
+            response[:total_count] = tickets.length if filters["get_total_count"]
+
+            # Adding pagination to tickets
+            pagination = query[:pagination]
+            tickets = tickets.page(
+                pagination[:page]
+            ).per(
+                pagination[:perPage]
+            ).order(
+                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
+            )
+
+            # We format the response
+            response[:tickets] = tickets.map do |ticket|
+                ticket_attributes = ticket.attributes
+                ticket_attributes["deadline"] = LC::Date.to_string(ticket_attributes["deadline"])
+                ticket_attributes["created_at"] = LC::Date.to_string_datetime(ticket_attributes["created_at"])
+                ticket_attributes["assignment_type"] = Ticket::Assignment.assignment_types.key(ticket[:assignment_type])
+                ticket_attributes["category"] = Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
+
+                ticket_attributes
+            end
+            
+            response
+        end
+
+        def self.options(current_user, query)
+            types = current_user.account.help.ticket_types.select(:id, :name)
+            categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
+            priorities = current_user.account.help.ticket_priorities.select(:id, :name, :weight)
+
+            {
+                types: types,
+                categories: categories,
+                priorities: priorities
+            }
+        end
+
+        #######################################################################################
+        ##############################  Activities Log Methods   ##############################
+        #######################################################################################
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param [CloudHelp::Ticket] The ticket that was created
+        # @description Creates an activity for this ticket indicating who created it. And 
+        #   also creates an activity with the initial status of the ticket
+        # Example
+        #   params = {...}
+        #   ticket = CloudHelp::Ticket.create(params)
+        #   CloudHelp::Ticket.log_activity_create(User.find(1), ticket)
+        def self.log_activity_create(current_user, ticket)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_create"
+            )
+            
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_status",
+                description: ticket.status.name,
+                field_name: "cloud_help_workflow_statuses_id",
+                value_to: ticket.status.name
+            )
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param [CloudHelp::Ticket] The ticket that was created
+        # @description Creates an activity for this ticket indicating that someone viewed it
+        # Example
+        #   ticket = CloudHelp::Ticket.find(1)
+        #   CloudHelp::Ticket.log_activity_show(User.find(1), ticket)
+        def self.log_activity_show(current_user, ticket)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_show"
+            )
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param ticket [CloudHelp::Ticket] The ticket that was created
+        # @param old_attributes[Hash] The data of the record before update
+        # @param new_attributes[Hash] The data of the record after update
+        # @description Creates an activity for this ticket if someone changed any of this values
+        # Example
+        #   ticket = CloudHelp::Ticket.find(1)
+        #   old_attributes  = ticket.attributes.merge({detail_attributes: ticket.detail.attributes})
+        #   ticket.update(user_main: User.find(33))
+        #   new_attributes = ticket.attributes.merge({detail_attributes: ticket.detail.attributes})
+        #   CloudHelp::Ticket.log_activity_update(User.find(1), ticket, old_attributes, new_attributes)
+        def self.log_activity_update(current_user, ticket, old_attributes, new_attributes)
+            # Main employee is a special case because it's a foreign key
+            if old_attributes["user_main_id"] != new_attributes["user_main_id"]
+                ticket.activities.create(
+                    user_creator: current_user,
+                    category: "action_update",
+                    field_name: "user_main_id",
+                    value_from: ::User.find(old_attributes["user_main_id"]).full_name,
+                    value_to:   ::User.find(new_attributes["user_main_id"]).full_name
+                )
+            end
+
+            # workflow status is a spacial case because it's a foreign key
+            if old_attributes["cloud_help_workflow_statuses_id"] != new_attributes["cloud_help_workflow_statuses_id"]
+                old_status = CloudHelp::Workflow::Status.find(old_attributes["cloud_help_workflow_statuses_id"]).name
+                new_status = CloudHelp::Workflow::Status.find(new_attributes["cloud_help_workflow_statuses_id"]).name
+                ticket.activities.create(
+                    user_creator: current_user,
+                    description: new_status,
+                    category: "action_status",
+                    field_name: "cloud_help_workflow_statuses_id",
+                    value_from: old_status,
+                    value_to: new_status
+                )
+            end
+
+            # Details are a special case but only because they are nested
+            old_attributes = old_attributes["detail_attributes"] || {}
+            new_attributes = new_attributes["detail_attributes"] || {}
+            old_attributes.except!("id", "cloud_help_tickets_id", "created_at", "updated_at")
+
+            old_attributes.each do |key, value|
+                if value != new_attributes[key]
+                    value_from = value
+                    value_to = new_attributes[key]
+                    value_from = LC::Date.to_string_datetime(value_from) if value_from.is_a?(Time) || value_from.is_a?(Date)
+                    value_to = LC::Date.to_string_datetime(value_to) if value_to.is_a?(Time) || value_to.is_a?(Date)
+
+                    ticket.activities.create(
+                        user_creator: current_user,
+                        category: "action_update",
+                        field_name: key,
+                        value_from: value_from,
+                        value_to: value_to
+                    )
+                end
+            end
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param [CloudHelp::Ticket] The ticket that was created
+        # @description Creates an activity for this ticket indicating that someone deleted it
+        # Example
+        #   ticket = CloudHelp::Ticket.find(1)
+        #   CloudHelp::Ticket.log_activity_show(User.find(1), ticket)
+        def self.log_activity_destroy(current_user, ticket)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_destroy"
+            )
         end
 
         private
@@ -213,18 +405,18 @@ Building a better future, one line of code at a time.
 @return [Hash] Assignment information about this ticket
 @description Retrievies and returns assignment information about this ticket.
     If there is no assigment, returns a hash containing a "none" in the
-    *assignation_type* attribute
+    *assignment_type* attribute
 @todo Implement support for *team* assigmation type
 @example 
-    puts self.assignation_info
+    puts self.assignment_info
     #will print something similar to {
     #    assignable_name: "john.doe@email.com",
-    #    assignation_type: "user"
+    #    assignment_type: "user"
     #}
 =end
         def assignment_info
             return {
-                assignation_type: 'none'
+                assignment_type: 'none'
             } unless assignment
 
             if assignment.user?
@@ -249,20 +441,9 @@ Building a better future, one line of code at a time.
     # after the update, this method is executed automatically
 =end
         def after_update_actions
-            super
-            
             workflow_change = saved_changes["cloud_help_workflow_statuses_id"]
             if workflow_change
-                if Workflow::Status.find(workflow_change[0]).final
-                    errors.add(:base, :ticket_already_closed)
-                    raise ActiveRecord::RecordInvalid, self
-                end
-                action_verify_workflow(workflow_change[0], workflow_change[1])
-            else
-                if status.final
-                    errors.add(:base, :ticket_already_closed)
-                    raise ActiveRecord::RecordInvalid, self
-                end
+                action_register_workflow_change(workflow_change[0], workflow_change[1])
             end
             
             priority_change = saved_changes["cloud_help_catalog_ticket_priorities_id"]
@@ -272,12 +453,12 @@ Building a better future, one line of code at a time.
             
             type_change = saved_changes["cloud_help_catalog_ticket_types_id"]
             if type_change
-                action_register_type_transfer(type_change[0], type_change[1])
+                action_register_type_change(type_change[0], type_change[1])
             end
             
             category_change = saved_changes["cloud_help_catalog_ticket_categories_id"]
             if category_change
-                action_register_category_transfer(category_change[0], category_change[1])
+                action_register_category_change(category_change[0], category_change[1])
             end
 
             if type_change || category_change
@@ -286,7 +467,7 @@ Building a better future, one line of code at a time.
 
             deadline_change = detail.saved_changes["deadline"]
             if deadline_change
-                action_register_ticket_deadline
+                action_register_deadline_change
             end
         end
 
@@ -301,47 +482,13 @@ Building a better future, one line of code at a time.
     ticket.update({ detail_attributes: { cloud_help_ticket_workflow_details_id: 4 } })
     # the *after_update_actions* method will call this method after the update
 =end
-        def action_verify_workflow(old_status_id, new_status_id)
-
+        def action_register_workflow_change(old_status_id, new_status_id)
             old_workflow_status = Workflow::Status.find(old_status_id)
             new_workflow_status = Workflow::Status.find(new_status_id)
 
-            # If both statuses are initial, this is a transfer
-            if old_workflow_status.initial && new_workflow_status.initial
-                return
-            end
-
-            unless old_workflow_status.next_statuses.split("|").include? new_workflow_status.number.to_s
-                errors.add(:base, :invalid_workflow_transition)
-                raise ActiveRecord::RecordInvalid, self
-            end
-
-            timeline_action = Ticket::Timeline.actions[:state_changed]
-            timeline_description = I18n.t(
-                'activerecord.models.cloud_help/ticket/timeline.actions.state_changed',
-                old_state_name: old_workflow_status.name,
-                new_state_name: new_workflow_status.name
-            )
-            message = I18n.t(
-                'activerecord.models.cloud_help_ticket.updated.workflow',
-                ticket_id: id,
-                state_name: new_workflow_status.name
-            )
-
-            if new_workflow_status.final
-                timeline_action = Ticket::Timeline.actions[:closed]
-                timeline_description = I18n.t(
-                    'activerecord.models.cloud_help/ticket/timeline.actions.closed',
-                    id: id
-                )
-                message = I18n.t(
-                    'activerecord.models.cloud_help_ticket.updated.closed',
-                    ticket_id: id
-                )
-            end
-
+            timeline_action = Ticket::Timeline.actions[:status_changed]
+            timeline_description = "#{new_workflow_status.name.humanize}"
             timelines.create( action: timeline_action, description: timeline_description )
-            Ticket::Subscriber.notify_subscribers(self, message, :workflow_updated)
         end
 
 =begin
@@ -354,18 +501,13 @@ Building a better future, one line of code at a time.
     ticket.update({ detail_attributes: { cloud_help_catalog_ticket_types_id: 1 } })
     # the *after_update_actions* method will call this method after the update
 =end
-        def action_register_type_transfer(old_type, new_type)
-            old_type = Catalog::TicketType.find(old_type)
+        def action_register_type_change(old_type, new_type)
             new_type = Catalog::TicketType.find(new_type)
             
             # Adding type transfer to timeline
             timelines.create(
                 action: Ticket::Timeline.actions[:type_transferred],
-                description: I18n.t(
-                    'activerecord.models.cloud_help/ticket/timeline.actions.type_transferred',
-                    old_type_name: old_type.name,
-                    new_type_name: new_type.name
-                )
+                description: "#{new_type.name}"
             )
         end
 
@@ -379,18 +521,13 @@ Building a better future, one line of code at a time.
     ticket.update({ detail_attributes: { cloud_help_catalog_ticket_categories: 1 } })
     # the *after_update_actions* method will call this method after the update
 =end
-        def action_register_category_transfer(old_category, new_category)
-            old_category = Catalog::TicketCategory.find(old_category)
+        def action_register_category_change(old_category, new_category)
             new_category = Catalog::TicketCategory.find(new_category)
             
             # Adding category transfer to timeline
             timelines.create(
                 action: Ticket::Timeline.actions[:category_transferred],
-                description: I18n.t(
-                    'activerecord.models.cloud_help/ticket/timeline.actions.category_transferred',
-                    old_category_name: old_category.name,
-                    new_category_name: new_category.name
-                )
+                description: "#{new_category.name}"
             )
         end
 
@@ -407,16 +544,8 @@ Building a better future, one line of code at a time.
     # the *after_update_actions* method will call this method after the update
 =end
         def action_assign_new_workflow
-            assignment.destroy if assignment
             set_workflow(true)
             if save
-                message = I18n.t(
-                    'activerecord.models.cloud_help_ticket.updated.transferred',
-                    ticket_id: id,
-                    type_name: type.name,
-                    category_name: category.name
-                )
-                Ticket::Subscriber.notify_subscribers(self, message, :type_category_updated)
                 return true
             else
                 raise ActiveRecord::RecordInvalid, self
@@ -435,38 +564,12 @@ Building a better future, one line of code at a time.
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_priority_change(old_priority, new_priority)
-            old_priority = Catalog::TicketPriority.find(old_priority)
             new_priority = Catalog::TicketPriority.find(new_priority)
 
-            action = :priority_decreased
-            timeline_translation = 'activerecord.models.cloud_help/ticket/timeline.actions.priority_decreased'
-            notification_translation = 'activerecord.models.cloud_help_ticket.updated.descalated'
-
-            if old_priority.weight < new_priority.weight
-                action = :priority_increased
-                timeline_translation = 'activerecord.models.cloud_help/ticket/timeline.actions.priority_increased'
-                notification_translation = 'activerecord.models.cloud_help_ticket.updated.escalated'
-            end
-
             timelines.create(
-                action: Ticket::Timeline.actions[action],
-                description: I18n.t(
-                    timeline_translation,
-                    old_priority_name: old_priority.name,
-                    old_priority_weight: old_priority.weight,
-                    new_priority_name: new_priority.name,
-                    new_priority_weight: new_priority.weight
-                )
+                action: Ticket::Timeline.actions[:priority_changed],
+                description: "#{new_priority.name} - #{new_priority.weight}"
             )
-
-            assignment.destroy if assignment
-
-            message = I18n.t(
-                notification_translation,
-                ticket_id: id,
-                priority_name: new_priority.name
-            )
-            Ticket::Subscriber.notify_subscribers(self, message, :priority_updated)
         end
 
 =begin
@@ -481,22 +584,12 @@ Building a better future, one line of code at a time.
     ticket.update({ detail_attributes: { deadline: Datetime.now } })
     # the *after_update_actions* method will call this method after the update
 =end
-        def action_register_ticket_deadline
+        def action_register_deadline_change
             # Adding deadline to timeline
             timelines.create(
                 action: Ticket::Timeline.actions[:deadline_established],
-                description: I18n.t(
-                    'activerecord.models.cloud_help/ticket/timeline.actions.deadline_established',
-                    date: detail.deadline
-                )
+                description: "#{LC::Date.to_string(detail.deadline)}"
             )
-
-            message = I18n.t(
-                'activerecord.models.cloud_help_ticket.updated.deadline',
-                ticket_id: id,
-                date: detail.deadline
-            )
-            Ticket::Subscriber.notify_subscribers(self, message, :deadline_updated)
         end 
     end
 end

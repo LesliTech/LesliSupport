@@ -47,8 +47,7 @@ export default {
             ticket_type: {
                 name: null,
                 weight: null
-            },
-            index_abilities: this.abilities.privilege('tickets', 'cloud_help')
+            }
         }
     },
 
@@ -69,6 +68,6 @@ export default {
             :title="translations.main.view_title_main"
         >
         </component-header>
-        <component-form :ticket-type="ticket_type" view-type="new" />
+        <component-form :ticket-type="ticket_type" view-type="new"></component-form>
     </section>
 </template>

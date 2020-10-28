@@ -1,53 +1,48 @@
 <script>
 /*
-Lesli
+Copyright (c) 2020, all rights reserved.
 
-Copyright (c) 2019, Lesli Technologies, S. A.
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Luis Donis <ldonis@lesli.tech>
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
-
-// · Import modules, components and apps
+// · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
 export default {
     data() {
         return {
             ticket_id: null,
             ticket_timelines: [],
-            translations: I18n.t('cloud_help.tickets.timeline')
+            translations:{
+                main: I18n.t('help.ticket/timelines'),
+                core: I18n.t('core.shared'),
+                shared: I18n.t('help.shared')
+            },
         }
     },
+
     mounted(){
         if (this.$route.params.id) {
             this.ticket_id = this.$route.params.id
             this.getTicketTimeline()
         }
-        this.setListeners()
+        this.setSubscriptions()
     },
+
     methods: {
-        setListeners(){
+
+        setSubscriptions(){
             this.bus.subscribe('patch:/help/ticket/assignment', ()=>{
                 this.getTicketTimeline()
             })
@@ -58,6 +53,7 @@ export default {
                 this.getTicketTimeline()
             })
         },
+
         getTicketTimeline(){
             this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
                 if (result.successful) {
@@ -70,23 +66,19 @@ export default {
             })
         },
 
-        isTransfer(action){
-            return action == 'category_transferred' || action == 'type_transferred'
+        isFieldChange(action){
+            return action == 'category_transferred' || action == 'type_transferred' || action == 'priority_changed'
         },
 
-        isEscalate(action){
-            return action == 'priority_increased'
+        isFinalStatus(action){
+            return action == 'closed'
         },
 
-        isDescalate(action){
-            return action == 'priority_decreased'
+        isNormalStatus(action){
+            return action == 'created' || action == 'status_changed'
         },
 
-        isCoreState(action){
-            return action == 'created' || action == 'closed'
-        },
-
-        isDeadline(action){
+        isDeadlineChange(action){
             return action == 'deadline_established'
         }
     }
@@ -95,29 +87,31 @@ export default {
 <template>
     <div class="card">
         <div class="card-header">
-            <h4 class="card-header-title">
-                {{translations.title}}
-            </h4>
+            <div class="card-header-title is-shadowless">
+                <h4 class=" title is-4">
+                {{translations.main.view_title_main}}
+                </h4>
+            </div>
         </div>
         <div class="card-content timeline">
             <div class="columns is-multiline">
-                <div v-for="(timeline) in ticket_timelines" :key="timeline.id" class="column is-12">
+                <div v-for="(timeline) in ticket_timelines" :key="timeline.id" class="column is-paddingless is-12">
                     <span>
                         <span
                             class="has-text-weight-bold"
                             :class="{
-                                'has-text-warning': isTransfer(timeline.action),
-                                'has-text-danger': isEscalate(timeline.action) || isDeadline(timeline.action),
-                                'has-text-success': isDescalate(timeline.action),
-                                'has-text-info': isCoreState(timeline.action)
+                                'has-text-warning': isFieldChange(timeline.action),
+                                'has-text-danger': isDeadlineChange(timeline.action),
+                                'has-text-success': isFinalStatus(timeline.action),
+                                'has-text-info': isNormalStatus(timeline.action)
                             }"
                         >
-                            {{translations.actions[timeline.action]}}
-                        </span>: {{timeline.description}}
+                            &nbsp;&nbsp; {{object_utils.translateEnum(translations.main, 'column_enum_action', timeline.action)}}
+                        </span>
+                        <span v-if="timeline.description">:</span> {{timeline.description}}
                     </span>
-                    <br>
                     <small class="is-pulled-right">
-                        {{date.toLocalFormat(timeline.created_at, false, true)}}
+                        {{timeline.created_at}} &nbsp;&nbsp;
                     </small>
                     <hr>
                 </div>
@@ -127,8 +121,8 @@ export default {
 </template>
 <style scoped>
 .timeline {
-    max-height: 26rem;
-    overflow-y: scroll;
+    max-height: 35rem;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 

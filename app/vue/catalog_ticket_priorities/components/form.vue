@@ -23,8 +23,6 @@ For more information read the license file including with this software.
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
 export default {
     
     // @component_prop TicketPriority [Object] The object representation of the ticket_priority.
@@ -210,7 +208,7 @@ export default {
         <!--------------------------------------- START CARD CONTENT--------------------------------------->
         <div class="card-content">
             <b-tabs>
-                <b-tab-item :label="translations.shared.view_tab_title_information">
+                <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicketPriority">
                         <div class="columns">
                             <div class="column">
@@ -261,7 +259,7 @@ export default {
                         </div>
                     </form>
                 </b-tab-item>
-                <b-tab-item :label="translations.shared.view_tab_title_delete" v-if="viewType != 'new'">
+                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType != 'new'">
                     <span class="has-text-danger">
                         {{translations.main.view_text_delete_confirmation}}
                     </span>

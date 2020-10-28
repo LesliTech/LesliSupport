@@ -47,8 +47,7 @@ export default {
             ticket_priority: {
                 name: null,
                 weight: null
-            },
-            index_abilities: this.abilities.privilege('tickets', 'cloud_help')
+            }
         }
     },
 

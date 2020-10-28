@@ -37,8 +37,10 @@ Building a better future, one line of code at a time.
 @attribute [Enumerable<Symbol>] assignation_type
     @return [ :user, :team ]
 =end
-        enum assignation_type: [:user, :team]
-        validates :assignation_type, presence: true, inclusion: { in: :assignation_type }
+        enum assignment_type: {
+            user: "user",
+            team: "team"
+        }
 
         private
 

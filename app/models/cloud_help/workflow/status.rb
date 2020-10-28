@@ -27,5 +27,6 @@ Building a better future, one line of code at a time.
 =end
     class Workflow::Status < CloudObject::Workflow::Status
         belongs_to :workflow, inverse_of: :statuses, class_name: "Workflow", foreign_key: "cloud_help_workflows_id"
+        belongs_to :workflow_including_deleted, class_name: "Workflow", foreign_key: "cloud_help_workflows_id", with_deleted: true, optional: true
     end
 end

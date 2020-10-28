@@ -25,23 +25,36 @@ Building a better future, one line of code at a time.
     actions (like priority change, or state change). These actions are listed in the *action* enum
 
 =end
-    class Ticket::Timeline < ApplicationRecord
+    class Ticket::Timeline < ApplicationLesliRecord
         belongs_to :ticket, class_name: 'CloudHelp::Ticket', foreign_key: 'cloud_help_tickets_id'
 
 =begin
 @attribute [Enumerable<Symbol>] event
-    @return [ :state_changed, :priority_increased, :priority_decreased, :category_transferred, :type_transferred, :created, :closed, :assigned_to_user, :deadline_established ]
+    @return [ :status_changed, :priority_increased, :priority_decreased, :category_transferred, :type_transferred, :created, :closed, :assigned_to_user, :deadline_established ]
 =end
-        enum action: [
-            :state_changed,
-            :priority_increased,
-            :priority_decreased,
-            :category_transferred,
-            :type_transferred,
-            :created,
-            :closed,
-            :assigned_to_user,
-            :deadline_established
-        ]
+        enum action: {
+            status_changed: "status_changed",
+            priority_changed: "priority_changed",
+            category_transferred: "category_transferred",
+            type_transferred: "type_transferred",
+            created: "created",
+            closed: "closed",
+            assigned_to_user: "assigned_to_user",
+            deadline_established: "deadline_established"
+        }
+
+        def self.index(current_user, query, ticket_id)
+            ticket = current_user.account.help.tickets.find_by(id: ticket_id)
+            return [] unless ticket
+
+            timelines = ticket.timelines.order(id: :desc).map do |timeline|
+                timeline_attributes = timeline.attributes
+                timeline_attributes["created_at"] = LC::Date.to_string_datetime(timeline_attributes["created_at"])
+
+                timeline_attributes
+            end
+
+            timelines
+        end
     end
 end

@@ -1,4 +1,4 @@
 module CloudHelp
-  class Workflow::Action < ApplicationRecord
-  end
+    class Workflow::Action < CloudObject::Workflow::Action
+    end
 end
