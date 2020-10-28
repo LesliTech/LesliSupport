@@ -20,7 +20,7 @@ For more information read the license file including with this software.
 =end
     class TicketsController < ApplicationLesliController
 
-        before_action :set_ticket, only: [:update]
+        before_action :set_ticket, only: [:update, :destroy]
 
 =begin
 @return [HTML|JSON] HTML view for listing all tickets or a Json that contains a list 
@@ -136,13 +136,15 @@ For more information read the license file including with this software.
             ticket.set_workflow
 
             if ticket.save
-                respond_with_successful(ticket)
                 Ticket::Subscriber.add_subscriber(ticket, current_user)
                 Ticket::Subscriber.notify_subscribers(
                     ticket,
                     I18n.t('cloud_help.controllers.tickets.notifications.created', ticket_id: ticket.id),
                     :ticket_created
                 )
+                Ticket.log_activity_create(current_user, ticket)
+
+                respond_with_successful(ticket)
             else
                 responseWithError(ticket.errors.full_messages.to_sentence)
             end
@@ -194,10 +196,22 @@ For more information read the license file including with this software.
     this.http.post('127.0.0.1/help/tickets', data);
 =end
         def update
+            return respond_with_not_found unless @ticket
+
+            old_attributes = @ticket.attributes.merge({
+                "detail_attributes" => @ticket.detail.attributes
+            })
+
             if @ticket.update(ticket_params)
                 respond_with_successful(@ticket.show)
+
+                new_attributes = @ticket.attributes.merge({
+                    "detail_attributes" => @ticket.detail.attributes
+                })
+                Ticket.log_activity_update(current_user, @ticket, old_attributes, new_attributes)
+                Workflow::Action.execute_actions(current_user, @ticket, old_attributes, new_attributes)
             else
-                responseWithError(@ticket.errors.full_messages.to_sentence)
+                respond_with_error(@ticket.errors.full_messages.to_sentence)
             end
         end
 
@@ -239,6 +253,25 @@ For more information read the license file including with this software.
 =end
         def options
             respond_with_successful(Ticket.options(current_user, @query))
+        end
+
+        # @return [Json] Json that contains wheter the ticket was successfully deleted or not. 
+        #     If it it not successful, it returns an error message
+        # @description Deletes an existing *ticket* associated to the *current_user*'s *account*.
+        # @example
+        #     # Executing this controller's action from javascript's frontend
+        #     let ticket_id = 4;
+        #     this.http.delete(`127.0.0.1/house/tickets/${ticket_id}`);
+        def destroy
+            return respond_with_not_found unless @ticket
+
+            if @ticket.destroy
+                respond_with_successful
+
+                Ticket.log_activity_destroy(current_user, @ticket)
+            else
+                respond_with_error(@ticket.errors.full_messages.to_sentence)
+            end
         end
 
         private

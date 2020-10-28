@@ -282,6 +282,123 @@ Building a better future, one line of code at a time.
             }
         end
 
+        #######################################################################################
+        ##############################  Activities Log Methods   ##############################
+        #######################################################################################
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param [CloudHelp::Ticket] The ticket that was created
+        # @description Creates an activity for this ticket indicating who created it. And 
+        #   also creates an activity with the initial status of the ticket
+        # Example
+        #   params = {...}
+        #   ticket = CloudHelp::Ticket.create(params)
+        #   CloudHelp::Ticket.log_activity_create(User.find(1), ticket)
+        def self.log_activity_create(current_user, ticket)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_create"
+            )
+            
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_status",
+                description: ticket.status.name,
+                field_name: "cloud_help_workflow_statuses_id",
+                value_to: ticket.status.name
+            )
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param [CloudHelp::Ticket] The ticket that was created
+        # @description Creates an activity for this ticket indicating that someone viewed it
+        # Example
+        #   ticket = CloudHelp::Ticket.find(1)
+        #   CloudHelp::Ticket.log_activity_show(User.find(1), ticket)
+        def self.log_activity_show(current_user, ticket)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_show"
+            )
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param ticket [CloudHelp::Ticket] The ticket that was created
+        # @param old_attributes[Hash] The data of the record before update
+        # @param new_attributes[Hash] The data of the record after update
+        # @description Creates an activity for this ticket if someone changed any of this values
+        # Example
+        #   ticket = CloudHelp::Ticket.find(1)
+        #   old_attributes  = ticket.attributes.merge({detail_attributes: ticket.detail.attributes})
+        #   ticket.update(user_main: User.find(33))
+        #   new_attributes = ticket.attributes.merge({detail_attributes: ticket.detail.attributes})
+        #   CloudHelp::Ticket.log_activity_update(User.find(1), ticket, old_attributes, new_attributes)
+        def self.log_activity_update(current_user, ticket, old_attributes, new_attributes)
+            # Main employee is a special case because it's a foreign key
+            if old_attributes["user_main_id"] != new_attributes["user_main_id"]
+                ticket.activities.create(
+                    user_creator: current_user,
+                    category: "action_update",
+                    field_name: "user_main_id",
+                    value_from: ::User.find(old_attributes["user_main_id"]).full_name,
+                    value_to:   ::User.find(new_attributes["user_main_id"]).full_name
+                )
+            end
+
+            # workflow status is a spacial case because it's a foreign key
+            if old_attributes["cloud_help_workflow_statuses_id"] != new_attributes["cloud_help_workflow_statuses_id"]
+                old_status = CloudHelp::Workflow::Status.find(old_attributes["cloud_help_workflow_statuses_id"]).name
+                new_status = CloudHelp::Workflow::Status.find(new_attributes["cloud_help_workflow_statuses_id"]).name
+                ticket.activities.create(
+                    user_creator: current_user,
+                    description: new_status,
+                    category: "action_status",
+                    field_name: "cloud_help_workflow_statuses_id",
+                    value_from: old_status,
+                    value_to: new_status
+                )
+            end
+
+            # Details are a special case but only because they are nested
+            old_attributes = old_attributes["detail_attributes"] || {}
+            new_attributes = new_attributes["detail_attributes"] || {}
+            old_attributes.except!("id", "cloud_help_tickets_id", "created_at", "updated_at")
+
+            old_attributes.each do |key, value|
+                if value != new_attributes[key]
+                    value_from = value
+                    value_to = new_attributes[key]
+                    value_from = LC::Date.to_string_datetime(value_from) if value_from.is_a?(Time) || value_from.is_a?(Date)
+                    value_to = LC::Date.to_string_datetime(value_to) if value_to.is_a?(Time) || value_to.is_a?(Date)
+
+                    ticket.activities.create(
+                        user_creator: current_user,
+                        category: "action_update",
+                        field_name: key,
+                        value_from: value_from,
+                        value_to: value_to
+                    )
+                end
+            end
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that created the ticket
+        # @param [CloudHelp::Ticket] The ticket that was created
+        # @description Creates an activity for this ticket indicating that someone deleted it
+        # Example
+        #   ticket = CloudHelp::Ticket.find(1)
+        #   CloudHelp::Ticket.log_activity_show(User.find(1), ticket)
+        def self.log_activity_destroy(current_user, ticket)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_destroy"
+            )
+        end
+
         private
 
 =begin
