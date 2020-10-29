@@ -197,6 +197,7 @@ For more information read the license file including with this software.
 =end
         def update
             return respond_with_not_found unless @ticket
+            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
             old_attributes = @ticket.attributes.merge({
                 "detail_attributes" => @ticket.detail.attributes
@@ -264,6 +265,7 @@ For more information read the license file including with this software.
         #     this.http.delete(`127.0.0.1/house/tickets/${ticket_id}`);
         def destroy
             return respond_with_not_found unless @ticket
+            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
             if @ticket.destroy
                 respond_with_successful

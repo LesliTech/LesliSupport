@@ -344,7 +344,7 @@ export default {
                         </div>
                     </form>
                 </b-tab-item>
-                <b-tab-item :label="translations.main.view_tab_title_assignments">
+                <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new'">
                     <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
                 </b-tab-item>
                 <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType != 'new'">

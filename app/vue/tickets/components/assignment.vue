@@ -36,7 +36,7 @@ export default {
             main_route: '/help/tickets',
             users_route: '/lock/users.json?role=kop,callcenter,api&type=exclude',
             translations: {
-                main: I18n.t('help.tickets'),
+                main: I18n.t('help.ticket/assignments'),
                 core: I18n.t('core.shared'),
                 users: I18n.t('core.users')
             },
@@ -165,7 +165,7 @@ export default {
                         role: user.role_name,
                         users_id: user.id
                     })
-                    this.alert(this.translations.main.notification_assignment_created, 'success')
+                    this.alert(this.translations.main.messages_info_assignment_created, 'success')
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -187,7 +187,7 @@ export default {
             this.http.delete(url).then(result => {
                 this.$set(assignment, 'submitting', false)
                 if (result.successful) {
-                    this.alert(this.translations.main.notification_assignment_deleted, 'success')
+                    this.alert(this.translations.main.messages_info_assignment_deleted, 'success')
                     
                     this.assignments = this.assignments.filter((assignment)=>{
                         return assignment.id != assignment_id
@@ -274,7 +274,7 @@ export default {
 <template>
     <section>
         <b-field>
-            <b-input :placeholder="translations.main.form_assignments_filter_placeholder"
+            <b-input :placeholder="translations.main.view_placeholder_filter"
                 v-model="search"
                 type="text"
                 icon="search"
@@ -287,14 +287,14 @@ export default {
         <component-data-empty v-if="!loading.options && assignment_options.users.length == 0" />
         <b-table :data="currentUserPage">
             <template slot-scope="props">
-                <b-table-column field="name" :label="translations.core.text_name">
+                <b-table-column field="name" :label="translations.users.view_table_header_name">
                     {{ props.row.name }}
                 </b-table-column>
-                <b-table-column field="email" :label="translations.core.text_email">
+                <b-table-column field="email" :label="translations.users.view_table_header_email">
                     {{ props.row.email }}
                 </b-table-column>
-                <b-table-column field="role_name" :label="translations.core.text_role">
-                    {{ translateUserRole(props.row.role_name) }}
+                <b-table-column field="role" :label="translations.users.view_table_header_role">
+                    {{ translateUserRole(props.row.role) }}
                 </b-table-column>
                 <b-table-column field="actions" label="">
                     <b-checkbox :disabled="props.row.submitting" size="is-small" v-model="props.row.checked" @input="submitAssignment(props.row)" />

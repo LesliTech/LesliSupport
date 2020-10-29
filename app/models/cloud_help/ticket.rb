@@ -436,6 +436,13 @@ Building a better future, one line of code at a time.
             end
         end
 
+        # Custom is_editab_by? implementation
+        def is_editable_by?(current_user)
+            return true if super
+
+            return false
+        end
+
         private
 
 =begin
