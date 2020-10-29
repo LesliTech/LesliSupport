@@ -22,12 +22,15 @@ For more information read the license file including with this software.
 import componentRichTextEditor from 'LesliCoreVue/components/forms/richtext-editor.vue'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
+
+import componentAssignments from '../components/assignment.vue'
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
         'component-rich-text-editor': componentRichTextEditor,
-        'vc-date-picker': DatePicker
+        'vc-date-picker': DatePicker,
+        'component-assignments': componentAssignments
     },
 
     props: {
@@ -114,6 +117,7 @@ export default {
                 ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
             }
             data.ticket.detail_attributes.tags = data.ticket.detail_attributes.tags.join(',')
+            data.ticket.detail_attributes.description = JSON.stringify(data.ticket.detail_attributes.description)
             this.submitting = true
 
             this.http.post(this.main_route, data).then(result => {
@@ -140,6 +144,7 @@ export default {
                 ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
             }
             data.ticket.detail_attributes.tags = data.ticket.detail_attributes.tags.join(',')
+            data.ticket.detail_attributes.description = JSON.stringify(data.ticket.detail_attributes.description)
 
             let url = `${this.main_route}/${this.ticket_id}.json`
             this.submitting = true
@@ -171,75 +176,22 @@ export default {
             })
         },
 
-        escalateTicket(){
-            let next_priority = this.options.priorities.filter( priority => {
-                return priority.weight > this.ticket.priority_weight
-            }).sort()
-
-            this.modals.escalate = false
-            if(next_priority.length > 0){
-                this.patchTicket('escalate', next_priority[0])
-            }else{
-                this.alert(translations.form.errors.ticket_at_max_priority, 'error')
-            }
-        },
-
-        descalateTicket(){
-            let next_priority = this.options.priorities.filter( priority => {
-                return priority.weight < this.ticket.priority_weight
-            }).sort( (a, b)=>{
-                return b - a
-            })
-
-            this.modals.escalate = false
-            if(next_priority.length > 0){
-                this.patchTicket('descalate', next_priority[0])
-            }else{
-                this.alert(translations.form.errors.ticket_at_min_priority, 'error')
-            }
-        },
-
-        // Used by escalateTicket and descalateTicket. action has to either be 'escalate' or 'descalate'
-        patchTicket(action, priority){
-            let data = {
-                ticket: {
-                    cloud_help_catalog_ticket_priorities_id: priority.id
-                }
-            }
+        // @return [void]
+        // @description Connects to the backend using HTTP to delete an existing Ticket type under the current user's
+        //      account. The id of the Ticket type is provided in the *id* route param. If the HTTP request fails,
+        //      an error message is shown
+        // @example
+        //      this.deleteTicket() // will delete the record and redirect to the list app
+        deleteTicket() {
             let url = `${this.main_route}/${this.ticket_id}`
-            this.submitting = true
+            this.deleting = true
 
-            this.http.patch(url, data).then(result => {
-                this.submitting = false
-
+            this.http.delete(url).then(result => {
+                this.deleting = false
                 if (result.successful) {
-                    this.alert('this.translations.modals[action].messages.successful')
-                } else {
-                    this.alert(result.error.message, 'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
-        putTicketTransfer(event){
-            if(event){
-                event.preventDefault()
-            }
-
-            let data = {
-                ticket: this.transfer
-            }
-            let url = `${this.main_route}/${this.ticket_id}`
-            this.submitting = true
-            this.modals.transfer = false
-
-
-            this.http.put(url, data).then(result => {
-                if (result.successful) {
-                    this.alert('this.translations.modals.transfer.messages.successful')
-                    this.$router.push(`/${this.ticket.id}`)
-                } else {
+                    this.alert(this.translations.main.messages_info_ticket_destroyed, 'success')
+                    this.$router.push('/')
+                }else{
                     this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
@@ -252,10 +204,12 @@ export default {
 <template>
     <div class="card">
         <div class="card-header">
-            <h2 class="card-header-title">
-                <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
-                <span v-else>{{translations.main.view_title_edit}}</span>
-            </h2>
+            <div class="card-header-title">
+                <h4 class="title is-4">
+                    <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
+                    <span v-else>{{translations.main.view_title_edit}}</span>
+                </h4>
+            </div>
             <div class="card-header-icon">
                 <router-link v-if="viewType == 'edit'" :to="`/${ticket_id}`">
                     <i class="fas fa-eye"></i>
@@ -268,125 +222,151 @@ export default {
                 </router-link>
             </div>
         </div>
-        <div class="card-content">
-            <form @submit="submitTicket">
-                <div class="columns">
-                    <div class="column is-9">
-                        <b-field>
-                            <template v-slot:label>
-                                {{translations.main.column_subject}}<sup class="has-text-danger">*</sup>
-                            </template>
-                            <b-input v-model="ticket.detail_attributes.subject" required></b-input>
-                        </b-field>
-                    </div>
-                    <div class="column is-3">
-                        <b-field :label="translations.main.column_deadline">
-                            <vc-date-picker
-                                v-model="ticket.detail_attributes.deadline"
-                                :locale="date.vcDatepickerConfig()"
-                                :popover="{ visibility: 'focus' }"
-                                :input-props="{
-                                    placeholder: translations.core.view_text_select_date
-                                }"
-                            >
-                            </vc-date-picker>
-                        </b-field>
-                    </div>
-                </div>
-                <div class="columns">
-                    <div class="column is-4">
-                        <b-field>
-                            <template v-slot:label>
-                                {{translations.main.column_cloud_help_catalog_ticket_types_id}}<sup class="has-text-danger">*</sup>
-                            </template>
-                            <b-select 
-                                :placeholder="translations.core.view_placeholder_select_option"
-                                expanded
-                                required
-                                v-model="ticket.cloud_help_catalog_ticket_types_id"
-                            >
-                                <option
-                                    v-for="type in options.types"
-                                    :key="type.id"
-                                    :value="type.id"
-                                >
-                                    {{type.name}}
-                                </option>
-                            </b-select>
-                        </b-field>
-                    </div>
-                    <div class="column is-4">
-                        <b-field>
-                            <template v-slot:label>
-                                {{translations.main.column_cloud_help_catalog_ticket_categories_id}}<sup class="has-text-danger">*</sup>
-                            </template>
-                            <b-select
-                                :placeholder="translations.core.view_placeholder_select_option"
-                                expanded
-                                required
-                                v-model="ticket.cloud_help_catalog_ticket_categories_id"
-                            >
-                                <option
-                                    v-for="category in options.categories"
-                                    :key="category.id"
-                                    :value="category.id"
-                                >   
-                                    <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
-                                    {{category.name}}
-                                </option>
-                            </b-select>
-                        </b-field>
-                    </div>
-                    <div class="column is-4">
-                        <b-field>
-                            <template v-slot:label>
-                                {{translations.main.column_cloud_help_catalog_ticket_priorities_id}}<sup class="has-text-danger">*</sup>
-                            </template>
-                            <b-select
-                                :placeholder="translations.core.view_placeholder_select_option"
-                                expanded
-                                required
-                                v-model="ticket.cloud_help_catalog_ticket_priorities_id"
-                            >
-                                <option
-                                    v-for="priority in options.priorities"
-                                    :key="priority.id"
-                                    :value="priority.id"
-                                >
-                                    {{priority.name}}
-                                </option>
-                            </b-select>
-                        </b-field>
-                    </div>
-                </div>
+        <div class="card-content subtabs">
+            <b-tabs>
+                <b-tab-item :label="translations.shared.view_tab_title_general_information">
+                    <form @submit="submitTicket">
+                        <div class="columns">
+                            <div class="column is-9">
+                                <b-field>
+                                    <template v-slot:label>
+                                        {{translations.main.column_subject}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-input v-model="ticket.detail_attributes.subject" required></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-3">
+                                <b-field :label="translations.main.column_deadline">
+                                    <vc-date-picker
+                                        v-model="ticket.detail_attributes.deadline"
+                                        :locale="date.vcDatepickerConfig()"
+                                        :popover="{ visibility: 'focus' }"
+                                        :input-props="{
+                                            placeholder: translations.core.view_text_select_date
+                                        }"
+                                    >
+                                    </vc-date-picker>
+                                </b-field>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column is-4">
+                                <b-field>
+                                    <template v-slot:label>
+                                        {{translations.main.column_cloud_help_catalog_ticket_types_id}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-select 
+                                        :placeholder="translations.core.view_placeholder_select_option"
+                                        expanded
+                                        required
+                                        v-model="ticket.cloud_help_catalog_ticket_types_id"
+                                    >
+                                        <option
+                                            v-for="type in options.types"
+                                            :key="type.id"
+                                            :value="type.id"
+                                        >
+                                            {{type.name}}
+                                        </option>
+                                    </b-select>
+                                </b-field>
+                            </div>
+                            <div class="column is-4">
+                                <b-field>
+                                    <template v-slot:label>
+                                        {{translations.main.column_cloud_help_catalog_ticket_categories_id}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-select
+                                        :placeholder="translations.core.view_placeholder_select_option"
+                                        expanded
+                                        required
+                                        v-model="ticket.cloud_help_catalog_ticket_categories_id"
+                                    >
+                                        <option
+                                            v-for="category in options.categories"
+                                            :key="category.id"
+                                            :value="category.id"
+                                        >   
+                                            <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
+                                            {{category.name}}
+                                        </option>
+                                    </b-select>
+                                </b-field>
+                            </div>
+                            <div class="column is-4">
+                                <b-field>
+                                    <template v-slot:label>
+                                        {{translations.main.column_cloud_help_catalog_ticket_priorities_id}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-select
+                                        :placeholder="translations.core.view_placeholder_select_option"
+                                        expanded
+                                        required
+                                        v-model="ticket.cloud_help_catalog_ticket_priorities_id"
+                                    >
+                                        <option
+                                            v-for="priority in options.priorities"
+                                            :key="priority.id"
+                                            :value="priority.id"
+                                        >
+                                            {{priority.name}}
+                                        </option>
+                                    </b-select>
+                                </b-field>
+                            </div>
+                        </div>
 
-                <b-field :label="translations.main.column_tags">
-                    <b-taginput v-model="ticket.detail_attributes.tags" ellipsis></b-taginput>
-                </b-field>
+                        <b-field :label="translations.main.column_tags">
+                            <b-taginput v-model="ticket.detail_attributes.tags" ellipsis></b-taginput>
+                        </b-field>
 
-                <div class="field">
-                    <label class="label">{{translations.main.column_description}}</label>
-                    <div class="control">
-                        <component-rich-text-editor
-                            v-model="ticket.detail_attributes.description"
-                        >
-                        </component-rich-text-editor>
-                    </div>
-                </div>
-                <hr>
-                <div class="field has-text-right">
-                    <b-button type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
-                        <span v-if="submitting">
-                            <i class="fas fa-circle-notch fa-spin"></i>
-                            &nbsp; {{translations.core.view_btn_saving}}
-                        </span>
-                        <span v-else>
-                            <i class="fas fa-save"></i>
-                            &nbsp; {{translations.core.view_btn_save}}
-                        </span>
-                    </b-button>
-                </div>
-            </form>
+                        <div class="field">
+                            <label class="label">{{translations.main.column_description}}</label>
+                            <div class="control">
+                                <component-rich-text-editor
+                                    v-model="ticket.detail_attributes.description"
+                                >
+                                </component-rich-text-editor>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="field has-text-right">
+                            <b-button type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
+                                <span v-if="submitting">
+                                    <i class="fas fa-circle-notch fa-spin"></i>
+                                    &nbsp; {{translations.core.view_btn_saving}}
+                                </span>
+                                <span v-else>
+                                    <i class="fas fa-save"></i>
+                                    &nbsp; {{translations.core.view_btn_save}}
+                                </span>
+                            </b-button>
+                        </div>
+                    </form>
+                </b-tab-item>
+                <b-tab-item :label="translations.main.view_tab_title_assignments">
+                    <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
+                </b-tab-item>
+                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType != 'new'">
+                    <span class="has-text-danger">
+                        {{translations.main.view_text_delete_confirmation}}
+                    </span>
+                    <br>
+                    <br>
+                    <!---------------------------------- START DELETE BUTTON ---------------------------------->
+                    <b-field v-if="viewType != 'new'">
+                        <b-button type="is-danger" @click="deleteTicket" expanded class="submit-button" :disabled="deleting">
+                            <span v-if="deleting">
+                                <i class="fas fa-spin fa-circle-notch"></i> {{translations.core.view_btn_deleting}}
+                            </span>
+                            <span v-else>
+                                <i class="fas fa-trash-alt"></i> {{translations.core.view_btn_delete}}
+                            </span>
+                        </b-button>
+                    </b-field>
+                    <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                </b-tab-item>
+            </b-tabs>
         </div>
     </div>
 </template>

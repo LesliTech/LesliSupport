@@ -38,3 +38,12 @@ For more information read the license file including with this software.
     height: 23rem;
     overflow-y: auto;
 }
+
+.subtabs{
+    .tabs {
+        a {
+            padding: 0.5em 1em !important;
+        }
+    }
+}
+

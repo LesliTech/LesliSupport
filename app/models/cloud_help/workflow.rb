@@ -29,7 +29,7 @@ Building a better future, one line of code at a time.
     class Workflow < CloudObject::Workflow
         belongs_to  :account,       class_name: "Account",                  foreign_key: "cloud_help_accounts_id"
         has_many    :associations,  class_name: "Workflow::Association",    foreign_key: "cloud_help_workflows_id"
-        has_many    :statuses,      class_name: "Workflow::Status",         foreign_key: "cloud_help_workflows_id",    autosave: true,     inverse_of: :workflow
+        has_many    :actions,       class_name: "Workflow::Action",         foreign_key: "cloud_help_workflows_id"
         
         has_many(
             :statuses,

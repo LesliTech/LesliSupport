@@ -1,233 +1,322 @@
 <script>
 /*
-Lesli
+Copyright (c) 2020, all rights reserved.
 
-Copyright (c) 2019, Lesli Technologies, S. A.
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev      Carlos Hermosilla
-@author   LesliTech <hello@lesli.tech>
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
+
+// · List of Imported Components
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     props: {
-        assignedTo: {
+        ticketId: {
             required: true
+        },
+        ticketEditable: {
+            type: Boolean,
+            default: true
         }
     },
 
-    data() {
+    data(){
         return {
-            show: false,
-            ticket_id: null,
+            active_tab: 1,
+            main_route: '/help/tickets',
+            users_route: '/lock/users.json?role=kop,callcenter,api&type=exclude',
             translations: {
-                shared: I18n.t('cloud_help.tickets.shared'),
-                assignment: I18n.t('cloud_help.tickets.assignment')
+                main: I18n.t('help.tickets'),
+                core: I18n.t('core.shared'),
+                users: I18n.t('core.users')
             },
-            assignment: {},
-            users: [],
-            user: null,
-            modal: {
-                active: false
-            }
+            loading: {
+                assignments: false,
+                options: false
+            },
+            lists_synched: false,
+            loaded: {
+                assignments: false,
+                assignment_options: false
+            },
+            search: '',
+            pagination: {
+                current_page: 1,
+                range_before: 3,
+                range_after: 3,
+                per_page: 8
+            },
+            assignment_options: {
+                users: []
+            },
+            assignments: []
         }
     },
-    
+
     mounted(){
-        this.bus.subscribe("show:/help/ticket/assignment", () => this.show = !this.show )
-        this.ticket_id = this.$route.params.id
-        this.getTicketAssignment()
-        this.getTicketAssignmentOptions()
+        this.getUsers()
+        this.getAssignments()
     },
 
     methods: {
-        
-        getTicketAssignment() {
-            this.http.get(`/help/tickets/${this.ticket_id}/assignment`).then(result => {
+        getUsers(){
+            this.loading.options = true
+
+            this.http.get(this.users_route).then(result => {
+                this.loading.options = false
                 if (result.successful) {
-                    this.assignment = result.data || {}
+                    this.$set(this.assignment_options, 'users', result.data)
+                    this.loaded.assignment_options = true
+                    this.syncLists()
+                }else{
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        getAssignments() {
+            let url = `${this.main_route}/${this.ticketId}/assignments.json`
+            this.loading.assignments = true
+
+            this.http.get(url).then(result => {
+                this.loading.assignments = false
+                if (result.successful) {
+                    this.assignments = result.data
+                    this.loaded.assignments = true
+                    this.syncLists()
                 }else{
                     this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
-                console.log(error);
+                console.log(error)
             })
         },
 
-        getTicketAssignmentOptions() {
-            this.http.get(`/help/options/tickets/assignments`).then(result => {
+        syncLists(){
+            if(! this.loaded.assignment_options || ! this.loaded.assignments){
+                return
+            }
+
+            if(this.lists_synched){
+                return
+            }
+
+            let users = this.assignment_options.users
+            this.assignments.forEach((assignment)=>{
+                
+                let user = users.find((user)=>{
+                    return user.id == assignment.users_id
+                })
+
+                this.$set(user, 'assignment_id', assignment.id)
+                this.$set(user, 'checked', true)
+            })
+
+            this.lists_synched = true
+
+        },
+
+        clearSearch(ticket){
+            if(ticket){
+                ticket.prticketDefault()
+            }
+            
+            this.search = ''
+        },
+
+        submitAssignment(user){
+            if(user.checked){
+                this.postAssignment(user)
+            }else{
+                this.deleteAssignment(user)
+            }
+        },
+
+        postAssignment(user){
+            let url = `${this.main_route}/${this.ticketId}/assignments`
+            let data = {
+                ticket_assignment: {
+                    users_id: user.id,
+                    assignment_type: 'user'
+                }
+            }
+            this.$set(user, 'submitting', true)
+
+            this.http.post(url, data).then(result => {
+                this.$set(user, 'submitting', false)
                 if (result.successful) {
-                    this.users = result.data
+                    this.$set(user, 'assignment_id', result.data.id)
+                    this.assignments.push({
+                        id: result.data.id,
+                        name: user.name || user.email,
+                        email: user.email,
+                        role: user.role_name,
+                        users_id: user.id
+                    })
+                    this.alert(this.translations.main.notification_assignment_created, 'success')
                 }else{
                     this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
-                console.log(error);
+                console.log(error)
             })
         },
 
-        submitTicketAssignment(){
-            if(this.assignment.id){
-                this.patchTicketAssignment()
-            }else{
-                this.postTicketAssignment()
+        deleteAssignment(assignment){
+            // If it is clicked from the main tab, the assignment object received will have the id in the 'assignment_id' field
+            let assignment_id = assignment.assignment_id
+            // However, if it is not clicked from the main tab, the object received will have the id in the 'id' field
+            if(! assignment_id){
+                assignment_id = assignment.id
             }
-        },
+            let url = `${this.main_route}/${this.ticketId}/assignments/${assignment_id}`
+            this.$set(assignment, 'submitting', true)
 
-        postTicketAssignment(){
-            if(this.user){
-                this.assignment = {
-                    assignation_type: 'user',
-                    users_id: this.user.id,
-                    assignable_name: this.user.email
+            this.http.delete(url).then(result => {
+                this.$set(assignment, 'submitting', false)
+                if (result.successful) {
+                    this.alert(this.translations.main.notification_assignment_deleted, 'success')
+                    
+                    this.assignments = this.assignments.filter((assignment)=>{
+                        return assignment.id != assignment_id
+                    })
+
+                    let user = this.assignment_options.users.find((user)=>{
+                        return user.assignment_id == assignment_id
+                    })
+                    user.assignment_id = null
+                    user.checked = false
+                }else{
+                    this.alert(result.error.message,'danger')
                 }
-
-                this.modal.active = false
-                this.show = false
-                this.http.post(`/help/tickets/${this.ticket_id}/assignment`, this.assignment).then(result => {
-                    if (result.successful) {
-                        this.alert(this.translations.assignment.messages.assignment.user.successful)
-                        this.assignment.id = result.data.id
-                        this.bus.publish('post:/help/ticket/assignment', this.assignment)
-                    }else{
-                        this.alert(result.error.message,'danger')
-                    }
-                }).catch(error => {
-                    console.log(error);
-                })
-            }else{
-                this.alert(this.translations.assignment.messages.assignment.user.uselected, 'danger')
-            }
+            }).catch(error => {
+                console.log(error)
+            })
         },
 
-        patchTicketAssignment() {
-            if(this.user){
-                this.assignment.users_id = this.user.id
-                this.assignment.assignable_name = this.user.email
-
-                this.modal.active = false
-                this.show = false
-                this.http.patch(`/help/tickets/${this.ticket_id}/assignment`, this.assignment).then(result => {
-                    if (result.successful) {
-                        this.alert(this.translations.assignment.messages.assignment.user.successful)
-                        this.bus.publish('patch:/help/ticket/assignment', this.assignment)
-                    }else{
-                        this.alert(result.error.message,'danger')
-                    }
-                }).catch(error => {
-                    console.log(error);
-                })
-            }else{
-                this.alert(this.translations.assignment.messages.assignment.user.uselected, 'danger')
-            }
+        clearOptions(){
+            this.assignment_options.users.forEach((user)=>{
+                this.$set(user, 'checked', false)
+            })
         },
 
-        setTicketUser(){
-            if(this.users && this.assignedTo){
-                this.user = this.users.filter( user => {
-                    return user.id == this.assignedTo
-                })[0]
+        translateUserRole(role){
+            let new_role = this.translations.users[`enum_role_${role}`]
+            if(new_role){
+                return new_role
+            }
+
+            return role
+        }
+    },
+
+    computed: {
+        filteredUsers(){
+            let search_field = this.search.toLowerCase()
+            return this.assignment_options.users.filter((user)=>{
+                return user.email.toLowerCase().includes(search_field) ||
+                    (
+                        user.name &&
+                        user.name.toLowerCase().includes(search_field)
+                    ) ||
+                    (
+                        user.role &&
+                        user.role.toLowerCase().includes(search_field)
+                    )
+            })
+        },
+
+        currentUserPage(){
+            if(this.filteredUsers.length <= this.pagination.per_page){
+                return this.filteredUsers
+            }else{
+                let data = this.filteredUsers.slice(
+                    (this.pagination.current_page - 1) * this.pagination.per_page,
+                    (this.pagination.current_page) * this.pagination.per_page
+                )
+                return data
             }
         }
     },
 
     watch: {
-        users(){
-            this.setTicketUser()
+        ticketId(){
+            this.lists_synched = false
+            this.loaded.assignments = false
+            this.clearOptions()
+            this.getAssignments()
         },
-        assignedTo(){
-            this.setTicketUser()
+
+        ticketEditable(){
+            if(! this.ticketEditable){
+                this.active_tab = 1
+            }
+        },
+
+        search(){
+            this.pagination.current_page = 1
         }
     }
 }
 </script>
 <template>
-    <section v-if="users">
-        <div :class="[{ 'is-active': show }, 'quickview']">
-            <header class="quickview-header" @click="show = false">
-                <p class="title">
-                    {{translations.assignment.title}}
-                </p>
-                <i class="fas fa-chevron-right clickable"></i>
-            </header>
-            <div class="quickview-body">
-                <div class="quickview-block">
-                    <section class="box">
-                        <b-modal 
-                            :active.sync="modal.active"
-                            has-modal-card
-                            trap-focus
-                            aria-role="dialog"
-                            aria-modal
-                        >
-                            <div class="card">
-                                <div class="card-header is-danger">
-                                    <h2 class="card-header-title">
-                                        {{ translations.assignment.modals.user.title }}
-                                    </h2>
-                                </div>
-                                <div class="card-content">
-                                    {{ translations.assignment.modals.user.body }}
-                                </div>
-                                <div class="card-footer has-text-right">
-                                    <button class="card-footer-item button is-danger" @click="submitTicketAssignment">
-                                        {{ translations.assignment.modals.user.actions.assign }}
-                                    </button>
-                                    <button class="card-footer-item button is-secondary" @click="modal.active = false">
-                                        {{ translations.assignment.modals.user.actions.cancel }}
-                                    </button>
-                                </div>
-                            </div>
-                        </b-modal>
-                        <b-table
-                            :data="users"
-                            :selected.sync="user"
-                            :paginated="true"
-                            :per-page="10"
-                            :pagination-simple="true"
-                        >
-                            <template slot-scope="props">
-                                <b-table-column field="id" :label="translations.assignment.fields.user.id" width="40" numeric>
-                                    {{ props.row.id }}
-                                </b-table-column>
-                                <b-table-column field="email" :label="translations.assignment.fields.user.email">
-                                    {{ props.row.email }}
-                                </b-table-column>
-                            </template>
-                        </b-table>
-                        <hr>
-                        <b-field>
-                            <b-button class="card-footer-item button is-primary" @click="modal.active = true" expanded>
-                                {{translations.assignment.actions.assign_to_user}}
-                            </b-button>
-                        </b-field>
-                    </section>
-                </div>
-            </div>
-            <footer class="quickview-footer">
-            </footer>
-        </div>
+    <section>
+        <b-field>
+            <b-input :placeholder="translations.main.form_assignments_filter_placeholder"
+                v-model="search"
+                type="text"
+                icon="search"
+                icon-right="close-circle"
+                icon-right-clickable
+                @icon-right-click="clearSearch">
+            </b-input>
+        </b-field>
+        <component-data-loading v-if="loading.options" />
+        <component-data-empty v-if="!loading.options && assignment_options.users.length == 0" />
+        <b-table :data="currentUserPage">
+            <template slot-scope="props">
+                <b-table-column field="name" :label="translations.core.text_name">
+                    {{ props.row.name }}
+                </b-table-column>
+                <b-table-column field="email" :label="translations.core.text_email">
+                    {{ props.row.email }}
+                </b-table-column>
+                <b-table-column field="role_name" :label="translations.core.text_role">
+                    {{ translateUserRole(props.row.role_name) }}
+                </b-table-column>
+                <b-table-column field="actions" label="">
+                    <b-checkbox :disabled="props.row.submitting" size="is-small" v-model="props.row.checked" @input="submitAssignment(props.row)" />
+                </b-table-column>
+            </template>
+        </b-table>
+        <hr>
+        <b-pagination
+            :simple="false"
+            :total="filteredUsers.length"
+            :current.sync="pagination.current_page"
+            :range-before="pagination.range_before"
+            :range-after="pagination.range_after"
+            :per-page="pagination.per_page"
+            order="is-centered"
+            icon-prev="chevron-left"
+            icon-next="chevron-right"
+            aria-next-label="Next page"
+            aria-previous-label="Previous page"
+            aria-page-label="Page"
+            aria-current-label="Current page"
+        >
+        </b-pagination>
     </section>
 </template>
-<style scoped>
-.clickable{
-    cursor: pointer;
-}
-</style>

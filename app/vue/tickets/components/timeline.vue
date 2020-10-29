@@ -29,6 +29,13 @@ export default {
                 core: I18n.t('core.shared'),
                 shared: I18n.t('help.shared')
             },
+            loading: false,
+            filters: {
+                action: null
+            },
+            options: {
+                actions: []
+            }
         }
     },
 
@@ -37,6 +44,7 @@ export default {
             this.ticket_id = this.$route.params.id
             this.getTicketTimeline()
         }
+        this.getTicketTimelineOptions()
         this.setSubscriptions()
     },
 
@@ -55,9 +63,27 @@ export default {
         },
 
         getTicketTimeline(){
+            this.loading = true;
             this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
+                this.loading = false;
                 if (result.successful) {
                     this.ticket_timelines = result.data
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        getTicketTimelineOptions(){
+            this.http.get(`/help/tickets/${this.ticket_id}/timelines/options`).then(result => {
+                if (result.successful) {
+                    result.data.actions = [{
+                        value: null,
+                        text: this.translations.main.view_placeholder_all_actions
+                    }].concat(result.data.actions)
+                    this.options = result.data
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -80,6 +106,26 @@ export default {
 
         isDeadlineChange(action){
             return action == 'deadline_established'
+        },
+
+        clearSearch(event){
+            if(event){
+                event.preventDefault()
+            }
+            
+            this.filters.search = ''
+        }
+    },
+
+    computed: {
+        filteredTimelines(){
+            if(this.filters.action){
+                return this.ticket_timelines.filter((timeline)=>{
+                    return timeline.action == this.filters.action
+                })
+            }else{
+                return this.ticket_timelines
+            }
         }
     }
 }
@@ -93,45 +139,61 @@ export default {
                 </h4>
             </div>
         </div>
-        <div class="card-content timeline">
-            <div class="columns is-multiline">
-                <div v-for="(timeline) in ticket_timelines" :key="timeline.id" class="column is-paddingless is-12">
-                    <span>
-                        <span
-                            class="has-text-weight-bold"
-                            :class="{
-                                'has-text-warning': isFieldChange(timeline.action),
-                                'has-text-danger': isDeadlineChange(timeline.action),
-                                'has-text-success': isFinalStatus(timeline.action),
-                                'has-text-info': isNormalStatus(timeline.action)
-                            }"
-                        >
-                            &nbsp;&nbsp; {{object_utils.translateEnum(translations.main, 'column_enum_action', timeline.action)}}
-                        </span>
-                        <span v-if="timeline.description">:</span> {{timeline.description}}
-                    </span>
-                    <small class="is-pulled-right">
-                        {{timeline.created_at}} &nbsp;&nbsp;
-                    </small>
-                    <hr>
+        <br>
+        <div class="card-content">
+            
+            <div class="columns">
+                <div class="column is-7">
+                    <b-field>
+                        <b-select expanded v-model="filters.action">
+                            <option v-for="action in options.actions" :key="action.value" :value="action.value">
+                                {{object_utils.translateEnum(translations.main, 'column_enum_action', action.text)}}
+                            </option>
+                        </b-select>
+                    </b-field>
+                </div>
+                <div class="column is-5 has-text-right">
+                    <b-button @click="getTicketTimeline" :disabled="loading">
+                        &nbsp;
+                        <i :class="['fas', 'fa-sync', {'fa-spin': loading}]"></i>
+                        &nbsp;
+                    </b-button>
                 </div>
             </div>
+            <div v-if="!loading && ticket_timelines.length > 0" class="timeline">
+                <div class="columns is-multiline">
+                    <div v-for="(timeline) in filteredTimelines" :key="timeline.id" class="column is-12">
+                        <span>
+                            <span
+                                class="has-text-weight-bold"
+                                :class="{
+                                    'has-text-warning': isFieldChange(timeline.action),
+                                    'has-text-danger': isDeadlineChange(timeline.action),
+                                    'has-text-success': isFinalStatus(timeline.action),
+                                    'has-text-info': isNormalStatus(timeline.action)
+                                }"
+                            >
+                                &nbsp;&nbsp; {{object_utils.translateEnum(translations.main, 'column_enum_action', timeline.action)}}
+                            </span>
+                            <span v-if="timeline.description">:</span> {{timeline.description}}
+                        </span>
+                        <small class="is-pulled-right">
+                            {{timeline.created_at}} &nbsp;&nbsp;
+                        </small>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <component-data-loading v-else></component-data-loading>
         </div>
     </div>
 </template>
 <style scoped>
 .timeline {
-    max-height: 35rem;
+    max-height: 25rem;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-.line {
-    height: 0.2rem;
-    width: 4rem;
-    vertical-align: middle;
-    padding-left: 0.1rem;
-    padding-right:0.1rem;
-    display: inline-block;
+    scrollbar-width: thin;
+    scrollbar-color: #AAAAAA #ffffff;
 }
 </style>

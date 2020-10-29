@@ -26,6 +26,20 @@ Building a better future, one line of code at a time.
 =end
     class Ticket::Activity < CloudObject::Activity
         belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: "cloud_help_tickets_id", optional: true
+
+        enum category: {
+            action_list:                    "action_list",
+            action_create:                  "action_create",
+            action_show:                    "action_show",
+            action_update:                  "action_update",
+            action_destroy:                 "action_destroy",
+            action_status:                  "action_status",
+            action_workflow_action_failed:  "action_workflow_action_failed",
+            action_email_sent:              "action_email_sent",
+            action_create_file:             "action_create_file",
+            action_destroy_file:            "action_destroy_file",
+            action_create_assignment:       "action_create_assignment"
+        }
     end
 end
     

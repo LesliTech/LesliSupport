@@ -40,5 +40,9 @@ Building a better future, one line of code at a time.
         def index
             responseWithSuccessful(Ticket::Timeline.index(current_user, @query, params[:ticket_id]))
         end
+
+        def options
+            responseWithSuccessful(Ticket::Timeline.options(current_user, @query))
+        end
     end
 end
