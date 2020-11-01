@@ -38,7 +38,8 @@ export default {
             translations: {
                 main: I18n.t('help.ticket/assignments'),
                 core: I18n.t('core.shared'),
-                users: I18n.t('core.users')
+                users: I18n.t('core.users'),
+                roles: I18n.t('core.roles')
             },
             loading: {
                 assignments: false,
@@ -210,15 +211,6 @@ export default {
             this.assignment_options.users.forEach((user)=>{
                 this.$set(user, 'checked', false)
             })
-        },
-
-        translateUserRole(role){
-            let new_role = this.translations.users[`enum_role_${role}`]
-            if(new_role){
-                return new_role
-            }
-
-            return role
         }
     },
 
@@ -294,7 +286,7 @@ export default {
                     {{ props.row.email }}
                 </b-table-column>
                 <b-table-column field="role" :label="translations.users.view_table_header_role">
-                    {{ translateUserRole(props.row.role) }}
+                    {{ object_utils.translateEnum(translations.roles, 'column_enum_role', props.row.role) }}
                 </b-table-column>
                 <b-table-column field="actions" label="">
                     <b-checkbox :disabled="props.row.submitting" size="is-small" v-model="props.row.checked" @input="submitAssignment(props.row)" />

@@ -1,219 +1,180 @@
 <script>
 /*
-Lesli
+Copyright (c) 2020, all rights reserved.
 
-Copyright (c) 2019, Lesli Technologies, S. A.
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@dev            Luis Donis <ldonis@lesli.tech>
-@author     LesliTech <hello@lesli.tech>
-@license    Propietary - all rights reserved.
-@version    0.1.0-alpha
-
-// · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
-// · 
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// ·
 */
 
-// · Import modules, components and apps
-// · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
-import componentWorkflowStatusName from 'LesliCoreVue/cloud_objects/workflows/components/status-name.vue'
+
+// · List of Imported Components
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentWorkflowTransition from 'LesliCoreVue/cloud_objects/workflows/components/transition.vue'
 import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
-import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
-import componentActivity from 'LesliCoreVue/cloud_objects/activity.vue'
+import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion-simple.vue'
 import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
 import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
-import componentAssignment from '../components/assignment.vue'
+
+import componentFormStatus from '../components/form-status.vue'
+import componentActivities from '../components/activities.vue'
 import componentTimeline from '../components/timeline.vue'
-import componentDeadline from '../components/deadline.vue'
+import componentTitle from '../components/title.vue'
+import componentForm from '../components/form.vue'
+
+
+
+
 
 // · Component show
-// · ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~         ~·~
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-workflow-status-name': componentWorkflowStatusName,
-        'component-ticket-info': componentWorkflowStatusName,
+        'component-workflow-transition': componentWorkflowTransition,
         'component-subscription': componentSubscription,
-        'component-assignment': componentAssignment,
+        'component-form-status': componentFormStatus,
         'component-discussion': componentDiscussion,
-        'component-activity': componentActivity,
-        'component-timeline': componentTimeline,
-        'component-deadline': componentDeadline,
+        'component-activities': componentActivities,
         'component-action': componentAction,
-        'component-file': componentFile
+        'component-timeline': componentTimeline,
+        'component-title': componentTitle,
+        'component-file': componentFile,
+        'component-form': componentForm
     },
     data() {
         return {
-            translations: I18n.t("cloud_help.tickets.shared"),
+            translations: {
+                main: I18n.t('help.tickets'),
+                core: I18n.t('core.shared'),
+                shared: I18n.t('help.shared'),
+                workflow_statuses: I18n.t('help.workflow/statuses')
+            },
             ticket_id: null,
-            ticket: null
+            ticket: null,
+            new_ticket_status: null
         }
     },
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
-        this.subscribeToDeadline()
-        this.subscribeToAssignment()
+        this.setSubscriptions()
     },
     methods: {
 
+        setSubscriptions(){
+            this.bus.subscribe('update:/help/ticket/workflow', (status)=>{
+                this.ticket.cloud_help_ticket_workflow_statuses_id = status.id
+                this.ticket.status = status.name
+                this.ticket.status_initial = status.initial
+                this.ticket.status_final = status.final
+                this.ticket.status_name = status.name
+                this.ticket.status_number = status.number
+            })
+        },
+
+        // We publish the ticket so the form can use it
         getTicket() {
-            this.http.get(`/help/tickets/${this.ticket_id}.json`)
-            .then(result => {
+            this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket = result.data;
+                    this.ticket = this.parseBackendData(result.data)
                 }else{
-                    this.alert(result.error.message,"danger")
+                    this.alert(result.error.message,'danger')
                 }
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        },
-
-        showDeadlineForm(){
-            this.bus.publish("show:/help/ticket/deadline")
-        },
-
-        showAssignmentForm(){
-            this.bus.publish("show:/help/ticket/assignment")
-        },
-        
-        subscribeToDeadline(){
-            this.bus.subscribe('patch:/help/ticket/deadline', (deadline)=>{
-                this.ticket.detail_attributes.deadline = deadline
+            }).catch(error => {
+                console.log(error)
             })
         },
 
-        subscribeToAssignment(){
-            this.bus.subscribe('patch:/help/ticket/assignment', (assignment)=>{
-                this.ticket.assignment_attributes = assignment
-            })
-            this.bus.subscribe('post:/help/ticket/assignment', (assignment)=>{
-                this.ticket.assignment_attributes = assignment
-            })
+        parseBackendData(ticket){
+            if(ticket.detail_attributes.deadline){
+                ticket.detail_attributes.deadline = new Date(ticket.detail_attributes.deadline)
+            }
+
+            if(ticket.detail_attributes.tags && ticket.detail_attributes.tags.trim().length > 0){
+                ticket.detail_attributes.tags = ticket.detail_attributes.tags.split(',')
+            }else{
+                ticket.detail_attributes.tags = []
+            }
+
+            if(ticket.detail_attributes.description){
+                ticket.detail_attributes.description = JSON.parse(ticket.detail_attributes.description)
+            }else{
+                ticket.detail_attributes.description = {}
+            }
+
+            return ticket
         }
+
     }
-};
+}
 </script>
 <template>
-    <div class="section">
-        <div class="columns" v-if="ticket">
-            <div class="column is-8">
-                <div class="card box">
+    <section v-if="ticket" class="application-component">
+        <component-title
+            v-if="ticket"
+            :id="ticket.id"
+            :subject="ticket.detail_attributes.subject"
+            :status="
+                object_utils.translateEnum(translations.core, 'column_enum_status', ticket.status, null) ||
+                object_utils.translateEnum(translations.workflow_statuses, 'column_enum_status', ticket.status)
+            "
+        >
+            <template v-slot:actions>
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <component-workflow-transition
+                            cloud-module="help/ticket"
+                            translations-path="help.workflows"
+                            :cloud-id="ticket_id"
+                            v-model="new_ticket_status"
+                            :handle-patch="false"
+                        >
+                        </component-workflow-transition>
+                    </div>
+                </div>
+            </template>
+        </component-title>
+        <component-form-status :selected-status="new_ticket_status" />
+        <b-tabs vertical>
+            <b-tab-item :label="translations.shared.view_tab_title_general_information">
+                <component-form :ticket-data="ticket" view-type="show"></component-form>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_discussions">
+                <div class="card">
                     <div class="card-header">
-                        <h4 class="card-header-title">{{ ticket.detail_attributes.subject }}</h4>
-                        <div class="card-header-icon">
-                            <div v-if="! ticket.detail_attributes.state_final">
-                                <a @click="showDeadlineForm()">
-                                    <b-icon icon="calendar-times" size="is-small" />
-                                    {{translations.actions.deadline}}
-                                </a>
-                                <a @click="showAssignmentForm()">
-                                    &nbsp;&nbsp;
-                                    <b-icon icon="user-check" size="is-small" />
-                                    {{translations.actions.assign}}
-                                </a>
-                                <router-link :to="`/${ticket_id}/edit`">
-                                    &nbsp;&nbsp;
-                                    <b-icon icon="edit" size="is-small" />
-                                    {{translations.actions.edit}}
-                                </router-link>
-                            </div>
-                            <router-link :to="'/'">
-                                &nbsp;&nbsp;
-                                <b-icon icon="undo" size="is-small" />
-                                {{translations.actions.return}}
-                            </router-link>
+                        <div class="card-header-title is-shadowless">
+                            <h4 class=" title is-4">
+                                {{translations.core.view_text_discussions}}
+                            </h4>
                         </div>
                     </div>
                     <div class="card-content">
-                        <div class="columns">
-                            <div class="column is-8">
-                                <span class="has-text-weight-bold">
-                                    {{translations.fields.id}}:
-                                    {{ticket.id}}
-                                </span>
-                                <br>
-                                <span class="has-text-weight-bold">{{translations.fields.category}}:</span>
-                                {{ ticket.category}}
-                                <br>
-                                <span
-                                    class="has-text-weight-bold"
-                                >{{translations.fields.type}}:</span>
-                                {{ ticket.type}},
-                                <span
-                                    class="has-text-weight-bold"
-                                >{{translations.fields.state}}:</span>
-                                <component-workflow-status-name 
-                                    :name="ticket.status"
-                                    :translations-shared-path="'cloud_help.ticket_workflow_states.shared'"
-                                />
-                            </div>
-                            <div class="column is-4 has-text-right">
-                                <span class="has-text-weight-bold is-size-5">
-                                    {{translations.fields.priority}}:
-                                    <span
-                                        class="has-text-danger"
-                                    >
-                                        {{ticket.priority}}
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="columns is-multiline">
-                            <div class="column is-12">
-                                <span class="has-text-weight-bold">{{translations.fields.description}}:</span>
-                                <div v-html="ticket.detail_attributes.description"></div>
-                            </div>
-                            <div class="column is-12">
-                                <span class="has-text-weight-bold">{{translations.titles.date}}:</span>
-                                {{ date.toLocalFormat(ticket.created_at, false, true) }}
-                                <br />
-                                <span class="has-text-weight-bold">{{translations.titles.assigned}}:</span>
-                                {{ticket.assignment_attributes.assignable_name}}
-                                ({{translations.assignation_types[ticket.assignment_attributes.assignation_type]}})
-                                <br />
-                                <div v-if="ticket.detail_attributes.deadline">
-                                    <span class="has-text-weight-bold has-text-danger">
-                                        {{translations.titles.deadline}}:
-                                    </span>
-                                    {{date.toLocalFormat(ticket.detail_attributes.deadline, false, true)}}
-                                </div>
-                            </div>
-                        </div>
+                        <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id"></component-discussion>
                     </div>
                 </div>
-                <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id" />
-            </div>
-            <div class="column is-4">
-                <component-timeline class="card box" />
-            </div>
-            <component-deadline :ticket-deadline="ticket.detail_attributes.deadline"/>
-            <component-assignment :assigned-to="ticket.assignment_attributes.users_id"/>
-            <component-activity cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-action cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-file cloud-module="help/ticket" :cloud-id="ticket_id" />
-            <component-subscription
-                cloud-module="help/ticket"
-                :cloud-id="ticket_id"
-            />
-        </div>
-    </div>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_files">
+                <component-file cloud-module="help/ticket" :cloud-id="ticket_id"></component-file>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.main.view_btn_status_timeline">
+                <component-timeline></component-timeline>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_activities">
+                <component-activities :ticket-id="ticket_id"></component-activities>
+            </b-tab-item>
+        </b-tabs>
+    </section>
 </template>
-<style scoped>
-.has-text-bottom{
-    margin-top: auto;
-}
-</style>
