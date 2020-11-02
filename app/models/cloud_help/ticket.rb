@@ -29,7 +29,7 @@ Building a better future, one line of code at a time.
 
         belongs_to :account,    class_name: "CloudHelp::Account",                   foreign_key: "cloud_help_accounts_id"
         belongs_to :user_creator, class_name: "::User",                             foreign_key: "users_id"
-        belongs_to :user_main,  class_name: "::User",                               foreign_key: "users_id"
+        belongs_to :user_main,  class_name: "::User",                               foreign_key: "user_main_id", optional: true
         belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id"
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id"
@@ -222,18 +222,16 @@ Building a better future, one line of code at a time.
                 "left join users UM on UM.id = cloud_help_tickets.user_main_id"
             ).joins(
                 "left join user_details UMD on UMD.users_id = UM.id"
-            ).joins(
-                "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
             ).select(
                 "id",                                                   "CHCTP.name as priority",
                 "CHCTT.name as type",                                   "CHWS.name as state",
-                "CHCTC.name as category",                               "CHTA.assignment_type",
+                "CHCTC.name as category",                               "user_main_id",
                 "subject",                                              "CHCTC.id as cloud_help_catalog_ticket_categories_id",
                 "CHCTP.id as cloud_help_catalog_ticket_priorities_id",  "CHCTT.id as cloud_help_catalog_ticket_types_id",
                 "created_at",                                           "CHCTP.weight as priority_weight",
                 "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
                 "UM.id as user_main_id",                                "CONCAT(UMD.first_name, ' ', UMD.last_name) as user_main",
-                "deadline"
+                "deadline",                                             "users_id"
             )
 
             # We apply the previous filters in the main query
@@ -259,11 +257,15 @@ Building a better future, one line of code at a time.
             # We format the response
             response[:tickets] = tickets.map do |ticket|
                 ticket_attributes = ticket.attributes
+                ticket_attributes["editable"] = ticket.is_editable_by?(current_user)
                 ticket_attributes["deadline"] = LC::Date.to_string(ticket_attributes["deadline"])
                 ticket_attributes["created_at"] = LC::Date.to_string_datetime(ticket_attributes["created_at"])
                 ticket_attributes["assignment_type"] = Ticket::Assignment.assignment_types.key(ticket[:assignment_type])
                 ticket_attributes["category"] = Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
-
+                
+                if ticket.assignments.length > 0
+                    ticket_attributes["user_main"] = ticket.assignments.order(id: :asc).first.user.full_name
+                end
                 ticket_attributes
             end
             
@@ -434,6 +436,37 @@ Building a better future, one line of code at a time.
                     id: assignment.id
                 }
             end
+        end
+
+        # Custom is_editab_by? implementation
+        def is_editable_by?(current_user)
+            return false unless current_user
+
+            current_user_olp = User.joins(:role)
+                .joins(:role_detail)
+                .where("users.id = ?", current_user.id)
+                .select("role_details.object_level_permission")
+                .first.object_level_permission
+
+            reference_olp = 0
+
+            if user_creator
+                reference_olp = user_creator.role.detail.object_level_permission
+            elsif user_main
+                reference_olp = user_main.role.detail.object_level_permission
+            end
+
+            # Admin, owner or similar roles can modify a ticket
+            if current_user_olp >= object_level_permission_threshold && current_user_olp >= reference_olp
+                return true
+            end
+
+            # Any assigned user can also modify this ticket
+            if assignments.find_by(users_id: current_user.id)
+                return true
+            end
+
+            return false
         end
 
         private

@@ -144,7 +144,11 @@ export default {
         //      // Asume the id of the Ticket type is 4
         //      // The user will be redirected to the url /help/tickets/4
         showTicket(ticket) {
-            this.$router.push(`/${ticket.id}`)
+            if(ticket.editable){
+                this.$router.push(`/${ticket.id}/edit`)
+            }else{
+                this.$router.push(`/${ticket.id}`)
+            }
         },
 
         reloadTickets(){

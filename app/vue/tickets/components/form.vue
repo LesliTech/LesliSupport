@@ -207,13 +207,18 @@ export default {
             <div class="card-header-title">
                 <h4 class="title is-4">
                     <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
-                    <span v-else>{{translations.main.view_title_edit}}</span>
+                    <span v-else-if="viewType == 'edit'">{{translations.main.view_title_edit}}</span>
+                    <span v-else>{{translations.main.view_title_show}}</span>
                 </h4>
             </div>
             <div class="card-header-icon">
                 <router-link v-if="viewType == 'edit'" :to="`/${ticket_id}`">
                     <i class="fas fa-eye"></i>
                     {{translations.core.view_btn_show}}
+                </router-link>
+                <router-link v-if="viewType == 'show'" :to="`/${ticket_id}/edit`">
+                    <i class="fas fa-edit"></i>
+                    {{translations.core.view_btn_edit}}
                 </router-link>
                 <router-link :to="`/`">
                     &nbsp;&nbsp;&nbsp;
@@ -225,129 +230,142 @@ export default {
         <div class="card-content subtabs">
             <b-tabs>
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                    <form @submit="submitTicket">
-                        <div class="columns">
-                            <div class="column is-9">
-                                <b-field>
-                                    <template v-slot:label>
-                                        {{translations.main.column_subject}}<sup class="has-text-danger">*</sup>
-                                    </template>
-                                    <b-input v-model="ticket.detail_attributes.subject" required></b-input>
-                                </b-field>
+                    <fieldset :disabled="viewType == 'show'">
+                        <form @submit="submitTicket">
+                            <div v-if="viewType != 'new'">
+                                <label class="label">{{translations.main.view_title_assigned_users}}</label>
+                                <div class="tags is-medium" v-if="ticket.assignment_attributes && ticket.assignment_attributes.length > 0">
+                                    <span class="tag is-info is-light" v-for="assignment in ticket.assignment_attributes" :key="assignment.id">
+                                        <span>{{assignment.assignable_name}}</span>
+                                    </span>
+                                </div>
+                                <div class="tags" v-else>
+                                    <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>
+                                </div>
                             </div>
-                            <div class="column is-3">
-                                <b-field :label="translations.main.column_deadline">
-                                    <vc-date-picker
-                                        v-model="ticket.detail_attributes.deadline"
-                                        :locale="date.vcDatepickerConfig()"
-                                        :popover="{ visibility: 'focus' }"
-                                        :input-props="{
-                                            placeholder: translations.core.view_text_select_date
-                                        }"
-                                    >
-                                    </vc-date-picker>
-                                </b-field>
-                            </div>
-                        </div>
-                        <div class="columns">
-                            <div class="column is-4">
-                                <b-field>
-                                    <template v-slot:label>
-                                        {{translations.main.column_cloud_help_catalog_ticket_types_id}}<sup class="has-text-danger">*</sup>
-                                    </template>
-                                    <b-select 
-                                        :placeholder="translations.core.view_placeholder_select_option"
-                                        expanded
-                                        required
-                                        v-model="ticket.cloud_help_catalog_ticket_types_id"
-                                    >
-                                        <option
-                                            v-for="type in options.types"
-                                            :key="type.id"
-                                            :value="type.id"
+                            <div class="columns">
+                                <div class="column is-9">
+                                    <b-field>
+                                        <template v-slot:label>
+                                            {{translations.main.column_subject}}<sup class="has-text-danger">*</sup>
+                                        </template>
+                                        <b-input v-model="ticket.detail_attributes.subject" required></b-input>
+                                    </b-field>
+                                </div>
+                                <div class="column is-3">
+                                    <b-field :label="translations.main.column_deadline">
+                                        <vc-date-picker
+                                            v-model="ticket.detail_attributes.deadline"
+                                            :locale="date.vcDatepickerConfig()"
+                                            :popover="{ visibility: 'focus' }"
+                                            :input-props="{
+                                                placeholder: translations.core.view_text_select_date
+                                            }"
                                         >
-                                            {{type.name}}
-                                        </option>
-                                    </b-select>
-                                </b-field>
+                                        </vc-date-picker>
+                                    </b-field>
+                                </div>
                             </div>
-                            <div class="column is-4">
-                                <b-field>
-                                    <template v-slot:label>
-                                        {{translations.main.column_cloud_help_catalog_ticket_categories_id}}<sup class="has-text-danger">*</sup>
-                                    </template>
-                                    <b-select
-                                        :placeholder="translations.core.view_placeholder_select_option"
-                                        expanded
-                                        required
-                                        v-model="ticket.cloud_help_catalog_ticket_categories_id"
-                                    >
-                                        <option
-                                            v-for="category in options.categories"
-                                            :key="category.id"
-                                            :value="category.id"
-                                        >   
-                                            <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
-                                            {{category.name}}
-                                        </option>
-                                    </b-select>
-                                </b-field>
-                            </div>
-                            <div class="column is-4">
-                                <b-field>
-                                    <template v-slot:label>
-                                        {{translations.main.column_cloud_help_catalog_ticket_priorities_id}}<sup class="has-text-danger">*</sup>
-                                    </template>
-                                    <b-select
-                                        :placeholder="translations.core.view_placeholder_select_option"
-                                        expanded
-                                        required
-                                        v-model="ticket.cloud_help_catalog_ticket_priorities_id"
-                                    >
-                                        <option
-                                            v-for="priority in options.priorities"
-                                            :key="priority.id"
-                                            :value="priority.id"
+                            <div class="columns">
+                                <div class="column is-4">
+                                    <b-field>
+                                        <template v-slot:label>
+                                            {{translations.main.column_cloud_help_catalog_ticket_types_id}}<sup class="has-text-danger">*</sup>
+                                        </template>
+                                        <b-select 
+                                            :placeholder="translations.core.view_placeholder_select_option"
+                                            expanded
+                                            required
+                                            v-model="ticket.cloud_help_catalog_ticket_types_id"
                                         >
-                                            {{priority.name}}
-                                        </option>
-                                    </b-select>
-                                </b-field>
+                                            <option
+                                                v-for="type in options.types"
+                                                :key="type.id"
+                                                :value="type.id"
+                                            >
+                                                {{type.name}}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
+                                <div class="column is-4">
+                                    <b-field>
+                                        <template v-slot:label>
+                                            {{translations.main.column_cloud_help_catalog_ticket_categories_id}}<sup class="has-text-danger">*</sup>
+                                        </template>
+                                        <b-select
+                                            :placeholder="translations.core.view_placeholder_select_option"
+                                            expanded
+                                            required
+                                            v-model="ticket.cloud_help_catalog_ticket_categories_id"
+                                        >
+                                            <option
+                                                v-for="category in options.categories"
+                                                :key="category.id"
+                                                :value="category.id"
+                                            >   
+                                                <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
+                                                {{category.name}}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
+                                <div class="column is-4">
+                                    <b-field>
+                                        <template v-slot:label>
+                                            {{translations.main.column_cloud_help_catalog_ticket_priorities_id}}<sup class="has-text-danger">*</sup>
+                                        </template>
+                                        <b-select
+                                            :placeholder="translations.core.view_placeholder_select_option"
+                                            expanded
+                                            required
+                                            v-model="ticket.cloud_help_catalog_ticket_priorities_id"
+                                        >
+                                            <option
+                                                v-for="priority in options.priorities"
+                                                :key="priority.id"
+                                                :value="priority.id"
+                                            >
+                                                {{priority.name}}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
                             </div>
-                        </div>
 
-                        <b-field :label="translations.main.column_tags">
-                            <b-taginput v-model="ticket.detail_attributes.tags" ellipsis></b-taginput>
-                        </b-field>
+                            <b-field :label="translations.main.column_tags">
+                                <b-taginput v-model="ticket.detail_attributes.tags" ellipsis :closable="viewType != 'show'"></b-taginput>
+                            </b-field>
 
-                        <div class="field">
-                            <label class="label">{{translations.main.column_description}}</label>
-                            <div class="control">
-                                <component-rich-text-editor
-                                    v-model="ticket.detail_attributes.description"
-                                >
-                                </component-rich-text-editor>
+                            <div class="field">
+                                <label class="label">{{translations.main.column_description}}</label>
+                                <div class="control">
+                                    <component-rich-text-editor
+                                        v-model="ticket.detail_attributes.description"
+                                    >
+                                    </component-rich-text-editor>
+                                </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="field has-text-right">
-                            <b-button type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
-                                <span v-if="submitting">
-                                    <i class="fas fa-circle-notch fa-spin"></i>
-                                    &nbsp; {{translations.core.view_btn_saving}}
-                                </span>
-                                <span v-else>
-                                    <i class="fas fa-save"></i>
-                                    &nbsp; {{translations.core.view_btn_save}}
-                                </span>
-                            </b-button>
-                        </div>
-                    </form>
+                            <hr>
+                            <div class="field has-text-right">
+                                <b-button v-if="viewType != 'show'" type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
+                                    <span v-if="submitting">
+                                        <i class="fas fa-circle-notch fa-spin"></i>
+                                        &nbsp; {{translations.core.view_btn_saving}}
+                                    </span>
+                                    <span v-else>
+                                        <i class="fas fa-save"></i>
+                                        &nbsp; {{translations.core.view_btn_save}}
+                                    </span>
+                                </b-button>
+                            </div>
+                        </form>
+                    </fieldset>
                 </b-tab-item>
-                <b-tab-item :label="translations.main.view_tab_title_assignments">
+                <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new'">
                     <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
                 </b-tab-item>
-                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType != 'new'">
+                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
                     <span class="has-text-danger">
                         {{translations.main.view_text_delete_confirmation}}
                     </span>
