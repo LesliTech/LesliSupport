@@ -23,8 +23,6 @@ For more information read the license file including with this software.
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-
-
 export default {
     
     // @component_prop TicketType [Object] The object representation of the ticket_type.
