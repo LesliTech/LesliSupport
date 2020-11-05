@@ -7,6 +7,15 @@ module CloudHelp
             ticket: "ticket"
         }
 
+        def self.association_class_name(association_name)
+            case association_name
+            when "ticket"
+                return "CloudHelp::Ticket"
+            else
+                return nil
+            end
+        end
+
 =begin
 @return [Array] An array of details of the assocciation. 
 @description Depending on the *association_name*, returns extra information needed. For example, 
@@ -19,13 +28,9 @@ module CloudHelp
                 return [
                     {
                         name: "ticket_type",
+                        type: "foreign_key",
                         class: "CloudHelp::Catalog::TicketType",
                         key: :cloud_help_catalog_ticket_types_id,
-                        identifier: :name
-                    },{
-                        name: "ticket_category",
-                        class: "CloudHelp::Catalog::TicketCategory",
-                        key: :cloud_help_catalog_ticket_categories_id,
                         identifier: :name
                     }
                 ]

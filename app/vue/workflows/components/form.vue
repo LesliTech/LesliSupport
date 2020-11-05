@@ -33,6 +33,18 @@ import componentWorkflowChart from "LesliVue/cloud_objects/workflows/components/
 import componentStatusName from "LesliVue/cloud_objects/workflows/components/status-name.vue"
 
 export default {
+    props: {
+        cloudEngine: {
+            type: String,
+            required: true
+        },
+
+        engineNamespace: {
+            type: String,
+            required: true
+        }
+    },
+
     components: {
         'component-workflow-chart': componentWorkflowChart,
         'component-status-name': componentStatusName
@@ -41,8 +53,10 @@ export default {
     data() {
         return {
             translations: {
-                main: I18n.t('deutscheleibrenten.workflows'),
-                shared: I18n.t('deutscheleibrenten.shared')
+                main: I18n.t(`${this.engineNamespace}.workflows`),
+                shared: I18n.t(`${this.engineNamespace}.shared`),
+                core: I18n.t('core.shared'),
+                workflows: I18n.t('core.workflows')
             },
             rerender_chart: false,
             workflow: null,
@@ -58,30 +72,9 @@ export default {
         }
     },
     mounted() {
-        this.setCloudEngine()
-        this.setTranslations()
         this.setWorkflowId()
     },
     methods: {
-        setCloudEngine(){
-            if(this.$route.query.module){
-                this.cloud_engine = this.$route.query.module
-            }
-        },
-
-        setTranslations(){
-            let cloud_engine_translations_path = this.getCloudEngineTranslationsPath()
-            this.$set(this.translations, 'workflows', I18n.t(`${cloud_engine_translations_path}.workflows`))
-        },
-
-        getCloudEngineTranslationsPath(){
-            if(this.cloud_engine == 'crm'){
-                return 'deutscheleibrenten'
-            }
-
-            return this.cloud_engine
-        },
-
         setWorkflowId(){
             if (this.$route.params.id) {
                 this.workflow_id = this.$route.params.id
@@ -96,7 +89,7 @@ export default {
         },
 
         getWorkflow() {
-            let url = `/${this.cloud_engine}/workflows/${this.workflow_id}.json`
+            let url = `/${this.engineNamespace}/workflows/${this.workflow_id}.json`
 
             this.http.get(url).then(result => {
                 if (result.successful) {
@@ -132,12 +125,12 @@ export default {
                 workflow_status: new_status
             }
 
-            let url = `/${this.cloud_engine}/workflows/${this.workflow_id}/statuses`
+            let url = `/${this.engineNamespace}/workflows/${this.workflow_id}/statuses`
             this.http.post(url, data).then(result => {
                 if (result.successful) {
                     new_status.id = result.data.id
                     this.$set(this.workflow.statuses, new_status.id, new_status)
-                    this.alert(this.translations.main.notification_workflow_status_added, 'success')
+                    this.alert(this.translations.workflows.messages_success_status_created, 'success')
                     this.new_status_name = ''
                     this.$refs['input-status-name'].focus()
                     this.rerender_chart = true
@@ -174,7 +167,7 @@ export default {
             }
             this.selected_workflow_status = {}
             this.rerender_chart = true
-            this.alert(this.translations.main.notification_workflow_status_deleted, 'info')
+            this.alert(this.translations.workflows.messages_info_status_deleted, 'info')
         },
 
         addFollowUpStatus(){
@@ -213,16 +206,17 @@ export default {
             this.syncWorkflowNumbers()
 
             let to_be_deleted_statuses = Object.values(this.to_be_deleted_statuses)
+            this.to_be_deleted_statuses = {}
             if(to_be_deleted_statuses.length > 0){
                 to_be_deleted_statuses = to_be_deleted_statuses.join(', ')
 
                 window.scrollTo(0,0)
                 this.$nextTick(()=>{
                     this.$buefy.dialog.confirm({
-                        title: this.translations.main.confirmation_set_status_as_deleted_title,
-                        message: `${this.translations.main.confirmation_set_status_as_deleted_body_1}: <b>${to_be_deleted_statuses}</b>. ${this.translations.main.confirmation_set_status_as_deleted_body_2}`,
-                        confirmText: this.translations.shared.btn_accept,
-                        cancelText: this.translations.shared.btn_cancel,
+                        title: this.translations.workflows.messages_danger_statuses_marked_as_deleted,
+                        message: `${this.translations.workflows.messages_danger_statuses_marked_as_deleted_1}: <b>${to_be_deleted_statuses}</b>. ${this.translations.workflows.messages_danger_statuses_marked_as_deleted_2}`,
+                        confirmText: this.translations.core.view_btn_accept,
+                        cancelText: this.translations.core.view_btn_cancel,
                         type: 'is-danger',
                         onConfirm: ()=>{
                             this.submitWorkflow()
@@ -266,12 +260,12 @@ export default {
                     }
                 }
 
-                this.http.post(`/${this.cloud_engine}/workflows`, data).then(result => {
+                this.http.post(`/${this.engineNamespace}/workflows`, data).then(result => {
                     if (result.successful) {
-                        this.alert(this.translations.main.notification_workflow_created, 'success')
+                        this.alert(this.translations.workflows.messages_success_workflow_created, 'success')
                         
                         this.workflow = result.data
-                        this.$router.push(`/${result.data.id}?module=${this.cloud_engine}`)
+                        this.$router.push(`/${result.data.id}/edit`)
                     }else{
                         this.alert(result.error.message,'danger')
                     }
@@ -280,7 +274,7 @@ export default {
                 })
             }else{
                 this.$refs['input-workflow-name'].focus()
-                this.alert(this.translations.main.notification_error_workflow_name_missing,'danger')
+                this.alert(this.translations.workflows.messages_warning_workflow_name_missing,'danger')
             }
         },
 
@@ -293,13 +287,11 @@ export default {
                     statuses_attributes: statuses_attributes
                 }
             }
-            let url = `/${this.cloud_engine}/workflows/${this.workflow_id}`
+            let url = `/${this.engineNamespace}/workflows/${this.workflow_id}`
 
             this.http.put(url, data).then(result => {
                 if (result.successful) {
-                    this.alert(this.translations.main.notification_workflow_updated, 'success')
-
-                    this.$router.push(`/${this.workflow_id}?module=${this.cloud_engine}`)
+                    this.alert(this.translations.workflows.messages_success_workflow_updated, 'success')
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -316,10 +308,10 @@ export default {
             }
 
             if(this.workflow_id){
-                let url = `/${this.cloud_engine}/workflows/${this.workflow_id}`
+                let url = `/${this.engineNamespace}/workflows/${this.workflow_id}`
                 this.http.patch(url, data).then(result => {
                     if (result.successful) {
-                        this.alert(this.translations.main.notification_workflow_name_updated, 'success')
+                        this.alert(this.translations.workflows.messages_success_workflow_name_updated, 'success')
                     }else{
                         this.alert(result.error.message,'danger')
                     }
@@ -327,11 +319,11 @@ export default {
                     console.log(error)
                 })
             }else{
-                let url = `/${this.cloud_engine}/workflows`
+                let url = `/${this.engineNamespace}/workflows`
                 this.http.post(url, data).then(result => {
                     if (result.successful) {
                         this.workflow_id = result.data.id
-                        this.alert(this.translations.main.notification_workflow_created, 'success')
+                        this.alert(this.translations.workflows.messages_success_workflow_created, 'success')
 
                         this.$nextTick(()=>{
                             this.$refs["input-status-name"].focus()
@@ -370,7 +362,7 @@ export default {
             // We should keep the statuses marked as to be deleted in a special array for a final alert
             if(new_status_type == 'to_be_deleted'){
                 if(selected_status.status_type == new_status_type){
-                    this.to_be_deleted_statuses[selected_status.name] = this.object_utils.translateEnum(this.translations.main, 'status', selected_status.name)
+                    this.to_be_deleted_statuses[selected_status.name] = this.object_utils.translateEnum(this.translations.core, 'column_enum_status', selected_status.name)
                 }else{
                     delete this.to_be_deleted_statuses[selected_status.name]
                 }
@@ -397,7 +389,7 @@ export default {
         },
 
         possibleFollowUpStatuses(){
-            let label = [{id: null, name: this.translations.main.form_select_transition_placeholder}]
+            let label = [{id: null, name: this.translations.workflows.view_placeholder_select_status}]
 
             if(this.selected_workflow_status.id == null){
                 return label
@@ -414,14 +406,6 @@ export default {
             return label.concat(Object.values(this.workflow.statuses).filter(element => {
                 return ! follow_up_statuses.includes(element.id)
             }))
-        },
-
-        workflowEngineMessage(){
-            if(this.workflow_id){
-                return ''
-            }else{
-                return this.translations.main.form_warning_workflow_creation_engine
-            }
         },
 
         orderedWorkflowStatuses(){
@@ -444,36 +428,27 @@ export default {
                     {{workflow.name}}
                 </span>
                 <span v-else>
-                    {{translations.main.form_new_title}}
+                    {{translations.workflows.view_title_main}}
                 </span>
             </h2>
             <div class="card-header-icon">
-                <router-link :to="`/${workflow_id}?module=${cloud_engine}`" v-if="workflow_id">
+                <router-link :to="`/${workflow_id}`" v-if="workflow_id">
                     <i class="fas fa-eye"></i>
-                    {{translations.shared.btn_show}}
+                    {{translations.core.view_btn_show}}
                 </router-link>
-                <router-link :to="`/?module=${cloud_engine}`">
+                <router-link to="/">
                     &nbsp;&nbsp;&nbsp;
                     <i class="fas fa-undo"></i>
-                    {{translations.shared.btn_return}}
+                    {{translations.core.view_btn_return}}
                 </router-link>
             </div>
         </div>
         <div class="card-content">
             <b-tabs v-model="active_tab">
-                <b-tab-item :label="translations.main.form_tab_edition_view">
+                <b-tab-item :label="translations.workflows.view_tab_title_edition_mode">
                     <div class="columns">
-                        <div class="column is-4">
-                            <b-field :label="translations.main.form_label_add_workflow_to_engine" :message="workflowEngineMessage">
-                                <b-select v-model="cloud_engine" expanded :disabled="Boolean(workflow_id)">
-                                    <option value="crm">{{translations.main.title_house_workflows}}</option>
-                                    <option value="focus">{{translations.main.title_focus_workflows}}</option>
-                                    <option value="driver">{{translations.main.title_driver_workflows}}</option>
-                                </b-select>
-                            </b-field>
-                        </div>
-                        <div class="column is-8">
-                            <b-field :label="translations.main.field_name">
+                        <div class="column is-12">
+                            <b-field :label="translations.workflows.column_name">
                                 <input
                                     class="input"
                                     @change="submitWorkflowName"
@@ -488,7 +463,7 @@ export default {
                     <form @submit="addStatusToWorkflow">
                         <div class="columns">
                             <div class="column is-11">
-                                <b-field :label="translations.main.form_add_status_title">
+                                <b-field :label="translations.workflows.view_title_add_new_status">
                                     <b-input v-model="new_status_name" ref="input-status-name" required :readonly="! workflow_id">
                                     </b-input>
                                 </b-field>
@@ -511,7 +486,7 @@ export default {
                         <div class="columns">
                             <div class="column is-7">
                                 <span class="has-text-weight-bold">
-                                    {{translations.main.form_select_status_title}}
+                                    {{translations.workflows.view_title_select_status}}
                                 </span>
                                 <div class="menu-list is-bg-dark is-hoverable">
                                     <a 
@@ -523,14 +498,14 @@ export default {
                                     >
                                         <div class="columns">
                                             <div class="column is-paddingless-right is-7">
-                                                {{object_utils.translateEnum(translations.main, 'status', status.name)}}
+                                                {{object_utils.translateEnum(translations.core, 'column_enum_status', status.name)}}
                                             </div>
                                             <div class="column is-paddingless-x is-2">
                                                 <b-input size="is-small" type="text" pattern="\d+" v-model="status.new_number"></b-input>
                                             </div>
                                             <div class="column is-paddingless-left is-3">
                                                 <span class="is-pulled-right">
-                                                    <b-tooltip position="is-top" :label="translations.main.form_tooltip_initial" type="is-primary">
+                                                    <b-tooltip position="is-top" :label="translations.workflows.messages_info_tooltip_status_initial" type="is-primary">
                                                         <b-button
                                                             size="is-small"
                                                             type="is-primary"
@@ -542,7 +517,7 @@ export default {
                                                             </b-icon>
                                                         </b-button>
                                                     </b-tooltip>
-                                                    <b-tooltip position="is-top" :label="translations.main.form_tooltip_successful" type="is-success">
+                                                    <b-tooltip position="is-top" :label="translations.workflows.messages_info_tooltip_status_completed_successfully" type="is-success">
                                                         <b-button
                                                             :id="`completed_successfully_button_${status.id}`" 
                                                             size="is-small" type="is-success"
@@ -554,7 +529,7 @@ export default {
                                                             </b-icon>
                                                         </b-button>
                                                     </b-tooltip>
-                                                    <b-tooltip position="is-top" :label="translations.main.form_tooltip_unsuccessful" type="is-warning">
+                                                    <b-tooltip position="is-top" :label="translations.workflows.messages_info_tooltip_status_completed_unsuccessfully" type="is-warning">
                                                         <b-button
                                                             :id="`completed_unsuccessfully_button_${status.id}`" 
                                                             size="is-small"  type="is-warning"
@@ -566,7 +541,7 @@ export default {
                                                             </b-icon>
                                                         </b-button>
                                                     </b-tooltip>
-                                                    <b-tooltip position="is-top" :label="translations.main.form_tooltip_to_be_deleted" type="is-danger">
+                                                    <b-tooltip position="is-top" :label="translations.workflows.messages_info_tooltip_status_to_be_deleted" type="is-danger">
                                                         <b-button
                                                             :id="`to_be_deleted_button_${status.id}`" 
                                                             size="is-small" type="is-danger"
@@ -592,11 +567,11 @@ export default {
                                 >
                                     <b-icon size="is-small" icon="trash-alt"></b-icon>
                                     &nbsp;
-                                    {{translations.main.btn_delete_selected_status}}
+                                    {{translations.workflows.view_btn_delete_selected_status}}
                                 </b-button>
                             </div>
                             <div class="column is-5">
-                                <label class="label">{{translations.main.form_select_transition_title}}</label>
+                                <label class="label">{{translations.workflows.view_title_select_transition_status}}</label>
                                 <div class="columns">
                                     <div class="column">
                                         <b-field>
@@ -610,7 +585,7 @@ export default {
                                                             :hidden="workflow_status.id == null"
                                                             :disabled="workflow_status.id == null"  
                                                         >
-                                                            {{object_utils.translateEnum(translations.main, 'status', workflow_status.name)}}
+                                                            {{object_utils.translateEnum(translations.core, 'column_enum_status', workflow_status.name)}}
                                                         </option>
                                                     </select>
                                                 </span>
@@ -621,11 +596,11 @@ export default {
                                 <div class="columns">
                                     <div class="column">
                                         <span class="has-text-weight-bold">
-                                            {{translations.main.form_transition_statuses_title}}
+                                            {{translations.workflows.view_title_transition_statuses_list}}
                                         </span>
                                         <div class="menu-list is-hoverable">
                                             <a v-for="(workflow_status, key) in nextStatusesOfSelectedStatus" :key="key" class="list-item">
-                                                {{object_utils.translateEnum(translations.main, 'status', workflow_status.name)}}
+                                                {{object_utils.translateEnum(translations.core, 'column_enum_status', workflow_status.name)}}
                                                 <button type="button" class="delete is-pulled-right" @click="deleteFollowUpStatus(workflow_status)">
                                                 </button>
                                             </a>
@@ -638,22 +613,23 @@ export default {
                             <div class="column">
                                 <div class="field">
                                     <div class="actions has-text-right">
-                                        <button class="button is-primary" type="submit">
-                                            <span v-if="workflow_id">{{translations.shared.btn_update}}</span>
-                                            <span v-else>{{translations.shared.btn_save}}</span>
-                                        </button>
+                                        <b-button type="is-primary" expanded native-type="submit" class="submit-button">
+                                            <i class="fas fa-save"></i>
+                                            &nbsp;
+                                            {{translations.core.view_btn_save}}
+                                        </b-button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </b-tab-item>
-                <b-tab-item :label="translations.main.form_tab_chart_view">
+                <b-tab-item :label="translations.workflows.view_tab_title_graphic_mode">
                     <component-workflow-chart
                         v-if="active_tab == 1"
                         class="has-text-centered"
-                        :translations-path="`${getCloudEngineTranslationsPath()}.workflows`" 
-                        cloud-module="house/workflow"
+                        translations-path="core.workflows" 
+                        :cloud-module="`${engineNamespace}/workflow`"
                         :workflow="workflow"
                         :rerender.sync="rerender_chart"
                     />

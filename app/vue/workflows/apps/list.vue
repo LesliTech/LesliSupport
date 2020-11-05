@@ -1,27 +1,19 @@
 <script>
 /*
-Lesli
+Copyright (c) 2020, all rights reserved.
 
-Copyright (c) 2020, Lesli Technologies, S. A.
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
 
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
-
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
@@ -138,7 +130,7 @@ export default {
         //      // Asume the id of the Workflow is 4
         //      // The user will be redirected to the url /crm/workflows/4
         showWorkflow(workflow) {
-            this.$router.push(`/${workflow.id}?module=${this.mainRoutePrefix}`)
+            this.$router.push(`/${workflow.id}`)
         },
 
         sortWorkflows(field, order){
@@ -183,21 +175,21 @@ export default {
 <template>
     <section class="application-component">
         <component-header 
-            :title="translations.main.list_title">
+            :title="translations.workflows.view_title_main">
             <div class="buttons">
                 <button class="button" @click="reloadWorkflows()" :disabled="loading.global">
                     <b-icon icon="sync" size="is-small" :custom-class="loading.global ? 'fa-spin' : ''" />
-                    <span>{{translations.shared.btn_reload}}</span>
+                    <span>{{translations.shared.view_text_btn_reload}}</span>
                 </button>
                 <router-link class="button" tag="button" to="/new" v-if="workflows_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
-                    <span>{{ translations.main.list_button_create_title }}</span>
+                    <span>{{ translations.workflows.view_btn_new_workflow }}</span>
                 </router-link>
             </div>
         </component-header>
 
         <component-toolbar
-            :search-text="translations.main.list_filter_text_placeholder"
+            :search-text="translations.workflows.view_placeholder_search_text"
             @search="searchWorkflows"
             :initial-value="filters.query"
         >
@@ -217,7 +209,7 @@ export default {
                     @click="showWorkflow"
                 >
                     <template slot-scope="props">
-                        <b-table-column field="name" :label="translations.shared.text_name" sortable>
+                        <b-table-column field="name" :label="translations.workflows.column_name" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 <span>
                                     {{ column.label }}
@@ -230,7 +222,7 @@ export default {
                             {{ props.row.name }}
                         </b-table-column>
 
-                        <b-table-column field="default" :label="translations.main.field_default" sortable>
+                        <b-table-column field="default" :label="translations.workflows.column_default" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 <span>
                                     {{ column.label }}
@@ -241,14 +233,14 @@ export default {
                                 </span>
                             </template>
                             <span v-if="props.row.default">
-                                <b>{{translations.shared.text_yes}}</b>
+                                <b>{{translations.core.view_text_yes}}</b>
                             </span>
                             <span v-else>
-                                {{translations.shared.text_no}}
+                                {{translations.core.view_text_no}}
                             </span>
                         </b-table-column>
 
-                        <b-table-column field="id" :label="translations.shared.text_created_at" sortable>
+                        <b-table-column field="id" :label="translations.core.column_created_at" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 <span>
                                     {{ column.label }}

@@ -29,22 +29,27 @@ import appShow  from './apps/show.vue'
 import appNew   from './apps/new.vue'
 
 
+const props = {
+    cloudEngine: "CloudHelp",
+    engineNamespace: "help"
+}
+
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 app("CloudHelp", "[list|new|edit|show]", "/help/workflows", [{
     path: "/",
     component: appList,
-    props: {
-        cloudEngine: "CloudHelp",
-        engineNamespace: "help"
-    }
+    props: props
 },{
     path: "/new",
-    component: appNew
+    component: appNew,
+    props: props
 },{
     path: "/:id",
-    component: appShow
+    component: appShow,
+    props: props
 },{
     path: "/:id/edit",
-    component: appEdit
+    component: appEdit,
+    props: props
 }])

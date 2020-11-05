@@ -25,28 +25,40 @@ import componentChart from 'LesliCoreVue/cloud_objects/workflows/components/char
 import componentAssociation from 'LesliCoreVue/cloud_objects/workflows/components/association.vue'
 import componentAction from 'LesliCoreVue/cloud_objects/workflows/components/action.vue'
 export default {
+    props: {
+        cloudEngine: {
+            type: String,
+            required: true
+        },
+
+        engineNamespace: {
+            type: String,
+            required: true
+        }
+    },
+
     components: {
         'component-chart': componentChart,
         'component-association': componentAssociation,
         'component-action': componentAction
     },
+
     data() {
         return {
-            main_route: '/crm/workflows',
+            main_route: `/${this.engineNamespace}/workflows`,
             translations: {
-                shared: I18n.t('deutscheleibrenten.shared'),
-                main: I18n.t('deutscheleibrenten.workflows')
+                main: I18n.t(`${this.engineNamespace}.workflows`),
+                shared: I18n.t(`${this.engineNamespace}.shared`),
+                core: I18n.t('core.shared'),
+                workflows: I18n.t('core.workflows')
             },
             workflow: null,
             workflow_id: null,
             active_tab: 0,
             selected_workflow_status: {},
-            cloud_engine: 'crm'
         }
     },
     mounted() {
-        this.setMainRoute()
-        this.setTranslations()
         this.setWorkflowId()
     },
     methods: {
@@ -57,22 +69,7 @@ export default {
                 this.getWorkflow()
             }
         },
-        setMainRoute(){
-            if(this.$route.query.module){
-                this.cloud_engine = this.$route.query.module
-                this.main_route = `/${this.$route.query.module}/workflows`
-            }
-        },
-        setTranslations(){
-            let cloud_engine_translations_path = this.getCloudEngineTranslationsPath()
-            this.$set(this.translations, 'workflows', I18n.t(`${cloud_engine_translations_path}.workflows`))
-        },
-        getCloudEngineTranslationsPath(){
-            if(this.cloud_engine == 'crm'){
-                return 'deutscheleibrenten'
-            }
-            return this.cloud_engine
-        },
+
         getWorkflow() {
             let url = `${this.main_route}/${this.workflow_id}.json`
             this.http.get(url).then(result => {
@@ -85,12 +82,15 @@ export default {
                 console.log(error)
             })
         },
+
         publishShowWorkflowAssociation(){
             this.bus.publish('show:/module/workflows/association')
         },
+
         publishShowWorkflowActions(){
             this.bus.publish('show:/module/workflows/action')
         },
+
         patchWorkflowDefault() {
             let url = `${this.main_route}/${this.workflow_id}`
             let data = {
@@ -101,7 +101,7 @@ export default {
             this.http.patch(url, data).then(result => {
                 if(result.successful){
                     this.workflow.default = true
-                    this.alert(this.translations.main.notification_workflow_set_as_default, 'success')
+                    this.alert(this.translations.workflows.messages_success_workflow_set_as_default, 'success')
                 } else {
                     this.alert(result.error.message,'danger')
                 }
@@ -109,11 +109,12 @@ export default {
                 console.log(error)
             })
         },
+
         deleteWorkflow(){
             let url = `${this.main_route}/${this.workflow_id}`
             this.http.delete(url).then(result => {
                 if(result.successful){
-                    this.alert(this.translations.main.notification_workflow_deleted, 'success')
+                    this.alert(this.translations.workflows.messages_info_workflow_deleted, 'success')
                     this.$router.push('/')
                 }else{
                     this.alert(result.error.message,'danger')
@@ -122,45 +123,52 @@ export default {
                 console.log(error)
             })
         },
+
         confirmDeletion() {
             this.$buefy.dialog.confirm({
-                title: this.translations.main.conformation_workflow_delete_title,
-                message: this.translations.main.confirmation_workflow_delete_description,
-                confirmText: this.translations.main.confirmation_workflow_delete_btn_confirm,
-                cancelText: this.translations.shared.btn_cancel,
+                title: this.translations.workflows.messages_danger_delete_workflow_title,
+                message: this.translations.workflows.messages_danger_delete_workflow_description,
+                confirmText: this.translations.workflows.messages_danger_delete_workflow_accept,
+                cancelText: this.translations.shared.view_btn_cancel,
                 type: 'is-danger',
                 hasIcon: true,
                 onConfirm: () => this.deleteWorkflow()
             })
         },
+
         selectWorkflowStatus(status){
             this.selected_workflow_status = status
         },
+
         tooltipButtonInitial(status){
             if(status.status_type == 'initial'){
-                return this.translations.main.form_tooltip_initial
+                return this.translations.workflows.messages_info_tooltip_status_initial
             }
             return ''
         },
+
         tooltipButtonCompletedSuccessfully(status){
             if(status.status_type == 'completed_successfully'){
-                return this.translations.main.form_tooltip_successful
+                return this.translations.workflows.messages_info_tooltip_status_completed_successfully
             }
             return ''
         },
+
         tooltipButtonCompletedUnsuccessfully(status){
             if(status.status_type == 'completed_unsuccessfully'){
-                return this.translations.main.form_tooltip_unsuccessful
+                return this.translations.workflows.messages_info_tooltip_status_completed_unsuccessfully
             }
             return ''
         },
+
         tooltipButtonToBeDeleted(status){
             if(status.status_type == 'to_be_deleted'){
-                return this.translations.main.form_tooltip_to_be_deleted
+                return this.translations.workflows.messages_info_tooltip_status_to_be_deleted
             }
             return ''
         }
     },
+
     computed: {
         selectedStatusTransitions(){
             let next_statuses = []
@@ -176,6 +184,7 @@ export default {
             }
             return next_statuses
         },
+
         orderedWorkflowStatuses(){
             if(! this.workflow.statuses){
                 return []
@@ -195,7 +204,7 @@ export default {
                 <div class="navbar-start">
                     <div class="navbar-item">
                         <h4 class="is-size-3">
-                            {{translations.main.list_title}}
+                            {{translations.workflows.view_title_main}}
                         </h4>
                     </div>
                 </div>
@@ -206,47 +215,47 @@ export default {
                 <h2 class="card-header-title">
                     {{ workflow.name }} &nbsp;
                     <span v-if="workflow.default" class="has-text-info">
-                        ({{translations.main.field_default}})
+                        ({{translations.workflows.column_default}})
                     </span>
                 </h2>
                 <div class="card-header-icon">
                     <span v-if="workflow.default" class="has-text-gray">
                         <i class="fas fa-check-circle"></i>
-                        {{translations.main.btn_set_as_default}}
+                        {{translations.workflows.view_btn_set_as_default}}
                     </span>
                     <a v-else href="javascript:void(0)" @click="patchWorkflowDefault">
                         <i class="fas fa-check-circle"></i>
-                        {{translations.main.btn_set_as_default}}
+                        {{translations.workflows.view_btn_set_as_default}}
                     </a>
                     <a role="button" @click="publishShowWorkflowActions">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-paperclip"></i>
-                        {{translations.main.btn_workflow_actions}}
+                        {{translations.workflows.view_btn_workflow_actions}}
                     </a>
                     <a role="button" @click="publishShowWorkflowAssociation">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-globe"></i>
-                        {{translations.main.btn_workflow_associations}}
+                        {{translations.workflows.view_btn_workflow_associations}}
                     </a>
-                    <router-link :to="`/${workflow_id}/edit?module=${cloud_engine}`">
+                    <router-link :to="`/${workflow_id}/edit`">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-edit"></i>
-                        {{translations.shared.btn_edit}}
+                        {{translations.core.view_btn_edit}}
                     </router-link>
-                    <router-link :to="`/?module=${cloud_engine}`">
+                    <router-link to="/">
                         &nbsp;&nbsp;&nbsp;
                         <i class="fas fa-undo"></i>
-                        {{translations.shared.btn_return}}
+                        {{translations.core.view_btn_return}}
                     </router-link>
                 </div>
             </div>
             <div class="card-content">
                 <b-tabs v-model="active_tab">
-                    <b-tab-item :label="translations.main.show_tab_list_view">
+                    <b-tab-item :label="translations.workflows.view_tab_title_edition_mode">
                         <div class="columns">
                             <div class="column is-6">
                                 <h5 class="title is-5">
-                                    {{translations.main.show_statuses_list_title}}
+                                    {{translations.workflows.view_title_statuses_list}}
                                 </h5>
                                 <div class="menu-list workflow-statuses-list is-bg-dark is-hoverable">
                                     <a 
@@ -256,8 +265,8 @@ export default {
                                         @click="selectWorkflowStatus(status)"
                                         :class="{'is-active':selected_workflow_status.id == status.id}"
                                     >
-                                        {{object_utils.translateEnum(translations.workflows, 'status', status.name)}} - 
-                                        <b-tooltip  :label="translations.main.form_tooltip_status_step" type="is-light" position="is-top">
+                                        {{object_utils.translateEnum(translations.core, 'column_enum_status', status.name)}} - 
+                                        <b-tooltip  :label="translations.workflows.messages_info_tooltip_status_step" type="is-light" position="is-top">
                                             {{status.number}}
                                         </b-tooltip>
                                         <span class="is-pulled-right">
@@ -277,7 +286,7 @@ export default {
                                                     </b-icon>
                                                 </b-button>
                                             </b-tooltip>
-                                            <b-tooltip position="is-top" :label="tooltipButtonCompletedUnsuccessfully(status)" type="is-danger">
+                                            <b-tooltip position="is-top" :label="tooltipButtonCompletedUnsuccessfully(status)" type="is-warning">
                                                 <b-button
                                                     size="is-small" type="is-warning"
                                                     :outlined="status.status_type != 'completed_unsuccessfully'"
@@ -287,7 +296,7 @@ export default {
                                                     </b-icon>
                                                 </b-button>
                                             </b-tooltip>
-                                            <b-tooltip position="is-top" :label="tooltipButtonToBeDeleted(status)" type="is-warning">
+                                            <b-tooltip position="is-top" :label="tooltipButtonToBeDeleted(status)" type="is-danger">
                                                 <b-button
                                                     size="is-small" type="is-danger"
                                                     :outlined="status.status_type != 'to_be_deleted'"
@@ -303,11 +312,11 @@ export default {
                             </div>
                             <div class="column is-6">
                                 <h5 class="title is-5">
-                                    {{translations.main.show_transition_statuses_list_title}}
+                                    {{translations.workflows.view_title_transitions_list}}
                                 </h5>
                                 <div class="menu-list workflow-statuses-list">
                                     <a v-for="(workflow_status, key) in selectedStatusTransitions" :key="key" class="list-item">
-                                        {{object_utils.translateEnum(translations.workflows, 'status', workflow_status.name)}}
+                                        {{object_utils.translateEnum(translations.core, 'column_enum_status', workflow_status.name)}}
                                         <span class="is-pulled-right">
                                             <b-button size="is-small" type="is-primary" :outlined="workflow_status.status_type != 'initial'" disabled>
                                                 <b-icon size="is-small" icon="play-circle">
@@ -343,12 +352,12 @@ export default {
                             </div>
                         </div>
                     </b-tab-item>
-                    <b-tab-item  :label="translations.main.form_tab_chart_view">
+                    <b-tab-item  :label="translations.workflows.view_tab_title_graphic_mode">
                         <component-chart
                             v-if="active_tab == 1"
                             class="has-text-centered"
-                            :translations-path="`${getCloudEngineTranslationsPath()}.workflows`" 
-                            :cloud-module="`${cloud_engine}/workflow`"
+                            translations-path="core.workflows" 
+                            :cloud-module="`${engineNamespace}/workflow`"
                             :workflow="workflow"
                         >
                         </component-chart>
@@ -358,7 +367,7 @@ export default {
                     <div class="column">
                         <small>
                             <span class="has-text-weight-bold">
-                                {{translations.shared.text_created_at}}:
+                                {{translations.core.column_created_at}}:
                             </span>
                             {{ workflow.created_at }}
                         </small>
@@ -371,12 +380,12 @@ export default {
                                     position="is-left"
                                     multilined
                                     :active="workflow.deletion_protection"
-                                    :label="translations.shared.notification_workflow_deletion_protection"
+                                    :label="translations.workflows.messages_warning_tooltip_workflow_protected_from_deletion"
                                 >
                                     <b-button type="is-danger" outlined @click="confirmDeletion()" :disabled="workflow.deletion_protection">
                                         <b-icon size="is-small" icon="trash-alt" />
                                         &nbsp;
-                                        {{translations.shared.text_delete}}
+                                        {{translations.core.view_btn_delete}}
                                     </b-button>
                                 </b-tooltip>
                             </div>
@@ -385,7 +394,18 @@ export default {
                 </div>
             </div>
         </div>
-        <component-association :cloud-engine="cloud_engine" :workflow-id="workflow_id" translations-path="deutscheleibrenten.workflow/associations" />
-        <component-action :cloud-engine="cloud_engine" :workflow-id="workflow_id" translations-path="deutscheleibrenten.workflow/actions" statuses-translations-path="deutscheleibrenten.workflows" />
+        <component-association
+            :engine-namespace="engineNamespace"
+            :workflow-id="workflow_id"
+            :translations-path="`${cloudEngine.replace('Cloud', '').toLowerCase()}.workflow/associations`"
+        >
+        </component-association>
+        <component-action
+            :cloud-engine="engineNamespace"
+            :workflow-id="workflow_id"
+            :translations-path="`${cloudEngine.replace('Cloud', '').toLowerCase()}.workflow/actions`"
+            statuses-translations-path="core.shared"
+        >
+        </component-action>
     </section>
 </template>
