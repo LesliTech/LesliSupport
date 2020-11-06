@@ -23,10 +23,10 @@ import app from 'LesliCoreVue/app'
 
 // · Import common apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList  from './apps/list.vue'
-import appEdit  from './apps/edit.vue'
-import appShow  from './apps/show.vue'
-import appNew   from './apps/new.vue'
+import appList  from 'LesliVue/cloud_objects/workflows/apps/list.vue'
+import appEdit  from 'LesliVue/cloud_objects/workflows/apps/edit.vue'
+import appShow  from 'LesliVue/cloud_objects/workflows/apps/show.vue'
+import appNew   from 'LesliVue/cloud_objects/workflows/apps/new.vue'
 
 
 const props = {
