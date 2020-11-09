@@ -144,7 +144,7 @@ export default {
                 </div>
             </template>
         </component-title>
-        <component-form-status :selected-status="new_ticket_status" />
+        <component-form-status :selected-status="new_ticket_status"></component-form-status>
         <b-tabs vertical>
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
                 <component-form v-if="data.ticket" view-type="edit"></component-form>

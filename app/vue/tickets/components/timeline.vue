@@ -42,9 +42,9 @@ export default {
     mounted(){
         if (this.$route.params.id) {
             this.ticket_id = this.$route.params.id
-            this.getTicketTimeline()
+            this.getTicketTimelines()
         }
-        this.getTicketTimelineOptions()
+        this.getTicketTimelinesOptions()
         this.setSubscriptions()
     },
 
@@ -52,22 +52,23 @@ export default {
 
         setSubscriptions(){
             this.bus.subscribe('patch:/help/ticket/assignment', ()=>{
-                this.getTicketTimeline()
+                this.getTicketTimelines()
             })
             this.bus.subscribe('post:/help/ticket/assignment', ()=>{
-                this.getTicketTimeline()
+                this.getTicketTimelines()
             })
             this.bus.subscribe('patch:/help/ticket/deadline', ()=>{
-                this.getTicketTimeline()
+                this.getTicketTimelines()
             })
         },
 
-        getTicketTimeline(){
+        getTicketTimelines(){
             this.loading = true;
             this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
                 this.loading = false;
                 if (result.successful) {
                     this.ticket_timelines = result.data
+                    this.data.timelines = this.ticket_timelines
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -76,7 +77,7 @@ export default {
             })
         },
 
-        getTicketTimelineOptions(){
+        getTicketTimelinesOptions(){
             this.http.get(`/help/tickets/${this.ticket_id}/timelines/options`).then(result => {
                 if (result.successful) {
                     result.data.actions = [{
@@ -153,7 +154,7 @@ export default {
                     </b-field>
                 </div>
                 <div class="column is-5 has-text-right">
-                    <b-button @click="getTicketTimeline" :disabled="loading">
+                    <b-button @click="getTicketTimelines" :disabled="loading">
                         <i :class="['fas', 'fa-sync', {'fa-spin': loading}]"></i>
                         {{translations.core.view_text_btn_reload}}
                     </b-button>
@@ -161,7 +162,7 @@ export default {
             </div>
             <div v-if="!loading && ticket_timelines.length > 0" class="timeline">
                 <div class="columns is-multiline">
-                    <div v-for="(timeline) in filteredTimelines" :key="timeline.id" class="column is-12">
+                    <div v-for="(timeline, index) in filteredTimelines" :key="index" class="column is-12">
                         <span>
                             <span
                                 class="has-text-weight-bold"
