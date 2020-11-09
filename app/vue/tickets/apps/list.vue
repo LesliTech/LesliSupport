@@ -36,6 +36,7 @@ export default {
     data(){
         return {
             main_route: '/help/tickets',
+            filters_route: '/help/tickets/options?filters[include]=statuses',
             translations: {
                 main: I18n.t('help.tickets'),
                 core: I18n.t('core.shared')
@@ -49,9 +50,15 @@ export default {
                 range_after: 3
             },
             filters: {
+                search_type: 'all',
                 query: '',
-                per_page: 15
+                per_page: 15,
+                statuses: []
             },
+            ticket_filters: {
+                statuses: []
+            },
+            filtered_statuses: [],
             filters_ready: false,
             sorting: {
                 field: 'deadline',
@@ -65,6 +72,7 @@ export default {
     // @description Executes the necessary functions needed to initialize this component
     mounted() {
         this.setSessionStorageFilters()
+        this.getTicketsFilters()
        this.getTickets()
     },
 
@@ -106,6 +114,8 @@ export default {
 
             let data = {
                 filters: {
+                    statuses: this.filters.statuses,
+                    search_type: this.filters.search_type,
                     query: this.filters.query
                 },
                 order: this.sorting.order,
@@ -173,6 +183,32 @@ export default {
                 this.sorting.order = 'desc'
             }
             this.getTickets()
+        },
+
+        getFilteredStatuses(text){
+            text = text.toLowerCase()
+            this.filtered_statuses = this.ticket_filters.statuses.filter((status) => {
+                return status.text.toLowerCase().includes(text)
+            })
+        },
+
+        getTicketsFilters(){
+            this.http.get(this.filters_route).then(result => {
+                if (result.successful) {
+                    this.ticket_filters = result.data
+                    this.getFilteredStatuses('')
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        extractInitials(name){
+            return name.split(" ").map((word)=>{
+                return word[0].toUpperCase()
+            }).join("")
         }
     },
 
@@ -213,6 +249,29 @@ export default {
             @search="searchTickets"
             :initial-value="filters.query"
         >
+            <div class="control is-expanded">
+                <b-taginput
+                    name="tickets-filters-statuses"
+                    autocomplete
+                    :open-on-focus="true"
+                    field="text"
+                    v-model="filters.statuses"
+                    :data="filtered_statuses"
+                    :placeholder="translations.main.view_placeholder_status_filter"
+                    @typing="getFilteredStatuses"
+                    @input="getTickets"
+                />
+            </div>
+            <div class="control">
+                <div class="select">
+                    <select v-model="filters.search_type" @change="getTickets" name="tickets-filters-search-type">
+                        <option value="all">{{translations.main.view_text_filter_all_tickets}}</option>
+                        <option value="active">{{translations.main.view_text_filter_active_tickets}}</option>
+                        <option value="own">{{translations.main.view_text_filter_own_tickets}}</option>
+                        <option value="inactive">{{translations.main.view_text_filter_inactive_tickets}}</option>
+                    </select>
+                </div>
+            </div>
             <div class="control">
                 <div class="select">
                     <select v-model="filters.per_page">
@@ -273,6 +332,17 @@ export default {
                             {{props.row.deadline}}
                         </b-table-column>
 
+                        <b-table-column field="status_name" :label="translations.main.column_cloud_help_workflow_statuses_id" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="sorting.field == 'status_name'">
+                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            {{object_utils.translateEnum(translations.core, 'column_enum_status', props.row.status_name)}}
+                        </b-table-column>
+
                         <b-table-column field="type" :label="translations.main.column_cloud_help_catalog_ticket_types_id" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
@@ -306,16 +376,14 @@ export default {
                             {{props.row.priority}}
                         </b-table-column>
 
-                        <b-table-column field="user_main" :label="translations.main.column_user_main_id" sortable>
-                            <template slot="header" slot-scope="{ column }">
-                                {{ column.label }}
-                                <span v-if="sorting.field == 'user_main'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
-                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                        <b-table-column field="assignables" :label="translations.main.column_user_main_id">
+                            <span v-if="props.row.assignables && props.row.assignables.length > 0">
+                                <span v-for="(assignable, index) in props.row.assignables" :key="index">
+                                    <b-tooltip type="is-white" :label="assignable">
+                                        <b-tag>{{extractInitials(assignable)}}</b-tag>
+                                        &nbsp;
+                                    </b-tooltip>
                                 </span>
-                            </template>
-                            <span v-if="props.row.user_main && props.row.user_main.trim().length > 0">
-                                {{props.row.user_main}}
                             </span>
                             <span v-else>
                                 --
