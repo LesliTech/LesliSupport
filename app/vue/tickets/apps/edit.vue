@@ -86,6 +86,7 @@ export default {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
                     this.ticket = this.parseBackendData(result.data)
+                    this.data.ticket = this.ticket
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -146,7 +147,7 @@ export default {
         <component-form-status :selected-status="new_ticket_status" />
         <b-tabs vertical>
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                <component-form :ticket-data="ticket" view-type="edit"></component-form>
+                <component-form v-if="data.ticket" view-type="edit"></component-form>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_discussions">

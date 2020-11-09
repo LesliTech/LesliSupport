@@ -45,7 +45,6 @@ export default {
                 assignments: false,
                 options: false
             },
-            lists_synched: false,
             loaded: {
                 assignments: false,
                 assignment_options: false
@@ -60,16 +59,21 @@ export default {
             assignment_options: {
                 users: []
             },
+            ticket: {},
             assignments: []
         }
     },
 
     mounted(){
+        this.setTicket()
         this.getUsers()
-        this.getAssignments()
     },
 
     methods: {
+        setTicket(){
+            this.ticket = this.data.ticket
+        },
+
         getUsers(){
             this.loading.options = true
 
@@ -77,56 +81,15 @@ export default {
                 this.loading.options = false
                 if (result.successful) {
                     this.$set(this.assignment_options, 'users', result.data)
+                    this.data.assignment_options = this.assignment_options
                     this.loaded.assignment_options = true
-                    this.syncLists()
+                    this.markAssignables()
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
-        },
-
-        getAssignments() {
-            let url = `${this.main_route}/${this.ticketId}/assignments.json`
-            this.loading.assignments = true
-
-            this.http.get(url).then(result => {
-                this.loading.assignments = false
-                if (result.successful) {
-                    this.assignments = result.data
-                    this.loaded.assignments = true
-                    this.syncLists()
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
-        },
-
-        syncLists(){
-            if(! this.loaded.assignment_options || ! this.loaded.assignments){
-                return
-            }
-
-            if(this.lists_synched){
-                return
-            }
-
-            let users = this.assignment_options.users
-            this.assignments.forEach((assignment)=>{
-                
-                let user = users.find((user)=>{
-                    return user.id == assignment.users_id
-                })
-
-                this.$set(user, 'assignment_id', assignment.id)
-                this.$set(user, 'checked', true)
-            })
-
-            this.lists_synched = true
-
         },
 
         clearSearch(ticket){
@@ -159,11 +122,9 @@ export default {
                 this.$set(user, 'submitting', false)
                 if (result.successful) {
                     this.$set(user, 'assignment_id', result.data.id)
-                    this.assignments.push({
+                    this.ticket.assignment_attributes.push({
                         id: result.data.id,
-                        name: user.name || user.email,
-                        email: user.email,
-                        role: user.role_name,
+                        assignable_name: user.name || user.email,
                         users_id: user.id
                     })
                     this.alert(this.translations.main.messages_info_assignment_created, 'success')
@@ -190,7 +151,7 @@ export default {
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_assignment_deleted, 'success')
                     
-                    this.assignments = this.assignments.filter((assignment)=>{
+                    this.ticket.assignment_attributes = this.ticket.assignment_attributes.filter((assignment)=>{
                         return assignment.id != assignment_id
                     })
 
@@ -210,6 +171,17 @@ export default {
         clearOptions(){
             this.assignment_options.users.forEach((user)=>{
                 this.$set(user, 'checked', false)
+            })
+        },
+
+        markAssignables(){
+            let users = this.assignment_options.users
+            this.ticket.assignment_attributes.forEach((assignment)=>{
+                let user = users.find((user)=>{
+                    return user.id == assignment.users_id
+                })
+                this.$set(user, 'assignment_id', assignment.id)
+                this.$set(user, 'checked', true)
             })
         }
     },
@@ -245,10 +217,8 @@ export default {
 
     watch: {
         ticketId(){
-            this.lists_synched = false
             this.loaded.assignments = false
             this.clearOptions()
-            this.getAssignments()
         },
 
         ticketEditable(){

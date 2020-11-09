@@ -42,4 +42,7 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
 },{
     path: "/:id/edit",
     component: appEdit
-}])
+}],{
+    ticket: {},
+    assignment_options: {},
+})

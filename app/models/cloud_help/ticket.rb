@@ -471,6 +471,15 @@ Building a better future, one line of code at a time.
             )
         end
 
+        def self.log_activity_destroy_assignment(current_user, ticket, assignment)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_destroy_assignment",
+                description: assignment.user.full_name,
+                value_to: assignment.user.full_name
+            )
+        end
+
         def assignments_list
             assignments.where(assignment_type: "user").map do |assignment|
                 user = assignment.user

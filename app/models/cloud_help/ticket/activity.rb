@@ -38,7 +38,8 @@ Building a better future, one line of code at a time.
             action_email_sent:              "action_email_sent",
             action_create_file:             "action_create_file",
             action_destroy_file:            "action_destroy_file",
-            action_create_assignment:       "action_create_assignment"
+            action_create_assignment:       "action_create_assignment",
+            action_destroy_assignment:      "action_destroy_assignment"
         }
     end
 end

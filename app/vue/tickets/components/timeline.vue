@@ -154,9 +154,8 @@ export default {
                 </div>
                 <div class="column is-5 has-text-right">
                     <b-button @click="getTicketTimeline" :disabled="loading">
-                        &nbsp;
                         <i :class="['fas', 'fa-sync', {'fa-spin': loading}]"></i>
-                        &nbsp;
+                        {{translations.core.view_text_btn_reload}}
                     </b-button>
                 </div>
             </div>
@@ -195,5 +194,8 @@ export default {
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #AAAAAA #ffffff;
+}
+hr {
+    margin: 0.5rem 0;
 }
 </style>
