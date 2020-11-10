@@ -90,7 +90,7 @@ Building a better future, one line of code at a time.
 =begin
 @return [Hash] Detailed information about the ticket. Including, *priority*,
     *full* *category* *path*, *type*, *creation* *user*, *assignment* *type*
-    and *workflow* *state*
+    and *workflow* *status*
 @description Creates a query that selects all ticket information from several tables
     and returns it in a hash
 @example
@@ -106,12 +106,12 @@ Building a better future, one line of code at a time.
     #        tags:"tags",
     #        priority:"Medium",
     #        type:"Change Request",
-    #        state:"created",
+    #        status:"created",
     #        cloud_help_catalog_ticket_priorities_id:2,
     #        cloud_help_catalog_ticket_types_id:2,
     #        cloud_help_ticket_workflows_id:4,
     #        cloud_help_catalog_ticket_categories_id:1,
-    #        cloud_help_ticket_states_id:1,
+    #        cloud_help_ticket_statuses_id:1,
     #        deadline:null,
     #        priority_weight:100,
     #        category:"Company System"
@@ -156,7 +156,7 @@ Building a better future, one line of code at a time.
 @param help_account [Account] The account associated to *current_user*
 @return [Hash] Detailed information about all the tickets. Including, *priority*,
     *full* *category* *path*, *type*, *creation* *user*, *assignment* *type*
-    and *workflow* *state*
+    and *workflow* *status*
 @description Creates a query that selects all the tickets information from several tables
     and returns it in a hash
 @example
@@ -166,17 +166,17 @@ Building a better future, one line of code at a time.
     #    {
     #        "id":1,                     "created_at":"2020-01-08T16:23:10.976Z",
     #        "priority":"Low",           "type":"Issue",
-    #        "state":"created",          "category":"Company System",
+    #        "status":"created",          "category":"Company System",
     #        "assignment_type":null,    "subject":"Testing Ticket"
     #    },{
     #        "id":2,                     "created_at":"2020-01-08T16:43:30.470Z",
     #        "priority":"Low",           "type":"Issue",
-    #        "state":"closed",           "category":"Company System",
+    #        "status":"closed",           "category":"Company System",
     #        "assignment_type":"user",  "subject":"Testin"
     #    },{
     #        "id":3,                     "created_at":"2020-01-09T18:08:27.622Z",
     #        "priority":"Low",           "type":"Change Request",
-    #        "state":"In Progress",      "category":"Company System, Books Module",
+    #        "status":"In Progress",      "category":"Company System, Books Module",
     #        "assignment_type":null,    "subject":"Testing"
     #    }
     #]
@@ -185,6 +185,16 @@ Building a better future, one line of code at a time.
             # Parsing filters
             filters = query[:filters]
             filters_query = []
+
+            # We filter by search_type, available search_types are 'own' and 'active'
+            if filters["search_type"]
+
+
+                
+                filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR CHTA.users_id = #{current_user.id})") if filters["search_type"].eql? "own"
+                filters_query.push("(CHWS.status_type != 'completed_unsuccessfully' AND CHWS.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
+                filters_query.push("(CHWS.status_type = 'completed_unsuccessfully' OR CHWS.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
+            end
             
             # We filter by a text string written by the user
             if filters["query"] && !filters["query"].empty?
@@ -203,6 +213,14 @@ Building a better future, one line of code at a time.
                 end
             end
 
+            # We filter by statuses
+            if filters["statuses"] && !filters["statuses"].empty?
+                statuses_query = filters["statuses"].map do |status|
+                    "CHWS.id = '#{status["id"]}'"
+                end
+                filters_query.push("(#{statuses_query.join(' or ')})")
+            end
+
             # Executing the query
             tickets = current_user.account.help.tickets.joins(
                 "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
@@ -215,22 +233,19 @@ Building a better future, one line of code at a time.
             ).joins(
                 "inner join cloud_help_workflow_statuses CHWS on cloud_help_tickets.cloud_help_workflow_statuses_id = CHWS.id"
             ).joins(
+                "left join cloud_help_ticket_assignments CHTA on CHTA.cloud_help_tickets_id = cloud_help_tickets.id AND CHTA.users_id = #{current_user.id}"
+            ).joins(
                 "left join users UC on UC.id = cloud_help_tickets.users_id"
             ).joins(
                 "left join user_details UCD on UCD.users_id = UC.id"
-            ).joins(
-                "left join users UM on UM.id = cloud_help_tickets.user_main_id"
-            ).joins(
-                "left join user_details UMD on UMD.users_id = UM.id"
             ).select(
                 "id",                                                   "CHCTP.name as priority",
-                "CHCTT.name as type",                                   "CHWS.name as state",
+                "CHCTT.name as type",                                   "CHWS.name as status_name",
                 "CHCTC.name as category",                               "user_main_id",
                 "subject",                                              "CHCTC.id as cloud_help_catalog_ticket_categories_id",
                 "CHCTP.id as cloud_help_catalog_ticket_priorities_id",  "CHCTT.id as cloud_help_catalog_ticket_types_id",
                 "created_at",                                           "CHCTP.weight as priority_weight",
                 "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
-                "UM.id as user_main_id",                                "CONCAT(UMD.first_name, ' ', UMD.last_name) as user_main",
                 "deadline",                                             "users_id"
             )
 
@@ -264,7 +279,11 @@ Building a better future, one line of code at a time.
                 ticket_attributes["category"] = Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
                 
                 if ticket.assignments.length > 0
-                    ticket_attributes["user_main"] = ticket.assignments.order(id: :asc).first.user.full_name
+                    users = []
+                    ticket.assignments.order(id: :asc).each do |assigment|
+                        users.push(assigment.user.full_name)
+                    end
+                    ticket_attributes["assignables"] = users
                 end
                 ticket_attributes
             end
@@ -277,11 +296,38 @@ Building a better future, one line of code at a time.
             categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
             priorities = current_user.account.help.ticket_priorities.order(weight: :asc).select(:id, :name, :weight)
 
-            {
+            ticket_options = {
                 types: types,
                 categories: categories,
                 priorities: priorities
             }
+
+            if query[:filters][:include] && query[:filters][:include] == "statuses"
+                statuses = Workflow::Status.joins(
+                    :workflow
+                ).joins(
+                    "inner join cloud_help_workflow_associations CHWA on CHWA.cloud_help_workflows_id = cloud_help_workflows.id AND CHWA.deleted_at is null"
+                ).where(
+                    "CHWA.workflow_for = ?", "ticket"
+                ).select(
+                    "cloud_help_workflow_statuses.id",
+                    "cloud_help_workflows.name as workflow_name",
+                    "cloud_help_workflow_statuses.name as status_name",
+                ).order(
+                    "cloud_help_workflows.id desc",
+                    "cloud_help_workflow_statuses.number asc"
+                ).map do |status|
+                    {
+                        id: status.id,
+                        value: status.id,
+                        text: "#{I18n.t("core.shared.column_enum_status_#{status.status_name}", default: status.status_name)} - (#{status.workflow_name})"
+                    }
+                end
+                
+                ticket_options["statuses"] = statuses
+            end
+
+            ticket_options
         end
 
         #######################################################################################
@@ -425,6 +471,15 @@ Building a better future, one line of code at a time.
             )
         end
 
+        def self.log_activity_destroy_assignment(current_user, ticket, assignment)
+            ticket.activities.create(
+                user_creator: current_user,
+                category: "action_destroy_assignment",
+                description: assignment.user.full_name,
+                value_to: assignment.user.full_name
+            )
+        end
+
         def assignments_list
             assignments.where(assignment_type: "user").map do |assignment|
                 user = assignment.user
@@ -548,10 +603,10 @@ Building a better future, one line of code at a time.
 
 =begin
 @return [void]
-@description If this ticket changes *state*, 
+@description If this ticket changes *status*, 
     a new entry is recorded to the timeline and a notification is sent to
     the subscribers. Both the timeline entry and the notification change
-    if the ticket changed to a *closed* state or not
+    if the ticket changed to a *closed* status or not
 @example
     ticket = CloudHelp::Ticket.first
     ticket.update({ detail_attributes: { cloud_help_ticket_workflow_details_id: 4 } })
@@ -609,7 +664,7 @@ Building a better future, one line of code at a time.
 =begin
 @return [void]
 @description If the category or the tipe of this *ticket* are changed,
-    a new workflow detail, associated to the *initial* *state*, is assigned.
+    a new workflow detail, associated to the *initial* *status*, is assigned.
     If this update fails, a rollback is ussued and a error message is added to
     this *ticket*'s *errors* attribute. If the update is successful, a notification is sent
     to all subscribers

@@ -38,6 +38,12 @@ export default {
             this.bus.publish('execute:/status-change', this.selectedStatus, ()=>{
                 this.cancelStatusChange()
             })
+
+            this.data.timelines.unshift({
+                action: 'status_changed',
+                description: this.selectedStatus.name,
+                created_at: this.date.toStringDatetime(new Date())
+            })
         },
     }
 }

@@ -34,9 +34,6 @@ export default {
     },
 
     props: {
-        ticketData: {
-            required: true
-        },
 
         viewType: {
             type: String,
@@ -52,7 +49,8 @@ export default {
             translations:{
                 main: I18n.t('help.tickets'),
                 core: I18n.t('core.shared'),
-                shared: I18n.t('help.shared')
+                shared: I18n.t('help.shared'),
+                assignments: I18n.t('help.ticket/assignments')
             },
             options: {
                 types: [],
@@ -72,18 +70,14 @@ export default {
         }
     },
     mounted() {
-        this.setTicketId()
-        this.copyTicketProp()
+        this.setTicket()
         this.setSubscriptions()
         this.getTicketOptions()
     },
     methods: {
-        setTicketId(){
+        setTicket(){
             this.ticket_id = this.$route.params.id
-        },
-
-        copyTicketProp(){
-            this.ticket = {... this.ticketData}
+            this.ticket = this.data.ticket
         },
         
         setSubscriptions(){
@@ -197,6 +191,30 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        deleteTicketAssignment(deleted_assignment){
+            let url = `${this.main_route}/${this.ticket_id}/assignments/${deleted_assignment.id}`
+
+            this.http.delete(url).then(result => {
+                if (result.successful) {
+                    this.alert(this.translations.assignments.messages_info_assignment_deleted, 'success')
+                    
+                    this.ticket.assignment_attributes = this.ticket.assignment_attributes.filter((assignment)=>{
+                        return deleted_assignment.id != assignment.id
+                    })
+
+                    let user = this.data.assignment_options.users.find((user)=>{
+                        return user.assignment_id == deleted_assignment.id
+                    })
+                    user.assignment_id = null
+                    user.checked = false
+                }else{
+                    this.alert(result.error.message,'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
         }
     }
 }
@@ -235,9 +253,15 @@ export default {
                             <div v-if="viewType != 'new'">
                                 <label class="label">{{translations.main.view_title_assigned_users}}</label>
                                 <div class="tags is-medium" v-if="ticket.assignment_attributes && ticket.assignment_attributes.length > 0">
-                                    <span class="tag is-info is-light" v-for="assignment in ticket.assignment_attributes" :key="assignment.id">
+                                    <b-tag
+                                        type="is-info"
+                                        v-for="assignment in ticket.assignment_attributes"
+                                        :key="assignment.id"
+                                        :closable="viewType == 'edit'"
+                                        @close="deleteTicketAssignment(assignment)"
+                                    >
                                         <span>{{assignment.assignable_name}}</span>
-                                    </span>
+                                    </b-tag>
                                 </div>
                                 <div class="tags" v-else>
                                     <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>

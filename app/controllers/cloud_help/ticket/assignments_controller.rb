@@ -103,6 +103,7 @@ Building a better future, one line of code at a time.
 
             if assignment.destroy
                 respond_with_successful
+                Ticket.log_activity_destroy_assignment(current_user, @ticket, assignment)
             else
                 respond_with_error(assignment.errors.full_messages.to_sentence)
             end
