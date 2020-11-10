@@ -45,5 +45,8 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
 }],{
     ticket: {},
     assignment_options: {},
-    timelines: []
+    reload: {
+        timelines: false,
+        activities: false
+    }
 })

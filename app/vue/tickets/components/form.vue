@@ -147,6 +147,8 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_updated, 'success')
+
+                    this.reloadTicketRecord()
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -209,12 +211,19 @@ export default {
                     })
                     user.assignment_id = null
                     user.checked = false
+                    
+                    this.reloadTicketRecord()
                 }else{
                     this.alert(result.error.message,'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        reloadTicketRecord(){
+            this.data.reload.timelines = true
+            this.data.reload.activities = true
         }
     }
 }

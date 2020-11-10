@@ -207,7 +207,11 @@ export default {
 
         extractInitials(name){
             return name.split(" ").map((word)=>{
-                return word[0].toUpperCase()
+                if(word){
+                    return word[0].toUpperCase()
+                }else{
+                    return ''
+                }
             }).join("")
         }
     },
