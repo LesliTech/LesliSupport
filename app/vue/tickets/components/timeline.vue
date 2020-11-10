@@ -128,6 +128,15 @@ export default {
                 return this.ticket_timelines
             }
         }
+    },
+
+    watch: {
+        'data.reload.timelines'(){
+            if(this.data.reload.timelines){
+                this.getTicketTimelines()
+                this.data.reload.timelines = false
+            }
+        }
     }
 }
 </script>

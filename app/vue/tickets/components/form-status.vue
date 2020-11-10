@@ -37,12 +37,14 @@ export default {
             
             this.bus.publish('execute:/status-change', this.selectedStatus, ()=>{
                 this.cancelStatusChange()
-            })
+                // Reloading timelines and activities when we change the status
+                this.data.reload.timelines = true
+                this.data.reload.activities = true
 
-            this.data.timelines.unshift({
-                action: 'status_changed',
-                description: this.selectedStatus.name,
-                created_at: this.date.toStringDatetime(new Date())
+                // Setting the new status in the ticket variable
+                this.data.ticket.status = this.selectedStatus.name
+                this.data.ticket.status_number = this.selectedStatus.number
+                this.data.ticket.status_type = this.selectedStatus.status_type
             })
         },
     }

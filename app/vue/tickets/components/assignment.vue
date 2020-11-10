@@ -128,6 +128,8 @@ export default {
                         users_id: user.id
                     })
                     this.alert(this.translations.main.messages_info_assignment_created, 'success')
+
+                    this.reloadTicketRecord()
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -160,6 +162,8 @@ export default {
                     })
                     user.assignment_id = null
                     user.checked = false
+                    
+                    this.reloadTicketRecord()
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -183,6 +187,11 @@ export default {
                 this.$set(user, 'assignment_id', assignment.id)
                 this.$set(user, 'checked', true)
             })
+        },
+
+        reloadTicketRecord(){
+            this.data.reload.activities = true
+            this.data.reload.timelines = true
         }
     },
 
