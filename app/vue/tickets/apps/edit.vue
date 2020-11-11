@@ -58,6 +58,7 @@ export default {
                 shared: I18n.t('help.shared'),
                 workflow_statuses: I18n.t('help.workflow/statuses')
             },
+            active_tab: 0,
             ticket_id: null,
             ticket: null,
             new_ticket_status: null
@@ -115,6 +116,24 @@ export default {
             return ticket
         }
 
+    },
+
+    computed: {
+        activeFilesTab(){
+            return this.active_tab == 2
+        },
+
+        activeDiscussionsTab(){
+            return this.active_tab == 1
+        },
+
+        activeTimelinesTab(){
+            return this.active_tab == 3
+        },
+
+        activeActivitiesTab(){
+            return this.active_tab == 4
+        }
     }
 }
 </script>
@@ -145,7 +164,7 @@ export default {
             </template>
         </component-title>
         <component-form-status :selected-status="new_ticket_status"></component-form-status>
-        <b-tabs vertical>
+        <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
                 <component-form v-if="data.ticket" view-type="edit"></component-form>
             </b-tab-item>
@@ -160,21 +179,27 @@ export default {
                         </div>
                     </div>
                     <div class="card-content">
-                        <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id"></component-discussion>
+                        <component-discussion cloud-module="help/ticket" :cloud-id="ticket_id" :active="activeDiscussionsTab"></component-discussion>
                     </div>
                 </div>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_files">
-                <component-file cloud-module="help/ticket" :cloud-id="ticket_id"></component-file>
+                <component-file
+                    translations-file-types-path="help.ticket/files"
+                    cloud-module="help/ticket"
+                    :cloud-id="ticket_id"
+                    :active="activeFilesTab"
+                >
+                </component-file>
             </b-tab-item>
 
             <b-tab-item :label="translations.main.view_btn_status_timeline">
-                <component-timeline></component-timeline>
+                <component-timeline :active="activeTimelinesTab"></component-timeline>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_activities">
-                <component-activities :ticket-id="ticket_id"></component-activities>
+                <component-activities :ticket-id="ticket_id" :active="activeActivitiesTab"></component-activities>
             </b-tab-item>
         </b-tabs>
     </section>

@@ -25,6 +25,11 @@ export default {
     props: {
         ticketId: {
             required: true
+        },
+
+        active: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -51,7 +56,7 @@ export default {
             </div>
         </div>
         <div class="card-content is-paddingless activities">
-            <component-activity cloud-module="help/ticket" :cloud-id="ticketId"></component-activity>
+            <component-activity cloud-module="help/ticket" :cloud-id="ticketId" :active="active"></component-activity>
         </div>
     </div>
 </template>

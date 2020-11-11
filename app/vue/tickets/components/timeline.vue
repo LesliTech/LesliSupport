@@ -20,10 +20,17 @@ For more information read the license file including with this software.
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
+    props: {
+        active: {
+            type: Boolean,
+            default: true
+        }
+    },
+
     data() {
         return {
             ticket_id: null,
-            ticket_timelines: [],
+            ticket_timelines: null,
             translations:{
                 main: I18n.t('help.ticket/timelines'),
                 core: I18n.t('core.shared'),
@@ -40,30 +47,27 @@ export default {
     },
 
     mounted(){
-        if (this.$route.params.id) {
-            this.ticket_id = this.$route.params.id
-            this.getTicketTimelines()
-        }
-        this.getTicketTimelinesOptions()
-        this.setSubscriptions()
+        this.setTicketId()
+        this.getBackendData()
     },
 
     methods: {
+        setTicketId(){
+            if (this.$route.params.id) {
+                this.ticket_id = this.$route.params.id
+            }
+        },
 
-        setSubscriptions(){
-            this.bus.subscribe('patch:/help/ticket/assignment', ()=>{
+        getBackendData(){
+            if(this.active){
                 this.getTicketTimelines()
-            })
-            this.bus.subscribe('post:/help/ticket/assignment', ()=>{
-                this.getTicketTimelines()
-            })
-            this.bus.subscribe('patch:/help/ticket/deadline', ()=>{
-                this.getTicketTimelines()
-            })
+                this.getTicketTimelinesOptions()
+            }
         },
 
         getTicketTimelines(){
-            this.loading = true;
+
+            this.loading = true
             this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
                 this.loading = false;
                 if (result.successful) {
@@ -133,8 +137,16 @@ export default {
     watch: {
         'data.reload.timelines'(){
             if(this.data.reload.timelines){
-                this.getTicketTimelines()
                 this.data.reload.timelines = false
+                if(this.ticket_timelines){
+                    this.getTicketTimelines()
+                }
+            }
+        },
+
+        active(){
+            if(! this.ticket_timelines){
+                this.getBackendData()
             }
         }
     }
@@ -169,7 +181,7 @@ export default {
                     </b-button>
                 </div>
             </div>
-            <div v-if="!loading && ticket_timelines.length > 0" class="timeline">
+            <div v-if="!loading && ticket_timelines && ticket_timelines.length > 0" class="timeline">
                 <div class="columns is-multiline">
                     <div v-for="(timeline, index) in filteredTimelines" :key="index" class="column is-12">
                         <span>
