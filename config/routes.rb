@@ -17,7 +17,8 @@ For more information read the license file including with this software.
 
 =end
 CloudHelp::Engine.routes.draw do
-    root to: "dashboards#show"
+  resources :dashboards
+    root to: "dashboard#show"
 
     resources :custom_validations do
         scope module: :custom_validation do
