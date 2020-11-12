@@ -35,7 +35,18 @@ export default {
             translations: {
                 main: I18n.t('help.tickets')
             },
-            ticket: {
+            ticket: null,
+        }
+    },
+
+    mounted(){
+        this.initializeTicket()
+    },
+
+    methods: {
+        initializeTicket(){
+            this.data.ticket = null
+            this.ticket = {
                 cloud_help_catalog_ticket_types_id: null,
                 cloud_help_catalog_ticket_categories_id: null,
                 cloud_help_catalog_ticket_sources_id: null,
@@ -47,16 +58,17 @@ export default {
                     tags: []
                 }
             }
+            this.$nextTick(()=>{
+                this.data.ticket = this.ticket
+            })
         }
     }
 }
 </script>
 <template>
     <section class="application-component">
-        <component-header 
-            :title="translations.main.view_title_main"
-        >
+        <component-header :title="translations.main.view_title_main" >
         </component-header>
-        <component-form :ticket-data="ticket" view-type="new"></component-form>
+        <component-form v-if="data.ticket" view-type="new"></component-form>
     </section>
 </template>

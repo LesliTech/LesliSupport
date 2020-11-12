@@ -1,28 +1,20 @@
 module CloudHelp
 =begin
+Copyright (c) 2020, all rights reserved.
 
-Lesli
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
 
-Copyright (c) 2020, Lesli Technologies, S. A.
-
-All the information provided by this website is protected by laws of Guatemala related 
-to industrial property, intellectual property, copyright and relative international laws. 
-Lesli Technologies, S. A. is the exclusive owner of all intellectual or industrial property
-rights of the code, texts, trade mark, design, pictures and any other information.
-Without the written permission of Lesli Technologies, S. A., any replication, modification,
+Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
+
 For more information read the license file including with this software.
 
-LesliCloud - Your Smart Business Assistant
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
 
-Powered by https://www.lesli.tech
-Building a better future, one line of code at a time.
-
-@author   Carlos Hermosilla
-@license  Propietary - all rights reserved.
-@version  0.1.0-alpha
-@description Model for ticket. Each has it's own *detail* containing it's information.
-    Tickets are the core *object* of the *CloudHelp* module
 =end
     class Ticket  < CloudObject::Base
         include ActiveModel::Dirty
@@ -391,15 +383,15 @@ Building a better future, one line of code at a time.
                     user_creator: current_user,
                     category: "action_update",
                     field_name: "user_main_id",
-                    value_from: ::User.find(old_attributes["user_main_id"]).full_name,
-                    value_to:   ::User.find(new_attributes["user_main_id"]).full_name
+                    value_from: ::User.with_deleted.find(old_attributes["user_main_id"]).full_name,
+                    value_to:   ::User.with_deleted.find(new_attributes["user_main_id"]).full_name
                 )
             end
 
             # workflow status is a spacial case because it's a foreign key
             if old_attributes["cloud_help_workflow_statuses_id"] != new_attributes["cloud_help_workflow_statuses_id"]
-                old_status = CloudHelp::Workflow::Status.find(old_attributes["cloud_help_workflow_statuses_id"]).name
-                new_status = CloudHelp::Workflow::Status.find(new_attributes["cloud_help_workflow_statuses_id"]).name
+                old_status = CloudHelp::Workflow::Status.with_deleted.find(old_attributes["cloud_help_workflow_statuses_id"]).name
+                new_status = CloudHelp::Workflow::Status.with_deleted.find(new_attributes["cloud_help_workflow_statuses_id"]).name
                 ticket.activities.create(
                     user_creator: current_user,
                     description: new_status,
@@ -413,8 +405,8 @@ Building a better future, one line of code at a time.
             # ticket type, category and priority are special cases because they are foreign keys
             ["TicketType", "TicketPriority", "TicketCategory"].each do |field|
                 if old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"] != new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
-                    old_value = "CloudHelp::Catalog::#{field}".constantize.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
-                    new_value = "CloudHelp::Catalog::#{field}".constantize.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    old_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    new_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
                     ticket.activities.create(
                         user_creator: current_user,
                         category: "action_update",
