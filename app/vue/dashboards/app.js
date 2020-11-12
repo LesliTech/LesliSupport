@@ -28,6 +28,10 @@ import appNew   from "LesliCoreVue/cloud_objects/dashboards/apps/new.vue"
 
 // · Import a list of all dashboard components
 import componentNewTickets from "./components/list-new-tickets.vue"
+import componentMyTickets from "./components/list-my-tickets.vue"
+import componentUnassignedTickets from "./components/list-unassigned-tickets.vue"
+import componentTicketsByType from "./components/chart-tickets-by-type.vue"
+import componentTicketsByCategory from "./components/chart-tickets-by-category.vue"
 
 app("CloudHelp", "[list|new|edit]", "/help/dashboards", [{
     path: "/",
@@ -51,6 +55,10 @@ app("CloudHelp", "[list|new|edit]", "/help/dashboards", [{
         engineNamespace: "help",
         renderComponents: {
             "component-new-tickets": componentNewTickets,
+            "component-my-tickets": componentMyTickets,
+            "component-unassigned-tickets": componentUnassignedTickets,
+            "component-tickets-by-type": componentTicketsByType,
+            "component-tickets-by-category": componentTicketsByCategory
         }
     }
 }])

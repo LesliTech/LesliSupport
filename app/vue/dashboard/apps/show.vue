@@ -20,12 +20,20 @@ For more information read the license file including with this software.
 // · Import components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import componentNewTickets from "../../dashboards/components/list-new-tickets.vue"
+import componentMyTickets from "../../dashboards/components/list-my-tickets.vue"
+import componentUnassignedTickets from "../../dashboards/components/list-unassigned-tickets.vue"
+import componentTicketsByType from "../../dashboards/components/chart-tickets-by-type.vue"
+import componentTicketsByCategory from "../../dashboards/components/chart-tickets-by-category.vue"
 
 
 // · component
 export default {
     components: {
-        "component-new-tickets": componentNewTickets
+        "component-new-tickets": componentNewTickets,
+        "component-my-tickets": componentMyTickets,
+        "component-unassigned-tickets": componentUnassignedTickets,
+        "component-tickets-by-type": componentTicketsByType,
+        "component-tickets-by-category": componentTicketsByCategory
     },
 
     data() {
@@ -72,7 +80,7 @@ export default {
 
         <div class="columns is-multiline" v-if="dashboard">
             <div v-for="component in dashboard.components" :key="component.id" :class="['column', `is-${component.layout}`]">
-                <component :is="`component-${component.component_id.replace('_','-')}`" :dashboard-id="dashboard.id" :component-id="component.id">
+                <component :is="`component-${component.component_id.replace(/\_/g,'-')}`" :dashboard-id="dashboard.id" :component-id="component.id">
                 </component>
             </div>
         </div>

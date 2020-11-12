@@ -383,15 +383,15 @@ For more information read the license file including with this software.
                     user_creator: current_user,
                     category: "action_update",
                     field_name: "user_main_id",
-                    value_from: ::User.find(old_attributes["user_main_id"]).full_name,
-                    value_to:   ::User.find(new_attributes["user_main_id"]).full_name
+                    value_from: ::User.with_deleted.find(old_attributes["user_main_id"]).full_name,
+                    value_to:   ::User.with_deleted.find(new_attributes["user_main_id"]).full_name
                 )
             end
 
             # workflow status is a spacial case because it's a foreign key
             if old_attributes["cloud_help_workflow_statuses_id"] != new_attributes["cloud_help_workflow_statuses_id"]
-                old_status = CloudHelp::Workflow::Status.find(old_attributes["cloud_help_workflow_statuses_id"]).name
-                new_status = CloudHelp::Workflow::Status.find(new_attributes["cloud_help_workflow_statuses_id"]).name
+                old_status = CloudHelp::Workflow::Status.with_deleted.find(old_attributes["cloud_help_workflow_statuses_id"]).name
+                new_status = CloudHelp::Workflow::Status.with_deleted.find(new_attributes["cloud_help_workflow_statuses_id"]).name
                 ticket.activities.create(
                     user_creator: current_user,
                     description: new_status,
@@ -405,8 +405,8 @@ For more information read the license file including with this software.
             # ticket type, category and priority are special cases because they are foreign keys
             ["TicketType", "TicketPriority", "TicketCategory"].each do |field|
                 if old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"] != new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
-                    old_value = "CloudHelp::Catalog::#{field}".constantize.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
-                    new_value = "CloudHelp::Catalog::#{field}".constantize.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    old_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    new_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
                     ticket.activities.create(
                         user_creator: current_user,
                         category: "action_update",

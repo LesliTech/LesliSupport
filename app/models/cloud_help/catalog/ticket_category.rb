@@ -24,7 +24,7 @@ Building a better future, one line of code at a time.
 @description Model for ticket categories
 
 =end
-    class Catalog::TicketCategory < ApplicationRecord
+    class Catalog::TicketCategory < ApplicationLesliRecord
         acts_as_tree
 
         belongs_to :account,    class_name: "CloudHelp::Account",   foreign_key: "cloud_help_accounts_id"

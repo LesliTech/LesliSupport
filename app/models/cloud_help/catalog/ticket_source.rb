@@ -1,5 +1,5 @@
 module CloudHelp
-    class Catalog::TicketSource < ApplicationRecord
+    class Catalog::TicketSource < ApplicationLesliRecord
   
         belongs_to :account,  class_name: "CloudHelp::Account",   foreign_key: "cloud_help_accounts_id"
         has_many :tickets,    class_name: "CloudHelp::Ticket",    foreign_key: "cloud_help_catalog_ticket_sources_id"
