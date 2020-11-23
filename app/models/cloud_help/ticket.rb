@@ -35,11 +35,7 @@ For more information read the license file including with this software.
         has_many :timelines,    foreign_key: "cloud_help_tickets_id"
         has_many :activities,   foreign_key: "cloud_help_tickets_id"
 
-
-        has_one :detail, inverse_of: :ticket, autosave: true, foreign_key: "cloud_help_tickets_id"
-        has_many :assignments, foreign_key: "cloud_help_tickets_id"  
-
-        accepts_nested_attributes_for :detail, update_only: true
+        has_many :assignments, foreign_key: "cloud_help_tickets_id"
 
         after_update :after_update_actions
 
@@ -51,11 +47,9 @@ For more information read the license file including with this software.
     attributes where updated, notifications are sent and entries are added to the timeline
 @example
     ticket_params = {
-        detail_attributes: {
-            cloud_help_catalog_ticket_priorities_id: 1,
-            cloud_help_catalog_ticket_categories_id: 1,
-            cloud_help_catalog_ticket_types_id: 1
-        }
+        cloud_help_catalog_ticket_priorities_id: 1,
+        cloud_help_catalog_ticket_categories_id: 1,
+        cloud_help_catalog_ticket_types_id: 1
     }
     ticket = CloudHelp::Ticket.new(ticket_params)
     if ticket.save
@@ -87,27 +81,25 @@ For more information read the license file including with this software.
     and returns it in a hash
 @example
     ticket = CloudHelp::Ticket.find(43)
-    puts ticket.detailed_info
+    puts ticket.show
     # will print something like: {
     #    id:6,
     #    created_at:"2020-01-12T17:31:25.005Z",
-    #    detail_attributes:{
-    #        email:"admin@lesli.cloud",
-    #        subject:"subject",
-    #        description:"description",
-    #        tags:"tags",
-    #        priority:"Medium",
-    #        type:"Change Request",
-    #        status:"created",
-    #        cloud_help_catalog_ticket_priorities_id:2,
-    #        cloud_help_catalog_ticket_types_id:2,
-    #        cloud_help_ticket_workflows_id:4,
-    #        cloud_help_catalog_ticket_categories_id:1,
-    #        cloud_help_ticket_statuses_id:1,
-    #        deadline:null,
-    #        priority_weight:100,
-    #        category:"Company System"
-    #    },
+    #    email:"admin@lesli.cloud",
+    #    subject:"subject",
+    #    description:"description",
+    #    tags:"tags",
+    #    priority:"Medium",
+    #    type:"Change Request",
+    #    status:"created",
+    #    cloud_help_catalog_ticket_priorities_id:2,
+    #    cloud_help_catalog_ticket_types_id:2,
+    #    cloud_help_workflow_statuses_id:4,
+    #    cloud_help_catalog_ticket_categories_id:1,
+    #    cloud_help_ticket_statuses_id:1,
+    #    deadline:null,
+    #    priority_weight:100,
+    #    category:"Company System",
     #    assignment_attributes:{
     #        assignment_type:"none"
     #    }
@@ -133,12 +125,13 @@ For more information read the license file including with this software.
                 "CHCTT.id as cloud_help_catalog_ticket_types_id",   "CHCTC.id as cloud_help_catalog_ticket_categories_id",
                 "CHWS.id as cloud_help_workflow_statuses_id",       "CHCTP.weight as priority_weight",
                 "CHWS.status_type as status_type",                  "CHW.id as cloud_help_workflows_id",
-                "CHWS.number as status_number"
+                "CHWS.number as status_number",                     "subject",
+                "description",                                      "deadline",
+                "tags"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
 
             data[:category] = category.full_path
-            data[:detail_attributes] = detail.attributes
             data[:assignment_attributes] = assignments_info
             data[:editable] = self.is_editable_by?(current_user)
             
@@ -153,7 +146,7 @@ For more information read the license file including with this software.
 @description Creates a query that selects all the tickets information from several tables
     and returns it in a hash
 @example
-    tickets_info = CloudHelp::Ticket.detailed_info(current_user.account)
+    tickets_info = CloudHelp::Ticket.index(current_user.account)
     puts tickets_info.to_json
     # will print something like: [
     #    {
@@ -194,12 +187,12 @@ For more information read the license file including with this software.
 
                     # first customer
                     filters_query.push("
-                        (LOWER(CHTD.subject) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(CHTD.description) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(description) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(CHCTC.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(CHCTT.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(CHCTP.name) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(CHTD.tags) SIMILAR TO '%#{query_word}%')
+                        (LOWER(tags) SIMILAR TO '%#{query_word}%')
                     ")
                 end
             end
@@ -214,8 +207,6 @@ For more information read the license file including with this software.
 
             # Executing the query
             tickets = current_user.account.help.tickets.joins(
-                "inner join cloud_help_ticket_details CHTD on cloud_help_tickets.id = CHTD.cloud_help_tickets_id"
-            ).joins(
                 "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
             ).joins(
                 "inner join cloud_help_catalog_ticket_types CHCTT on cloud_help_tickets.cloud_help_catalog_ticket_types_id = CHCTT.id"
@@ -371,9 +362,9 @@ For more information read the license file including with this software.
         # @description Creates an activity for this ticket if someone changed any of this values
         # Example
         #   ticket = CloudHelp::Ticket.find(1)
-        #   old_attributes  = ticket.attributes.merge({detail_attributes: ticket.detail.attributes})
+        #   old_attributes  = ticket.attributes
         #   ticket.update(user_main: User.find(33))
-        #   new_attributes = ticket.attributes.merge({detail_attributes: ticket.detail.attributes})
+        #   new_attributes = ticket.attributes
         #   CloudHelp::Ticket.log_activity_update(User.find(1), ticket, old_attributes, new_attributes)
         def self.log_activity_update(current_user, ticket, old_attributes, new_attributes)
             # Main employee is a special case because it's a foreign key
@@ -416,11 +407,8 @@ For more information read the license file including with this software.
                 end
             end
 
-            # Details are a special case but only because they are nested
-            old_attributes = old_attributes["detail_attributes"] || {}
-            new_attributes = new_attributes["detail_attributes"] || {}
-            old_attributes.except!("id", "cloud_help_tickets_id", "created_at", "updated_at")
-
+            # We remove values that are not tracked in the activities
+            old_attributes.except!("id", "created_at", "updated_at")
             old_attributes.each do |key, value|
                 if value != new_attributes[key]
                     value_from = value
@@ -558,7 +546,7 @@ For more information read the license file including with this software.
     - A deadline added
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update(detail_attributes: {cloud_help_catalog_ticket_priorities_id: 4})
+    ticket.update(cloud_help_catalog_ticket_priorities_id: 4)
     # after the update, this method is executed automatically
 =end
         def after_update_actions
@@ -586,7 +574,7 @@ For more information read the license file including with this software.
                 action_assign_new_workflow
             end
 
-            deadline_change = detail.saved_changes["deadline"]
+            deadline_change = saved_changes["deadline"]
             if deadline_change
                 action_register_deadline_change
             end
@@ -600,7 +588,7 @@ For more information read the license file including with this software.
     if the ticket changed to a *closed* status or not
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_ticket_workflow_details_id: 4 } })
+    ticket.update({cloud_help_ticket_workflow_details_id: 4 })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_workflow_change(old_status_id, new_status_id)
@@ -619,7 +607,7 @@ For more information read the license file including with this software.
     the *action_assign_new_workflow* method.
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_types_id: 1 } })
+    ticket.update({ cloud_help_catalog_ticket_types_id: 1 })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_type_change(old_type, new_type)
@@ -639,7 +627,7 @@ For more information read the license file including with this software.
     the *action_assign_new_workflow* method.
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_categories: 1 } })
+    ticket.update({cloud_help_catalog_ticket_categories: 1 })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_category_change(old_category, new_category)
@@ -661,7 +649,7 @@ For more information read the license file including with this software.
     to all subscribers
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_categories: 1 } })
+    ticket.update({ cloud_help_catalog_ticket_categories: 1 })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_assign_new_workflow
@@ -681,7 +669,7 @@ For more information read the license file including with this software.
     increased or decreased
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { cloud_help_catalog_ticket_priorities_id: 4 } })
+    ticket.update({ cloud_help_catalog_ticket_priorities_id: 4 })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_priority_change(old_priority, new_priority)
@@ -702,14 +690,14 @@ For more information read the license file including with this software.
     *ticket*'s *errors* attribute, and an rollback is issued
 @example
     ticket = CloudHelp::Ticket.first
-    ticket.update({ detail_attributes: { deadline: Datetime.now } })
+    ticket.update({ deadline: Datetime.now })
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_deadline_change
             # Adding deadline to timeline
             timelines.create(
                 action: Ticket::Timeline.actions[:deadline_established],
-                description: "#{LC::Date.to_string(detail.deadline)}"
+                description: "#{LC::Date.to_string(deadline)}"
             )
         end 
     end

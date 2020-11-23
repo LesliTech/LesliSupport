@@ -199,18 +199,14 @@ For more information read the license file including with this software.
             return respond_with_not_found unless @ticket
             return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
-            old_attributes = @ticket.attributes.merge({
-                "detail_attributes" => @ticket.detail.attributes
-            })
+            old_attributes = @ticket.attributes
 
             if @ticket.update(ticket_params)
-                respond_with_successful(@ticket.show(current_user, @query))
-
-                new_attributes = @ticket.attributes.merge({
-                    "detail_attributes" => @ticket.detail.attributes
-                })
+                new_attributes = @ticket.attributes
                 Ticket.log_activity_update(current_user, @ticket, old_attributes, new_attributes)
                 Workflow::Action.execute_actions(current_user, @ticket, old_attributes, new_attributes)
+
+                respond_with_successful(@ticket.show(current_user, @query))
             else
                 respond_with_error(@ticket.errors.full_messages.to_sentence)
             end
@@ -297,27 +293,21 @@ For more information read the license file including with this software.
 =begin
 @return [Parameters] Allowed parameters for the ticket
 @description Sanitizes the parameters received from an HTTP call to only allow the
-    specified ones. Allowed params are :detail_attributes.
-    :detail_attributes must be a Hash containing the next attributes: 
-    (:id, :subject, :description, :tags, :deadline, :cloud_help_catalog_ticket_types_id, 
-    :cloud_help_catalog_ticket_priorities_id, :cloud_help_catalog_ticket_categories_id, 
-    :cloud_help_ticket_worklfow_details_id)
+    specified ones. Allowed params are (:id, :subject, :description, :tags, :deadline, 
+    :cloud_help_catalog_ticket_types_id, :cloud_help_catalog_ticket_priorities_id, 
+    :cloud_help_catalog_ticket_categories_id, :cloud_help_ticket_worklfow_details_id)
 @example
     # supose params contains {
     #    "ticket": {
     #        "id": 5,
-    #       "detail_attributes":{
-    #            name: "My ticket",
-    #            tags: "Important, Company"
-    #        }
+    #        "name": "My ticket",
+    #        "tags": "Important, Company"
     #    }
     #}
     filtered_params = ticket_state_params
     puts filtered_params
     # will remove the id and only print {
-    #   "detail_attributes":{
-    #        tags: "Important, Company"
-    #    }
+    #    "tags": "Important, Company"
     #}
 =end
         def ticket_params
@@ -326,12 +316,10 @@ For more information read the license file including with this software.
                 :cloud_help_catalog_ticket_priorities_id,
                 :cloud_help_catalog_ticket_categories_id,
                 :cloud_help_workflow_statuses_id,
-                detail_attributes: [
-                    :subject,
-                    :description,
-                    :tags,
-                    :deadline
-                ]
+                :subject,
+                :description,
+                :tags,
+                :deadline
             )
         end
 

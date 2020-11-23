@@ -58,9 +58,7 @@ export default {
                 priorities: []
             },
             ticket_id: null,
-            ticket: {
-                detail_attributes: {}
-            },
+            ticket: {},
             transfer: {},
             modals: {
                 escalate: false,
@@ -83,8 +81,10 @@ export default {
         },
 
         setAutoAssignment(){
-            if(this.ticket.assignment_attributes.find(assignment => assignment.users_id == lesli.current_user.id)){
-                this.auto_assignment = true
+            if(this.viewType != 'new'){
+                if(this.ticket.assignment_attributes.find(assignment => assignment.users_id == lesli.current_user.id)){
+                    this.auto_assignment = true
+                }
             }
         },
         
@@ -118,8 +118,8 @@ export default {
             let data = {
                 ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
             }
-            data.ticket.detail_attributes.tags = data.ticket.detail_attributes.tags.join(',')
-            data.ticket.detail_attributes.description = JSON.stringify(data.ticket.detail_attributes.description)
+            data.ticket.tags = data.ticket.tags.join(',')
+            data.ticket.description = JSON.stringify(data.ticket.description)
             this.submitting = true
 
             this.http.post(this.main_route, data).then(result => {
@@ -145,8 +145,8 @@ export default {
             let data = {
                 ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
             }
-            data.ticket.detail_attributes.tags = data.ticket.detail_attributes.tags.join(',')
-            data.ticket.detail_attributes.description = JSON.stringify(data.ticket.detail_attributes.description)
+            data.ticket.tags = data.ticket.tags.join(',')
+            data.ticket.description = JSON.stringify(data.ticket.description)
 
             let url = `${this.main_route}/${this.ticket_id}.json`
             this.submitting = true
@@ -287,47 +287,47 @@ export default {
         <div class="card-content subtabs">
             <b-tabs>
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                    <fieldset :disabled="viewType == 'show'">
-                        <form @submit="submitTicket">
-                            <div class="columns" v-if="viewType != 'new'">
-                                <div class="column is-9">
-                                    <label class="label">{{translations.main.view_title_assigned_users}}</label>
-                                    <div class="tags is-medium" v-if="ticket.assignment_attributes && ticket.assignment_attributes.length > 0">
-                                        <b-tag
-                                            type="is-info"
-                                            v-for="assignment in ticket.assignment_attributes"
-                                            :key="assignment.id"
-                                            closable
-                                            @close="deleteTicketAssignment(assignment)"
-                                        >
-                                            <span>{{assignment.assignable_name}}</span>
-                                        </b-tag>
-                                    </div>
-                                    <div class="tags" v-else>
-                                        <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>
-                                    </div>
+                    <form @submit="submitTicket">
+                        <div class="columns" v-if="viewType != 'new'">
+                            <div class="column is-9">
+                                <label class="label">{{translations.main.view_title_assigned_users}}</label>
+                                <div class="tags is-medium" v-if="ticket.assignment_attributes && ticket.assignment_attributes.length > 0">
+                                    <b-tag
+                                        type="is-info"
+                                        v-for="assignment in ticket.assignment_attributes"
+                                        :key="assignment.id"
+                                        closable
+                                        @close="deleteTicketAssignment(assignment)"
+                                    >
+                                        <span>{{assignment.assignable_name}}</span>
+                                    </b-tag>
                                 </div>
-                                <div class="column is-3">
-                                    <b-field :label="translations.main.view_title_auto_assignment">
-                                        <b-checkbox v-model="auto_assignment" @change.native="autoAssignTicket">
-                                            {{translations.main.view_text_assign_ticket_to_self}}
-                                        </b-checkbox>
-                                    </b-field>
+                                <div class="tags" v-else>
+                                    <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>
                                 </div>
                             </div>
+                            <div class="column is-3">
+                                <b-field :label="translations.main.view_title_auto_assignment">
+                                    <b-checkbox v-model="auto_assignment" @change.native="autoAssignTicket">
+                                        {{translations.main.view_text_assign_ticket_to_self}}
+                                    </b-checkbox>
+                                </b-field>
+                            </div>
+                        </div>
+                        <fieldset :disabled="viewType == 'show'">
                             <div class="columns">
                                 <div class="column is-9">
                                     <b-field>
                                         <template v-slot:label>
                                             {{translations.main.column_subject}}<sup class="has-text-danger">*</sup>
                                         </template>
-                                        <b-input v-model="ticket.detail_attributes.subject" required></b-input>
+                                        <b-input v-model="ticket.subject" required></b-input>
                                     </b-field>
                                 </div>
                                 <div class="column is-3">
                                     <b-field :label="translations.main.column_deadline">
                                         <vc-date-picker
-                                            v-model="ticket.detail_attributes.deadline"
+                                            v-model="ticket.deadline"
                                             :locale="date.vcDatepickerConfig()"
                                             :popover="{ visibility: 'focus' }"
                                             :input-props="{
@@ -406,14 +406,14 @@ export default {
                             </div>
 
                             <b-field :label="translations.main.column_tags">
-                                <b-taginput v-model="ticket.detail_attributes.tags" ellipsis :closable="viewType != 'show'"></b-taginput>
+                                <b-taginput v-model="ticket.tags" ellipsis :closable="viewType != 'show'"></b-taginput>
                             </b-field>
 
                             <div class="field">
                                 <label class="label">{{translations.main.column_description}}</label>
                                 <div class="control">
                                     <component-rich-text-editor
-                                        v-model="ticket.detail_attributes.description"
+                                        v-model="ticket.description"
                                     >
                                     </component-rich-text-editor>
                                 </div>
@@ -431,8 +431,8 @@ export default {
                                     </span>
                                 </b-button>
                             </div>
-                        </form>
-                    </fieldset>
+                        </fieldset>
+                    </form>
                 </b-tab-item>
                 <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new'">
                     <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
