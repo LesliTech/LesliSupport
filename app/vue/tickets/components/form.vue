@@ -66,11 +66,13 @@ export default {
                 escalate: false,
                 descalate: false,
                 transfer: false
-            }
+            },
+            auto_assignment: false
         }
     },
     mounted() {
         this.setTicket()
+        this.setAutoAssignment()
         this.setSubscriptions()
         this.getTicketOptions()
     },
@@ -78,6 +80,12 @@ export default {
         setTicket(){
             this.ticket_id = this.$route.params.id
             this.ticket = this.data.ticket
+        },
+
+        setAutoAssignment(){
+            if(this.ticket.assignment_attributes.find(assignment => assignment.users_id == lesli.current_user.id)){
+                this.auto_assignment = true
+            }
         },
         
         setSubscriptions(){
@@ -147,8 +155,7 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_updated, 'success')
-
-                    this.reloadTicketRecord()
+                    this.reloadTicket()
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -221,9 +228,32 @@ export default {
             })
         },
 
+        autoAssignTicket(){
+            if(this.auto_assignment){
+                this.data.events.post_auto_assignment = true
+            }else{
+                this.deleteTicketAssignment(this.ticket.assignment_attributes.find(assignment => assignment.users_id == lesli.current_user.id))
+            }
+        },
+
         reloadTicketRecord(){
             this.data.reload.timelines = true
             this.data.reload.activities = true
+        },
+
+        reloadTicket(){
+            this.reloadTicketRecord()
+            this.data.reload.ticket = true
+        }
+    },
+
+    watch: {
+        'ticket.assignment_attributes'(){
+            if(this.ticket.assignment_attributes.find(assignment => assignment.users_id == lesli.current_user.id)){
+                this.auto_assignment = true
+            }else{
+                this.auto_assignment = false
+            }
         }
     }
 }
@@ -243,7 +273,7 @@ export default {
                     <i class="fas fa-eye"></i>
                     {{translations.core.view_btn_show}}
                 </router-link>
-                <router-link v-if="viewType == 'show'" :to="`/${ticket_id}/edit`">
+                <router-link v-if="viewType == 'show' && ticket.editable" :to="`/${ticket_id}/edit`">
                     <i class="fas fa-edit"></i>
                     {{translations.core.view_btn_edit}}
                 </router-link>
@@ -259,21 +289,30 @@ export default {
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <fieldset :disabled="viewType == 'show'">
                         <form @submit="submitTicket">
-                            <div v-if="viewType != 'new'">
-                                <label class="label">{{translations.main.view_title_assigned_users}}</label>
-                                <div class="tags is-medium" v-if="ticket.assignment_attributes && ticket.assignment_attributes.length > 0">
-                                    <b-tag
-                                        type="is-info"
-                                        v-for="assignment in ticket.assignment_attributes"
-                                        :key="assignment.id"
-                                        :closable="viewType == 'edit'"
-                                        @close="deleteTicketAssignment(assignment)"
-                                    >
-                                        <span>{{assignment.assignable_name}}</span>
-                                    </b-tag>
+                            <div class="columns" v-if="viewType != 'new'">
+                                <div class="column is-9">
+                                    <label class="label">{{translations.main.view_title_assigned_users}}</label>
+                                    <div class="tags is-medium" v-if="ticket.assignment_attributes && ticket.assignment_attributes.length > 0">
+                                        <b-tag
+                                            type="is-info"
+                                            v-for="assignment in ticket.assignment_attributes"
+                                            :key="assignment.id"
+                                            closable
+                                            @close="deleteTicketAssignment(assignment)"
+                                        >
+                                            <span>{{assignment.assignable_name}}</span>
+                                        </b-tag>
+                                    </div>
+                                    <div class="tags" v-else>
+                                        <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>
+                                    </div>
                                 </div>
-                                <div class="tags" v-else>
-                                    <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>
+                                <div class="column is-3">
+                                    <b-field :label="translations.main.view_title_auto_assignment">
+                                        <b-checkbox v-model="auto_assignment" @change.native="autoAssignTicket">
+                                            {{translations.main.view_text_assign_ticket_to_self}}
+                                        </b-checkbox>
+                                    </b-field>
                                 </div>
                             </div>
                             <div class="columns">

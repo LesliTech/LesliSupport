@@ -58,7 +58,7 @@ For more information read the license file including with this software.
                 format.html { }
                 format.json do
                     set_ticket
-                    respond_with_successful(@ticket.show)
+                    respond_with_successful(@ticket.show(current_user, @query))
                 end
             end
         end
@@ -204,7 +204,7 @@ For more information read the license file including with this software.
             })
 
             if @ticket.update(ticket_params)
-                respond_with_successful(@ticket.show)
+                respond_with_successful(@ticket.show(current_user, @query))
 
                 new_attributes = @ticket.attributes.merge({
                     "detail_attributes" => @ticket.detail.attributes

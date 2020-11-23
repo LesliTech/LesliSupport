@@ -47,6 +47,11 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
     assignment_options: {},
     reload: {
         timelines: false,
-        activities: false
+        activities: false,
+        ticket: false
+    },
+    events: {
+        post_auto_assignment: false,
+        delete_auto_assignment: false
     }
 })

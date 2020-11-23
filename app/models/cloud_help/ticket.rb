@@ -113,7 +113,7 @@ For more information read the license file including with this software.
     #    }
     #}
 =end
-        def show
+        def show(current_user, query)
             data = Ticket.joins(
                 "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
             ).joins(
@@ -140,6 +140,7 @@ For more information read the license file including with this software.
             data[:category] = category.full_path
             data[:detail_attributes] = detail.attributes
             data[:assignment_attributes] = assignments_info
+            data[:editable] = self.is_editable_by?(current_user)
             
             return data
         end

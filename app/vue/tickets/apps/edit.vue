@@ -134,6 +134,17 @@ export default {
         activeActivitiesTab(){
             return this.active_tab == 4
         }
+    },
+
+    watch: {
+        'data.reload.ticket'(){
+            if(this.data.reload.ticket){
+                this.getTicket()
+                this.$nextTick(()=>{
+                    this.data.reload.ticket = false
+                })
+            }
+        }
     }
 }
 </script>
@@ -152,6 +163,7 @@ export default {
                 <div class="navbar-item">
                     <div class="buttons">
                         <component-workflow-transition
+                            v-if="!data.reload.ticket"
                             cloud-module="help/ticket"
                             translations-path="help.workflows"
                             :cloud-id="ticket_id"
