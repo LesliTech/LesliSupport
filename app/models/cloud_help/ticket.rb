@@ -181,9 +181,6 @@ For more information read the license file including with this software.
 
             # We filter by search_type, available search_types are 'own' and 'active'
             if filters["search_type"]
-
-
-                
                 filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR CHTA.users_id = #{current_user.id})") if filters["search_type"].eql? "own"
                 filters_query.push("(CHWS.status_type != 'completed_unsuccessfully' AND CHWS.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
                 filters_query.push("(CHWS.status_type = 'completed_unsuccessfully' OR CHWS.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
@@ -201,7 +198,8 @@ For more information read the license file including with this software.
                         (LOWER(CHTD.description) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(CHCTC.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(CHCTT.name) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(CHCTP.name) SIMILAR TO '%#{query_word}%')
+                        (LOWER(CHCTP.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(CHTD.tags) SIMILAR TO '%#{query_word}%')
                     ")
                 end
             end
