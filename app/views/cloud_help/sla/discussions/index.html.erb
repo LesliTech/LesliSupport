@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sla Discussions</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sla_discussions.each do |sla_discussion| %>
+      <tr>
+        <td><%= link_to 'Show', sla_discussion %></td>
+        <td><%= link_to 'Edit', edit_sla_discussion_path(sla_discussion) %></td>
+        <td><%= link_to 'Destroy', sla_discussion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sla Discussion', new_sla_discussion_path %>
