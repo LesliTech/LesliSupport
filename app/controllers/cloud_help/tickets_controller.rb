@@ -197,6 +197,7 @@ For more information read the license file including with this software.
 =end
         def update
             return respond_with_not_found unless @ticket
+            return respond_with_error(I18n.t("help.tickets.messages_warning_ticket_already_closed")) if @ticket.closed?
             return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
             old_attributes = @ticket.attributes
@@ -319,6 +320,7 @@ For more information read the license file including with this software.
                 :subject,
                 :description,
                 :tags,
+                :hours_worked,
                 :deadline
             )
         end

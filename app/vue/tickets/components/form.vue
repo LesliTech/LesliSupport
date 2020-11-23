@@ -404,17 +404,23 @@ export default {
                                     </b-field>
                                 </div>
                             </div>
-
-                            <b-field :label="translations.main.column_tags">
-                                <b-taginput v-model="ticket.tags" ellipsis :closable="viewType != 'show'"></b-taginput>
-                            </b-field>
+                            <div class="columns">
+                                <div class="column is-9">
+                                    <b-field :label="translations.main.column_tags">
+                                        <b-taginput v-model="ticket.tags" ellipsis :closable="viewType != 'show'"></b-taginput>
+                                    </b-field>
+                                </div>
+                                <div class="column is-3" v-if="viewType != 'new'">
+                                    <b-field :label="translations.main.column_hours_worked">
+                                        <b-input type="number" min="0" max="1000" step="0.01" v-model="ticket.hours_worked"></b-input>
+                                    </b-field>
+                                </div>
+                            </div>
 
                             <div class="field">
                                 <label class="label">{{translations.main.column_description}}</label>
                                 <div class="control">
-                                    <component-rich-text-editor
-                                        v-model="ticket.description"
-                                    >
+                                    <component-rich-text-editor v-model="ticket.description">
                                     </component-rich-text-editor>
                                 </div>
                             </div>

@@ -51,12 +51,11 @@ export default {
                 cloud_help_catalog_ticket_categories_id: null,
                 cloud_help_catalog_ticket_sources_id: null,
                 cloud_help_catalog_ticket_priorities_id: null,
-                detail_attributes: {
-                    subject: null,
-                    description: null,
-                    deadline: new Date(),
-                    tags: []
-                }
+                subject: null,
+                description: null,
+                deadline: new Date(),
+                tags: [],
+                hours_worked: 0
             }
             this.$nextTick(()=>{
                 this.data.ticket = this.ticket
