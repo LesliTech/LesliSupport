@@ -73,6 +73,7 @@ export default {
         this.setAutoAssignment()
         this.setSubscriptions()
         this.getTicketOptions()
+        this.getTicketImages()
     },
     methods: {
         setTicket(){
@@ -171,6 +172,20 @@ export default {
             this.http.get(url).then(result => {
                 if (result.successful) {
                     this.options = result.data
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        getTicketImages(){
+            let url = `${this.main_route}/${this.ticket_id}/resources/images.json`
+
+            this.http.get(url).then(result => {
+                if (result.successful) {
+                    this.data.ticket_images = result.data
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -424,6 +439,17 @@ export default {
                                     </component-rich-text-editor>
                                 </div>
                             </div>
+
+                            <div class="field" v-if="viewType != 'new' && data.ticket_images.length > 0">
+                                <label class="label">Screenshots and Images (T)</label>
+                                <a
+                                    v-for="image in data.ticket_images"
+                                    :key="image.id"
+                                    :href="`/help/tickets/${ticket_id}/files/${image.id}?view=true`"
+                                >
+                                    <img class="ticket-image" :src="`/help/tickets/${ticket_id}/files/${image.id}?view=true`">
+                                </a>
+                            </div>
                             <hr>
                             <div class="field has-text-right">
                                 <b-button v-if="viewType != 'show'" type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
@@ -466,3 +492,9 @@ export default {
         </div>
     </div>
 </template>
+<style scoped>
+.ticket-image {
+   max-height: 8rem;
+    width: auto;
+}
+</style>
