@@ -445,9 +445,9 @@ export default {
                                 <a
                                     v-for="image in data.ticket_images"
                                     :key="image.id"
-                                    :href="`/help/tickets/${ticket_id}/files/${image.id}?view=true`"
+                                    :href="image.href"
                                 >
-                                    <img class="ticket-image" :src="`/help/tickets/${ticket_id}/files/${image.id}?view=true`">
+                                    <img class="ticket-image" :src="image.src">
                                 </a>
                             </div>
                             <hr>
