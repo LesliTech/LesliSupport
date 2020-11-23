@@ -97,20 +97,20 @@ export default {
         },
 
         parseBackendData(ticket){
-            if(ticket.detail_attributes.deadline){
-                ticket.detail_attributes.deadline = new Date(ticket.detail_attributes.deadline)
+            if(ticket.deadline){
+                ticket.deadline = new Date(ticket.deadline)
             }
 
-            if(ticket.detail_attributes.tags && ticket.detail_attributes.tags.trim().length > 0){
-                ticket.detail_attributes.tags = ticket.detail_attributes.tags.split(',')
+            if(ticket.tags && ticket.tags.trim().length > 0){
+                ticket.tags = ticket.tags.split(',')
             }else{
-                ticket.detail_attributes.tags = []
+                ticket.tags = []
             }
 
-            if(ticket.detail_attributes.description){
-                ticket.detail_attributes.description = JSON.parse(ticket.detail_attributes.description)
+            if(ticket.description){
+                ticket.description = JSON.parse(ticket.description)
             }else{
-                ticket.detail_attributes.description = {}
+                ticket.description = {}
             }
 
             return ticket
@@ -141,7 +141,7 @@ export default {
         <component-title
             v-if="ticket"
             :id="ticket.id"
-            :subject="ticket.detail_attributes.subject"
+            :subject="ticket.subject"
             :status="
                 object_utils.translateEnum(translations.core, 'column_enum_status', ticket.status, null) ||
                 object_utils.translateEnum(translations.workflow_statuses, 'column_enum_status', ticket.status)

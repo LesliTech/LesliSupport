@@ -121,6 +121,7 @@ export default {
             this.http.post(url, data).then(result => {
                 this.$set(user, 'submitting', false)
                 if (result.successful) {
+                    this.$set(user, 'checked', true)
                     this.$set(user, 'assignment_id', result.data.id)
                     this.ticket.assignment_attributes.push({
                         id: result.data.id,
@@ -238,6 +239,18 @@ export default {
 
         search(){
             this.pagination.current_page = 1
+        },
+
+        'data.events.post_auto_assignment'(){
+            if(this.data.events.post_auto_assignment){
+                this.data.events.post_auto_assignment = false
+
+                let current_user = this.assignment_options.users.find((user)=>{
+                    return user.id == lesli.current_user.id
+                })
+
+                this.postAssignment(current_user)
+            }
         }
     }
 }

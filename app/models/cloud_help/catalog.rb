@@ -19,7 +19,6 @@ module CloudHelp
             Catalog::TicketPriority.create!(name: "Medium", weight: 100, account: account)
             Catalog::TicketPriority.create!(name: "High", weight: 1000, account: account)
             Catalog::TicketPriority.create!(name: "Very High", weight: 5000, account: account)
-            Catalog::TicketPriority.create!(name: "Urgent", weight: 10000, account: account)
             Catalog::TicketPriority.create!(name: "Highest", weight: 100000, account: account)
 
             # Initializing Ticket Types

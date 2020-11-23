@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sla Custom Fields</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sla_custom_fields.each do |sla_custom_field| %>
+      <tr>
+        <td><%= link_to 'Show', sla_custom_field %></td>
+        <td><%= link_to 'Edit', edit_sla_custom_field_path(sla_custom_field) %></td>
+        <td><%= link_to 'Destroy', sla_custom_field, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sla Custom Field', new_sla_custom_field_path %>

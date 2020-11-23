@@ -117,6 +117,27 @@ CloudHelp::Engine.routes.draw do
         end
     end
 
+    resources :tickets do
+        collection do
+            get "search/:text_to_search" => :search
+            post "list" => :index
+
+            get :options
+            get "/files/options",                   to: "ticket/files#options"
+        end
+
+        scope module: :ticket do
+            resources :actions
+            resources :activities
+            resources :discussions
+            resources :files
+            resources :subscribers
+            resources :custom_fields
+
+            resources :associations
+        end
+    end
+
     resources :slas do
         scope module: :slas do
             resources :associations
