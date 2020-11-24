@@ -49,7 +49,6 @@ module CloudHelp
             end
 
             data = Ticket
-            .joins(:detail)
             .joins(:priority)
             .joins(:status)
             .order("cloud_help_tickets.created_at desc")
@@ -58,7 +57,7 @@ module CloudHelp
             .select(
                 "cloud_help_tickets.created_at",
                 "cloud_help_tickets.id",
-                "cloud_help_ticket_details.subject",
+                "cloud_help_tickets.subject",
                 "cloud_help_catalog_ticket_priorities.name as priority_name",
                 "cloud_help_catalog_ticket_priorities.weight as priority_weight",
                 "CONCAT('/help/tickets/', cloud_help_tickets.id) as url"
@@ -78,17 +77,16 @@ module CloudHelp
             end
 
             data = Ticket
-            .joins(:detail)
             .joins(:status)
             .joins("LEFT JOIN cloud_help_ticket_assignments CHTA ON CHTA.cloud_help_tickets_id = cloud_help_tickets.id AND CHTA.deleted_at IS NULL")
             .where("cloud_help_tickets.users_id = ? OR CHTA.users_id = ?", current_user.id, current_user.id)
             .where("cloud_help_workflow_statuses.status_type not in (?)", ['completed_successfully', 'completed_unsuccessfully'])
-            .order("cloud_help_ticket_details.subject asc")
+            .order("cloud_help_tickets.subject asc")
             .limit(configuration[:query][:pagination]["per_page"] || query[:pagination][:perPage])
             .select(
                 "cloud_help_tickets.id",
-                "cloud_help_ticket_details.subject",
-                "cloud_help_ticket_details.deadline",
+                "cloud_help_tickets.subject",
+                "cloud_help_tickets.deadline",
                 "cloud_help_workflow_statuses.name as status_name",
                 "CONCAT('/help/tickets/', cloud_help_tickets.id) as url"
             )
@@ -107,17 +105,16 @@ module CloudHelp
                 return nil
             end
 
-            data = Ticket.joins(:detail)
-            .joins(:status)
+            data = Ticket.joins(:status)
             .joins(:priority)
             .joins("LEFT JOIN cloud_help_ticket_assignments CHTA on CHTA.cloud_help_tickets_id = cloud_help_tickets.id AND CHTA.deleted_at is NULL")
             .order("cloud_help_tickets.created_at asc")
             .where("cloud_help_workflow_statuses.status_type not in (?)", ['completed_successfully', 'completed_unsuccessfully'])
             .where("CHTA.id is ?", nil)
             .select(
-                "cloud_help_ticket_details.deadline",
+                "cloud_help_tickets.deadline",
                 "cloud_help_tickets.id",
-                "cloud_help_ticket_details.subject",
+                "cloud_help_tickets.subject",
                 "cloud_help_catalog_ticket_priorities.name as priority_name",
                 "cloud_help_catalog_ticket_priorities.weight as priority_weight",
                 "CONCAT('/help/tickets/', cloud_help_tickets.id) as url"

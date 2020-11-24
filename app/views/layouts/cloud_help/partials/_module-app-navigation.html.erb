@@ -36,14 +36,6 @@
                     <% end %>
                 </li>
             <% end %>
-            <% if @tabs_granted["ticket_sources"]%>
-                <li>
-                    <%= link_to cloud_help.ticket_sources_path, class: "" do %>
-                        <i class="fas fa-map-pin"></i>
-                        <span><%= I18n.t("help.shared.sidebar_nav_ticket_sources") %></span>
-                    <% end %>
-                </li>
-            <% end %>
         </b-menu-item>
     <% end %>
     <% if @tabs_granted["tickets"]%>

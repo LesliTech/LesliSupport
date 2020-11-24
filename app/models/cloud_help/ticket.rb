@@ -127,7 +127,7 @@ For more information read the license file including with this software.
                 "CHWS.status_type as status_type",                  "CHW.id as cloud_help_workflows_id",
                 "CHWS.number as status_number",                     "subject",
                 "description",                                      "deadline",
-                "tags"
+                "tags",                                             "hours_worked"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
 
@@ -228,7 +228,8 @@ For more information read the license file including with this software.
                 "CHCTP.id as cloud_help_catalog_ticket_priorities_id",  "CHCTT.id as cloud_help_catalog_ticket_types_id",
                 "created_at",                                           "CHCTP.weight as priority_weight",
                 "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
-                "deadline",                                             "users_id"
+                "deadline",                                             "users_id",
+                "cloud_help_tickets.cloud_help_workflow_statuses_id"
             )
 
             # We apply the previous filters in the main query
@@ -310,6 +311,10 @@ For more information read the license file including with this software.
             end
 
             ticket_options
+        end
+
+        def closed?
+            return status.completed_successfully? || status.completed_unsuccessfully?
         end
 
         #######################################################################################
@@ -475,6 +480,8 @@ For more information read the license file including with this software.
         # Custom is_editab_by? implementation
         def is_editable_by?(current_user)
             return false unless current_user
+
+            return false if (status.completed_successfully? || status.completed_unsuccessfully? )
 
             current_user_olp = User.joins(:role)
                 .joins(:role_detail)

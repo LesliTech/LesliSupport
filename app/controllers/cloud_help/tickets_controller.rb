@@ -20,7 +20,7 @@ For more information read the license file including with this software.
 =end
     class TicketsController < ApplicationLesliController
 
-        before_action :set_ticket, only: [:update, :destroy]
+        before_action :set_ticket, only: [:update, :destroy, :images]
 
 =begin
 @return [HTML|JSON] HTML view for listing all tickets or a Json that contains a list 
@@ -197,6 +197,7 @@ For more information read the license file including with this software.
 =end
         def update
             return respond_with_not_found unless @ticket
+            return respond_with_error(I18n.t("help.tickets.messages_warning_ticket_already_closed")) if @ticket.closed?
             return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
             old_attributes = @ticket.attributes
@@ -258,7 +259,7 @@ For more information read the license file including with this software.
         # @example
         #     # Executing this controller's action from javascript's frontend
         #     let ticket_id = 4;
-        #     this.http.delete(`127.0.0.1/house/tickets/${ticket_id}`);
+        #     this.http.delete(`127.0.0.1/help/tickets/${ticket_id}`);
         def destroy
             return respond_with_not_found unless @ticket
             return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
@@ -270,6 +271,29 @@ For more information read the license file including with this software.
             else
                 respond_with_error(@ticket.errors.full_messages.to_sentence)
             end
+        end
+
+        def images
+            return respond_with_not_found unless @ticket
+
+            images = @ticket.files.filter do |file|
+                file_name = ""
+                file_name = file.attachment_identifier.downcase if file.attachment_identifier
+                file_name = file.attachment_local_identifier.downcase if file.attachment_local_identifier
+
+                file_name.end_with?('png') || file_name.end_with?('jpg') || file_name.end_with?('jpeg')
+            end
+
+            images = images.map do |image|
+                {
+                    id: image.id,
+                    name: image.name,
+                    src: "/help/tickets/#{@ticket.id}/files/#{image.id}",
+                    href: "/help/tickets/#{@ticket.id}/files/#{image.id}?view=true"
+                }
+            end
+
+            respond_with_successful(images)
         end
 
         private
@@ -319,6 +343,7 @@ For more information read the license file including with this software.
                 :subject,
                 :description,
                 :tags,
+                :hours_worked,
                 :deadline
             )
         end

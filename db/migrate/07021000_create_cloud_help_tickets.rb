@@ -6,6 +6,7 @@ class CreateCloudHelpTickets < ActiveRecord::Migration[6.0]
             t.text      :description
             t.datetime  :deadline
             t.string    :tags
+            t.decimal   :hours_worked
 
             # Main user
             t.bigint    :user_main_id

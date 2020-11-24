@@ -73,7 +73,13 @@ export default {
         this.setAutoAssignment()
         this.setSubscriptions()
         this.getTicketOptions()
+        this.getTicketImages()
     },
+
+    beforeDestroy(){
+        this.deleteSubscriptions()
+    },
+
     methods: {
         setTicket(){
             this.ticket_id = this.$route.params.id
@@ -94,6 +100,20 @@ export default {
                 this.ticket.status = status.name
                 this.ticket.status_type = status.status_type
             })
+
+            
+            this.bus.subscribe('post:/help/tickets/files-complete', ()=>{
+                this.getTicketImages()
+            })
+
+            this.bus.subscribe('delete:/help/tickets/files', (deleted_file)=>{
+                this.data.ticket_images = this.data.ticket_images.filter( ticket_image => ticket_image.id != deleted_file.id)
+            })
+        },
+
+        deleteSubscriptions(){
+            this.bus.$off('post:/help/tickets/files-complete')
+            this.bus.$off('delete:/help/tickets/files')
         },
 
         // @return [void]
@@ -171,6 +191,20 @@ export default {
             this.http.get(url).then(result => {
                 if (result.successful) {
                     this.options = result.data
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        getTicketImages(){
+            let url = `${this.main_route}/${this.ticket_id}/resources/images.json`
+
+            this.http.get(url).then(result => {
+                if (result.successful) {
+                    this.data.ticket_images = result.data
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -404,19 +438,37 @@ export default {
                                     </b-field>
                                 </div>
                             </div>
-
-                            <b-field :label="translations.main.column_tags">
-                                <b-taginput v-model="ticket.tags" ellipsis :closable="viewType != 'show'"></b-taginput>
-                            </b-field>
+                            <div class="columns">
+                                <div class="column is-9">
+                                    <b-field :label="translations.main.column_tags">
+                                        <b-taginput v-model="ticket.tags" ellipsis :closable="viewType != 'show'"></b-taginput>
+                                    </b-field>
+                                </div>
+                                <div class="column is-3" v-if="viewType != 'new'">
+                                    <b-field :label="translations.main.column_hours_worked">
+                                        <b-input type="number" min="0" max="1000" step="0.01" v-model="ticket.hours_worked"></b-input>
+                                    </b-field>
+                                </div>
+                            </div>
 
                             <div class="field">
                                 <label class="label">{{translations.main.column_description}}</label>
                                 <div class="control">
-                                    <component-rich-text-editor
-                                        v-model="ticket.description"
-                                    >
+                                    <component-rich-text-editor v-model="ticket.description">
                                     </component-rich-text-editor>
                                 </div>
+                            </div>
+
+                            <div class="field" v-if="viewType != 'new' && data.ticket_images.length > 0">
+                                <label class="label">Screenshots and Images (T)</label>
+                                <a
+                                    v-for="image in data.ticket_images"
+                                    :key="image.id"
+                                    :href="image.href"
+                                    target="_ticket_image"
+                                >
+                                    <img class="ticket-image" :src="image.src">
+                                </a>
                             </div>
                             <hr>
                             <div class="field has-text-right">
@@ -460,3 +512,9 @@ export default {
         </div>
     </div>
 </template>
+<style scoped>
+.ticket-image {
+   max-height: 8rem;
+    width: auto;
+}
+</style>
