@@ -75,6 +75,11 @@ export default {
         this.getTicketOptions()
         this.getTicketImages()
     },
+
+    beforeDestroy(){
+        this.deleteSubscriptions()
+    },
+
     methods: {
         setTicket(){
             this.ticket_id = this.$route.params.id
@@ -95,6 +100,20 @@ export default {
                 this.ticket.status = status.name
                 this.ticket.status_type = status.status_type
             })
+
+            
+            this.bus.subscribe('post:/help/tickets/files-complete', ()=>{
+                this.getTicketImages()
+            })
+
+            this.bus.subscribe('delete:/help/tickets/files', (deleted_file)=>{
+                this.data.ticket_images = this.data.ticket_images.filter( ticket_image => ticket_image.id != deleted_file.id)
+            })
+        },
+
+        deleteSubscriptions(){
+            this.bus.$off('post:/help/tickets/files-complete')
+            this.bus.$off('delete:/help/tickets/files')
         },
 
         // @return [void]
@@ -446,6 +465,7 @@ export default {
                                     v-for="image in data.ticket_images"
                                     :key="image.id"
                                     :href="image.href"
+                                    target="_ticket_image"
                                 >
                                     <img class="ticket-image" :src="image.src">
                                 </a>
