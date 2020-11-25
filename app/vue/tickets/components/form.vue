@@ -460,7 +460,7 @@ export default {
                             </div>
 
                             <div class="field" v-if="viewType != 'new' && data.ticket_images.length > 0">
-                                <label class="label">Screenshots and Images (T)</label>
+                                <label class="label">{{translations.main.view_title_screenshots}}</label>
                                 <a
                                     v-for="image in data.ticket_images"
                                     :key="image.id"

@@ -26,6 +26,7 @@ Building a better future, one line of code at a time.
 =end
     class Ticket::Activity < CloudObject::Activity
         belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: "cloud_help_tickets_id", optional: true
+        belongs_to :user, class_name: "::User", foreign_key: "users_id", optional: true
 
         enum category: {
             action_list:                    "action_list",
