@@ -200,17 +200,19 @@ export default {
         },
 
         getTicketImages(){
-            let url = `${this.main_route}/${this.ticket_id}/resources/images.json`
+            if(this.ticket_id){
+                let url = `${this.main_route}/${this.ticket_id}/resources/images.json`
 
-            this.http.get(url).then(result => {
-                if (result.successful) {
-                    this.data.ticket_images = result.data
-                } else {
-                    this.alert(result.error.message, 'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
+                this.http.get(url).then(result => {
+                    if (result.successful) {
+                        this.data.ticket_images = result.data
+                    } else {
+                        this.alert(result.error.message, 'danger')
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
         },
 
         // @return [void]
