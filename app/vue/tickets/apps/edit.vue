@@ -19,13 +19,14 @@ For more information read the license file including with this software.
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentWorkflowTransition from 'LesliCoreVue/cloud_objects/workflows/components/transition.vue'
-import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
-import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion-simple.vue'
-import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
-import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
+import componentWorkflowTransition from 'LesliVue/cloud_objects/workflows/components/transition.vue'
+import componentFormStatus from 'LesliVue/cloud_objects/workflows/components/form-status.vue'
+import componentSubscription from 'LesliVue/cloud_objects/subscription.vue'
+import componentDiscussion from 'LesliVue/cloud_objects/discussion-simple.vue'
+import componentAction from 'LesliVue/cloud_objects/action.vue'
+import componentFile from 'LesliVue/cloud_objects/file.vue'
 
-import componentFormStatus from '../components/form-status.vue'
+
 import componentActivities from '../components/activities.vue'
 import componentTimeline from '../components/timeline.vue'
 import componentTitle from '../components/title.vue'

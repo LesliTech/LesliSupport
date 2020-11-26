@@ -19,13 +19,11 @@ For more information read the license file including with this software.
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentWorkflowTransition from 'LesliCoreVue/cloud_objects/workflows/components/transition.vue'
 import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
 import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion-simple.vue'
 import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
 import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
 
-import componentFormStatus from '../components/form-status.vue'
 import componentActivities from '../components/activities.vue'
 import componentTimeline from '../components/timeline.vue'
 import componentTitle from '../components/title.vue'
@@ -39,9 +37,7 @@ import componentForm from '../components/form.vue'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-workflow-transition': componentWorkflowTransition,
         'component-subscription': componentSubscription,
-        'component-form-status': componentFormStatus,
         'component-discussion': componentDiscussion,
         'component-activities': componentActivities,
         'component-action': componentAction,
@@ -147,22 +143,7 @@ export default {
                 object_utils.translateEnum(translations.workflow_statuses, 'column_enum_status', ticket.status)
             "
         >
-            <template v-slot:actions>
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <component-workflow-transition
-                            cloud-module="help/ticket"
-                            translations-path="help.workflows"
-                            :cloud-id="ticket_id"
-                            v-model="new_ticket_status"
-                            :handle-patch="false"
-                        >
-                        </component-workflow-transition>
-                    </div>
-                </div>
-            </template>
         </component-title>
-        <component-form-status :selected-status="new_ticket_status" />
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
                 <component-form v-if="data.ticket" view-type="show"></component-form>
