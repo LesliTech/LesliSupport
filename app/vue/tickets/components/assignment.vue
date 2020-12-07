@@ -34,7 +34,7 @@ export default {
         return {
             active_tab: 1,
             main_route: '/help/tickets',
-            users_route: '/lock/users.json?role=kop,callcenter,api&type=exclude',
+            users_route: '/lock/users/list.json?role=kop,callcenter,api&type=exclude',
             translations: {
                 main: I18n.t('help.ticket/assignments'),
                 core: I18n.t('core.shared'),
@@ -278,7 +278,16 @@ export default {
                     {{ props.row.email }}
                 </b-table-column>
                 <b-table-column field="role" :label="translations.users.view_table_header_role">
-                    {{ object_utils.translateEnum(translations.roles, 'column_enum_role', props.row.role) }}
+                    <span>
+                        <span v-for="role in props.row.roles" :key="`employee-${props.row.id}-${role}`">
+                            <b-tooltip type="is-white" :label="object_utils.translateEnum(translations.roles, 'column_enum_role', role.name)">
+                                <b-tag type="is-white">{{
+                                    object_utils.extractInitials(object_utils.translateEnum(translations.roles, 'column_enum_role', role.name))
+                                }}</b-tag>
+                                &nbsp;
+                            </b-tooltip>
+                        </span>
+                    </span>
                 </b-table-column>
                 <b-table-column field="actions" label="">
                     <b-checkbox :disabled="props.row.submitting" size="is-small" v-model="props.row.checked" @input="submitAssignment(props.row)" />
