@@ -83,11 +83,13 @@ export default {
         <component-header 
             :title="translations.main.view_title_main"
         >
-            <div class="buttons">
-                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
-                    <b-icon icon="plus" size="is-small" />
-                    <span>{{ translations.main.view_btn_create }}</span>
-                </router-link>
+            <div class="navbar-item">
+                <div class="buttons">
+                    <router-link class="button" to="/">
+                        <b-icon icon="list" size="is-small" />
+                        <span>{{ translations.core.view_btn_list }}</span>
+                    </router-link>
+                </div>
             </div>
         </component-header>
         <div class="card">
@@ -99,11 +101,6 @@ export default {
                     <router-link :to="`/${ticket_category_id}/edit`">
                         <i class="fas fa-edit"></i>
                         {{translations.core.view_btn_edit}}
-                    </router-link>
-                    <router-link to="/">
-                        &nbsp;&nbsp;&nbsp;
-                        <i class="fas fa-undo"></i>
-                        {{translations.core.view_btn_return}}
                     </router-link>
                 </div>
             </div>

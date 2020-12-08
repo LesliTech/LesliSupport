@@ -33,7 +33,8 @@ export default {
     data(){
         return {
             translations: {
-                main: I18n.t('help.tickets')
+                main: I18n.t('help.tickets'),
+                core: I18n.t('core.shared')
             },
             ticket: null,
         }
@@ -67,6 +68,14 @@ export default {
 <template>
     <section class="application-component">
         <component-header :title="translations.main.view_title_main" >
+            <div class="navbar-item">
+                <div class="buttons">
+                    <router-link class="button" to="/">
+                        <b-icon icon="list" size="is-small" />
+                        <span>{{ translations.core.view_btn_list }}</span>
+                    </router-link>
+                </div>
+            </div>
         </component-header>
         <component-form v-if="data.ticket" view-type="new"></component-form>
     </section>

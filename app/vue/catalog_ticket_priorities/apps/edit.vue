@@ -48,7 +48,8 @@ export default {
             ticket_priority: null,
             ticket_priority_id: null,
             translations: {
-                main: I18n.t('help.catalog/ticket_priorities')
+                main: I18n.t('help.catalog/ticket_priorities'),
+                core: I18n.t('core.shared')
             },
             index_abilities: this.abilities.privilege('tickets', 'cloud_help')
         }
@@ -99,11 +100,13 @@ export default {
         <component-header 
             :title="translations.main.view_title_main"
         >
-            <div class="buttons">
-                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
-                    <b-icon icon="plus" size="is-small" />
-                    <span>{{ translations.main.view_btn_create }}</span>
-                </router-link>
+            <div class="navbar-item">
+                <div class="buttons">
+                    <router-link class="button" to="/">
+                        <b-icon icon="list" size="is-small" />
+                        <span>{{ translations.core.view_btn_list }}</span>
+                    </router-link>
+                </div>
             </div>
         </component-header>
         <component-form v-if="ticket_priority" :ticket-priority="ticket_priority" view-type="edit"/>

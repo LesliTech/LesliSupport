@@ -38,7 +38,8 @@ export default {
     data(){
         return {
             translations: {
-                main: I18n.t('help.catalog/ticket_categories')
+                main: I18n.t('help.catalog/ticket_categories'),
+                core: I18n.t('core.shared')
             }
         }
     }
@@ -49,6 +50,14 @@ export default {
         <component-header 
             :title="translations.main.view_title_main"
         >
+            <div class="navbar-item">
+                <div class="buttons">
+                    <router-link class="button" to="/">
+                        <b-icon icon="list" size="is-small" />
+                        <span>{{ translations.core.view_btn_list }}</span>
+                    </router-link>
+                </div>
+            </div>
         </component-header>
         <component-form></component-form>
     </section>

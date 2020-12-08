@@ -143,6 +143,16 @@ export default {
                 object_utils.translateEnum(translations.workflow_statuses, 'column_enum_status', ticket.status)
             "
         >
+            <template v-slot:actions>
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <router-link class="button" to="/">
+                            <b-icon icon="list" size="is-small" />
+                            <span>{{ translations.core.view_btn_list }}</span>
+                        </router-link>
+                    </div>
+                </div>
+            </template>
         </component-title>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
