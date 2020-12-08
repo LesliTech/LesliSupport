@@ -212,11 +212,6 @@ export default {
                     <i class="fas fa-eye"></i>
                         {{translations.core.view_btn_show}}
                 </router-link>
-                <router-link :to="`/`">
-                    &nbsp;&nbsp;&nbsp;
-                    <i class="fas fa-undo"></i>
-                    {{translations.core.view_btn_return}}
-                </router-link>
             </div>
         </div>
         <div class="card-content">
