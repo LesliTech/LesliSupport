@@ -1,5 +1,4 @@
 =begin
-
 Copyright (c) 2020, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
@@ -16,7 +15,6 @@ For more information read the license file including with this software.
 // · 
 
 =end
-
 module CloudHelp
     class Engine < ::Rails::Engine
         isolate_namespace CloudHelp
@@ -30,5 +28,9 @@ module CloudHelp
             end
         end
 
+        # register templates path in the core
+        config.generators do |g|
+            g.templates.unshift File::expand_path('../../../../../lib/templates', __FILE__)
+        end
     end
 end
