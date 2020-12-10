@@ -195,13 +195,6 @@ export default {
                 <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
                 <span v-else>{{translations.main.view_title_edit}}</span>
             </h2>
-            <div class="card-header-icon">
-                <router-link to="/">
-                    &nbsp;&nbsp;&nbsp;
-                    <i class="fas fa-undo"></i>
-                    {{translations.core.view_btn_return}}
-                </router-link>
-            </div>
         </div>
         <!---------------------------------------  END CARD HEADER  --------------------------------------->
 

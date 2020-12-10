@@ -291,6 +291,17 @@ export default {
                 this.auto_assignment = false
             }
         }
+    },
+
+    computed: {
+        editorType(){
+            console.log(this.viewType)
+            if(this.viewType == 'show'){
+                return 'read'
+            }else{
+                return 'full'
+            }
+        }
     }
 }
 </script>
@@ -312,11 +323,6 @@ export default {
                 <router-link v-if="viewType == 'show' && ticket.editable" :to="`/${ticket_id}/edit`">
                     <i class="fas fa-edit"></i>
                     {{translations.core.view_btn_edit}}
-                </router-link>
-                <router-link :to="`/`">
-                    &nbsp;&nbsp;&nbsp;
-                    <i class="fas fa-undo"></i>
-                    {{translations.core.view_btn_return}}
                 </router-link>
             </div>
         </div>
@@ -456,7 +462,7 @@ export default {
                             <div class="field">
                                 <label class="label">{{translations.main.column_description}}</label>
                                 <div class="control">
-                                    <component-rich-text-editor v-model="ticket.description">
+                                    <component-rich-text-editor v-model="ticket.description" :type="editorType">
                                     </component-rich-text-editor>
                                 </div>
                             </div>
