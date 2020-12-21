@@ -2,6 +2,7 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
 =begin
+
 Copyright (c) 2020, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
