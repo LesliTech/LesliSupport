@@ -32,6 +32,9 @@ For more information read the license file including with this software.
 
         has_many :assignments,      foreign_key: "cloud_help_slas_id"
 
+        after_update :verify_default_sla
+        after_create :verify_default_sla
+
 =begin
 @return [Hash] Detailed information about the sla. Including, *priority*,
     *full* *category* *path*, *type*, *creation* *user*, *assignment* *type*
@@ -339,5 +342,23 @@ For more information read the license file including with this software.
                 category: "action_destroy"
             )
         end
+
+        def destroy
+            if default
+                errors.add(:base, :cannot_delete_default_sla)
+                return false
+            end
+
+            super
+        end
+
+        private
+
+        def verify_default_sla
+            if default
+                Sla.where.not(id: id).where(account: account).update_all(default: false)
+            end
+        end
+
     end
 end

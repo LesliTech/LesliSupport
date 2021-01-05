@@ -243,7 +243,7 @@ export default {
                         </div>
                     </form>
                 </b-tab-item>
-                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
+                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit' && ! sla.default">
                     <span class="has-text-danger">
                         {{translations.main.view_text_delete_confirmation}}
                     </span>
