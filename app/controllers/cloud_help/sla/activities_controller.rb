@@ -1,62 +1,24 @@
 require_dependency "cloud_help/application_controller"
 
 module CloudHelp
-  class Sla::ActivitiesController < ApplicationController
-    before_action :set_sla_activity, only: [:show, :edit, :update, :destroy]
+=begin
 
-    # GET /sla/activities
-    def index
-      @sla_activities = Sla::Activity.all
+Copyright (c) 2020, all rights reserved.
+
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
+transmission, publication is strictly forbidden.
+
+For more information read the license file including with this software.
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+
+=end   
+    class Sla::ActivitiesController < CloudObject::ActivitiesController
     end
-
-    # GET /sla/activities/1
-    def show
-    end
-
-    # GET /sla/activities/new
-    def new
-      @sla_activity = Sla::Activity.new
-    end
-
-    # GET /sla/activities/1/edit
-    def edit
-    end
-
-    # POST /sla/activities
-    def create
-      @sla_activity = Sla::Activity.new(sla_activity_params)
-
-      if @sla_activity.save
-        redirect_to @sla_activity, notice: 'Activity was successfully created.'
-      else
-        render :new
-      end
-    end
-
-    # PATCH/PUT /sla/activities/1
-    def update
-      if @sla_activity.update(sla_activity_params)
-        redirect_to @sla_activity, notice: 'Activity was successfully updated.'
-      else
-        render :edit
-      end
-    end
-
-    # DELETE /sla/activities/1
-    def destroy
-      @sla_activity.destroy
-      redirect_to sla_activities_url, notice: 'Activity was successfully destroyed.'
-    end
-
-    private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_sla_activity
-        @sla_activity = Sla::Activity.find(params[:id])
-      end
-
-      # Only allow a trusted parameter "white list" through.
-      def sla_activity_params
-        params.fetch(:sla_activity, {})
-      end
-  end
 end

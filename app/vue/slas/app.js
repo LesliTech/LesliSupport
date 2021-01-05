@@ -44,4 +44,10 @@ app("CloudHelp", "[list|new|edit|show]", "/help/slas", [{
 },{
     path: "/:id/edit",
     component: appEdit
-}])
+}],{
+    sla: null,
+    reload: {
+        activities: false,
+        sla: false
+    }
+})

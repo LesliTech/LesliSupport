@@ -112,6 +112,7 @@ export default {
         },
 
         deleteSubscriptions(){
+            this.bus.$off('update:/help/sla/workflow')
             this.bus.$off('post:/help/tickets/files-complete')
             this.bus.$off('delete:/help/tickets/files')
         },
@@ -295,7 +296,6 @@ export default {
 
     computed: {
         editorType(){
-            console.log(this.viewType)
             if(this.viewType == 'show'){
                 return 'read'
             }else{

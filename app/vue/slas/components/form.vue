@@ -1,6 +1,5 @@
 <script>
 /*
-
 Copyright (c) 2020, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
@@ -14,8 +13,7 @@ transmission, publication is strictly forbidden.
 For more information read the license file including with this software.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-
+// ·
 */
 
 
@@ -24,66 +22,113 @@ For more information read the license file including with this software.
 import componentRichTextEditor from 'LesliCoreVue/components/forms/richtext-editor.vue'
 
 
+// · 
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
         'component-rich-text-editor': componentRichTextEditor
     },
+
+    props: {
+        viewType: {
+            type: String,
+            default: 'new'
+        }
+    },
+
     data() {
         return {
-            translations: {
-                form: I18n.t('cloud_help.slas.form'),
-                shared: I18n.t('cloud_help.slas.shared'),
+            main_route: '/help/slas',
+            submitting: false,
+            deleting: false,
+            translations:{
+                main: I18n.t('help.slas'),
+                core: I18n.t('core.shared'),
+                shared: I18n.t('help.shared')
             },
             sla_id: null,
-            sla: { }
+            sla: {}
         }
     },
     mounted() {
-        this.setSlaId()
+        this.setSla()
+        this.setSubscriptions()
     },
-    methods: {
 
-        setSlaId(){
-            if (this.$route.params.id) {
-                this.sla_id = this.$route.params.id
-                this.getSla()
-            }
+    beforeDestroy(){
+        this.deleteSubscriptions()
+    },
+
+    methods: {
+        setSla(){
+            this.sla_id = this.$route.params.id
+            this.sla = this.data.sla
+        },
+        
+        setSubscriptions(){
+            this.bus.subscribe('update:/help/sla/workflow', (status)=>{
+                this.sla.cloud_help_sla_workflow_statuses_id = status.id
+                this.sla.status = status.name
+                this.sla.status_type = status.status_type
+            })
+        },
+
+        deleteSubscriptions(){
+            this.bus.$off('update:/help/sla/workflow')
         },
 
         submitSla(event){
             if (event) { event.preventDefault() }
-            if(this.sla_id){
-                this.putSla()
-            }else{
+
+            if(this.viewType == 'new'){
                 this.postSla()
+            }else if(this.viewType == 'edit'){
+                this.putSla()
             }
         },
 
-        putSla() {
-            this.http.put(`/help/slas/${this.sla_id}`, {
-                sla: this.sla
-            }).then(result => {
-                if (result.successful) {
-                    this.alert(this.translations.form.messages.update.successful,'success')
-                    this.$router.push(`/${this.sla_id}`)
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
+        postSla(event) {
+            if(event){
+                e.preventDefault()
+            }
 
-        },
-
-        postSla() {
-            this.http.post("/help/slas", {
+            let data = {
                 sla: this.sla
-            }).then(result => {
+            }
+            let url = `${this.main_route}.json`
+            this.submitting = true
+
+            this.http.post(url, data).then(result => {
+                this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.form.messages.create.successful,'success')
+                    this.alert(this.translations.main.messages_success_sla_created, 'success')
                     this.$router.push(`/${result.data.id}`)
+                } else {
+                    this.alert(result.error.message, 'danger')
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        putSla(event) {
+            if(event){
+                event.preventDefault()
+            }
+
+            let data = {
+                sla: this.sla
+            }
+            let url = `${this.main_route}/${this.sla_id}.json`
+            this.submitting = true
+
+            this.http.put(url, data).then(result => {
+                this.submitting = false
+                if (result.successful) {
+                    this.alert(this.translations.main.messages_success_sla_updated, 'success')
+                    this.reloadSlaActivities()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
@@ -91,109 +136,133 @@ export default {
 
         },
 
-        getSla() {
-            this.http.get(`/help/slas/${this.sla_id}.json`).then(result => {
+        deleteSla() {
+            let url = `${this.main_route}/${this.sla_id}.json`
+            this.deleting = true
+
+            this.http.delete(url).then(result => {
+                this.deleting = false
                 if (result.successful) {
-                    this.sla = result.data
+                    this.alert(this.translations.main.messages_success_sla_destroyed, 'success')
+                    this.$router.push('/')
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.alert(result.error.message, 'danger')
                 }
             }).catch(error => {
                 console.log(error)
             })
-        }
+        },
 
+        reloadSlaActivities(){
+            this.data.reload.activities = true
+        }
     }
 }
 </script>
 <template>
     <div class="card">
         <div class="card-header">
-            <h2 class="card-header-title">
-                {{translations.shared.name}}
-            </h2>
-            <div class="card-header-icon">
-                <router-link v-if="sla_id" :to="`/${sla_id}`">
-                    <i class="fas fa-eye"></i>
-                    {{translations.shared.actions.show}}
-                </router-link>
-                <router-link :to="`/`">
-                    &nbsp;&nbsp;&nbsp;
-                    <i class="fas fa-undo"></i>
-                    {{translations.shared.actions.return}}
-                </router-link>
+            <div class="card-header-title">
+                <h4 class="title is-4">
+                    <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
+                    <span v-else>{{translations.main.view_title_edit}}</span>
+                </h4>
             </div>
         </div>
-        <div class="card-content">
-            <form @submit="submitSla">
-                <div class="columns">
-                    <div class="column is-5">
-                        <b-field :label="translations.shared.fields.name">
-                            <b-input v-model="sla.name" required="true"></b-input>
-                        </b-field>
-                    </div>
-                    <div class="column is-3">
-                        <b-field :label="translations.shared.fields.expected_response_time">
-                            <b-input v-model="sla.expected_response_time" type="number" min="0" required="true"></b-input>
-                        </b-field>
-                    </div>
-                    <div class="column is-3">
-                        <b-field :label="translations.shared.fields.expected_resolution_time">
-                            <b-input v-model="sla.expected_resolution_time" type="number" min="0" required="true"></b-input>
-                        </b-field>
-                    </div>
-                    <div class="column is-1">
-                        <div class="field">
-                            <label class="label is-w-100">{{translations.shared.fields.default_sla}}</label>
-                            <div class="has-text-centered">
-                                <input id="sla_default" class="is-checkradio" type="checkbox" v-model="sla.default">
-                                <label for="sla_default"></label>
+        <div class="card-content subtabs">
+            <b-tabs>
+                <b-tab-item :label="translations.shared.view_tab_title_general_information">
+                    <form @submit="submitSla">
+                        <div class="columns is-multiline">
+                            <div class="column is-10">
+                                <b-field>
+                                    <template v-slot:label>
+                                        {{translations.main.column_name}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-input v-model="sla.name" required></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-2">
+                                <b-field :label="translations.main.column_default">
+                                    <b-checkbox v-model="sla.default"></b-checkbox>
+                                </b-field>
+                            </div>
+                            <div class="column is-3">
+                                <b-field :message="translations.main.column_expected_response_time_description" >
+                                    <template v-slot:label>
+                                        {{translations.main.column_expected_response_time}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-input v-model="sla.expected_response_time" required></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-3">
+                                <b-field :message="translations.main.column_expected_resolution_time_description" >
+                                    <template v-slot:label>
+                                        {{translations.main.column_expected_resolution_time}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-input v-model="sla.expected_resolution_time" required></b-input>
+                                </b-field>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <b-field :label="translations.shared.fields.body">
-                    <component-rich-text-editor v-model="sla.body" />
-                </b-field>
-                <b-field :label="translations.shared.fields.provider_repercussions">
-                    <component-rich-text-editor v-model="sla.provider_repercussions" />
-                </b-field>
-                <b-field :label="translations.shared.fields.exceptions">
-                    <component-rich-text-editor v-model="sla.exceptions" />
-                </b-field>
-                <div class="columns">
-                    <div v-if="sla_id" class="column">
+
                         <div class="field">
-                            <small>
-                                <span class="has-text-weight-bold">
-                                    {{ `${translations.shared.fields.created_at}:` }}
-                                </span>
-                                {{ date.toLocalFormat(sla.created_at,false,true) }}
-                                <br>
-                                <span class="has-text-weight-bold">
-                                    {{ `${translations.shared.fields.updated_at}:` }}
-                                </span>
-                                {{ date.toLocalFormat(sla.updated_at,false,true) }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <div class="actions has-text-right">
-                                <button class="button is-primary" type="submit">
-                                    <span v-if="sla_id">{{translations.form.actions.update}}</span>
-                                    <span v-else>{{translations.form.actions.create}}</span>
-                                </button>
+                            <label class="label">{{translations.main.column_body}}</label>
+                            <div class="control">
+                                <component-rich-text-editor v-model="sla.body" type="full">
+                                </component-rich-text-editor>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </form>
+
+                        <div class="field">
+                            <label class="label">{{translations.main.column_provider_repercussions}}</label>
+                            <div class="control">
+                                <component-rich-text-editor v-model="sla.provider_repercussions" type="full">
+                                </component-rich-text-editor>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">{{translations.main.column_exceptions}}</label>
+                            <div class="control">
+                                <component-rich-text-editor v-model="sla.exceptions" type="full">
+                                </component-rich-text-editor>
+                            </div>
+                        </div>
+
+                        <div class="field has-text-right">
+                            <b-button v-if="viewType != 'show'" type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
+                                <span v-if="submitting">
+                                    <i class="fas fa-circle-notch fa-spin"></i>
+                                    &nbsp; {{translations.core.view_btn_saving}}
+                                </span>
+                                <span v-else>
+                                    <i class="fas fa-save"></i>
+                                    &nbsp; {{translations.core.view_btn_save}}
+                                </span>
+                            </b-button>
+                        </div>
+                    </form>
+                </b-tab-item>
+                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
+                    <span class="has-text-danger">
+                        {{translations.main.view_text_delete_confirmation}}
+                    </span>
+                    <br>
+                    <br>
+                    <!---------------------------------- START DELETE BUTTON ---------------------------------->
+                    <b-field v-if="viewType != 'new'">
+                        <b-button type="is-danger" @click="deleteSla" expanded class="submit-button" :disabled="deleting">
+                            <span v-if="deleting">
+                                <i class="fas fa-spin fa-circle-notch"></i> {{translations.core.view_btn_deleting}}
+                            </span>
+                            <span v-else>
+                                <i class="fas fa-trash-alt"></i> {{translations.core.view_btn_delete}}
+                            </span>
+                        </b-button>
+                    </b-field>
+                    <!----------------------------------  END DELETE BUTTON  ---------------------------------->
+                </b-tab-item>
+            </b-tabs>
         </div>
     </div>
 </template>
-<style scoped>
-    .is-w-100{
-        width: 100%;
-    }
-</style>

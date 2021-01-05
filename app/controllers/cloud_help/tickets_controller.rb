@@ -58,6 +58,8 @@ For more information read the license file including with this software.
                 format.html { }
                 format.json do
                     set_ticket
+                    return respond_with_not_found unless @ticket 
+
                     respond_with_successful(@ticket.show(current_user, @query))
                 end
             end
@@ -311,7 +313,7 @@ For more information read the license file including with this software.
         def set_ticket
             ticket_id = params[:id] unless params[:id].blank?
             ticket_id = params[:ticket_id] unless params[:ticket_id].blank?
-            @ticket = current_user.account.help.tickets.find(ticket_id)
+            @ticket = current_user.account.help.tickets.find_by(id: ticket_id)
         end
         
 =begin
