@@ -135,6 +135,7 @@ For more information read the license file including with this software.
             ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
             ticket.account = current_user.account.help
             ticket.user_creator = current_user
+            ticket.set_sla
             ticket.set_workflow
 
             if ticket.save

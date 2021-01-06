@@ -8,7 +8,6 @@ class CreateCloudHelpSlaAssociations < ActiveRecord::Migration[6.0]
         end
 
         add_reference :cloud_help_sla_associations, :cloud_help_catalog_ticket_types, foreign_key: true, index: {name: "help_sla_associations_catalog_ticket_types"}
-        
         add_reference :cloud_help_sla_associations, :cloud_help_slas, foreign_key: true, index: {name: "help_sla_associations_slas"}
     end
 end

@@ -30,7 +30,7 @@ For more information read the license file including with this software.
         has_many :timelines,        foreign_key: "cloud_help_slas_id"
         has_many :activities,       foreign_key: "cloud_help_slas_id"
 
-        has_many :assignments,      foreign_key: "cloud_help_slas_id"
+        has_many :associations,      foreign_key: "cloud_help_slas_id"
 
         after_update :verify_default_sla
         after_create :verify_default_sla
@@ -83,6 +83,12 @@ For more information read the license file including with this software.
             .where("cloud_help_slas.id = #{id}").first.attributes
 
             data[:editable] = self.is_editable_by?(current_user)
+            data[:association_attributes] = associations.map do |association|
+                association_attributes = association.attributes
+                association_attributes["ticket_type_name"] = association.ticket_type.name
+                
+                association_attributes
+            end
             
             return data
         end
@@ -254,6 +260,43 @@ For more information read the license file including with this software.
                 description: sla.status.name,
                 field_name: "cloud_help_workflow_statuses_id",
                 value_to: sla.status.name
+            )
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that created the sla association
+        # @param [CloudHelp::Sla] The sla for which a new association was created
+        # @param [CloudHelp::Sla::Association] The association that was created
+        # @description Creates an activity for this sla indicating which association was created
+        # Example
+        #   params = {...}
+        #   sla = CloudHelp::Sla.create(params)
+        #   association = sla.associations.create!(ticket_type: CloudHelp::Catalog::TicketTypes.first)
+        #   CloudHelp::Sla.log_activity_create_association(User.find(1), sla, association)
+        def self.log_activity_create_association(current_user, sla, association)
+            sla.activities.create(
+                user_creator: current_user,
+                category: "action_create_association",
+                description: association.ticket_type.name
+            )
+        end
+
+        # @return [void]
+        # @param current_user [::User] The user that destroyed the sla association
+        # @param [CloudHelp::Sla] The sla for which an existing association was destroyed
+        # @param [CloudHelp::Sla::Association] The association that was destroyed
+        # @description Creates an activity for this sla indicating which association was destroyed
+        # Example
+        #   params = {...}
+        #   sla = CloudHelp::Sla.create(params)
+        #   association = sla.associations.last
+        #   association.destroy!
+        #   CloudHelp::Sla.log_activity_destroy_association(User.find(1), sla, association)
+        def self.log_activity_destroy_association(current_user, sla, association)
+            sla.activities.create(
+                user_creator: current_user,
+                category: "action_destroy_association",
+                description: association.ticket_type.name
             )
         end
 

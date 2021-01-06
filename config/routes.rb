@@ -126,7 +126,8 @@ CloudHelp::Engine.routes.draw do
             post "list" => :index
 
             get :options
-            get "/files/options",               to: "ticket/files#options"
+            get "/files/options",               to: "sla/files#options"
+            get "/associations/options",        to: "sla/associations#options"
         end
         scope module: :sla do
             resources :actions

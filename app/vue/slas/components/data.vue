@@ -30,9 +30,9 @@ export default {
     },
 
     props: {
-        viewType: {
-            type: String,
-            default: 'new'
+        shadowless: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -42,7 +42,8 @@ export default {
             translations:{
                 main: I18n.t('help.slas'),
                 core: I18n.t('core.shared'),
-                shared: I18n.t('help.shared')
+                shared: I18n.t('help.shared'),
+                ticket_types: I18n.t('help.catalog/ticket_types')
             },
             sla_id: null,
             sla: {}
@@ -57,11 +58,20 @@ export default {
             this.sla_id = this.$route.params.id
             this.sla = this.data.sla
         }
+    },
+
+    watch: {
+        'data.reload.sla'(){
+            if(this.data.reload.sla){
+                this.setSla()
+                this.data.reload.sla = false
+            }
+        }
     }
 }
 </script>
 <template>
-    <div class="card">
+    <div :class="['card', {'is-shadowless': shadowless}]">
         <div class="card-content subtabs">
             <div class="columns is-multiline">
                 <div class="column is-10">
@@ -87,6 +97,15 @@ export default {
                 <div class="column is-3">
                     <b-field :label="translations.main.column_expected_resolution_time" >
                         <p> {{sla.expected_resolution_time}}</p>
+                    </b-field>
+                </div>
+                <div class="column is-6">
+                    <b-field :label="`${translations.main.view_tab_title_associations} (${translations.ticket_types.view_title_main})`">
+                        <b-taglist>
+                            <b-tag v-for="association in sla.association_attributes" :key="association.id">
+                                {{association.ticket_type_name}}
+                            </b-tag>
+                        </b-taglist>
                     </b-field>
                 </div>
             </div>

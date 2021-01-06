@@ -30,7 +30,9 @@ For more information read the license file including with this software.
             action_status:                  "action_status",
             action_workflow_action_failed:  "action_workflow_action_failed",
             action_create_file:             "action_create_file",
-            action_destroy_file:            "action_destroy_file"
+            action_destroy_file:            "action_destroy_file",
+            action_create_association:      "action_create_association",
+            action_destroy_association:     "action_destroy_association" 
         }
     end
 end

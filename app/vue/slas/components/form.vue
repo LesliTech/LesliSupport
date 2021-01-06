@@ -15,18 +15,18 @@ For more information read the license file including with this software.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // ·
 */
-
+import componentRichTextEditor from 'LesliCoreVue/components/forms/richtext-editor.vue'
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentRichTextEditor from 'LesliCoreVue/components/forms/richtext-editor.vue'
-
+import componentAssociations from './associations.vue'
 
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
-        'component-rich-text-editor': componentRichTextEditor
+        'component-rich-text-editor': componentRichTextEditor,
+        'component-associations': componentAssociations
     },
 
     props: {
@@ -242,6 +242,9 @@ export default {
                             </b-button>
                         </div>
                     </form>
+                </b-tab-item>
+                <b-tab-item :label="translations.main.view_tab_title_associations" v-if="viewType != 'new'">
+                    <component-associations v-if="sla_id" :sla-id="sla_id"></component-associations>
                 </b-tab-item>
                 <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit' && ! sla.default">
                     <span class="has-text-danger">

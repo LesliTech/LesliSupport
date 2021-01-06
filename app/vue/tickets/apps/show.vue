@@ -84,6 +84,7 @@ export default {
                 if (result.successful) {
                     this.ticket = this.parseBackendData(result.data)
                     this.data.ticket = this.ticket
+                    this.data.sla = this.ticket.sla
                 }else{
                     this.alert(result.error.message,'danger')
                 }
