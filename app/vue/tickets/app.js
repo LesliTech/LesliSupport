@@ -48,7 +48,8 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
     reload: {
         timelines: false,
         activities: false,
-        ticket: false
+        ticket: false,
+        sla: false
     },
     ticket_images: [],
     events: {

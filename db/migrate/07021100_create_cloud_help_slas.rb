@@ -2,11 +2,11 @@ class CreateCloudHelpSlas < ActiveRecord::Migration[6.0]
     def change
         create_table :cloud_help_slas do |t|
             t.string    :name
-            t.text      :body
             t.integer   :expected_response_time
             t.integer   :expected_resolution_time
-            t.text      :provider_repercussions
-            t.text      :exceptions
+            t.json      :body
+            t.json      :provider_repercussions
+            t.json      :exceptions
             t.boolean   :default, default: false
 
             # Main user
@@ -21,7 +21,7 @@ class CreateCloudHelpSlas < ActiveRecord::Migration[6.0]
         add_reference   :cloud_help_slas, :users, foreign_key: true, index: { name: "help_slas_users" }
         add_foreign_key :cloud_help_slas, :users, column: :user_main_id
 
-        # reference from Tickets to Slas
-        add_reference   :cloud_help_tickets, :cloud_help_slas, foreign_key: true, index: {name: "help_tickets_slas"}
+        add_reference   :cloud_help_slas,   :cloud_help_workflow_statuses,  foreign_key: true, index: { name: "help_slas_workflow_statuses" }
+        add_reference   :cloud_help_tickets,:cloud_help_slas,               foreign_key: true, index: {name: "help_tickets_slas"}
     end
 end
