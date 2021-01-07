@@ -315,16 +315,6 @@ export default {
                     <span v-else>{{translations.main.view_title_show}}</span>
                 </h4>
             </div>
-            <div class="card-header-icon">
-                <router-link v-if="viewType == 'edit'" :to="`/${ticket_id}`">
-                    <i class="fas fa-eye"></i>
-                    {{translations.core.view_btn_show}}
-                </router-link>
-                <router-link v-if="viewType == 'show' && ticket.editable" :to="`/${ticket_id}/edit`">
-                    <i class="fas fa-edit"></i>
-                    {{translations.core.view_btn_edit}}
-                </router-link>
-            </div>
         </div>
         <div class="card-content subtabs">
             <b-tabs>

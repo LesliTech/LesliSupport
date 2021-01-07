@@ -162,16 +162,26 @@ export default {
         >
             <template v-slot:actions>
                 <div class="navbar-item">
+                    <component-workflow-transition
+                        v-if="!data.reload.ticket"
+                        cloud-module="help/ticket"
+                        translations-path="help.workflows"
+                        :cloud-id="ticket_id"
+                        v-model="new_ticket_status"
+                        :handle-patch="false"
+                    >
+                    </component-workflow-transition>
+                </div>
+                <div class="navbar-item">
                     <div class="buttons">
-                        <component-workflow-transition
-                            v-if="!data.reload.ticket"
-                            cloud-module="help/ticket"
-                            translations-path="help.workflows"
-                            :cloud-id="ticket_id"
-                            v-model="new_ticket_status"
-                            :handle-patch="false"
-                        >
-                        </component-workflow-transition>
+                        <router-link class="button" to="/">
+                            <b-icon icon="list" size="is-small" />
+                            <span>{{ translations.core.view_btn_list }}</span>
+                        </router-link>
+                        <router-link class="button" :to="`/${ticket_id}`">
+                            <b-icon icon="eye" size="is-small" />
+                            <span>{{ translations.core.view_btn_show }}</span>
+                        </router-link>
                     </div>
                 </div>
             </template>

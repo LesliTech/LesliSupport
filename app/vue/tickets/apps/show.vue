@@ -150,6 +150,10 @@ export default {
                             <b-icon icon="list" size="is-small" />
                             <span>{{ translations.core.view_btn_list }}</span>
                         </router-link>
+                        <router-link class="button" :to="`/${ticket_id}/edit`" v-if="ticket.editable">
+                            <b-icon icon="edit" size="is-small" />
+                            <span>{{ translations.core.view_btn_edit }}</span>
+                        </router-link>
                     </div>
                 </div>
             </template>
