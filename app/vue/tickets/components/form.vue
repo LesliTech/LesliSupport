@@ -24,13 +24,15 @@ import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 
 import componentAssignments from '../components/assignment.vue'
+import componentSlaData from '../../slas/components/data.vue'
 // · 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     components: {
         'component-rich-text-editor': componentRichTextEditor,
         'vc-date-picker': DatePicker,
-        'component-assignments': componentAssignments
+        'component-assignments': componentAssignments,
+        'component-sla-data': componentSlaData
     },
 
     props: {
@@ -112,6 +114,7 @@ export default {
         },
 
         deleteSubscriptions(){
+            this.bus.$off('update:/help/sla/workflow')
             this.bus.$off('post:/help/tickets/files-complete')
             this.bus.$off('delete:/help/tickets/files')
         },
@@ -174,6 +177,10 @@ export default {
             this.http.put(url, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
+                    this.$nextTick(()=>{
+                        this.$set(this.data, 'sla', result.data.sla)
+                        this.data.reload.sla = true
+                    })
                     this.alert(this.translations.main.messages_info_ticket_updated, 'success')
                     this.reloadTicket()
                 }else{
@@ -295,7 +302,6 @@ export default {
 
     computed: {
         editorType(){
-            console.log(this.viewType)
             if(this.viewType == 'show'){
                 return 'read'
             }else{
@@ -486,6 +492,9 @@ export default {
                 </b-tab-item>
                 <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new'">
                     <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
+                </b-tab-item>
+                <b-tab-item :label="translations.main.view_tab_title_sla" v-if="viewType != 'new'">
+                    <component-sla-data v-if="data.sla" shadowless></component-sla-data>
                 </b-tab-item>
                 <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
                     <span class="has-text-danger">

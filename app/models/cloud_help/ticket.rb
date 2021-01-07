@@ -27,6 +27,7 @@ For more information read the license file including with this software.
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id"
         belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id"
         belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
+        belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id"
 
         has_many :discussions,  foreign_key: "cloud_help_tickets_id"
         has_many :actions,      foreign_key: "cloud_help_tickets_id"
@@ -134,6 +135,7 @@ For more information read the license file including with this software.
             data[:category] = category.full_path
             data[:assignment_attributes] = assignments_info
             data[:editable] = self.is_editable_by?(current_user)
+            data[:sla] = self.sla.show(current_user, query)
             
             return data
         end
@@ -412,8 +414,25 @@ For more information read the license file including with this software.
                 end
             end
 
+            # SLA is a special case because it's a foreign key
+            if old_attributes["cloud_help_slas_id"] != new_attributes["cloud_help_slas_id"]
+                old_sla = CloudHelp::Sla.with_deleted.find(old_attributes["cloud_help_slas_id"]).name
+                new_sla = CloudHelp::Sla.with_deleted.find(new_attributes["cloud_help_slas_id"]).name
+                ticket.activities.create(
+                    user_creator: current_user,
+                    description: new_sla,
+                    category: "action_update",
+                    field_name: "cloud_help_slas_id",
+                    value_from: old_sla,
+                    value_to: new_sla
+                )
+            end
+
             # We remove values that are not tracked in the activities
-            old_attributes.except!("id", "created_at", "updated_at")
+            old_attributes.except!(
+                "id", "created_at", "updated_at", "cloud_help_workflow_statuses_id",
+                "cloud_help_catalog_ticket_categories_id", "cloud_help_catalog_ticket_priorities_id", "cloud_help_catalog_ticket_types_id", "cloud_help_slas_id"
+            )
             old_attributes.each do |key, value|
                 if value != new_attributes[key]
                     value_from = value
@@ -504,6 +523,18 @@ For more information read the license file including with this software.
             end
 
             return false
+        end
+
+        def set_sla
+            slas = Sla.where(account: account)
+            
+            selected_sla = slas.joins(:associations).where(
+                "cloud_help_sla_associations.cloud_help_catalog_ticket_types_id = ?", type.id
+            ).first
+
+            selected_sla = slas.find_by(default: true) unless selected_sla
+            
+            self.sla = selected_sla
         end
 
         private
@@ -614,6 +645,8 @@ For more information read the license file including with this software.
     # the *after_update_actions* method will call this method after the update
 =end
         def action_register_type_change(old_type, new_type)
+            self.set_sla
+            self.save!
             new_type = Catalog::TicketType.find(new_type)
             
             # Adding type transfer to timeline
@@ -702,6 +735,6 @@ For more information read the license file including with this software.
                 action: Ticket::Timeline.actions[:deadline_established],
                 description: "#{LC::Date.to_string(deadline)}"
             )
-        end 
+        end
     end
 end

@@ -1,6 +1,5 @@
 <script>
 /*
-
 Copyright (c) 2020, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
@@ -14,40 +13,73 @@ transmission, publication is strictly forbidden.
 For more information read the license file including with this software.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-
+// ·
 */
 
+
+// · List of Imported Components
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
+import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion-simple.vue'
+import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
+import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
+
+import componentActivities from '../components/activities.vue'
+import componentData from '../components/data.vue'
+
+
+
+
+
+// · Component show
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
+    components: {
+        'component-subscription': componentSubscription,
+        'component-discussion': componentDiscussion,
+        'component-activities': componentActivities,
+        'component-action': componentAction,
+        'component-file': componentFile,
+        'component-data': componentData
+    },
     data() {
         return {
             translations: {
-                show: I18n.t('cloud_help.slas.show'),
-                shared: I18n.t('cloud_help.slas.shared'),
+                main: I18n.t('help.slas'),
+                core: I18n.t('core.shared'),
+                shared: I18n.t('help.shared'),
+                workflow_statuses: I18n.t('help.workflow/statuses')
             },
-            sla: {},
             sla_id: null,
-            modal:{
-                active: false
-            }
+            sla: null,
+            new_sla_status: null,
+            active_tab: 0
         }
     },
     mounted() {
-        this.setSlaId()
+        this.sla_id = this.$route.params.id
+        this.getSla()
+        this.setSubscriptions()
     },
     methods: {
-        
-        setSlaId(){
-            if (this.$route.params.id) {
-                this.sla_id = this.$route.params.id
-                this.getSla()
-            }
+
+        setSubscriptions(){
+            this.bus.subscribe('update:/help/sla/workflow', (status)=>{
+                this.sla.cloud_help_sla_workflow_statuses_id = status.id
+                this.sla.status = status.name
+                this.sla.status_initial = status.initial
+                this.sla.status_final = status.final
+                this.sla.status_name = status.name
+                this.sla.status_number = status.number
+            })
         },
 
+        // We publish the sla so the form can use it
         getSla() {
             this.http.get(`/help/slas/${this.sla_id}.json`).then(result => {
                 if (result.successful) {
-                    this.sla = result.data
+                    this.sla = this.parseBackendData(result.data)
+                    this.data.sla = this.sla
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -56,156 +88,86 @@ export default {
             })
         },
 
-        deleteSla(){
-            this.modal.active = false
-            this.http.delete(`/help/slas/${this.sla_id}`).then(result => {
-                if(result.successful){
-                    this.alert(this.translations.show.messages.delete.successful,'success')
-                    this.$router.push('/')
-                }else{
-                    this.alert(result.error.message,'danger')
-                }
-            }).catch(error => {
-                console.log(error)
-            })
+        parseBackendData(sla){
+            if(sla.deadline){
+                sla.deadline = new Date(sla.deadline)
+            }
+
+            if(sla.tags && sla.tags.trim().length > 0){
+                sla.tags = sla.tags.split(',')
+            }else{
+                sla.tags = []
+            }
+
+            if(sla.description){
+                sla.description = JSON.parse(sla.description)
+            }else{
+                sla.description = {}
+            }
+
+            return sla
+        }
+    },
+
+    computed: {
+        activeFilesTab(){
+            return this.active_tab == 2
+        },
+
+        activeDiscussionsTab(){
+            return this.active_tab == 1
+        },
+
+        activeActivitiesTab(){
+            return this.active_tab == 3
         }
     }
 }
 </script>
 <template>
-    <section class="section">
-        <b-modal 
-            :active.sync="modal.active"
-            has-modal-card
-            trap-focus
-            aria-role="dialog"
-            aria-modal
-        >
-            <div class="card">
-                <div class="card-header is-danger">
-                    <h2 class="card-header-title">
-                        {{ translations.show.modal.title }}
-                    </h2>
-                </div>
-                <div class="card-content">
-                    {{ translations.show.modal.body }}
-                </div>
-                <div class="card-footer has-text-right">
-                    <button class="card-footer-item button is-danger" @click="deleteSla">
-                        {{ translations.show.modal.actions.delete }}
-                    </button>
-                    <button class="card-footer-item button is-secondary" @click="modal.active=false">
-                        {{ translations.show.modal.actions.cancel }}
-                    </button>
-                </div>
-            </div>
-        </b-modal>
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    {{ translations.shared.name }}
-                </h2>
-                <div class="card-header-icon">
-                    <router-link :to="`/${sla_id}/edit`">
-                        <i class="fas fa-edit"></i>
-                        {{ translations.shared.actions.edit }}
+    <section v-if="sla" class="application-component">
+        <component-header :title="sla.name">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <router-link class="button" to="/">
+                        <b-icon icon="list" size="is-small" />
+                        <span>{{ translations.core.view_btn_list }}</span>
                     </router-link>
-                    <router-link :to="`/`">
-                        &nbsp;&nbsp;&nbsp;
-                        <i class="fas fa-undo"></i>
-                        {{ translations.shared.actions.return }}
+                    <router-link class="button" :to="`/${sla_id}/edit`">
+                        <b-icon icon="edit" size="is-small" />
+                        <span>{{ translations.core.view_btn_edit }}</span>
                     </router-link>
                 </div>
             </div>
-            <div class="card-content">
-                <div class="columns">
-                    <div class="column">
-                        <div>
-                            <span class="has-text-weight-bold">
-                                {{translations.shared.fields.id}}:
-                                {{ sla.id }}
-                            </span>
-                            <br>
-                            <span class="has-text-weight-bold">
-                                {{translations.shared.fields.name}}:
-                            </span>
-                            {{ sla.name }}
-                            <span v-if="sla.default" class="has-text-weight-bold">
-                                ({{translations.shared.default}})
-                            </span>
-                            <br>
-                            <span class="has-text-weight-bold">
-                                {{translations.shared.fields.expected_response_time}}:
-                                <span class="has-text-danger">
-                                    {{ sla.expected_response_time }}
-                                </span>
-                            </span>,
-                            <span class="has-text-weight-bold">
-                                {{translations.shared.fields.expected_resolution_time}}:
-                                <span class="has-text-danger">
-                                    {{ sla.expected_resolution_time }}
-                                </span>
-                            </span>
+        </component-header>
+        <b-tabs vertical v-model="active_tab">
+            <b-tab-item :label="translations.shared.view_tab_title_general_information">
+                <component-data v-if="data.sla"></component-data>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_discussions">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-title is-shadowless">
+                            <h4 class=" title is-4">
+                                {{translations.core.view_text_discussions}}
+                            </h4>
                         </div>
-                        <hr>
-                        <div>
-                            <span class="has-text-weight-bold">
-                                {{translations.shared.fields.body}}:
-                            </span>
-                            <p class="segment" v-html="sla.body">
-                            </p>
-                        </div>
-                        <hr>
-                        <div>
-                            <span class="has-text-weight-bold">
-                                {{translations.shared.fields.provider_repercussions}}:
-                            </span>
-                            <p class="segment" v-html="sla.provider_repercussions">
-                            </p>
-                        </div>
-                        <hr>
-                        <div>
-                            <span class="has-text-weight-bold">
-                                {{translations.shared.fields.exceptions}}:
-                            </span>
-                            <p class="segment" v-html="sla.exceptions">
-                            </p>
-                        </div>
+                    </div>
+                    <div class="card-content">
+                        <component-discussion cloud-module="help/sla" :cloud-id="sla_id" :active="activeDiscussionsTab"></component-discussion>
                     </div>
                 </div>
-                <div class="columns">
-                    <div class="column">
-                        <small>
-                            <span class="has-text-weight-bold">
-                                {{ translations.shared.fields.created_at }}:
-                            </span>
-                            {{ date.toLocalFormat(sla.created_at,false,true) }}
-                            <br>
-                            <span class="has-text-weight-bold">
-                                {{ translations.shared.fields.updated_at }}:
-                            </span>
-                            {{ date.toLocalFormat(sla.updated_at,false,true) }}
-                        </small>
-                    </div>
-                    <div class="column">
-                        <div class="field">
-                            <div class="actions has-text-right">
-                                <button class="button is-danger" @click="modal.active = true">
-                                    {{ translations.shared.actions.delete }}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_files">
+                <component-file translations-file-types-path="help.sla/files" cloud-module="help/sla" :cloud-id="sla_id" :active="activeFilesTab">
+                </component-file>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_btn_activities">
+                <component-activities :sla-id="sla_id" :active="activeActivitiesTab"></component-activities>
+            </b-tab-item>
+        </b-tabs>
     </section>
 </template>
-<style>
-    .segment ol{
-        padding-left: 2%;
-    }
-    .segment div{
-        text-align: justify;
-    }
-</style>
