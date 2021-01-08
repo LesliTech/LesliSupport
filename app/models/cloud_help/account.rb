@@ -41,6 +41,7 @@ module CloudHelp
         def initialize_account
             Workflow.initialize_data(self)
             Dashboard.initialize_data(self)
+            Sla.initialize_data(self)
             Catalog.initialize_data(self)
         end
 
