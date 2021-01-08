@@ -18,13 +18,13 @@ For more information read the license file including with this software.
 
 // · Import main app
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from "LesliCoreVue/app"
+import app from "LesliVue/app"
 
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList  from "LesliCoreVue/cloud_objects/dashboards/apps/list.vue"
-import appEdit  from "LesliCoreVue/cloud_objects/dashboards/apps/edit.vue"
-import appNew   from "LesliCoreVue/cloud_objects/dashboards/apps/new.vue"
+import appList  from "LesliVue/shared/dashboards/apps/list.vue"
+import appEdit  from "LesliVue/shared/dashboards/apps/edit.vue"
+import appNew   from "LesliVue/shared/dashboards/apps/new.vue"
 
 // · Import a list of all dashboard components
 import componentNewTickets from "./components/list-new-tickets.vue"
