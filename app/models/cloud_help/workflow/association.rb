@@ -17,7 +17,7 @@ For more information read the license file including with this software.
 
 =end
 module CloudHelp
-    class Workflow::Association < CloudObject::Workflow::Association
+    class Workflow::Association < Shared::Workflow::Association
 
         belongs_to :workflow, class_name: "Workflow", foreign_key: "cloud_help_workflows_id"
 
