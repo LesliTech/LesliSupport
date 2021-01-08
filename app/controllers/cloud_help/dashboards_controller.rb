@@ -15,10 +15,9 @@ For more information read the license file including with this software.
 // · 
 
 =end
-
 require_dependency "cloud_help/application_controller"
 
 module CloudHelp
-    class DashboardsController < CloudObject::DashboardsController
+    class DashboardsController < Shared::DashboardsController
     end
 end

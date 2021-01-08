@@ -19,7 +19,7 @@ For more information read the license file including with this software.
     class Sla  < CloudObject::Base
         belongs_to  :account,       class_name: "CloudHelp::Account",           foreign_key: "cloud_help_accounts_id"
         has_many    :associations,  class_name: "CloudHelp::Sla::Association",  foreign_key: "cloud_help_slas_id"
-        belongs_to  :user_creator,  class_name: "::User",                       foreign_key: "users_id"
+        belongs_to  :user_creator,  class_name: "::User",                       foreign_key: "users_id", optional: true
         belongs_to  :user_main,     class_name: "::User",                       foreign_key: "user_main_id", optional: true
         belongs_to  :status,        class_name: "CloudHelp::Workflow::Status",  foreign_key: "cloud_help_workflow_statuses_id"
 
@@ -68,17 +68,17 @@ For more information read the license file including with this software.
 =end
         def show(current_user, query)
             data = current_user.account.help.slas.joins(
-                "inner join cloud_help_workflow_statuses CHWS on cloud_help_slas.cloud_help_workflow_statuses_id = CHWS.id"
+                "inner join cloud_help_workflow_statuses chws on cloud_help_slas.cloud_help_workflow_statuses_id = chws.id"
             ).joins(
-                "inner join cloud_help_workflows CHW on CHWS.cloud_help_workflows_id = CHW.id"
+                "inner join cloud_help_workflows chw on chws.cloud_help_workflows_id = chw.id"
             ).select(
                 "cloud_help_slas.id",                           "cloud_help_slas.created_at",
                 "cloud_help_slas.name",                         "cloud_help_slas.body",
                 "cloud_help_slas.expected_response_time",       "cloud_help_slas.expected_resolution_time",
                 "cloud_help_slas.provider_repercussions",       "cloud_help_slas.exceptions",
-                "cloud_help_slas.default",                      "CHWS.id as cloud_help_workflow_statuses_id",
-                "CHW.id as cloud_help_workflows_id",            "CHWS.name as status",
-                "CHWS.status_type as status_type"
+                "cloud_help_slas.default",                      "chws.id as cloud_help_workflow_statuses_id",
+                "chw.id as cloud_help_workflows_id",            "chws.name as status",
+                "chws.status_type as status_type"
             )
             .where("cloud_help_slas.id = #{id}").first.attributes
 
@@ -129,8 +129,8 @@ For more information read the license file including with this software.
 
             # We filter by search_type, available search_types are 'active' and 'inactive'
             if filters["search_type"]
-                filters_query.push("(CHWS.status_type NOT IN ('completed_unsuccessfully', 'completed_successfully'))") if filters["search_type"].eql? "active"
-                filters_query.push("(CHWS.status_type IN ('completed_unsuccessfully', 'completed_successfully'))") if filters["search_type"].eql? "inactive"
+                filters_query.push("(chws.status_type NOT IN ('completed_unsuccessfully', 'completed_successfully'))") if filters["search_type"].eql? "active"
+                filters_query.push("(chws.status_type IN ('completed_unsuccessfully', 'completed_successfully'))") if filters["search_type"].eql? "inactive"
             end
             
             # We filter by a text string written by the user
@@ -149,21 +149,21 @@ For more information read the license file including with this software.
             # We filter by statuses
             if filters["statuses"] && !filters["statuses"].empty?
                 statuses_query = filters["statuses"].map do |status|
-                    "CHWS.id = '#{status["id"]}'"
+                    "chws.id = '#{status["id"]}'"
                 end
                 filters_query.push("(#{statuses_query.join(' OR ')})")
             end
 
             # Executing the query
             slas = current_user.account.help.slas.joins(
-                "inner join cloud_help_workflow_statuses CHWS on cloud_help_slas.cloud_help_workflow_statuses_id = CHWS.id"
+                "inner join cloud_help_workflow_statuses chws on cloud_help_slas.cloud_help_workflow_statuses_id = chws.id"
             ).select(
                 "cloud_help_slas.id",                           "cloud_help_slas.created_at",
                 "cloud_help_slas.name",                         "cloud_help_slas.body",
                 "cloud_help_slas.expected_response_time",       "cloud_help_slas.expected_resolution_time",
                 "cloud_help_slas.provider_repercussions",       "cloud_help_slas.exceptions",
-                "cloud_help_slas.default",                      "CHWS.id as cloud_help_workflow_statuses_id",
-                "CHWS.name as status",                          "cloud_help_slas.users_id",
+                "cloud_help_slas.default",                      "chws.id as cloud_help_workflow_statuses_id",
+                "chws.name as status",                          "cloud_help_slas.users_id",
                 "cloud_help_slas.user_main_id"
             )
 
@@ -207,9 +207,9 @@ For more information read the license file including with this software.
                 statuses = Workflow::Status.joins(
                     :workflow
                 ).joins(
-                    "inner join cloud_help_workflow_associations CHWA on CHWA.cloud_help_workflows_id = cloud_help_workflows.id AND CHWA.deleted_at is null"
+                    "inner join cloud_help_workflow_associations chwa on chwa.cloud_help_workflows_id = cloud_help_workflows.id AND chwa.deleted_at is null"
                 ).where(
-                    "CHWA.workflow_for = ?", "sla"
+                    "chwa.workflow_for = ?", "sla"
                 ).select(
                     "cloud_help_workflow_statuses.id",
                     "cloud_help_workflows.name as workflow_name",
@@ -393,6 +393,25 @@ For more information read the license file including with this software.
             end
 
             super
+        end
+
+        # @return [void]
+        # @description Creates a first default SLA when the account is initialized 
+        # @example
+        #     account = Account.first
+        #     account.help = CloudHelp::Account.new # This will create a first new default SLA
+        #     puts account.help.slas.first
+        def self.initialize_data(help_account)
+            default_sla = help_account.slas.new(
+                name: "Default SLA",
+                default: true,
+                expected_response_time: 700,
+                expected_resolution_time: 7000
+            )
+
+            default_sla.set_workflow
+
+            default_sla.save!
         end
 
         private

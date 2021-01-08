@@ -19,14 +19,14 @@ For more information read the license file including with this software.
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCoreVue/app'
+import app from 'LesliVue/app'
 
 // · Import common apps
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appList  from 'LesliVue/cloud_objects/workflows/apps/list.vue'
-import appEdit  from 'LesliVue/cloud_objects/workflows/apps/edit.vue'
-import appShow  from 'LesliVue/cloud_objects/workflows/apps/show.vue'
-import appNew   from 'LesliVue/cloud_objects/workflows/apps/new.vue'
+import appList  from 'LesliVue/shared/workflows/apps/list.vue'
+import appEdit  from 'LesliVue/shared/workflows/apps/edit.vue'
+import appShow  from 'LesliVue/shared/workflows/apps/show.vue'
+import appNew   from 'LesliVue/shared/workflows/apps/new.vue'
 
 
 const props = {

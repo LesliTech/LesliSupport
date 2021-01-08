@@ -17,7 +17,7 @@ For more information read the license file including with this software.
 
 =end
 module CloudHelp
-    class Workflow::Action < CloudObject::Workflow::Action
+    class Workflow::Action < Shared::Workflow::Action
         belongs_to :workflow, class_name: "Workflow", foreign_key: "cloud_help_workflows_id"
         belongs_to :workflow_including_deleted, class_name: "Workflow", foreign_key: "cloud_help_workflows_id", with_deleted: true
         belongs_to :initial_status, class_name: "Workflow::Status", foreign_key: "initial_status_id", optional: true

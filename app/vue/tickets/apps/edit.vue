@@ -19,8 +19,8 @@ For more information read the license file including with this software.
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentWorkflowTransition from 'LesliVue/cloud_objects/workflows/components/transition.vue'
-import componentFormStatus from 'LesliVue/cloud_objects/workflows/components/form-status.vue'
+import componentWorkflowTransition from 'LesliVue/shared/workflows/components/transition.vue'
+import componentFormStatus from 'LesliVue/shared/workflows/components/form-status.vue'
 import componentSubscription from 'LesliVue/cloud_objects/subscription.vue'
 import componentDiscussion from 'LesliVue/cloud_objects/discussion-simple.vue'
 import componentAction from 'LesliVue/cloud_objects/action.vue'
@@ -187,7 +187,7 @@ export default {
                 </div>
             </template>
         </component-title>
-        <component-form-status :selected-status="new_ticket_status"></component-form-status>
+        <component-form-status :selected-status="new_ticket_status" cloud-object-variable="ticket"></component-form-status>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
                 <component-form v-if="data.ticket" view-type="edit"></component-form>

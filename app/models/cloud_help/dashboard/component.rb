@@ -17,7 +17,7 @@ For more information read the license file including with this software.
 =end
 
 module CloudHelp
-    class Dashboard::Component < CloudObject::Dashboard::Component
+    class Dashboard::Component < Shared::Dashboard::Component
         belongs_to :dashboard, inverse_of: :components, class_name: "Dashboard", foreign_key: "cloud_help_dashboards_id"
 
         enum component_ids: {

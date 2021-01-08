@@ -1,6 +1,3 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
 
 Copyright (c) 2020, all rights reserved.
@@ -19,6 +16,9 @@ For more information read the license file including with this software.
 // · 
 
 =end
-    class Workflow::ActionsController < CloudObject::Workflow::ActionsController
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
+    class Workflow::ActionsController < Shared::Workflow::ActionsController
     end
 end
