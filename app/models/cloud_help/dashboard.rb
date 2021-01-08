@@ -17,7 +17,7 @@ For more information read the license file including with this software.
 
 =end
 module CloudHelp
-    class Dashboard < CloudObject::Dashboard
+    class Dashboard < Shared::Dashboard
         belongs_to :account, class_name: "Account", foreign_key: "cloud_help_accounts_id"
         
         has_many :components, inverse_of: :dashboard, autosave: true, class_name: "Dashboard::Component", foreign_key: "cloud_help_dashboards_id", dependent: :destroy
