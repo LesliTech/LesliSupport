@@ -173,7 +173,7 @@ export default {
             </div>
         </component-header>
 
-        <component-form-status :selected-status="new_sla_status"></component-form-status>
+        <component-form-status :selected-status="new_sla_status" cloud-object-variable="sla"></component-form-status>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
                 <component-form v-if="data.sla" view-type="edit"></component-form>
