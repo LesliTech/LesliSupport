@@ -368,10 +368,15 @@ export default {
                                             v-model="ticket.deadline"
                                             :locale="date.vcDatepickerConfig()"
                                             :popover="{ visibility: 'focus' }"
-                                            :input-props="{
-                                                placeholder: translations.core.view_text_select_date
-                                            }"
                                         >
+                                            <template v-slot="{ inputValue, inputEvents }">
+                                                <input
+                                                    class="input is-default"
+                                                    v-on="inputEvents"
+                                                    :value="inputValue"
+                                                    :placeholder="translations.core.view_text_select_date"
+                                                />
+                                            </template>
                                         </vc-date-picker>
                                     </b-field>
                                 </div>
