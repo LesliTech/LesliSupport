@@ -281,8 +281,8 @@ For more information read the license file including with this software.
 
             images = @ticket.files.filter do |file|
                 file_name = ""
+                file_name = file.attachment_s3_identifier.downcase if file.attachment_s3_identifier
                 file_name = file.attachment_identifier.downcase if file.attachment_identifier
-                file_name = file.attachment_local_identifier.downcase if file.attachment_local_identifier
 
                 file_name.end_with?('png') || file_name.end_with?('jpg') || file_name.end_with?('jpeg')
             end
