@@ -21,9 +21,19 @@ module CloudHelp
 
         belongs_to :workflow, class_name: "Workflow", foreign_key: "cloud_help_workflows_id"
 
-        enum object_association: {
-            ticket: "ticket"
-        }
+        # @return [Hash] A list of all available associations that can be created
+        # @description Returns a hash where the key is the condensed name of the association and the value is the same.
+        #     This previously was an enum that was changed due to issues with the new version of rails 6.1.0
+        # @example
+        #     CloudHelp::Workflow.first.associations.create!(
+        #         workflow_for: CloudHelp::Workflow::Association.object_associations[:ticket],
+        #         global: true
+        #     )
+        def self.object_associations
+            return {
+                ticket: "ticket"
+            }
+        end
 
         def self.association_class_name(association_name)
             case association_name
