@@ -4,8 +4,10 @@ class CreateCloudHelpSlas < ActiveRecord::Migration[6.0]
             t.string    :name
             t.integer   :expected_response_time
             t.integer   :expected_resolution_time
+            t.float     :price_per_hour
             t.json      :body
             t.json      :provider_repercussions
+            t.json      :client_repercussions
             t.json      :exceptions
             t.boolean   :default, default: false
 
