@@ -51,6 +51,14 @@ export default {
         'component-file': componentFile,
         'component-form': componentForm
     },
+
+    props: {
+        expandedTabs: {
+            type: Boolean,
+            default: false
+        }
+    },
+
     data() {
         return {
             translations: {
@@ -65,11 +73,13 @@ export default {
             new_ticket_status: null
         }
     },
+
     mounted() {
         this.ticket_id = this.$route.params.id
         this.getTicket()
         this.setSubscriptions()
     },
+
     methods: {
 
         setSubscriptions(){
@@ -190,7 +200,7 @@ export default {
         <component-form-status :selected-status="new_ticket_status" cloud-object-variable="ticket"></component-form-status>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                <component-form v-if="data.ticket" view-type="edit"></component-form>
+                <component-form v-if="data.ticket" view-type="edit" :expanded-tabs="expandedTabs"></component-form>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_discussions">
