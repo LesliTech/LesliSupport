@@ -34,7 +34,7 @@ export default {
         return {
             active_tab: 1,
             main_route: '/help/tickets',
-            users_route: '/administration/users/list.json?role=buyer&type=include',
+            users_route: '/administration/users/list.json?role=support&type=include',
             translations: {
                 main: I18n.t('help.ticket/assignments'),
                 core: I18n.t('core.shared'),
