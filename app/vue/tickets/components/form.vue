@@ -313,15 +313,6 @@ export default {
 </script>
 <template>
     <div class="card">
-        <div class="card-header">
-            <div class="card-header-title">
-                <h4 class="title is-4">
-                    <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
-                    <span v-else-if="viewType == 'edit'">{{translations.main.view_title_edit}}</span>
-                    <span v-else>{{translations.main.view_title_show}}</span>
-                </h4>
-            </div>
-        </div>
         <div class="card-content subtabs">
             <b-tabs>
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
