@@ -34,7 +34,7 @@ export default {
         return {
             active_tab: 1,
             main_route: '/help/tickets',
-            users_route: '/administration/users/list.json?role=kop,callcenter,api&type=exclude',
+            users_route: '/administration/users/list.json?role=support&type=include',
             translations: {
                 main: I18n.t('help.ticket/assignments'),
                 core: I18n.t('core.shared'),
@@ -279,7 +279,7 @@ export default {
                 </b-table-column>
                 <b-table-column field="role" :label="translations.users.view_table_header_role">
                     <span>
-                        <span v-for="role in props.row.roles" :key="`employee-${props.row.id}-${role}`">
+                        <span v-for="role in props.row.roles" :key="`employee-${props.row.id}-${role.id}`">
                             <b-tooltip type="is-white" :label="object_utils.translateEnum(translations.roles, 'column_enum_role', role.name)">
                                 <b-tag type="is-white">{{
                                     object_utils.extractInitials(object_utils.translateEnum(translations.roles, 'column_enum_role', role.name))

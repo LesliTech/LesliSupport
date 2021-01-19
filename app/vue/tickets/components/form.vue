@@ -36,10 +36,14 @@ export default {
     },
 
     props: {
-
         viewType: {
             type: String,
             default: 'new'
+        },
+
+        expandedTabs: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -67,11 +71,15 @@ export default {
                 descalate: false,
                 transfer: false
             },
-            auto_assignment: false
+            auto_assignment: false,
+            assignments_abilities: {
+                grant_create: false
+            }
         }
     },
     mounted() {
         this.setTicket()
+        this.setAbilities()
         this.setAutoAssignment()
         this.setSubscriptions()
         this.getTicketOptions()
@@ -86,6 +94,10 @@ export default {
         setTicket(){
             this.ticket_id = this.$route.params.id
             this.ticket = this.data.ticket
+        },
+
+        setAbilities(){
+            this.assignments_abilities = this.abilities.privileges('ticket/assignments', 'deutsche_leibrenten')
         },
 
         setAutoAssignment(){
@@ -313,17 +325,8 @@ export default {
 </script>
 <template>
     <div class="card">
-        <div class="card-header">
-            <div class="card-header-title">
-                <h4 class="title is-4">
-                    <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
-                    <span v-else-if="viewType == 'edit'">{{translations.main.view_title_edit}}</span>
-                    <span v-else>{{translations.main.view_title_show}}</span>
-                </h4>
-            </div>
-        </div>
         <div class="card-content subtabs">
-            <b-tabs>
+            <b-tabs :expanded="expandedTabs">
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicket">
                         <div class="columns" v-if="viewType != 'new'">
@@ -495,11 +498,11 @@ export default {
                         </fieldset>
                     </form>
                 </b-tab-item>
-                <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new'">
-                    <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
-                </b-tab-item>
                 <b-tab-item :label="translations.main.view_tab_title_sla" v-if="viewType != 'new'">
                     <component-sla-data v-if="data.sla" shadowless></component-sla-data>
+                </b-tab-item>
+                <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new' && assignments_abilities.grant_create">
+                    <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
                 </b-tab-item>
                 <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
                     <span class="has-text-danger">

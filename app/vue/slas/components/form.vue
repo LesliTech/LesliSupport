@@ -192,7 +192,7 @@ export default {
                                     <template v-slot:label>
                                         {{translations.main.column_expected_response_time}}<sup class="has-text-danger">*</sup>
                                     </template>
-                                    <b-input v-model="sla.expected_response_time" required></b-input>
+                                    <b-input v-model="sla.expected_response_time" required type="number" min="0" step="1"></b-input>
                                 </b-field>
                             </div>
                             <div class="column is-3">
@@ -200,7 +200,15 @@ export default {
                                     <template v-slot:label>
                                         {{translations.main.column_expected_resolution_time}}<sup class="has-text-danger">*</sup>
                                     </template>
-                                    <b-input v-model="sla.expected_resolution_time" required></b-input>
+                                    <b-input v-model="sla.expected_resolution_time" required type="number" min="0" step="1"></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-3">
+                                <b-field :message="translations.main.column_price_per_hour" >
+                                    <template v-slot:label>
+                                        {{translations.main.column_price_per_hour}}<sup class="has-text-danger">*</sup>
+                                    </template>
+                                    <b-input v-model="sla.price_per_hour" required type="number" min="0" step="0.01"></b-input>
                                 </b-field>
                             </div>
                         </div>
@@ -209,6 +217,14 @@ export default {
                             <label class="label">{{translations.main.column_body}}</label>
                             <div class="control">
                                 <component-rich-text-editor v-model="sla.body" type="full">
+                                </component-rich-text-editor>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">{{translations.main.column_client_repercussions}}</label>
+                            <div class="control">
+                                <component-rich-text-editor v-model="sla.client_repercussions" type="full">
                                 </component-rich-text-editor>
                             </div>
                         </div>

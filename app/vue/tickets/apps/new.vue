@@ -26,6 +26,13 @@ export default {
         'component-form': componentForm
     },
 
+    props: {
+        expandedTabs: {
+            type: Boolean,
+            default: false
+        }
+    },
+
     // @return [Object] Data used by this component's methods
     // @description Returns the data needed for this component to work properly
     // @data_variable ticket_type [Object] An object representing a Ticket type, with
@@ -77,6 +84,6 @@ export default {
                 </div>
             </div>
         </component-header>
-        <component-form v-if="data.ticket" view-type="new"></component-form>
+        <component-form v-if="data.ticket" view-type="new" :expanded-tabs="expandedTabs"></component-form>
     </section>
 </template>
