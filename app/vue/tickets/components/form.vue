@@ -407,14 +407,10 @@ export default {
                                     </b-field>
                                 </div>
                                 <div class="column is-4">
-                                    <b-field>
-                                        <template v-slot:label>
-                                            {{translations.main.column_cloud_help_catalog_ticket_categories_id}}<sup class="has-text-danger">*</sup>
-                                        </template>
+                                    <b-field :label="translations.main.column_cloud_help_catalog_ticket_categories_id">
                                         <b-select
                                             :placeholder="translations.core.view_placeholder_select_option"
                                             expanded
-                                            required
                                             v-model="ticket.cloud_help_catalog_ticket_categories_id"
                                         >
                                             <option
@@ -429,14 +425,10 @@ export default {
                                     </b-field>
                                 </div>
                                 <div class="column is-4">
-                                    <b-field>
-                                        <template v-slot:label>
-                                            {{translations.main.column_cloud_help_catalog_ticket_priorities_id}}<sup class="has-text-danger">*</sup>
-                                        </template>
+                                    <b-field :label="translations.main.column_cloud_help_catalog_ticket_priorities_id">
                                         <b-select
                                             :placeholder="translations.core.view_placeholder_select_option"
                                             expanded
-                                            required
                                             v-model="ticket.cloud_help_catalog_ticket_priorities_id"
                                         >
                                             <option
