@@ -110,7 +110,7 @@ export default {
         
         setSubscriptions(){
             this.bus.subscribe('update:/help/ticket/workflow', (status)=>{
-                this.ticket.cloud_help_ticket_workflow_statuses_id = status.id
+                this.ticket.cloud_help_workflow_statuses_id = status.id
                 this.ticket.status = status.name
                 this.ticket.status_type = status.status_type
             })
