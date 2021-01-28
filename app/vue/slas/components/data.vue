@@ -99,7 +99,7 @@ export default {
                         <p> {{sla.expected_resolution_time}}</p>
                     </b-field>
                 </div>
-                <div class="column is-6">
+                <div class="column is-4">
                     <b-field :label="`${translations.main.view_tab_title_associations} (${translations.ticket_types.view_title_main})`">
                         <b-taglist>
                             <b-tag v-for="association in sla.association_attributes" :key="association.id">
@@ -108,12 +108,25 @@ export default {
                         </b-taglist>
                     </b-field>
                 </div>
+                <div class="column is-2">
+                    <b-field :label="translations.main.column_price_per_hour" >
+                        <p> {{sla.price_per_hour}}</p>
+                    </b-field>
+                </div>
             </div>
 
             <div class="field">
                 <label class="label">{{translations.main.column_body}}</label>
                 <div class="control">
                     <component-rich-text-editor v-model="sla.body" type="read">
+                    </component-rich-text-editor>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">{{translations.main.column_client_repercussions}}</label>
+                <div class="control">
+                    <component-rich-text-editor v-model="sla.client_repercussions" type="read">
                     </component-rich-text-editor>
                 </div>
             </div>

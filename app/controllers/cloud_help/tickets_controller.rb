@@ -139,12 +139,6 @@ For more information read the license file including with this software.
             ticket.set_workflow
 
             if ticket.save
-                Ticket::Subscriber.add_subscriber(ticket, current_user)
-                Ticket::Subscriber.notify_subscribers(
-                    ticket,
-                    I18n.t('cloud_help.controllers.tickets.notifications.created', ticket_id: ticket.id),
-                    :ticket_created
-                )
                 Ticket.log_activity_create(current_user, ticket)
 
                 respond_with_successful(ticket)

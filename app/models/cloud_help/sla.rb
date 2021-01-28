@@ -48,22 +48,11 @@ For more information read the license file including with this software.
     #    id:6,
     #    created_at:"2020-01-12T17:31:25.005Z",
     #    email:"admin@lesli.cloud",
-    #    subject:"subject",
-    #    description:"description",
-    #    tags:"tags",
-    #    priority:"Medium",
-    #    type:"Change Request",
-    #    status:"created",
-    #    cloud_help_catalog_sla_priorities_id:2,
-    #    cloud_help_catalog_sla_types_id:2,
-    #    cloud_help_workflow_statuses_id:4,
-    #    cloud_help_catalog_sla_categories_id:1,
-    #    cloud_help_sla_statuses_id:1,
-    #    priority_weight:100,
-    #    category:"Company System",
-    #    assignment_attributes:{
-    #        assignment_type:"none"
-    #    }
+    #    name:"Default SLA",
+    #    body:"null",
+    #    expected_response_time:"72",
+    #    expected_resolution_time:"200"
+    #    assignment_attributes: []
     #}
 =end
         def show(current_user, query)
@@ -78,7 +67,8 @@ For more information read the license file including with this software.
                 "cloud_help_slas.provider_repercussions",       "cloud_help_slas.exceptions",
                 "cloud_help_slas.default",                      "chws.id as cloud_help_workflow_statuses_id",
                 "chw.id as cloud_help_workflows_id",            "chws.name as status",
-                "chws.status_type as status_type"
+                "chws.status_type as status_type",              "cloud_help_slas.price_per_hour",
+                "cloud_help_slas.client_repercussions"
             )
             .where("cloud_help_slas.id = #{id}").first.attributes
 

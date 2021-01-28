@@ -23,8 +23,8 @@ For more information read the license file including with this software.
         belongs_to :user_creator, class_name: "::User",                             foreign_key: "users_id"
         belongs_to :user_main,  class_name: "::User",                               foreign_key: "user_main_id", optional: true
         belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
-        belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id"
-        belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id"
+        belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id", optional: true
+        belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id", optional: true
         belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id"
         belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
         belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id"
@@ -108,31 +108,31 @@ For more information read the license file including with this software.
 =end
         def show(current_user, query)
             data = Ticket.joins(
-                "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
+                "left join cloud_help_catalog_ticket_priorities chctp on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = chctp.id"
             ).joins(
-                "inner join cloud_help_catalog_ticket_types CHCTT on cloud_help_tickets.cloud_help_catalog_ticket_types_id = CHCTT.id"
+                "inner join cloud_help_catalog_ticket_types chctt on cloud_help_tickets.cloud_help_catalog_ticket_types_id = chctt.id"
             ).joins(
-                "inner join cloud_help_catalog_ticket_categories CHCTC on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = CHCTC.id"
+                "left join cloud_help_catalog_ticket_categories chctc on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = chctc.id"
             ).joins(
-                "inner join cloud_help_workflow_statuses CHWS on cloud_help_tickets.cloud_help_workflow_statuses_id = CHWS.id"
+                "inner join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
             ).joins(
-                "inner join cloud_help_workflows CHW on CHWS.cloud_help_workflows_id = CHW.id"
+                "inner join cloud_help_workflows chw on chws.cloud_help_workflows_id = chw.id"
             ).joins(
-                "left join cloud_help_ticket_assignments CHTA on cloud_help_tickets.id = CHTA.cloud_help_tickets_id"
+                "left join cloud_help_ticket_assignments chta on cloud_help_tickets.id = chta.cloud_help_tickets_id"
             ).select(
                 "cloud_help_tickets.id as id",                      "cloud_help_tickets.created_at as created_at",
-                "CHCTP.name as priority",                           "CHCTT.name as type",
-                "CHWS.name as status",                              "CHCTP.id as cloud_help_catalog_ticket_priorities_id",
-                "CHCTT.id as cloud_help_catalog_ticket_types_id",   "CHCTC.id as cloud_help_catalog_ticket_categories_id",
-                "CHWS.id as cloud_help_workflow_statuses_id",       "CHCTP.weight as priority_weight",
-                "CHWS.status_type as status_type",                  "CHW.id as cloud_help_workflows_id",
-                "CHWS.number as status_number",                     "subject",
+                "chctp.name as priority",                           "chctt.name as type",
+                "chws.name as status",                              "chctp.id as cloud_help_catalog_ticket_priorities_id",
+                "chctt.id as cloud_help_catalog_ticket_types_id",   "chctc.id as cloud_help_catalog_ticket_categories_id",
+                "chws.id as cloud_help_workflow_statuses_id",       "chctp.weight as priority_weight",
+                "chws.status_type as status_type",                  "chw.id as cloud_help_workflows_id",
+                "chws.number as status_number",                     "subject",
                 "description",                                      "deadline",
                 "tags",                                             "hours_worked"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
 
-            data[:category] = category.full_path
+            data[:category] = category.full_path if category
             data[:assignment_attributes] = assignments_info
             data[:editable] = self.is_editable_by?(current_user)
             data[:sla] = self.sla.show(current_user, query)
@@ -176,9 +176,9 @@ For more information read the license file including with this software.
 
             # We filter by search_type, available search_types are 'own' and 'active'
             if filters["search_type"]
-                filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR CHTA.users_id = #{current_user.id})") if filters["search_type"].eql? "own"
-                filters_query.push("(CHWS.status_type != 'completed_unsuccessfully' AND CHWS.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
-                filters_query.push("(CHWS.status_type = 'completed_unsuccessfully' OR CHWS.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
+                filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR chta.users_id = #{current_user.id})") if filters["search_type"].eql? "own"
+                filters_query.push("(chws.status_type != 'completed_unsuccessfully' AND chws.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
+                filters_query.push("(chws.status_type = 'completed_unsuccessfully' OR chws.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
             end
             
             # We filter by a text string written by the user
@@ -191,9 +191,9 @@ For more information read the license file including with this software.
                     filters_query.push("
                         (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(description) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(CHCTC.name) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(CHCTT.name) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(CHCTP.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(chctc.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(chctt.name) SIMILAR TO '%#{query_word}%') OR
+                        (LOWER(chctp.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(tags) SIMILAR TO '%#{query_word}%')
                     ")
                 end
@@ -202,33 +202,33 @@ For more information read the license file including with this software.
             # We filter by statuses
             if filters["statuses"] && !filters["statuses"].empty?
                 statuses_query = filters["statuses"].map do |status|
-                    "CHWS.id = '#{status["id"]}'"
+                    "chws.id = '#{status["id"]}'"
                 end
                 filters_query.push("(#{statuses_query.join(' or ')})")
             end
 
             # Executing the query
             tickets = current_user.account.help.tickets.joins(
-                "inner join cloud_help_catalog_ticket_priorities CHCTP on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = CHCTP.id"
+                "left join cloud_help_catalog_ticket_priorities chctp on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = chctp.id"
             ).joins(
-                "inner join cloud_help_catalog_ticket_types CHCTT on cloud_help_tickets.cloud_help_catalog_ticket_types_id = CHCTT.id"
+                "inner join cloud_help_catalog_ticket_types chctt on cloud_help_tickets.cloud_help_catalog_ticket_types_id = chctt.id"
             ).joins(
-                "inner join cloud_help_catalog_ticket_categories CHCTC on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = CHCTC.id"
+                "left join cloud_help_catalog_ticket_categories chctc on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = chctc.id"
             ).joins(
-                "inner join cloud_help_workflow_statuses CHWS on cloud_help_tickets.cloud_help_workflow_statuses_id = CHWS.id"
+                "inner join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
             ).joins(
-                "left join cloud_help_ticket_assignments CHTA on CHTA.cloud_help_tickets_id = cloud_help_tickets.id AND CHTA.users_id = #{current_user.id}"
+                "left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id AND chta.users_id = #{current_user.id}"
             ).joins(
                 "left join users UC on UC.id = cloud_help_tickets.users_id"
             ).joins(
                 "left join user_details UCD on UCD.users_id = UC.id"
             ).select(
-                "id",                                                   "CHCTP.name as priority",
-                "CHCTT.name as type",                                   "CHWS.name as status_name",
-                "CHCTC.name as category",                               "user_main_id",
-                "subject",                                              "CHCTC.id as cloud_help_catalog_ticket_categories_id",
-                "CHCTP.id as cloud_help_catalog_ticket_priorities_id",  "CHCTT.id as cloud_help_catalog_ticket_types_id",
-                "created_at",                                           "CHCTP.weight as priority_weight",
+                "id",                                                   "chctp.name as priority",
+                "chctt.name as type",                                   "chws.name as status_name",
+                "chctc.name as category",                               "user_main_id",
+                "subject",                                              "chctc.id as cloud_help_catalog_ticket_categories_id",
+                "chctp.id as cloud_help_catalog_ticket_priorities_id",  "chctt.id as cloud_help_catalog_ticket_types_id",
+                "created_at",                                           "chctp.weight as priority_weight",
                 "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
                 "deadline",                                             "users_id",
                 "cloud_help_tickets.cloud_help_workflow_statuses_id"
@@ -261,7 +261,10 @@ For more information read the license file including with this software.
                 ticket_attributes["deadline"] = LC::Date.to_string(ticket_attributes["deadline"])
                 ticket_attributes["created_at"] = LC::Date.to_string_datetime(ticket_attributes["created_at"])
                 ticket_attributes["assignment_type"] = Ticket::Assignment.assignment_types.key(ticket[:assignment_type])
-                ticket_attributes["category"] = Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
+
+                if ticket[:cloud_help_catalog_ticket_categories_id]
+                    ticket_attributes["category"] = Catalog::TicketCategory.with_deleted.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
+                end
                 
                 if ticket.assignments.length > 0
                     users = []
@@ -277,7 +280,7 @@ For more information read the license file including with this software.
         end
 
         def self.options(current_user, query)
-            types = current_user.account.help.ticket_types.select(:id, :name)
+            types = current_user.account.help.ticket_types.select(:id, :name).order(:name)
             categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
             priorities = current_user.account.help.ticket_priorities.order(weight: :asc).select(:id, :name, :weight)
 
@@ -291,9 +294,9 @@ For more information read the license file including with this software.
                 statuses = Workflow::Status.joins(
                     :workflow
                 ).joins(
-                    "inner join cloud_help_workflow_associations CHWA on CHWA.cloud_help_workflows_id = cloud_help_workflows.id AND CHWA.deleted_at is null"
+                    "inner join cloud_help_workflow_associations chwA on chwA.cloud_help_workflows_id = cloud_help_workflows.id AND chwA.deleted_at is null"
                 ).where(
-                    "CHWA.workflow_for = ?", "ticket"
+                    "chwA.workflow_for = ?", "ticket"
                 ).select(
                     "cloud_help_workflow_statuses.id",
                     "cloud_help_workflows.name as workflow_name",
@@ -402,8 +405,17 @@ For more information read the license file including with this software.
             # ticket type, category and priority are special cases because they are foreign keys
             ["TicketType", "TicketPriority", "TicketCategory"].each do |field|
                 if old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"] != new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
-                    old_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
-                    new_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    old_value = nil
+                    new_value = nil
+
+                    if old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
+                        old_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    end
+                    
+                    if new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
+                        new_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
+                    end
+                    
                     ticket.activities.create(
                         user_creator: current_user,
                         category: "action_update",
