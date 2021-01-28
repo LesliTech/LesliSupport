@@ -263,7 +263,7 @@ For more information read the license file including with this software.
                 ticket_attributes["assignment_type"] = Ticket::Assignment.assignment_types.key(ticket[:assignment_type])
 
                 if ticket[:cloud_help_catalog_ticket_categories_id]
-                    ticket_attributes["category"] = Catalog::TicketCategory.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
+                    ticket_attributes["category"] = Catalog::TicketCategory.with_deleted.find(ticket[:cloud_help_catalog_ticket_categories_id]).full_path
                 end
                 
                 if ticket.assignments.length > 0
