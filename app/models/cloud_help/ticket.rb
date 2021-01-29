@@ -119,6 +119,10 @@ For more information read the license file including with this software.
                 "inner join cloud_help_workflows chw on chws.cloud_help_workflows_id = chw.id"
             ).joins(
                 "left join cloud_help_ticket_assignments chta on cloud_help_tickets.id = chta.cloud_help_tickets_id"
+            ).joins(
+                "inner join users u on cloud_help_tickets.users_id = u.id"
+            ).joins(
+                "inner join user_details ud on u.id = ud.users_id"
             ).select(
                 "cloud_help_tickets.id as id",                      "cloud_help_tickets.created_at as created_at",
                 "chctp.name as priority",                           "chctt.name as type",
@@ -128,7 +132,8 @@ For more information read the license file including with this software.
                 "chws.status_type as status_type",                  "chw.id as cloud_help_workflows_id",
                 "chws.number as status_number",                     "subject",
                 "description",                                      "deadline",
-                "tags",                                             "hours_worked"
+                "tags",                                             "hours_worked",
+                " coalesce(nullif(concat(ud.first_name, ' ', ud.last_name), ''), u.email) as user_creator_name"
             )
             .where("cloud_help_tickets.id = #{id}").first.attributes
 
@@ -441,7 +446,7 @@ For more information read the license file including with this software.
             end
 
             # We remove values that are not tracked in the activities
-            old_attributes.except!(
+            old_attributes = old_attributes.except(
                 "id", "created_at", "updated_at", "cloud_help_workflow_statuses_id",
                 "cloud_help_catalog_ticket_categories_id", "cloud_help_catalog_ticket_priorities_id", "cloud_help_catalog_ticket_types_id", "cloud_help_slas_id"
             )
@@ -506,6 +511,10 @@ For more information read the license file including with this software.
                     id: assignment.id
                 }
             end
+        end
+
+        def global_identifier
+            return "#{id} - #{subject}"
         end
 
         # Custom is_editab_by? implementation
