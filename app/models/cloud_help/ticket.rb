@@ -118,7 +118,7 @@ For more information read the license file including with this software.
             ).joins(
                 "inner join cloud_help_workflows chw on chws.cloud_help_workflows_id = chw.id"
             ).joins(
-                "left join cloud_help_ticket_assignments chta on cloud_help_tickets.id = chta.cloud_help_tickets_id"
+                "left join cloud_help_ticket_assignments chta on cloud_help_tickets.id = chta.cloud_help_tickets_id and chta.deleted_at is null"
             ).joins(
                 "inner join users u on cloud_help_tickets.users_id = u.id"
             ).joins(

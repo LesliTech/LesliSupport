@@ -17,7 +17,7 @@ For more information read the license file including with this software.
 // · 
 
 =end
-    class Ticket::Assignment < ApplicationRecord
+    class Ticket::Assignment < ApplicationLesliRecord
         include ActiveModel::Dirty
         
         belongs_to :ticket, foreign_key: "cloud_help_tickets_id"
