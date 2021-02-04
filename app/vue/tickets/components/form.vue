@@ -110,7 +110,7 @@ export default {
         
         setSubscriptions(){
             this.bus.subscribe('update:/help/ticket/workflow', (status)=>{
-                this.ticket.cloud_help_ticket_workflow_statuses_id = status.id
+                this.ticket.cloud_help_workflow_statuses_id = status.id
                 this.ticket.status = status.name
                 this.ticket.status_type = status.status_type
             })
@@ -329,7 +329,12 @@ export default {
             <b-tabs :expanded="expandedTabs">
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicket">
-                        <div class="columns" v-if="viewType != 'new'">
+                        <div class="columns is-multiline" v-if="viewType != 'new'">
+                            <div class="column is-5">
+                                <b-field :label="translations.main.column_users_id">
+                                    <b-input v-model="ticket.user_creator_name" readonly></b-input>
+                                </b-field>
+                            </div>
                             <div class="column is-9">
                                 <label class="label">{{translations.main.view_title_assigned_users}}</label>
                                 <div class="tags is-medium" v-if="ticket.assignment_attributes && ticket.assignment_attributes.length > 0">

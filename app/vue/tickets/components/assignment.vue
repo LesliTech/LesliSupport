@@ -109,7 +109,7 @@ export default {
         },
 
         postAssignment(user){
-            let url = `${this.main_route}/${this.ticketId}/assignments`
+            let url = this.url.help(`/tickets/${this.ticketId}/assignments`)
             let data = {
                 ticket_assignment: {
                     users_id: user.id,

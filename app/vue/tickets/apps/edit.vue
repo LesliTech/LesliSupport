@@ -97,7 +97,14 @@ export default {
         getTicket() {
             this.http.get(`/help/tickets/${this.ticket_id}.json`).then(result => {
                 if (result.successful) {
-                    this.ticket = this.parseBackendData(result.data)
+                    if(this.ticket){
+                        let ticket_data = this.parseBackendData(result.data)
+                        for(let key in ticket_data){
+                            this.$set(this.ticket, ticket_data[key])
+                        }
+                    }else{
+                        this.ticket = this.parseBackendData(result.data)
+                    }
                     this.data.ticket = this.ticket
                     this.data.sla = this.ticket.sla
                 }else{
@@ -197,7 +204,12 @@ export default {
                 </div>
             </template>
         </component-title>
-        <component-form-status :selected-status="new_ticket_status" cloud-object-variable="ticket"></component-form-status>
+        <component-form-status
+            :selected-status="new_ticket_status"
+            status-foreign-key="cloud_help_workflow_statuses_id"
+            cloud-object-variable="ticket"
+        >
+        </component-form-status>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
                 <component-form v-if="data.ticket" view-type="edit" :expanded-tabs="expandedTabs"></component-form>
