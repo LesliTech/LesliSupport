@@ -30,12 +30,10 @@ export default {
 
     // @return [Object] Data used by this component's methods
     // @description Returns the data needed for this component to work properly
-    // @data_variable main_route [String] the main route to which this component connects to the lesli API
     // @data_variable tickets [Array] An array of objects, each object represents a 
     //      Ticket type, with the same params as the associated rails model
     data(){
         return {
-            main_route: '/help/tickets',
             filters_route: '/help/tickets/options?filters[include]=statuses',
             translations: {
                 main: I18n.t('help.tickets'),
@@ -110,34 +108,27 @@ export default {
         getTickets(reset_current_page = true) {
             this.loading = true
             this.storage.local("filters", this.filters)
-            let url = `${this.main_route}/list.json`
-
-            let data = {
-                filters: {
-                    statuses: this.filters.statuses,
-                    search_type: this.filters.search_type,
-                    query: this.filters.query
-                },
-                order: this.sorting.order,
-                orderColumn: this.sorting.field,
-                perPage: this.filters.per_page
-            }
             if(reset_current_page){
                 this.pagination.current_page = 1
-                data.filters.get_total_count = true
-            }else{
-                data.filters.get_total_count = false
             }
-            data.page = this.pagination.current_page
 
-            this.http.post(url, data).then(result => {
+            let url = this.url.help('tickets').order(
+                this.sorting.field,
+                this.sorting.order
+            ).paginate(
+                this.pagination.current_page,
+                this.filters.per_page
+            ).filters({
+                statuses: this.filters.statuses,
+                search_type: this.filters.search_type,
+                query: this.filters.query
+            })
+
+            this.http.get(url).then(result => {
                 this.loading = false
                 if (result.successful) {
                     this.tickets = result.data.tickets
-
-                    if(result.data.total_count != null){
-                        this.pagination.tickets_count = result.data.total_count
-                    }
+                    this.pagination.tickets_count = result.data.total_count
                 }else{
                     this.alert(result.error.message,'danger')
                 }
