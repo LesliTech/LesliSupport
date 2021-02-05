@@ -292,20 +292,6 @@ For more information read the license file including with this software.
 
         # @return [void]
         # @param current_user [::User] The user that created the sla
-        # @param [CloudHelp::Sla] The sla that was created
-        # @description Creates an activity for this sla indicating that someone viewed it
-        # Example
-        #   sla = CloudHelp::Sla.find(1)
-        #   CloudHelp::Sla.log_activity_show(User.find(1), sla)
-        def self.log_activity_show(current_user, sla)
-            sla.activities.create(
-                user_creator: current_user,
-                category: "action_show"
-            )
-        end
-
-        # @return [void]
-        # @param current_user [::User] The user that created the sla
         # @param sla [CloudHelp::Sla] The sla that was created
         # @param old_attributes[Hash] The data of the record before update
         # @param new_attributes[Hash] The data of the record after update
@@ -363,12 +349,12 @@ For more information read the license file including with this software.
         end
 
         # @return [void]
-        # @param current_user [::User] The user that created the sla
-        # @param [CloudHelp::Sla] The sla that was created
+        # @param current_user [::User] The user that deleted the sla
+        # @param [CloudHelp::Sla] The sla that was deleted
         # @description Creates an activity for this sla indicating that someone deleted it
         # Example
         #   sla = CloudHelp::Sla.find(1)
-        #   CloudHelp::Sla.log_activity_show(User.find(1), sla)
+        #   CloudHelp::Sla.log_activity_destroy(User.find(1), sla)
         def self.log_activity_destroy(current_user, sla)
             sla.activities.create(
                 user_creator: current_user,
