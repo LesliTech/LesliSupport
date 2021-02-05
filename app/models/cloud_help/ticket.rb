@@ -193,14 +193,14 @@ For more information read the license file including with this software.
                     query_word = query_word.strip.downcase
 
                     # first customer
-                    filters_query.push("
+                    filters_query.push("(
                         (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(description) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctc.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctt.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctp.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(tags) SIMILAR TO '%#{query_word}%')
-                    ")
+                    )")
                 end
             end
 
@@ -247,7 +247,7 @@ For more information read the license file including with this software.
 
             response = {}
             # total count
-            response[:total_count] = tickets.length if filters["get_total_count"]
+            response[:total_count] = tickets.length
 
             # Adding pagination to tickets
             pagination = query[:pagination]
