@@ -193,14 +193,14 @@ For more information read the license file including with this software.
                     query_word = query_word.strip.downcase
 
                     # first customer
-                    filters_query.push("
+                    filters_query.push("(
                         (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(description) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctc.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctt.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctp.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(tags) SIMILAR TO '%#{query_word}%')
-                    ")
+                    )")
                 end
             end
 
@@ -247,7 +247,7 @@ For more information read the license file including with this software.
 
             response = {}
             # total count
-            response[:total_count] = tickets.length if filters["get_total_count"]
+            response[:total_count] = tickets.length
 
             # Adding pagination to tickets
             pagination = query[:pagination]
@@ -357,20 +357,6 @@ For more information read the license file including with this software.
 
         # @return [void]
         # @param current_user [::User] The user that created the ticket
-        # @param [CloudHelp::Ticket] The ticket that was created
-        # @description Creates an activity for this ticket indicating that someone viewed it
-        # Example
-        #   ticket = CloudHelp::Ticket.find(1)
-        #   CloudHelp::Ticket.log_activity_show(User.find(1), ticket)
-        def self.log_activity_show(current_user, ticket)
-            ticket.activities.create(
-                user_creator: current_user,
-                category: "action_show"
-            )
-        end
-
-        # @return [void]
-        # @param current_user [::User] The user that created the ticket
         # @param ticket [CloudHelp::Ticket] The ticket that was created
         # @param old_attributes[Hash] The data of the record before update
         # @param new_attributes[Hash] The data of the record after update
@@ -469,12 +455,12 @@ For more information read the license file including with this software.
         end
 
         # @return [void]
-        # @param current_user [::User] The user that created the ticket
-        # @param [CloudHelp::Ticket] The ticket that was created
+        # @param current_user [::User] The user that deleted the ticket
+        # @param [CloudHelp::Ticket] The ticket that was deleted
         # @description Creates an activity for this ticket indicating that someone deleted it
         # Example
         #   ticket = CloudHelp::Ticket.find(1)
-        #   CloudHelp::Ticket.log_activity_show(User.find(1), ticket)
+        #   CloudHelp::Ticket.log_activity_destroy(User.find(1), ticket)
         def self.log_activity_destroy(current_user, ticket)
             ticket.activities.create(
                 user_creator: current_user,
