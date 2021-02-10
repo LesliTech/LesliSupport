@@ -69,9 +69,10 @@ For more information read the license file including with this software.
             assignment.ticket = @ticket
 
             if assignment.save
-                respond_with_successful(assignment)
-
                 Ticket.log_activity_create_assignment(current_user, @ticket, assignment)
+                TicketMailer.with({user: assignment.user, ticket: @ticket}).assignment.deliver_later
+
+                respond_with_successful(assignment)
             else
                 respond_with_error(assignment.errors.full_messages.to_sentence)
             end
