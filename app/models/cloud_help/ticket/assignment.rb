@@ -35,6 +35,24 @@ For more information read the license file including with this software.
             team: "team"
         }
 
+        def self.send_email_create(assigned_user, ticket)
+            receipt = assigned_user.email
+            title = "#{ticket.id} - #{ticket.subject}"
+
+            data = {
+                name: assigned_user.full_name,
+                title: title,
+                href: "/help/tickets/#{ticket.id}/edit"
+            }
+            
+            email =  HelpMailer.ticket_new(receipt, I18n.t("help.tickets.mailer_new_project_subject"), data)
+            if deliver_now
+                email.deliver_now
+            else
+                email.deliver_later
+            end
+        end
+
         private
 
 =begin
