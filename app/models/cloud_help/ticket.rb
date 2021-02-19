@@ -256,7 +256,7 @@ For more information read the license file including with this software.
             ).per(
                 pagination[:perPage]
             ).order(
-                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
+                "#{pagination[:orderBy]} #{pagination[:order]} NULLS LAST"
             )
 
             # We format the response
