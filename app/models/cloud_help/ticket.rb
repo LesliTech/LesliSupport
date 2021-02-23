@@ -256,7 +256,7 @@ For more information read the license file including with this software.
             ).per(
                 pagination[:perPage]
             ).order(
-                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
+                "#{pagination[:orderBy]} #{pagination[:order]} NULLS LAST"
             )
 
             # We format the response
@@ -321,6 +321,24 @@ For more information read the license file including with this software.
             end
 
             ticket_options
+        end
+
+        def self.tickets_with_deadline(current_user, query)
+            tickets = []
+            today = LC::Date.now
+            filter_year = query[:filters][:year] || today.strftime("%Y")
+            filter_month = query[:filters][:month] || today.strftime("%m")
+            filter_day = query[:filters][:day]
+
+            tickets = current_user.account.help.tickets
+            .select(:id, :subject, :description, :deadline)
+            .where("cloud_help_tickets.deadline is not null")
+            .where("extract('year' from cloud_help_tickets.deadline) = ?", filter_year)
+            .where("extract('month' from cloud_help_tickets.deadline) = ?", filter_month)
+
+            tickets = tickets.where("extract('day' from cloud_help_tickets.deadline) = ?", filter_day) if filter_day
+
+            return tickets
         end
 
         def closed?
