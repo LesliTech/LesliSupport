@@ -7,6 +7,6 @@ info:
     name: "CloudHelp"
     code: "cloud_help"
     github:
-        url: "https://github.com/leitfaden/CloudHelp"
-        ssh: "git@github.com:leitfaden/CloudHelp.git"
-        ssh_backup: "git@github.com:LesliTech/CloudHelp.git"
+        url: "https://github.com/leitfaden/cloud_help"
+        ssh: "git@github.com:leitfaden/cloud_help.git"
+        ssh_backup: "git@github.com:LesliTech/cloud_help.git"
