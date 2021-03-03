@@ -48,7 +48,8 @@ export default {
                 range_after: 3
             },
             filters: {
-                search_type: 'all',
+                search_type: null,
+                user_type: 'own',
                 query: '',
                 per_page: 15,
                 statuses: []
@@ -121,6 +122,7 @@ export default {
             ).filters({
                 statuses: this.filters.statuses,
                 search_type: this.filters.search_type,
+                user_type: this.filters.user_type,
                 query: this.filters.query
             })
 
@@ -259,11 +261,18 @@ export default {
             </div>
             <div class="control">
                 <div class="select">
-                    <select v-model="filters.search_type" @change="getTickets" name="tickets-filters-search-type">
-                        <option value="all">{{translations.main.view_text_filter_all_tickets}}</option>
-                        <option value="active">{{translations.main.view_text_filter_active_tickets}}</option>
+                    <select v-model="filters.user_type" @change="getTickets" name="tickets-filters-user-type">
+                        <option :value="null">{{translations.main.view_text_filter_everyones_tickets}}</option>
                         <option value="own">{{translations.main.view_text_filter_own_tickets}}</option>
-                        <option value="inactive">{{translations.main.view_text_filter_inactive_tickets}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control">
+                <div class="select">
+                    <select v-model="filters.search_type" @change="getTickets" name="tickets-filters-search-type">
+                    <option :value="null">{{translations.main.view_text_filter_all_tickets}}</option>
+                    <option value="active">{{translations.main.view_text_filter_active_tickets}}</option>
+                    <option value="inactive">{{translations.main.view_text_filter_inactive_tickets}}</option>
                     </select>
                 </div>
             </div>
