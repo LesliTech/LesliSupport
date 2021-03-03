@@ -270,9 +270,9 @@ export default {
             <div class="control">
                 <div class="select">
                     <select v-model="filters.search_type" @change="getTickets" name="tickets-filters-search-type">
-                    <option :value="null">{{translations.main.view_text_filter_all_tickets}}</option>
-                    <option value="active">{{translations.main.view_text_filter_active_tickets}}</option>
-                    <option value="inactive">{{translations.main.view_text_filter_inactive_tickets}}</option>
+                        <option :value="null">{{translations.main.view_text_filter_all_tickets}}</option>
+                        <option value="active">{{translations.main.view_text_filter_active_tickets}}</option>
+                        <option value="inactive">{{translations.main.view_text_filter_inactive_tickets}}</option>
                     </select>
                 </div>
             </div>
