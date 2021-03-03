@@ -181,9 +181,13 @@ For more information read the license file including with this software.
 
             # We filter by search_type, available search_types are 'own' and 'active'
             if filters["search_type"]
-                filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR chta.users_id = #{current_user.id})") if filters["search_type"].eql? "own"
                 filters_query.push("(chws.status_type != 'completed_unsuccessfully' AND chws.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
                 filters_query.push("(chws.status_type = 'completed_unsuccessfully' OR chws.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
+            end
+
+            # We filter by user_type, which can be 'own' or null
+            if filters["user_type"].eql? "own"
+                filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR chta.users_id = #{current_user.id})")
             end
             
             # We filter by a text string written by the user
