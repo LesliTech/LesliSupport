@@ -198,8 +198,8 @@ For more information read the license file including with this software.
 
                     # first customer
                     filters_query.push("(
+                        (CAST(cloud_help_tickets.id AS VARCHAR) = '#{query_word}') OR
                         (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(description) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctc.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctt.name) SIMILAR TO '%#{query_word}%') OR
                         (LOWER(chctp.name) SIMILAR TO '%#{query_word}%') OR
