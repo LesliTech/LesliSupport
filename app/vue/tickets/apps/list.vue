@@ -52,17 +52,15 @@ export default {
                 user_type: 'own',
                 query: '',
                 per_page: 15,
-                statuses: []
+                statuses: [],
+                sorting_field: 'deadline',
+                sorting_order: 'desc'
             },
             ticket_filters: {
                 statuses: []
             },
             filtered_statuses: [],
             filters_ready: false,
-            sorting: {
-                field: 'deadline',
-                order: 'desc'
-            },
             index_abilities: this.abilities.privilege('tickets', 'cloud_help')
         }
     },
@@ -114,8 +112,8 @@ export default {
             }
 
             let url = this.url.help('tickets').order(
-                this.sorting.field,
-                this.sorting.order
+                this.filters.sorting_field,
+                this.filters.sorting_order
             ).paginate(
                 this.pagination.current_page,
                 this.filters.per_page
@@ -165,15 +163,15 @@ export default {
         },
 
         sortTickets(field, order){
-            if(this.sorting.field == field){
-                if(this.sorting.order == 'asc'){
-                    this.sorting.order = 'desc'
+            if(this.filters.sorting_field == field){
+                if(this.filters.sorting_order == 'asc'){
+                    this.filters.sorting_order = 'desc'
                 }else{
-                    this.sorting.order = 'asc'
+                    this.filters.sorting_order = 'asc'
                 }
             }else{
-                this.sorting.field = field
-                this.sorting.order = 'desc'
+                this.filters.sorting_field = field
+                this.filters.sorting_order = 'desc'
             }
             this.getTickets()
         },
@@ -301,13 +299,14 @@ export default {
                     v-if="!loading && tickets.length > 0"
                     @sort="sortTickets"
                     backend-sorting
+                    narrowed
                 >
                     <template slot-scope="props">
                         <b-table-column field="id" :label="translations.main.column_id" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
-                                <span v-if="sorting.field == 'id'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                <span v-if="filters.sorting_field == 'id'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
@@ -317,8 +316,8 @@ export default {
                         <b-table-column field="subject" :label="translations.main.column_subject" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
-                                <span v-if="sorting.field == 'subject'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                <span v-if="filters.sorting_field == 'subject'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
@@ -328,8 +327,8 @@ export default {
                         <b-table-column field="deadline" :label="translations.main.column_deadline" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
-                                <span v-if="sorting.field == 'deadline'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                <span v-if="filters.sorting_field == 'deadline'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
@@ -339,8 +338,8 @@ export default {
                         <b-table-column field="status_name" :label="translations.main.column_cloud_help_workflow_statuses_id" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
-                                <span v-if="sorting.field == 'status_name'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                <span v-if="filters.sorting_field == 'status_name'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
@@ -350,8 +349,8 @@ export default {
                         <b-table-column field="type" :label="translations.main.column_cloud_help_catalog_ticket_types_id" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
-                                <span v-if="sorting.field == 'type'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                <span v-if="filters.sorting_field == 'type'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
@@ -361,8 +360,8 @@ export default {
                         <b-table-column field="category" :label="translations.main.column_cloud_help_catalog_ticket_categories_id" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
-                                <span v-if="sorting.field == 'category'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                <span v-if="filters.sorting_field == 'category'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
@@ -372,8 +371,8 @@ export default {
                         <b-table-column field="priority_weight" :label="translations.main.column_cloud_help_catalog_ticket_priorities_id" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
-                                <span v-if="sorting.field == 'priority_weight'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                <span v-if="filters.sorting_field == 'priority_weight'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
