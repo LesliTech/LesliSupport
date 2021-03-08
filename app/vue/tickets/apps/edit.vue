@@ -22,7 +22,7 @@ For more information read the license file including with this software.
 import componentWorkflowTransition from 'LesliVue/shared/workflows/components/transition.vue'
 import componentFormStatus from 'LesliVue/shared/workflows/components/form-status.vue'
 import componentSubscription from 'LesliVue/cloud_objects/subscription.vue'
-import componentDiscussion from 'LesliVue/cloud_objects/discussion-simple.vue'
+import componentDiscussion from 'LesliVue/cloud_objects/discussion.vue'
 import componentAction from 'LesliVue/cloud_objects/action.vue'
 import componentFile from 'LesliVue/cloud_objects/file.vue'
 
