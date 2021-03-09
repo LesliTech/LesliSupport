@@ -37,5 +37,28 @@ module CloudHelp
             end
         end
 
+        def self.update(current_user, ticket, ticket_params)
+            old_attributes = ticket.attributes
+
+            if ticket.update(ticket_params)
+                new_attributes = ticket.attributes
+                Ticket.log_activity_update(current_user, ticket, old_attributes, new_attributes)
+                Workflow::Action.execute_actions(current_user, ticket, old_attributes, new_attributes)
+
+                return LC::Response.service(true, ticket)
+            else
+                return LC::Response.service(false, ticket)
+            end
+        end
+
+        def self.destroy(current_user, ticket)
+            if ticket.destroy
+                Ticket.log_activity_destroy(current_user, ticket)
+                return LC::Response.service(true)
+            else
+                return LC::Response.service(false, ticket)
+            end
+        end
+
     end
 end

@@ -190,13 +190,10 @@ For more information read the license file including with this software.
             return respond_with_error(I18n.t("help.tickets.messages_warning_ticket_already_closed")) if @ticket.closed?
             return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
-            old_attributes = @ticket.attributes
+            ticket_update_response = CloudHelp::TicketServices.update(current_user, @ticket, ticket_params)
 
-            if @ticket.update(ticket_params)
-                new_attributes = @ticket.attributes
-                Ticket.log_activity_update(current_user, @ticket, old_attributes, new_attributes)
-                Workflow::Action.execute_actions(current_user, @ticket, old_attributes, new_attributes)
-
+            @ticket = ticket_update_response.payload
+            if ticket_update_response.successful?
                 respond_with_successful(@ticket.show(current_user, @query))
             else
                 respond_with_error(@ticket.errors.full_messages.to_sentence)
@@ -254,12 +251,12 @@ For more information read the license file including with this software.
             return respond_with_not_found unless @ticket
             return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
-            if @ticket.destroy
-                respond_with_successful
+            ticket_destroy_response = CloudHelp::TicketServices.destroy(current_user, @ticket)
 
-                Ticket.log_activity_destroy(current_user, @ticket)
+            if ticket_destroy_response.successful?
+                respond_with_successful
             else
-                respond_with_error(@ticket.errors.full_messages.to_sentence)
+                respond_with_error(ticket_destroy_response.payload.errors.full_messages.to_sentence)
             end
         end
 
