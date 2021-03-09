@@ -131,20 +131,12 @@ For more information read the license file including with this software.
     this.http.post('127.0.0.1/help/tickets', data);
 =end
         def create
-            ticket = Ticket.new(ticket_params)
-            ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
-            ticket.account = current_user.account.help
-            ticket.user_creator = current_user
-            ticket.set_sla
-            ticket.set_workflow
+            ticket_create_response = CloudHelp::TicketServices.create(current_user, ticket_params)
 
-            if ticket.save
-                Ticket.log_activity_create(current_user, ticket)
-                Workflow::Action.execute_actions(current_user, ticket, {}, ticket.attributes)
-
-                respond_with_successful(ticket)
+            if ticket_create_response.successful?
+                respond_with_successful(ticket_create_response.payload)
             else
-                responseWithError(ticket.errors.full_messages.to_sentence)
+                respond_with_error(ticket_create_response.payload.errors.full_messages.to_sentence)
             end
         end
 
