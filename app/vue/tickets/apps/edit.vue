@@ -78,6 +78,7 @@ export default {
         this.ticket_id = this.$route.params.id
         this.getTicket()
         this.setSubscriptions()
+        this.setActiveTab()
     },
 
     methods: {
@@ -133,8 +134,30 @@ export default {
             }
 
             return ticket
-        }
+        },
 
+        setActiveTab(){
+            let tab = (this.$route.query.tab || '')
+
+            if(tab){
+                switch(tab){
+                    case 'information':
+                        this.active_tab = 0
+                    case 'discussions':
+                        this.active_tab = 1
+                        break
+                    case 'files':
+                        this.active_tab = 2
+                        break
+                    case 'timeline':
+                        this.active_tab = 3
+                        break
+                    case 'activities':
+                        this.active_tab = 4
+                        break
+                }
+            }
+        }
     },
 
     computed: {

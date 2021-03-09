@@ -140,6 +140,7 @@ For more information read the license file including with this software.
 
             if ticket.save
                 Ticket.log_activity_create(current_user, ticket)
+                Ticket::Subscriber.add_subscriber(ticket, current_user, "discussion_created", "email")
                 Workflow::Action.execute_actions(current_user, ticket, {}, ticket.attributes)
 
                 respond_with_successful(ticket)
