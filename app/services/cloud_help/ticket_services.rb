@@ -29,6 +29,7 @@ module CloudHelp
 
             if ticket.save
                 Ticket.log_activity_create(current_user, ticket)
+                Ticket::Subscriber.add_subscriber(ticket, current_user, "discussion_created", "email")
                 Workflow::Action.execute_actions(current_user, ticket, {}, ticket.attributes)
 
                 return LC::Response.service(true, ticket)
@@ -151,7 +152,7 @@ module CloudHelp
             ).joins(
                 "inner join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
             ).joins(
-                "left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id AND chta.users_id = #{current_user.id}"
+                "left join cloud_help_ticket_assignments chta on chta.deleted_at is null and chta.cloud_help_tickets_id = cloud_help_tickets.id AND chta.users_id = #{current_user.id}"
             ).joins(
                 "left join users UC on UC.id = cloud_help_tickets.users_id"
             ).joins(

@@ -22,12 +22,12 @@ For more information read the license file including with this software.
 
 =begin
 @attribute [Enumerable<Symbol>] event
-    @return [:ticket_created, :ticket_closed, :comment_created, :action_created, :file_created, :activity_created, :workflow_updated, :priority_updated, :type_category_updated, :assignment_updated, :deadline_updated ]
+    @return [:ticket_created, :ticket_closed, :discussion_created, :action_created, :file_created, :activity_created, :workflow_updated, :priority_updated, :type_category_updated, :assignment_updated, :deadline_updated ]
 =end
         enum event: [
             :ticket_created,
             :ticket_closed,
-            :comment_created,
+            :discussion_created,
             :action_created,
             :file_created,
             :activity_created,

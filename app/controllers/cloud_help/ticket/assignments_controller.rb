@@ -70,6 +70,7 @@ For more information read the license file including with this software.
 
             if assignment.save
                 Ticket.log_activity_create_assignment(current_user, @ticket, assignment)
+                Ticket::Subscriber.add_subscriber(@ticket, assignment.user, "discussion_created", "email")
                 TicketMailer.with({user: assignment.user, ticket: @ticket}).assignment.deliver_later
 
                 respond_with_successful(assignment)
@@ -96,8 +97,9 @@ For more information read the license file including with this software.
             return respond_with_not_found unless assignment
 
             if assignment.destroy
-                respond_with_successful
                 Ticket.log_activity_destroy_assignment(current_user, @ticket, assignment)
+                @ticket.subscribers.where("users_id = ?", assignment.users_id).destroy_all
+                respond_with_successful
             else
                 respond_with_error(assignment.errors.full_messages.to_sentence)
             end
