@@ -22,7 +22,7 @@ For more information read the license file including with this software.
 import componentWorkflowTransition from 'LesliVue/shared/workflows/components/transition.vue'
 import componentFormStatus from 'LesliVue/shared/workflows/components/form-status.vue'
 import componentSubscription from 'LesliVue/cloud_objects/subscription.vue'
-import componentDiscussion from 'LesliVue/cloud_objects/discussion-simple.vue'
+import componentDiscussion from 'LesliVue/cloud_objects/discussion.vue'
 import componentAction from 'LesliVue/cloud_objects/action.vue'
 import componentFile from 'LesliVue/cloud_objects/file.vue'
 
@@ -78,6 +78,7 @@ export default {
         this.ticket_id = this.$route.params.id
         this.getTicket()
         this.setSubscriptions()
+        this.setActiveTab()
     },
 
     methods: {
@@ -133,8 +134,30 @@ export default {
             }
 
             return ticket
-        }
+        },
 
+        setActiveTab(){
+            let tab = (this.$route.query.tab || '')
+
+            if(tab){
+                switch(tab){
+                    case 'information':
+                        this.active_tab = 0
+                    case 'discussions':
+                        this.active_tab = 1
+                        break
+                    case 'files':
+                        this.active_tab = 2
+                        break
+                    case 'timeline':
+                        this.active_tab = 3
+                        break
+                    case 'activities':
+                        this.active_tab = 4
+                        break
+                }
+            }
+        }
     },
 
     computed: {
