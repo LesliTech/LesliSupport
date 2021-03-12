@@ -258,6 +258,10 @@ export default {
         },
 
         deleteTicketAssignment(deleted_assignment){
+            if(! deleted_assignment){
+                return
+            }
+
             let url = `${this.main_route}/${this.ticket_id}/assignments/${deleted_assignment.id}`
 
             this.http.delete(url).then(result => {
@@ -352,7 +356,7 @@ export default {
                                     <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>
                                 </div>
                             </div>
-                            <div class="column is-3">
+                            <div v-if="data.ticket_assignable" class="column is-3">
                                 <b-field :label="translations.main.view_title_auto_assignment">
                                     <b-checkbox v-model="auto_assignment" @change.native="autoAssignTicket">
                                         {{translations.main.view_text_assign_ticket_to_self}}

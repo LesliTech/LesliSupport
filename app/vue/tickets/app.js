@@ -44,6 +44,7 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
     component: appEdit
 }],{
     ticket: null,
+    ticket_assignable: false,
     assignment_options: {},
     reload: {
         timelines: false,
