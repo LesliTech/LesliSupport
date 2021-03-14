@@ -383,24 +383,25 @@ For more information read the license file including with this software.
         end
 
         # Custom is_editab_by? implementation
-        def is_editable_by?(current_user)
+        def is_editable_by?(current_user, bypass_olp = false)
             return false unless current_user
 
             return false if (status.completed_successfully? || status.completed_unsuccessfully? )
 
-            current_user_olp = current_user.roles.order(object_level_permission: :desc).first.object_level_permission
+            if bypass_olp
+                current_user_olp = current_user.roles.order(object_level_permission: :desc).first.object_level_permission
+                reference_olp = 0
 
-            reference_olp = 0
+                if user_creator
+                    reference_olp = user_creator.roles.order(object_level_permission: :desc).first.object_level_permission
+                elsif user_main
+                    reference_olp = user_main.roles.order(object_level_permission: :desc).first.object_level_permission
+                end
 
-            if user_creator
-                reference_olp = user_creator.roles.order(object_level_permission: :desc).first.object_level_permission
-            elsif user_main
-                reference_olp = user_main.roles.order(object_level_permission: :desc).first.object_level_permission
-            end
-
-            # Admin, owner or similar roles can modify a ticket
-            if current_user_olp >= object_level_permission_threshold && current_user_olp >= reference_olp
-                return true
+                # Admin, owner or similar roles can modify a ticket
+                if current_user_olp >= object_level_permission_threshold && current_user_olp >= reference_olp
+                    return true
+                end
             end
 
             # Any assigned user can also modify this ticket
