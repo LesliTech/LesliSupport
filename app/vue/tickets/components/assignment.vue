@@ -237,6 +237,14 @@ export default {
             }
         },
 
+        'assignment_options.users'(){
+            let assignable = this.assignment_options.users.find((user)=>{
+                return user.id == lesli.current_user.id
+            })
+
+            this.data.ticket_assignable = Boolean(assignable)
+        },
+
         search(){
             this.pagination.current_page = 1
         },
@@ -249,7 +257,10 @@ export default {
                     return user.id == lesli.current_user.id
                 })
 
-                this.postAssignment(current_user)
+                if(current_user){
+                    this.postAssignment(current_user)
+                }
+
             }
         }
     }
