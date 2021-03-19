@@ -80,7 +80,13 @@ module CloudHelp
                 "cloud_help_catalog_ticket_types.name", 
                 "cloud_help_tickets.cloud_help_catalog_ticket_types_id"
             ).map do |ticket|
-                ticket.attributes
+                ticket_attributes = ticket.attributes
+                
+                {
+                    hours_worked: ticket_attributes["hours_worked"],
+                    type: ticket_attributes["type"],
+                    date: ticket_attributes["date"]
+                }
             end
 
             group_by_month(datetime_start, datetime_end, data)
@@ -214,7 +220,7 @@ module CloudHelp
             while date <= datetime_end
                 month = LC::Date.to_string_datetime_words(date, "%Y-%m")
                 tickets_by_date = data.find_all do |ticket| 
-                    ticket["date"] == month
+                    ticket[:date] == month
                 end
 
                 parsed_data.push(tickets_by_date)
