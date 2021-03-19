@@ -25,10 +25,17 @@ module CloudHelp
             my_tickets: "my_tickets",
             unassigned_tickets: "unassigned_tickets",
             tickets_by_type: "tickets_by_type",
-            tickets_by_category: "tickets_by_category"
+            tickets_by_category: "tickets_by_category",
+            hours_worked: "hours_worked"
         }
 
         def self.configuration_options
+            chart_configuration = [
+                { column: "query_configuration", group: "filters", name: "only_main_user", type: "Boolean" },
+                { column: "custom_configuration", group: "arrangement", name: "range_before", type: "Integer"},
+                { column: "custom_configuration", group: "arrangement", name: "range_after", type: "Integer"}
+            ]
+
             list_configuration = [
                 { column: "query_configuration", group: "pagination", name: "per_page", type: "Integer" }
             ]
@@ -37,6 +44,7 @@ module CloudHelp
                 new_tickets: list_configuration,
                 my_tickets: list_configuration,
                 unassigned_tickets: list_configuration,
+                hours_worked: chart_configuration,
                 tickets_by_type: [],
                 tickets_by_category: []
             }
