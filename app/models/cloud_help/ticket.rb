@@ -38,6 +38,7 @@ For more information read the license file including with this software.
 
         has_many :assignments, foreign_key: "cloud_help_tickets_id"
 
+        before_validation :set_type, :set_sla, :set_workflow, on: :create
         after_update :after_update_actions
 
 =begin
@@ -410,6 +411,13 @@ For more information read the license file including with this software.
             end
 
             return false
+        end
+
+        def set_type
+            LC::Debug.msg self
+            if self.type.blank?
+                self.type = self.account.ticket_types.first
+            end
         end
 
         def set_sla
