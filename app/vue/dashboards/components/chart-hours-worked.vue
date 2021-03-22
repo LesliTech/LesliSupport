@@ -109,7 +109,6 @@ export default {
         },
 
         generateColors(num_colors){
-            console.log(num_colors)
             let initial_color = [0, 83,128]
             let final_color = [196,219,255]
 
@@ -127,8 +126,6 @@ export default {
                 }
                 colors.push(`rgb(${color.join(', ')})`)
             }
-
-            console.log(JSON.stringify(colors))
 
             return colors
         }
