@@ -62,6 +62,7 @@ module CloudHelp
             data = current_user.account.help.tickets
             .joins(:type)
             .where("cloud_help_tickets.created_at between ? and ?", datetime_start, datetime_end)
+            .where("cloud_help_tickets.hours_worked > 0")
 
             if configuration[:query][:filters]["only_main_user"]
                 data = data
@@ -79,6 +80,9 @@ module CloudHelp
                 "date",
                 "cloud_help_catalog_ticket_types.name", 
                 "cloud_help_tickets.cloud_help_catalog_ticket_types_id"
+            ).order(
+                "type asc",
+                "date asc"
             ).map do |ticket|
                 ticket_attributes = ticket.attributes
                 
@@ -89,7 +93,7 @@ module CloudHelp
                 }
             end
 
-            group_by_month(datetime_start, datetime_end, data)
+            format_hours_worked_component(datetime_start, datetime_end, data)
         end
 
         def new_tickets(current_user, query)
@@ -214,20 +218,45 @@ module CloudHelp
 
         protected
         
-        def group_by_month(datetime_start, datetime_end, data)
+        def format_hours_worked_component(datetime_start, datetime_end, data)
             parsed_data = []
-            date = datetime_start
-            while date <= datetime_end
-                month = LC::Date.to_string_datetime_words(date, "%Y-%m")
-                tickets_by_date = data.find_all do |ticket| 
-                    ticket[:date] == month
-                end
 
-                parsed_data.push(tickets_by_date)
-                date += 1.month
+            types = data.map do |row|
+                row[:type]
             end
 
-            parsed_data
+            months = []
+            types = types.uniq
+
+            types.each do |type|
+                date = datetime_start
+                while date <= datetime_end
+                    month = LC::Date.to_string_datetime_words(date, "%Y-%m")
+                    months.push(month) unless months.include? month
+
+                    tickets_by_date_and_type = data.find do |ticket| 
+                        ticket[:date] == month && ticket[:type] == type
+                    end
+
+                    if tickets_by_date_and_type
+                        parsed_data.push(tickets_by_date_and_type)
+                    else
+                        parsed_data.push({
+                            hours_worked: 0,
+                            type: type,
+                            date: month
+                        })
+                    end
+                    
+                    date += 1.month
+                end
+            end
+            
+            {
+                records: parsed_data,
+                types: types,
+                months: months
+            }
         end
     end
 end
