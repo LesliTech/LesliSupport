@@ -24,6 +24,7 @@ import componentMyTickets from "../../dashboards/components/list-my-tickets.vue"
 import componentUnassignedTickets from "../../dashboards/components/list-unassigned-tickets.vue"
 import componentTicketsByType from "../../dashboards/components/chart-tickets-by-type.vue"
 import componentTicketsByCategory from "../../dashboards/components/chart-tickets-by-category.vue"
+import componentHoursWorked from "../../dashboards/components/chart-hours-worked.vue"
 
 
 // · component
@@ -33,7 +34,8 @@ export default {
         "component-my-tickets": componentMyTickets,
         "component-unassigned-tickets": componentUnassignedTickets,
         "component-tickets-by-type": componentTicketsByType,
-        "component-tickets-by-category": componentTicketsByCategory
+        "component-tickets-by-category": componentTicketsByCategory,
+        "component-hours-worked": componentHoursWorked
     },
 
     data() {

@@ -32,6 +32,7 @@ import componentMyTickets from "./components/list-my-tickets.vue"
 import componentUnassignedTickets from "./components/list-unassigned-tickets.vue"
 import componentTicketsByType from "./components/chart-tickets-by-type.vue"
 import componentTicketsByCategory from "./components/chart-tickets-by-category.vue"
+import componentHoursWorked from "./components/chart-hours-worked.vue"
 
 app("CloudHelp", "[list|new|edit]", "/help/dashboards", [{
     path: "/",
@@ -58,7 +59,8 @@ app("CloudHelp", "[list|new|edit]", "/help/dashboards", [{
             "component-my-tickets": componentMyTickets,
             "component-unassigned-tickets": componentUnassignedTickets,
             "component-tickets-by-type": componentTicketsByType,
-            "component-tickets-by-category": componentTicketsByCategory
+            "component-tickets-by-category": componentTicketsByCategory,
+            "component-hours-worked": componentHoursWorked
         }
     }
 }])

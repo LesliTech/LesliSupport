@@ -25,10 +25,17 @@ module CloudHelp
             my_tickets: "my_tickets",
             unassigned_tickets: "unassigned_tickets",
             tickets_by_type: "tickets_by_type",
-            tickets_by_category: "tickets_by_category"
+            tickets_by_category: "tickets_by_category",
+            hours_worked: "hours_worked"
         }
 
         def self.configuration_options
+            chart_configuration = [
+                { column: "query_configuration", group: "filters", name: "only_main_user", type: "Boolean" },
+                { column: "custom_configuration", group: "arrangement", name: "range_before", type: "Integer"},
+                { column: "custom_configuration", group: "arrangement", name: "range_after", type: "Integer"}
+            ]
+
             list_configuration = [
                 { column: "query_configuration", group: "pagination", name: "per_page", type: "Integer" }
             ]
@@ -37,9 +44,56 @@ module CloudHelp
                 new_tickets: list_configuration,
                 my_tickets: list_configuration,
                 unassigned_tickets: list_configuration,
+                hours_worked: chart_configuration,
                 tickets_by_type: [],
                 tickets_by_category: []
             }
+        end
+
+        def hours_worked(current_user, query)
+            configuration = parse_configuration()
+            unless current_user.has_privileges?(["cloud_help/tickets"], ["index"])
+                return nil
+            end
+
+            datetime_start = LC::Date.now.months_ago((configuration[:custom][:arrangement]["range_before"].to_i || 4)).beginning_of_month
+            datetime_end = LC::Date.now.end_of_month + (configuration[:custom][:arrangement]["range_after"].to_i || 0).months
+
+            data = current_user.account.help.tickets
+            .joins(:type)
+            .where("cloud_help_tickets.created_at between ? and ?", datetime_start, datetime_end)
+            .where("cloud_help_tickets.hours_worked > 0")
+
+            if configuration[:query][:filters]["only_main_user"]
+                data = data
+                .left_outer_joins(:assignments)
+                .where("cloud_help_ticket_assignments.users_id = ?", current_user.id)
+            end
+
+            data = data.select(
+                "SUM(cloud_help_tickets.hours_worked) as hours_worked",
+                "cloud_help_tickets.cloud_help_catalog_ticket_types_id",
+                "cloud_help_catalog_ticket_types.name as type",
+                LC::Date.db_to_char_custom("cloud_help_tickets.created_at", include_alias: true, alias_name: "date", db_format: "yyyy-mm")
+            )
+            .group(
+                "date",
+                "cloud_help_catalog_ticket_types.name", 
+                "cloud_help_tickets.cloud_help_catalog_ticket_types_id"
+            ).order(
+                "type asc",
+                "date asc"
+            ).map do |ticket|
+                ticket_attributes = ticket.attributes
+                
+                {
+                    hours_worked: ticket_attributes["hours_worked"],
+                    type: ticket_attributes["type"],
+                    date: ticket_attributes["date"]
+                }
+            end
+
+            format_hours_worked_component(datetime_start, datetime_end, data)
         end
 
         def new_tickets(current_user, query)
@@ -160,6 +214,49 @@ module CloudHelp
                 "COUNT(CHT.id) as tickets_count",
                 "cloud_help_catalog_ticket_categories.name as category_name"
             )
+        end
+
+        protected
+        
+        def format_hours_worked_component(datetime_start, datetime_end, data)
+            parsed_data = []
+
+            types = data.map do |row|
+                row[:type]
+            end
+
+            months = []
+            types = types.uniq
+
+            types.each do |type|
+                date = datetime_start
+                while date <= datetime_end
+                    month = LC::Date.to_string_datetime_words(date, "%Y-%m")
+                    months.push(month) unless months.include? month
+
+                    tickets_by_date_and_type = data.find do |ticket| 
+                        ticket[:date] == month && ticket[:type] == type
+                    end
+
+                    if tickets_by_date_and_type
+                        parsed_data.push(tickets_by_date_and_type)
+                    else
+                        parsed_data.push({
+                            hours_worked: 0,
+                            type: type,
+                            date: month
+                        })
+                    end
+                    
+                    date += 1.month
+                end
+            end
+            
+            {
+                records: parsed_data,
+                types: types,
+                months: months
+            }
         end
     end
 end
