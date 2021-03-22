@@ -414,7 +414,6 @@ For more information read the license file including with this software.
         end
 
         def set_type
-            LC::Debug.msg self
             if self.type.blank?
                 self.type = self.account.ticket_types.first
             end
