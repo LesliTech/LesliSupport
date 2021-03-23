@@ -22,10 +22,7 @@ module CloudHelp
         def self.create(current_user, ticket_params)
             ticket = current_user.account.help.tickets.new(ticket_params)
             ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
-            ticket.account = current_user.account.help
             ticket.user_creator = current_user
-            ticket.set_sla
-            ticket.set_workflow
 
             if ticket.save
                 Ticket.log_activity_create(current_user, ticket)
@@ -34,7 +31,7 @@ module CloudHelp
 
                 return LC::Response.service(true, ticket)
             else
-                return LC::Response.service(false, ticket)
+                return LC::Response.service(false, ticket.errors)
             end
         end
 
