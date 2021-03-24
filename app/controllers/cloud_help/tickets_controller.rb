@@ -132,11 +132,10 @@ For more information read the license file including with this software.
 =end
         def create
             ticket_create_response = CloudHelp::TicketServices.create(current_user, ticket_params)
-
             if ticket_create_response.successful?
                 respond_with_successful(ticket_create_response.payload)
             else
-                respond_with_error(ticket_create_response.payload.errors.full_messages.to_sentence)
+                respond_with_error(ticket_create_response.error.full_messages.to_sentence)
             end
         end
 
