@@ -23,7 +23,7 @@ module CloudHelp
             user = params[:user]
             ticket = params[:ticket]
 
-            @data = @data.merge({
+            self.build_data_from_params({}, {
                 url: "/help/tickets/#{ticket.id}/edit",
                 title: I18n.t("help.tickets.mailer_ticket_assignment_subject"),
                 link_information: I18n.t("help.tickets.mailer_ticket_assignment_link_information"),
