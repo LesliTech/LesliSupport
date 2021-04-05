@@ -384,12 +384,12 @@ For more information read the license file including with this software.
         end
 
         # Custom is_editab_by? implementation
-        def is_editable_by?(current_user, bypass_olp = false)
+        def is_editable_by?(current_user, bypass_olp: false, bypass_status: false)
             return false unless current_user
 
-            return false if (status.completed_successfully? || status.completed_unsuccessfully? )
+            return false if (! bypass_status) && (status.completed_successfully? || status.completed_unsuccessfully? )
 
-            if bypass_olp
+            unless bypass_olp
                 current_user_olp = current_user.roles.order(object_level_permission: :desc).first.object_level_permission
                 reference_olp = 0
 

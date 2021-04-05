@@ -130,6 +130,11 @@ export default {
                     })
                     this.alert(this.translations.main.messages_info_assignment_created, 'success')
 
+                    // The user assigned the ticket to themselves, so we move to the edit view
+                    if(user.id == lesli.current_user.id){
+                        this.$router.push(`/${this.ticketId}/edit`).catch((error)=>{})
+                    }
+
                     this.reloadTicketRecord()
                 }else{
                     this.alert(result.error.message,'danger')
