@@ -132,7 +132,7 @@ export default {
 
                     // The user assigned the ticket to themselves, so we move to the edit view
                     if(user.id == lesli.current_user.id){
-                        this.$router.push(`/${this.ticketId}/edit`)
+                        this.$router.push(`/${this.ticketId}/edit`).catch((error)=>{})
                     }
 
                     this.reloadTicketRecord()
