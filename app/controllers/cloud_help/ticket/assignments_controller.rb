@@ -63,7 +63,7 @@ For more information read the license file including with this software.
 =end
         def create
             return respond_with_not_found unless @ticket
-            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user, true) || @ticket.assignments.empty?
+            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user, bypass_olp: true) || @ticket.assignments.empty?
 
             assignment = Ticket::Assignment.new(ticket_assignment_params)
             assignment.ticket = @ticket

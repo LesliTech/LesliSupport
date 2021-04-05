@@ -186,10 +186,15 @@ For more information read the license file including with this software.
 =end
         def update
             return respond_with_not_found unless @ticket
-            return respond_with_error(I18n.t("help.tickets.messages_warning_ticket_already_closed")) if @ticket.closed?
-            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
+            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user, bypass_status: true)
 
-            ticket_update_response = CloudHelp::TicketServices.update(current_user, @ticket, ticket_params)
+            # When the ticket is closed, the only available field for update is the status
+            update_params = ticket_params
+            if ["completed_successfully", "completed_unsuccessfully"].include? @ticket.status.status_type
+                update_params = completed_ticket_params
+            end
+
+            ticket_update_response = CloudHelp::TicketServices.update(current_user, @ticket, update_params)
 
             @ticket = ticket_update_response.payload
             if ticket_update_response.successful?
@@ -314,7 +319,7 @@ For more information read the license file including with this software.
     #        "tags": "Important, Company"
     #    }
     #}
-    filtered_params = ticket_state_params
+    filtered_params = ticket_params
     puts filtered_params
     # will remove the id and only print {
     #    "tags": "Important, Company"
@@ -331,6 +336,30 @@ For more information read the license file including with this software.
                 :tags,
                 :hours_worked,
                 :deadline
+            )
+        end
+
+=begin
+@return [Parameters] Allowed parameters for a ticket that has already been completed
+@description Sanitizes the parameters received from an HTTP call to only allow the
+    specified ones. Allowed params are (cloud_help_ticket_worklfow_details_id)
+@example
+    # supose params contains {
+    #    "ticket": {
+    #        "id": 5,
+    #        "name": "My ticket",
+    #        "cloud_help_workflow_statuses_id": 12
+    #    }
+    #}
+    filtered_params = completed_ticket_params
+    puts filtered_params
+    # will remove the id and only print {
+    #        "cloud_help_workflow_statuses_id": 12
+    #}
+=end
+        def completed_ticket_params
+            params.require(:ticket).permit(
+                :cloud_help_workflow_statuses_id
             )
         end
 
