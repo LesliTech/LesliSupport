@@ -45,7 +45,7 @@ export default {
                 data: []
             },
             translations: {
-                dashboards: I18n.t('help.dashboard/components'),
+                dashboards: I18n.t('help.dashboard/components')
             }
         }
     },
