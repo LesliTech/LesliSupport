@@ -56,7 +56,7 @@ export default {
                 types: []
             },
             translations: {
-                dashboards: I18n.t('deutscheleibrenten.dashboards')
+                dashboards: I18n.t('help.dashboard/components')
             }
         }
     },
@@ -150,8 +150,8 @@ export default {
                     :colors="hours_worked.colors"
                 >
                 </component-chart-general>
-                <a href="/crm/projects?status=hours_worked">
-                    <span>{{ translations.dashboards.chart_see_all_notary_appoinments }}</span>
+                <a href="/help/tickets">
+                    <span>{{ translations.dashboards.view_title_all_tickets }}</span>
                     <span class="icon">
                         <i class="fas fa-arrow-right"></i>
                     </span>
