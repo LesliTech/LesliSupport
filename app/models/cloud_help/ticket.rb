@@ -193,7 +193,7 @@ For more information read the license file including with this software.
             filter_day = query[:filters][:day]
 
             tickets = current_user.account.help.tickets
-            .select(:id, :subject, :description, :deadline)
+            .select(:id, :subject, :description, :deadline, LC::Date2.new.date_time.db_column("deadline"))
             .where("cloud_help_tickets.deadline is not null")
             .where("extract('year' from cloud_help_tickets.deadline) = ?", filter_year)
             .where("extract('month' from cloud_help_tickets.deadline) = ?", filter_month)
