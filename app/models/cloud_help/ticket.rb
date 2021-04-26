@@ -187,18 +187,15 @@ For more information read the license file including with this software.
 
         def self.tickets_with_deadline(current_user, query)
             tickets = []
-            today = LC::Date.now
-            filter_year = query[:filters][:year] || today.strftime("%Y")
-            filter_month = query[:filters][:month] || today.strftime("%m")
-            filter_day = query[:filters][:day]
 
             tickets = current_user.account.help.tickets
-            .select(:id, :subject, :description, :deadline, LC::Date2.new.date_time.db_column("deadline"))
+            .joins("left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id and chta.users_id = #{current_user.id}")
+            .select(:id, :subject, :description, :deadline)
             .where("cloud_help_tickets.deadline is not null")
-            .where("extract('year' from cloud_help_tickets.deadline) = ?", filter_year)
-            .where("extract('month' from cloud_help_tickets.deadline) = ?", filter_month)
+            .where("cloud_help_tickets.deadline >= ?", query[:filters][:start_date])
+            .where("cloud_help_tickets.deadline <= ? ", query[:filters][:end_date])
+            .where("cloud_help_tickets.users_id = ? or cloud_help_tickets.user_main_id = ?", current_user.id, current_user.id)
 
-            tickets = tickets.where("extract('day' from cloud_help_tickets.deadline) = ?", filter_day) if filter_day
 
             return tickets
         end
