@@ -17,14 +17,15 @@ For more information read the license file including with this software.
 
 
 // · Import main app
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import app from 'LesliCoreVue/app'
+import app from "LesliVue/app2"
 
-// · Import apps and components
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import appShow from './apps/show.vue'
 
-app("CloudHelp", "[show]", "/help", [{
+// · Import apps
+import dashboardShow from './dashboard/actions/show.vue'
+
+
+// ·
+app("CloudHelp", "/help", "[dashboard]", [{
     path: "/",
-    component: appShow
+    component: dashboardShow
 }])
