@@ -25,7 +25,10 @@ For more information read the license file including with this software.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     props: {
-
+        appMountPath: {
+            type: String,
+            default: ''
+        }
     },
     
     components: {
@@ -148,7 +151,7 @@ export default {
         //      // Asume the id of the Ticket type is 4
         //      // The user will be redirected to the url /help/catalog/ticket_types/4
         showTicketType(ticket_type) {
-            this.$router.push(`/${ticket_type.id}`)
+            this.$router.push(`${this.appMountPath}/${ticket_type.id}`)
         },
 
         reloadTicketTypes(){
@@ -200,7 +203,7 @@ export default {
                     <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
                     <span> {{ translations.core.view_text_btn_reload }}</span>
                 </button>
-                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
+                <router-link class="button" tag="button" :to="`${appMountPath}/new`" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
                     <span>{{ translations.main.view_btn_create }}</span>
                 </router-link>
