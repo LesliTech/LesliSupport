@@ -94,7 +94,7 @@ export default {
             this.http.get(`/help/slas/${this.sla_id}.json`).then(result => {
                 if (result.successful) {
                     this.sla = result.data
-                    this.data.slas.sla = this.sla
+                    this.data.sla = this.sla
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -140,11 +140,11 @@ export default {
     },
 
     watch: {
-        'data.slas.reload.sla'(){
-            if(this.data.slas.reload.sla){
+        'data.reload.sla'(){
+            if(this.data.reload.sla){
                 this.getSla()
                 this.$nextTick(()=>{
-                    this.data.slas.reload.sla = false
+                    this.data.reload.sla = false
                 })
             }
         }
@@ -156,7 +156,7 @@ export default {
         <component-header :title="sla.name">
             <div class="navbar-item">
                 <component-workflow-transition
-                    v-if="!data.slas.reload.sla"
+                    v-if="!data.reload.sla"
                     cloud-module="help/sla"
                     translations-path="help.workflows"
                     :cloud-id="sla_id"
@@ -182,7 +182,7 @@ export default {
         <component-form-status :selected-status="new_sla_status" cloud-object-variable="sla"></component-form-status>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                <component-form v-if="data.slas.sla" view-type="edit" :app-mount-path="appMountPath"></component-form>
+                <component-form v-if="data.sla" view-type="edit" :app-mount-path="appMountPath"></component-form>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_discussions">

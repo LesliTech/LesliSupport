@@ -184,39 +184,43 @@ app('CloudHelp', '/help', '[dashboards|ticket_types|ticket_priorities|ticket_cat
         }
     },{
         path: '/tickets',
-        component: ticketsList
+        component: ticketsList,
+        props: {
+            appMountPath: '/help/tickets'
+        }
     },{
         path: '/tickets/new',
-        component: ticketsNew
+        component: ticketsNew,
+        props: {
+            appMountPath: '/help/tickets'
+        }
     },{
         path: '/tickets/:id',
-        component: ticketsShow
+        component: ticketsShow,
+        props: {
+            appMountPath: '/help/tickets'
+        }
     },{
         path: '/tickets/:id/edit',
-        component: ticketsEdit
+        component: ticketsEdit,
+        props: {
+            appMountPath: '/help/tickets'
+        }
     }
 ],{
-    slas: {
-        sla: null,
-        reload: {
-            activities: false,
-            sla: false
-        }
-    }, 
-    tickets: {
-        ticket: null,
-        ticket_assignable: false,
-        assignment_options: {},
-        reload: {
-            timelines: false,
-            activities: false,
-            ticket: false,
-            sla: false
-        },
-        ticket_images: [],
-        events: {
-            post_auto_assignment: false,
-            delete_auto_assignment: false
-        }
+    ticket: null,
+    sla: null,
+    ticket_assignable: false,
+    assignment_options: {},
+    ticket_images: [],
+    reload: {
+        activities: false,
+        timelines: false,
+        ticket: false,
+        sla: false,
+    },
+    events: {
+        post_auto_assignment: false,
+        delete_auto_assignment: false
     }
 })

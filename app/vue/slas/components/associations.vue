@@ -66,7 +66,7 @@ export default {
 
     methods: {
         setSla(){
-            this.sla = this.data.slas.sla
+            this.sla = this.data.sla
         },
 
         getOptions(){
@@ -185,7 +185,7 @@ export default {
         },
 
         reloadSlaRecord(){
-            this.data.slas.reload.activities = true
+            this.data.reload.activities = true
         }
     },
 

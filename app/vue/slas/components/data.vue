@@ -56,15 +56,15 @@ export default {
     methods: {
         setSla(){
             this.sla_id = this.$route.params.id
-            this.sla = this.data.slas.sla
+            this.sla = this.data.sla
         }
     },
 
     watch: {
-        'data.slas.reload.sla'(){
-            if(this.data.slas.reload.sla){
+        'data.reload.sla'(){
+            if(this.data.reload.sla){
                 this.setSla()
-                this.data.slas.reload.sla = false
+                this.data.reload.sla = false
             }
         }
     }

@@ -53,7 +53,7 @@ export default {
 
     methods: {
         initializeSla(){
-            this.data.slas.sla = null
+            this.data.sla = null
             this.sla = {
                 name: null,
                 body: null,
@@ -65,7 +65,7 @@ export default {
                 user_main_id: null
             }
             this.$nextTick(()=>{
-                this.data.slas.sla = this.sla
+                this.data.sla = this.sla
             })
         }
     }
@@ -83,6 +83,6 @@ export default {
                 </div>
             </div>
         </component-header>
-        <component-form v-if="data.slas.sla" view-type="new" :app-mount-path="appMountPath"></component-form>
+        <component-form v-if="data.sla" view-type="new" :app-mount-path="appMountPath"></component-form>
     </section>
 </template>

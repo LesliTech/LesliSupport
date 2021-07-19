@@ -66,7 +66,7 @@ export default {
     methods: {
         setSla(){
             this.sla_id = this.$route.params.id
-            this.sla = this.data.slas.sla
+            this.sla = this.data.sla
         },
         
         setSubscriptions(){
@@ -158,7 +158,7 @@ export default {
         },
 
         reloadSlaActivities(){
-            this.data.slas.reload.activities = true
+            this.data.reload.activities = true
         }
     }
 }
