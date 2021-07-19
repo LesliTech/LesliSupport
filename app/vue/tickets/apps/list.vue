@@ -70,7 +70,7 @@ export default {
     mounted() {
         this.setSessionStorageFilters()
         this.getTicketsFilters()
-       this.getTickets()
+        this.getTickets()
     },
 
     methods: {

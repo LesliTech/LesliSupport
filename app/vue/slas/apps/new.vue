@@ -46,7 +46,7 @@ export default {
 
     methods: {
         initializeSla(){
-            this.data.sla = null
+            this.data.slas.sla = null
             this.sla = {
                 name: null,
                 body: null,
@@ -58,7 +58,7 @@ export default {
                 user_main_id: null
             }
             this.$nextTick(()=>{
-                this.data.sla = this.sla
+                this.data.slas.sla = this.sla
             })
         }
     }
@@ -76,6 +76,6 @@ export default {
                 </div>
             </div>
         </component-header>
-        <component-form v-if="data.sla" view-type="new"></component-form>
+        <component-form v-if="data.slas.sla" view-type="new"></component-form>
     </section>
 </template>

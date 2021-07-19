@@ -79,7 +79,7 @@ export default {
             this.http.get(`/help/slas/${this.sla_id}.json`).then(result => {
                 if (result.successful) {
                     this.sla = this.parseBackendData(result.data)
-                    this.data.sla = this.sla
+                    this.data.slas.sla = this.sla
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -142,7 +142,7 @@ export default {
         </component-header>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                <component-data v-if="data.sla"></component-data>
+                <component-data v-if="data.slas.sla"></component-data>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_discussions">
