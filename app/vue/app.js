@@ -124,13 +124,22 @@ app('CloudHelp', '/help', '[dashboards|ticket_types|ticket_priorities|ticket_cat
         }
     },{
         path: '/catalog/ticket_priorities',
-        component: ticketPrioritiesList
+        component: ticketPrioritiesList,
+        props: {
+            appMountPath: '/help/catalog/ticket_priorities'
+        }
     },{
         path: '/catalog/ticket_priorities/new',
-        component: ticketPrioritiesEdit
+        component: ticketPrioritiesNew,
+        props: {
+            appMountPath: '/help/catalog/ticket_priorities'
+        }
     },{
         path: '/catalog/ticket_priorities/:id',
-        component: ticketPrioritiesNew
+        component: ticketPrioritiesEdit,
+        props: {
+            appMountPath: '/help/catalog/ticket_priorities'
+        }
     },{
         path: '/catalog/ticket_types',
         component: ticketTypesList
