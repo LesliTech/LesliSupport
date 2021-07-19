@@ -66,7 +66,7 @@ export default {
 
     methods: {
         setSla(){
-            this.sla = this.data.sla
+            this.sla = this.data.slas.sla
         },
 
         getOptions(){
@@ -185,7 +185,7 @@ export default {
         },
 
         reloadSlaRecord(){
-            this.data.reload.activities = true
+            this.data.slas.reload.activities = true
         }
     },
 
@@ -224,18 +224,6 @@ export default {
         search(){
             this.pagination.current_page = 1
         },
-
-        'data.events.post_auto_association'(){
-            if(this.data.events.post_auto_association){
-                this.data.events.post_auto_association = false
-
-                let current_ticket_type = this.association_options.ticket_types.find((ticket_type)=>{
-                    return ticket_type.id == lesli.current_ticket_type.id
-                })
-
-                this.postAssociation(current_ticket_type)
-            }
-        }
     }
 }
 </script>

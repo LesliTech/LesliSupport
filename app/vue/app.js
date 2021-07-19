@@ -160,16 +160,28 @@ app('CloudHelp', '/help', '[dashboards|ticket_types|ticket_priorities|ticket_cat
         }
     },{
         path: '/slas',
-        component: slasList
+        component: slasList,
+        props: {
+            appMountPath: '/help/slas'
+        }
     },{
         path: '/slas/new',
-        component: slasNew
+        component: slasNew,
+        props: {
+            appMountPath: '/help/slas'
+        }
     },{
         path: '/slas/:id',
-        component: slasShow
+        component: slasShow,
+        props: {
+            appMountPath: '/help/slas'
+        }
     },{
         path: '/slas/:id/edit',
-        component: slasEdit
+        component: slasEdit,
+        props: {
+            appMountPath: '/help/slas'
+        }
     },{
         path: '/tickets',
         component: ticketsList
