@@ -25,6 +25,13 @@ import componentTreeList from '../components/tree_list.vue'
 
 
 export default {
+    props: {
+        appMountPath: {
+            type: String,
+            default: ''
+        }
+    },
+    
     components: {
         'component-tree-list': componentTreeList
     },
@@ -79,29 +86,22 @@ export default {
         >
             <div class="navbar-item">
                 <div class="buttons">
-                    <router-link class="button" to="/">
+                    <router-link class="button" :to="`${appMountPath}/`">
                         <b-icon icon="list" size="is-small" />
                         <span>{{ translations.core.view_btn_list }}</span>
+                    </router-link>
+                    <router-link class="button" :to="`${appMountPath}/${ticket_category_id}/edit`">
+                        <b-icon icon="edit" size="is-small" />
+                        <span>{{translations.core.view_btn_edit}}</span>
                     </router-link>
                 </div>
             </div>
         </component-header>
         <div class="card">
-            <div class="card-header">
-                <h2 class="card-header-title">
-                    {{ translations.main.view_title_show }}
-                </h2>
-                <div class="card-header-icon">
-                    <router-link :to="`/${ticket_category_id}/edit`">
-                        <i class="fas fa-edit"></i>
-                        {{translations.core.view_btn_edit}}
-                    </router-link>
-                </div>
-            </div>
             <div class="card-content">
                 <div class="columns">
                     <div class="column">
-                        <p>
+                        <span>
                             <span class="has-text-weight-bold">
                                 {{ translations.main.column_name }}:
                             </span>
@@ -110,9 +110,9 @@ export default {
                             <span class="has-text-weight-bold">
                                 {{ translations.main.view_text_category_path }}:
                             </span>
-                            <component-tree-list :trees="category_tree" :scrollable="true">
+                            <component-tree-list :trees="category_tree" :scrollable="true" :app-mount-path="appMountPath">
                             </component-tree-list>
-                        </p>
+                        </span>
                     </div>
                 </div>
                 <div class="columns">

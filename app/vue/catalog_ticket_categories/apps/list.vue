@@ -31,7 +31,10 @@ import treeList from '../components/tree_list.vue'
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     props: {
-
+        appMountPath: {
+            type: String,
+            default: ''
+        }
     },
     
     components: {
@@ -145,17 +148,6 @@ export default {
                 console.log(error)
             })
         },
-        
-        // @return [void]
-        // @param ticket_category [Object] The object representation of the selected Ticket category
-        // @description Redirects the router to show the selected Ticket category
-        // @example
-        //      this.showTicketCategory(this.ticket_categories[1])
-        //      // Asume the id of the Ticket category is 4
-        //      // The user will be redirected to the url /help/catalog/ticket_categories/4
-        showTicketCategory(ticket_category) {
-            this.$router.push(`/${ticket_category.id}`)
-        },
 
         reloadTicketCategories(){
             this.loading = true
@@ -205,7 +197,7 @@ export default {
                     <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
                     <span> {{ translations.core.view_text_btn_reload }}</span>
                 </button>
-                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
+                <router-link class="button" tag="button" :to="`${appMountPath}/new`" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
                     <span>{{ translations.main.view_btn_create }}</span>
                 </router-link>
@@ -237,13 +229,13 @@ export default {
                 <component-data-loading v-if="loading"></component-data-loading>
                 <component-data-empty v-if="!loading && ticket_categories.length == 0"></component-data-empty>
 
-                <tree-list v-if="!loading && ticket_categories.length > 0" :trees="ticket_categories">
+                <tree-list v-if="!loading && ticket_categories.length > 0" :trees="ticket_categories" :app-mount-path="appMountPath">
                     <template v-slot:actions="{node}">
-                        <router-link :to="`/${node.id}`" class="button is-small">
+                        <router-link :to="`${appMountPath}/${node.id}`" class="button is-small">
                             <i class="fas fa-eye"></i>
                         </router-link>
                         &nbsp;
-                        <router-link :to="`/${node.id}/edit`" class="button is-small">
+                        <router-link :to="`${appMountPath}/${node.id}/edit`" class="button is-small">
                             <i class="fas fa-edit"></i>
                         </router-link>
                     </template>

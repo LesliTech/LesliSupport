@@ -37,6 +37,12 @@ import componentForm from '../components/form.vue'
 // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
+    props: {
+        appMountPath: {
+            type: String,
+            default: ''
+        }
+    },
     components: {
         'component-workflow-transition': componentWorkflowTransition,
         'component-subscription': componentSubscription,
@@ -161,11 +167,11 @@ export default {
             </div>
             <div class="navbar-item">
                 <div class="buttons">
-                    <router-link class="button" to="/">
+                    <router-link class="button" :to="`${appMountPath}/`">
                         <b-icon icon="list" size="is-small" />
                         <span>{{ translations.core.view_btn_list }}</span>
                     </router-link>
-                    <router-link class="button" :to="`/${sla_id}`">
+                    <router-link class="button" :to="`${appMountPath}/${sla_id}`">
                         <b-icon icon="eye" size="is-small" />
                         <span>{{ translations.core.view_btn_show }}</span>
                     </router-link>
@@ -176,7 +182,7 @@ export default {
         <component-form-status :selected-status="new_sla_status" cloud-object-variable="sla"></component-form-status>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                <component-form v-if="data.sla" view-type="edit"></component-form>
+                <component-form v-if="data.sla" view-type="edit" :app-mount-path="appMountPath"></component-form>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_discussions">

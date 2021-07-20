@@ -25,6 +25,13 @@ import componentForm from '../components/form.vue'
 
 
 export default {
+    props: {
+        appMountPath: {
+            type: String,
+            default: ''
+        }
+    },
+
     components: {
         'component-form': componentForm
     },
@@ -42,17 +49,17 @@ export default {
 <template>
     <section class="application-component">
         <component-header 
-            :title="translations.main.view_title_main"
+            :title="translations.main.view_title_new"
         >
             <div class="navbar-item">
                 <div class="buttons">
-                    <router-link class="button" to="/">
+                    <router-link class="button" :to="`${appMountPath}/`">
                         <b-icon icon="list" size="is-small" />
                         <span>{{ translations.core.view_btn_list }}</span>
                     </router-link>
                 </div>
             </div>
         </component-header>
-        <component-form></component-form>
+        <component-form :app-mount-path="appMountPath"></component-form>
     </section>
 </template>

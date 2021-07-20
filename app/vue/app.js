@@ -17,15 +17,251 @@ For more information read the license file including with this software.
 
 
 // · Import main app
-import app from "LesliVue/app2"
+import app from 'LesliVue/app2'
 
 
-// · Import apps
-import dashboardShow from './dashboard/actions/show.vue'
+// · Import apps and components
 
+// · Dashboard components
+import dashboardsShow from './dashboard/actions/show.vue'
+import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
+import dashboardsEdit  from 'LesliVue/shared/dashboards/apps/edit.vue'
+import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
+
+// · Ticket categories components
+import ticketCategoriesList  from './catalog_ticket_categories/apps/list.vue'
+import ticketCategoriesEdit  from './catalog_ticket_categories/apps/edit.vue'
+import ticketCategoriesShow  from './catalog_ticket_categories/apps/show.vue'
+import ticketCategoriesNew   from './catalog_ticket_categories/apps/new.vue'
+
+// · Ticket priorities components
+import ticketPrioritiesList  from './catalog_ticket_priorities/apps/list.vue'
+import ticketPrioritiesEdit  from './catalog_ticket_priorities/apps/edit.vue'
+import ticketPrioritiesNew   from './catalog_ticket_priorities/apps/new.vue'
+
+// · Ticket types components
+import ticketTypesList  from './catalog_ticket_types/apps/list.vue'
+import ticketTypesNew   from './catalog_ticket_types/apps/new.vue'
+import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
+
+// · Slas components
+import slasList from './slas/apps/list.vue'
+import slasEdit from './slas/apps/edit.vue'
+import slasNew from './slas/apps/new.vue'
+import slasShow from './slas/apps/show.vue'
+
+// · Tickets components
+import ticketsList from './tickets/apps/list.vue'
+import ticketsEdit from './tickets/apps/edit.vue'
+import ticketsNew from './tickets/apps/new.vue'
+import ticketsShow from './tickets/apps/show.vue'
+
+// · Import a list of all dashboard components
+import componentNewTickets from './dashboards/components/list-new-tickets.vue'
+import componentMyTickets from './dashboards/components/list-my-tickets.vue'
+import componentUnassignedTickets from './dashboards/components/list-unassigned-tickets.vue'
+import componentTicketsByType from './dashboards/components/chart-tickets-by-type.vue'
+import componentTicketsByCategory from './dashboards/components/chart-tickets-by-category.vue'
+import componentHoursWorked from './dashboards/components/chart-hours-worked.vue'
+
+// · Import a list of all workflow components
+import workflowsList  from 'LesliVue/shared/workflows/apps/list.vue'
+import workflowsEdit  from 'LesliVue/shared/workflows/apps/edit.vue'
+import workflowsShow  from 'LesliVue/shared/workflows/apps/show.vue'
+import workflowsNew   from 'LesliVue/shared/workflows/apps/new.vue'
 
 // ·
-app("CloudHelp", "/help", "[dashboard]", [{
-    path: "/",
-    component: dashboardShow
-}])
+app('CloudHelp', '/help', '[dashboards|ticket_types|ticket_priorities|ticket_categories|tickets|slas]', [
+    {
+        path: '/',
+        component: dashboardsShow
+    },{
+        path: '/dashboards',
+        component: dashboardsList,
+        props: {
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
+            appMountPath: '/help/dashboards'
+        }
+    },{
+        path: '/dashboards/new',
+        component: dashboardsNew,
+        props: {
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
+            appMountPath: '/help/dashboards'
+        }
+    },{
+        path: '/dashboards/:id',
+        component: dashboardsEdit,
+        props: {
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
+            appMountPath: '/help/dashboards',
+            renderComponents: {
+                'component-new-tickets': componentNewTickets,
+                'component-my-tickets': componentMyTickets,
+                'component-unassigned-tickets': componentUnassignedTickets,
+                'component-tickets-by-type': componentTicketsByType,
+                'component-tickets-by-category': componentTicketsByCategory,
+                'component-hours-worked': componentHoursWorked
+            }
+        }
+    },{
+        path: "/workflows/",
+        component: workflowsList,
+        props: {
+            cloudEngine: "CloudHelp",
+            engineNamespace: "help",
+            appMountPath: '/help/workflows'
+        }
+    },{
+        path: "/workflows/new",
+        component: workflowsNew,
+        props: {
+            cloudEngine: "CloudHelp",
+            engineNamespace: "help",
+            appMountPath: '/help/workflows'
+        }
+    },{
+        path: "/workflows/:id",
+        component: workflowsShow,
+        props: {
+            cloudEngine: "CloudHelp",
+            engineNamespace: "help",
+            appMountPath: '/help/workflows'
+        }
+    },{
+        path: "/workflows/:id/edit",
+        component: workflowsEdit,
+        props: {
+            cloudEngine: "CloudHelp",
+            engineNamespace: "help",
+            appMountPath: '/help/workflows'
+        }
+    },{
+        path: '/catalog/ticket_categories',
+        component: ticketCategoriesList,
+        props: {
+            appMountPath: '/help/catalog/ticket_categories'
+        }
+    },{
+        path: '/catalog/ticket_categories/new',
+        component: ticketCategoriesNew,
+        props: {
+            appMountPath: '/help/catalog/ticket_categories'
+        }
+    },{
+        path: '/catalog/ticket_categories/:id',
+        component: ticketCategoriesShow,
+        props: {
+            appMountPath: '/help/catalog/ticket_categories'
+        }
+    },{
+        path: '/catalog/ticket_categories/:id/edit',
+        component: ticketCategoriesEdit,
+        props: {
+            appMountPath: '/help/catalog/ticket_categories'
+        }
+    },{
+        path: '/catalog/ticket_priorities',
+        component: ticketPrioritiesList,
+        props: {
+            appMountPath: '/help/catalog/ticket_priorities'
+        }
+    },{
+        path: '/catalog/ticket_priorities/new',
+        component: ticketPrioritiesNew,
+        props: {
+            appMountPath: '/help/catalog/ticket_priorities'
+        }
+    },{
+        path: '/catalog/ticket_priorities/:id',
+        component: ticketPrioritiesEdit,
+        props: {
+            appMountPath: '/help/catalog/ticket_priorities'
+        }
+    },{
+        path: '/catalog/ticket_types',
+        component: ticketTypesList,
+        props: {
+            appMountPath: '/help/catalog/ticket_types'
+        }
+    },{
+        path: '/catalog/ticket_types/new',
+        component: ticketTypesNew,
+        props: {
+            appMountPath: '/help/catalog/ticket_types'
+        }
+    },{
+        path: '/catalog/ticket_types/:id',
+        component: ticketTypesEdit,
+        props: {
+            appMountPath: '/help/catalog/ticket_types'
+        }
+    },{
+        path: '/slas',
+        component: slasList,
+        props: {
+            appMountPath: '/help/slas'
+        }
+    },{
+        path: '/slas/new',
+        component: slasNew,
+        props: {
+            appMountPath: '/help/slas'
+        }
+    },{
+        path: '/slas/:id',
+        component: slasShow,
+        props: {
+            appMountPath: '/help/slas'
+        }
+    },{
+        path: '/slas/:id/edit',
+        component: slasEdit,
+        props: {
+            appMountPath: '/help/slas'
+        }
+    },{
+        path: '/tickets',
+        component: ticketsList,
+        props: {
+            appMountPath: '/help/tickets'
+        }
+    },{
+        path: '/tickets/new',
+        component: ticketsNew,
+        props: {
+            appMountPath: '/help/tickets'
+        }
+    },{
+        path: '/tickets/:id',
+        component: ticketsShow,
+        props: {
+            appMountPath: '/help/tickets'
+        }
+    },{
+        path: '/tickets/:id/edit',
+        component: ticketsEdit,
+        props: {
+            appMountPath: '/help/tickets'
+        }
+    }
+],{
+    ticket: null,
+    sla: null,
+    ticket_assignable: false,
+    assignment_options: {},
+    ticket_images: [],
+    reload: {
+        activities: false,
+        timelines: false,
+        ticket: false,
+        sla: false,
+    },
+    events: {
+        post_auto_assignment: false,
+        delete_auto_assignment: false
+    }
+})

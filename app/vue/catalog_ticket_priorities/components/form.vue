@@ -37,6 +37,11 @@ export default {
         viewType: {
             type: String,
             required: true
+        },
+
+        appMountPath: {
+            type: String,
+            required: true
         }
     },
 
@@ -126,7 +131,7 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_priority_created, 'success')
-                    this.$router.push(`/${result.data.id}`)
+                    this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -189,14 +194,6 @@ export default {
 </script>
 <template>
     <div class="card" v-if="ticket_priority">
-        <!--------------------------------------- START CARD HEADER --------------------------------------->
-        <div class="card-header">
-            <h2 class="card-header-title">
-                <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
-                <span v-else>{{translations.main.view_title_edit}}</span>
-            </h2>
-        </div>
-        <!---------------------------------------  END CARD HEADER  --------------------------------------->
 
         <!--------------------------------------- START CARD CONTENT--------------------------------------->
         <div class="card-content">
