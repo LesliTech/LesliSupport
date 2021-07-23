@@ -21,7 +21,7 @@ For more information read the license file including with this software.
 
 // · Import frameworks, libraries and tools
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentGeneralChart from 'LesliCoreVue/components/charts/general.vue'
+import componentChartBar from 'LesliVue/components/charts/bar.vue'
 
 
 // · 
@@ -41,7 +41,7 @@ export default {
     },
 
     components: {
-        'component-chart-general': componentGeneralChart
+        'component-chart-bar': componentChartBar
     },
 
     data() {
@@ -57,6 +57,28 @@ export default {
             },
             translations: {
                 dashboards: I18n.t('help.dashboard/components')
+            },
+            chart_options: {
+                chart: {
+                    stacked: true
+                },
+                plotOptions:{
+                    bar: {
+                        dataLabels: {
+                            position: 'top'
+                        }
+                    },
+                },
+                colors: [],
+                stroke: {
+                    show: true,
+                    curve: "straight",
+                    lineCap: 'round',
+                    width: []
+                },
+                dataLabels: {
+                    enabled: false
+                }
             }
         }
     },
@@ -95,8 +117,8 @@ export default {
 
                     this.hours_worked.total = this.hours_worked.total.toFixed(2)
                     this.hours_worked.types = result.data.types
-                    this.hours_worked.stroke_width = new Array(this.hours_worked.labels.length).fill(0)
-                    this.hours_worked.colors = this.generateColors(this.hours_worked.types.length)
+                    this.chart_options.stroke.width = new Array(this.hours_worked.labels.length).fill(0)
+                    this.chart_options.colors = this.generateColors(this.hours_worked.types.length)
 
 
                     this.data_ready = true
@@ -143,13 +165,12 @@ export default {
                         : 0
                     }}
                 </p>
-                <component-chart-general
+                <component-chart-bar
                     :data-sources="hours_worked.data"
                     :data-labels="hours_worked.labels"
-                    :stroke-width="hours_worked.stroke_width"
-                    :colors="hours_worked.colors"
+                    :options="chart_options"
                 >
-                </component-chart-general>
+                </component-chart-bar>
                 <a href="/help/tickets">
                     <span>{{ translations.dashboards.view_title_all_tickets }}</span>
                     <span class="icon">
