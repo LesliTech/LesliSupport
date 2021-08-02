@@ -35,6 +35,11 @@ export default {
         viewType: {
             type: String,
             default: 'new'
+        },
+
+        appMountPath: {
+            type: String,
+            required: true
         }
     },
 
@@ -142,7 +147,7 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_category_created,'success')
-                    this.$router.push(`/${result.data.id}/edit`)
+                    this.$router.push(`${this.appMountPath}/${result.data.id}/edit`)
                 }else{
                     this.alert(result.error.message,'danger')
                 }
@@ -189,7 +194,7 @@ export default {
                 this.deleting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_category_destroyed, 'success')
-                    this.$router.push('/')
+                    this.$router.push(`${this.appMountPath}/`)
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -202,18 +207,6 @@ export default {
 </script>
 <template>
     <div class="card">
-        <div class="card-header">
-            <h2 class="card-header-title">
-                <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
-                <span v-else>{{translations.main.view_title_edit}}</span>
-            </h2>
-            <div class="card-header-icon">
-                <router-link v-if="ticket_category_id" :to="`/${ticket_category_id}`">
-                    <i class="fas fa-eye"></i>
-                        {{translations.core.view_btn_show}}
-                </router-link>
-            </div>
-        </div>
         <div class="card-content">
             <b-tabs>
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
@@ -227,7 +220,13 @@ export default {
                         </b-field>
                         <hr>
                         <b-field :label="translations.main.view_text_select_parent_category">
-                            <tree-list :trees="ticket_categories" :scrollable="true" :default_card="true" :add_links="false">
+                            <tree-list
+                                :trees="ticket_categories"
+                                :scrollable="true"
+                                :default_card="true"
+                                :add_links="false"
+                                :app-mount-path="appMountPath"
+                            >
                                 <template v-slot:default_content>
                                     {{translations.main.view_text_no_parent_category}}
                                 </template>

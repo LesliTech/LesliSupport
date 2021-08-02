@@ -34,6 +34,12 @@ import componentData from '../components/data.vue'
 // · Component show
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
+    props: {
+        appMountPath: {
+            type: String,
+            default: ''
+        }
+    },
     components: {
         'component-subscription': componentSubscription,
         'component-discussion': componentDiscussion,
@@ -129,11 +135,11 @@ export default {
         <component-header :title="sla.name">
             <div class="navbar-item">
                 <div class="buttons">
-                    <router-link class="button" to="/">
+                    <router-link class="button" :to="`${appMountPath}/`">
                         <b-icon icon="list" size="is-small" />
                         <span>{{ translations.core.view_btn_list }}</span>
                     </router-link>
-                    <router-link class="button" :to="`/${sla_id}/edit`">
+                    <router-link class="button" :to="`${appMountPath}/${sla_id}/edit`">
                         <b-icon icon="edit" size="is-small" />
                         <span>{{ translations.core.view_btn_edit }}</span>
                     </router-link>

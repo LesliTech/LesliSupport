@@ -56,6 +56,10 @@ export default {
         expandedTabs: {
             type: Boolean,
             default: false
+        },
+        appMountPath: {
+            type: String,
+            default: ''
         }
     },
 
@@ -215,11 +219,11 @@ export default {
                 </div>
                 <div class="navbar-item">
                     <div class="buttons">
-                        <router-link class="button" to="/">
+                        <router-link class="button" :to="`${appMountPath}/`">
                             <b-icon icon="list" size="is-small" />
                             <span>{{ translations.core.view_btn_list }}</span>
                         </router-link>
-                        <router-link class="button" :to="`/${ticket_id}`">
+                        <router-link class="button" :to="`${appMountPath}/${ticket_id}`">
                             <b-icon icon="eye" size="is-small" />
                             <span>{{ translations.core.view_btn_show }}</span>
                         </router-link>
@@ -235,7 +239,7 @@ export default {
         </component-form-status>
         <b-tabs vertical v-model="active_tab">
             <b-tab-item :label="translations.shared.view_tab_title_general_information">
-                <component-form v-if="data.ticket" view-type="edit" :expanded-tabs="expandedTabs"></component-form>
+                <component-form v-if="data.ticket" :app-mount-path="appMountPath" view-type="edit" :expanded-tabs="expandedTabs"></component-form>
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_discussions">

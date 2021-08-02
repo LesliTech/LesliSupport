@@ -16,6 +16,10 @@ export default {
         add_links: {
             type: Boolean,
             default: true
+        },
+        appMountPath: {
+            type: String,
+            required: true
         }
     },
     methods: {
@@ -85,7 +89,7 @@ export default {
                                     {{tree.name}}
                                 </slot>
                             </a>
-                            <router-link v-else-if="add_links" :to="`/${tree.id}`">
+                            <router-link v-else-if="add_links" :to="`${appMountPath}/${tree.id}`">
                                 <span v-if="tree.depth > 0"> &nbsp; &nbsp;&nbsp; &nbsp; </span>
                                 <slot name="content" :node="tree">
                                     {{tree.name}}

@@ -19,7 +19,7 @@ For more information read the license file including with this software.
 
 // · Import frameworks, libraries and tools
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentGeneralChart from 'LesliCoreVue/components/charts/general.vue'
+import componentChartBar from 'LesliVue/components/charts/bar.vue'
 
 
 // · 
@@ -34,7 +34,7 @@ export default {
         }
     },
     components: {
-        'component-chart-general': componentGeneralChart
+        'component-chart-bar': componentChartBar
     },
     data() {
         return {
@@ -46,6 +46,32 @@ export default {
             },
             translations: {
                 dashboards: I18n.t('help.dashboard/components')
+            },
+            chart_options: {
+                plotOptions:{
+                    bar: {
+                        dataLabels: {
+                            position: 'top'
+                        }
+                    },
+                },
+                xaxis: {
+                    labels: {
+                        show: true,
+                        rotate: -35,
+                        rotateAlways: true,
+                        style: {
+                            fontSize: '10px'
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    offsetY: -20,
+                    style: {
+                        colors: this.lesli.colors('charts')
+                    }
+                }
             }
         }
     },
@@ -96,11 +122,12 @@ export default {
                         : 0
                     }}
                 </p>
-                <component-chart-general
+                <component-chart-bar
                     :data-sources="tickets.data"
                     :data-labels="tickets.labels"
+                    :options="chart_options"
                 >
-                </component-chart-general>
+                </component-chart-bar>
                 <a href="/help/tickets">
                     <span>{{ translations.dashboards.view_title_all_tickets }}</span>
                     <span class="icon">

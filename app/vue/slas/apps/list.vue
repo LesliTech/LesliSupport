@@ -21,7 +21,10 @@ For more information read the license file including with this software.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     props: {
-
+        appMountPath: {
+            type: String,
+            default: ''
+        }
     },
     
     components: {
@@ -155,9 +158,9 @@ export default {
         //      // The user will be redirected to the url /help/slas/4
         showSla(sla) {
             if(sla.editable){
-                this.$router.push(`/${sla.id}/edit`)
+                this.$router.push(`${this.appMountPath}/${sla.id}/edit`)
             }else{
-                this.$router.push(`/${sla.id}`)
+                this.$router.push(`${this.appMountPath}/${sla.id}`)
             }
         },
 
@@ -240,7 +243,7 @@ export default {
                     <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
                     <span> {{ translations.core.view_text_btn_reload }}</span>
                 </button>
-                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
+                <router-link class="button" tag="button" :to="`${this.appMountPath}/new`" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
                     <span>{{ translations.main.view_btn_create }}</span>
                 </router-link>

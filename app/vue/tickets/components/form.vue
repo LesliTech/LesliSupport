@@ -44,6 +44,11 @@ export default {
         expandedTabs: {
             type: Boolean,
             default: false
+        },
+
+        appMountPath: {
+            type: String,
+            required: true
         }
     },
 
@@ -161,7 +166,7 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_created, 'success')
-                    this.$router.push(`/${result.data.id}`)
+                    this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -248,7 +253,7 @@ export default {
                 this.deleting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_destroyed, 'success')
-                    this.$router.push('/')
+                    this.$router.push(`${this.appMountPath}/`)
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -503,7 +508,7 @@ export default {
                     <component-sla-data v-if="data.sla" shadowless></component-sla-data>
                 </b-tab-item>
                 <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new' && assignments_abilities.grant_create">
-                    <component-assignments v-if="ticket_id" :ticket-id="ticket_id"></component-assignments>
+                    <component-assignments v-if="ticket_id" :ticket-id="ticket_id" :app-mount-path="appMountPath" ></component-assignments>
                 </b-tab-item>
                 <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
                     <span class="has-text-danger">

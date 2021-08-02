@@ -33,6 +33,10 @@ export default {
         viewType: {
             type: String,
             default: 'new'
+        },
+        appMountPath: {
+            type: String,
+            required: true
         }
     },
 
@@ -102,7 +106,7 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_success_sla_created, 'success')
-                    this.$router.push(`/${result.data.id}`)
+                    this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 } else {
                     this.alert(result.error.message, 'danger')
                 }
@@ -144,7 +148,7 @@ export default {
                 this.deleting = false
                 if (result.successful) {
                     this.alert(this.translations.main.messages_success_sla_destroyed, 'success')
-                    this.$router.push('/')
+                    this.$router.push(`${this.appMountPath}/`)
                 }else{
                     this.alert(result.error.message, 'danger')
                 }
@@ -161,14 +165,6 @@ export default {
 </script>
 <template>
     <div class="card">
-        <div class="card-header">
-            <div class="card-header-title">
-                <h4 class="title is-4">
-                    <span v-if="viewType == 'new'">{{translations.main.view_title_new}}</span>
-                    <span v-else>{{translations.main.view_title_edit}}</span>
-                </h4>
-            </div>
-        </div>
         <div class="card-content subtabs">
             <b-tabs>
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">

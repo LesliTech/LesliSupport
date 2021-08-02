@@ -25,6 +25,13 @@ import componentForm from '../components/form.vue'
 
 
 export default {
+    props: {
+        appMountPath: {
+            type: String,
+            default: ''
+        }
+    },
+
     components: {
         'component-form': componentForm
     },
@@ -35,7 +42,18 @@ export default {
                 main: I18n.t('help.catalog/ticket_categories'),
                 core: I18n.t('core.shared')
             },
-            index_abilities: this.abilities.privilege('catalog/ticket_categories', 'cloud_help')
+            index_abilities: this.abilities.privilege('catalog/ticket_categories', 'cloud_help'),
+            ticket_category_id: null
+        }
+    },
+
+    mounted(){
+        this.setTicketCategoryId()
+    },
+
+    methods: {
+        setTicketCategoryId(){
+            this.ticket_category_id = this.$route.params.id
         }
     }
 }
@@ -43,17 +61,21 @@ export default {
 <template>
     <section class="application-component">
         <component-header 
-            :title="translations.main.view_title_main"
+            :title="translations.main.view_title_edit"
         >
             <div class="navbar-item">
                 <div class="buttons">
-                    <router-link class="button" to="/">
+                    <router-link class="button" :to="`${appMountPath}/`">
                         <b-icon icon="list" size="is-small" />
                         <span>{{ translations.core.view_btn_list }}</span>
+                    </router-link>
+                    <router-link v-if="ticket_category_id" class="button" :to="`${appMountPath}/${ticket_category_id}`">
+                        <b-icon icon="eye" size="is-small" />
+                        <span>{{translations.core.view_btn_show}}</span>
                     </router-link>
                 </div>
             </div>
         </component-header>
-        <component-form view-type="edit"></component-form>
+        <component-form view-type="edit" :app-mount-path="appMountPath"></component-form>
     </section>
 </template>

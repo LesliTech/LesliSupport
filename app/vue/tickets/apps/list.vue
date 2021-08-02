@@ -21,7 +21,10 @@ For more information read the license file including with this software.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 export default {
     props: {
-
+        appMountPath: {
+            type: String,
+            default: ''
+        }
     },
     
     components: {
@@ -70,7 +73,7 @@ export default {
     mounted() {
         this.setSessionStorageFilters()
         this.getTicketsFilters()
-       this.getTickets()
+        this.getTickets()
     },
 
     methods: {
@@ -146,9 +149,9 @@ export default {
         //      // The user will be redirected to the url /help/tickets/4
         showTicket(ticket) {
             if(ticket.editable){
-                this.$router.push(`/${ticket.id}/edit`)
+                this.$router.push(`${this.appMountPath}/${ticket.id}/edit`)
             }else{
-                this.$router.push(`/${ticket.id}`)
+                this.$router.push(`${this.appMountPath}/${ticket.id}`)
             }
         },
 
@@ -231,7 +234,7 @@ export default {
                     <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
                     <span> {{ translations.core.view_text_btn_reload }}</span>
                 </button>
-                <router-link class="button" tag="button" to="/new" v-if="index_abilities.grant_create">
+                <router-link class="button" tag="button" :to="`${appMountPath}/new`" v-if="index_abilities.grant_create">
                     <b-icon icon="plus" size="is-small" />
                     <span>{{ translations.main.view_btn_create }}</span>
                 </router-link>

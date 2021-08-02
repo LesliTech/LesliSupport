@@ -27,6 +27,10 @@ export default {
         ticketEditable: {
             type: Boolean,
             default: true
+        },
+        appMountPath: {
+            type: String,
+            required: true
         }
     },
 
@@ -132,7 +136,7 @@ export default {
 
                     // The user assigned the ticket to themselves, so we move to the edit view
                     if(user.id == lesli.current_user.id){
-                        this.$router.push(`/${this.ticketId}/edit`).catch((error)=>{})
+                        this.$router.push(`${this.appMountPath}/${this.ticketId}/edit`).catch((error)=>{})
                     }
 
                     this.reloadTicketRecord()
