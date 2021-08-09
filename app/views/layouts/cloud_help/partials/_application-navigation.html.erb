@@ -1,7 +1,7 @@
 <% @current_path = request.env['PATH_INFO'] %>
 <% @tabs_granted = {} 
     [
-        {name: "dashboard", route: "cloud_help/dashboards", privilege: "grant_show"},
+        {name: "dashboard", route: "cloud_help/dashboards", privilege: "show"},
         {name: "dashboards", route: "cloud_help/dashboards"},
         {name: "ticket_categories", route: "cloud_help/catalog/ticket_categories"},
         {name: "ticket_priorities", route: "cloud_help/catalog/ticket_priorities"},
@@ -13,7 +13,7 @@
     ].each do |tab|
         privilege = @account[:current_user][:abilities][tab[:route]]
         unless privilege.blank?
-            privilege_name = "grant_index"
+            privilege_name = "index"
             privilege_name = tab[:privilege] if tab[:privilege]
 
             @tabs_granted[tab[:name]] = privilege[privilege_name]
