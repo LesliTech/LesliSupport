@@ -146,7 +146,7 @@ export default {
             this.http.post(this.main_route, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.msg.success(this.translations.main.messages_info_ticket_category_created,'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_category_created)
                     this.$router.push(`${this.appMountPath}/${result.data.id}/edit`)
                 }else{
                     this.msg.error(result.error.message)
