@@ -165,7 +165,7 @@ export default {
             this.http.post(this.main_route, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_created, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_created)
                     this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 } else {
                     this.msg.error(result.error.message)
@@ -198,7 +198,7 @@ export default {
                         this.$set(this.data, 'sla', result.data.sla)
                         this.data.reload.sla = true
                     })
-                    this.alert(this.translations.main.messages_info_ticket_updated, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_updated)
                     this.reloadTicket()
                 }else{
                     this.msg.error(result.error.message)
@@ -252,7 +252,7 @@ export default {
             this.http.delete(url).then(result => {
                 this.deleting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_destroyed, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_destroyed)
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
                     this.msg.error(result.error.message)
@@ -271,7 +271,7 @@ export default {
 
             this.http.delete(url).then(result => {
                 if (result.successful) {
-                    this.alert(this.translations.assignments.messages_info_assignment_deleted, 'success')
+                    this.msg.success(this.translations.assignments.messages_info_assignment_deleted)
                     
                     this.ticket.assignment_attributes = this.ticket.assignment_attributes.filter((assignment)=>{
                         return deleted_assignment.id != assignment.id

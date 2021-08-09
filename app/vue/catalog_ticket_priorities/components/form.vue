@@ -130,7 +130,7 @@ export default {
             this.http.post(url, form_data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_priority_created, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_priority_created)
                     this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 }else{
                     this.msg.error(result.error.message)
@@ -157,7 +157,7 @@ export default {
             this.http.put(url, form_data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_priority_updated, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_priority_updated)
                 }else{
                     this.msg.error(result.error.message)
                 }
@@ -180,7 +180,7 @@ export default {
             this.http.delete(url).then(result => {
                 this.deleting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_priority_destroyed, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_priority_destroyed)
                     this.$router.push('/')
                 }else{
                     this.msg.error(result.error.message)

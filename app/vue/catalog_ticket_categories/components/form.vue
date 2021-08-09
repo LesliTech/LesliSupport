@@ -127,7 +127,7 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.getTicketCategories()
-                    this.alert(this.translations.main.messages_info_ticket_category_updated, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_category_updated)
                 }else{
                     this.msg.error(result.error.message)
                 }
@@ -146,7 +146,7 @@ export default {
             this.http.post(this.main_route, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_category_created,'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_category_created,'success')
                     this.$router.push(`${this.appMountPath}/${result.data.id}/edit`)
                 }else{
                     this.msg.error(result.error.message)
@@ -193,7 +193,7 @@ export default {
             this.http.delete(url).then(result => {
                 this.deleting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_category_destroyed, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_category_destroyed)
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
                     this.msg.error(result.error.message)
