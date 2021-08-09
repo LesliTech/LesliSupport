@@ -70,7 +70,7 @@ export default {
                     this.category_tree = result.data
                     this.ticket_category = this.category_tree.filter(category => category.id == this.ticket_category_id)[0]
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

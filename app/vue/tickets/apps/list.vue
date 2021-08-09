@@ -133,7 +133,7 @@ export default {
                     this.tickets = result.data.tickets
                     this.pagination.tickets_count = result.data.total_count
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -192,7 +192,7 @@ export default {
                     this.ticket_filters = result.data
                     this.getFilteredStatuses('')
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -234,7 +234,7 @@ export default {
                     <b-icon icon="sync" size="is-small" :custom-class="loading ? 'fa-spin' : ''" />
                     <span> {{ translations.core.view_text_btn_reload }}</span>
                 </button>
-                <router-link class="button" tag="button" :to="`${appMountPath}/new`" v-if="index_abilities.grant_create">
+                <router-link class="button" tag="button" :to="`${appMountPath}/new`" v-if="index_abilities.create">
                     <b-icon icon="plus" size="is-small" />
                     <span>{{ translations.main.view_btn_create }}</span>
                 </router-link>

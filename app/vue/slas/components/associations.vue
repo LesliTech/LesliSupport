@@ -78,7 +78,7 @@ export default {
                     this.association_options = result.data
                     this.markAssociations()
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -121,11 +121,11 @@ export default {
                         assignable_name: ticket_type.name || ticket_type.email,
                         cloud_help_catalog_ticket_types_id: ticket_type.id
                     })
-                    this.alert(this.translations.main.messages_success_association_created, 'success')
+                    this.msg.success(this.translations.main.messages_success_association_created)
 
                     this.reloadSlaRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -145,7 +145,7 @@ export default {
             this.http.delete(url).then(result => {
                 this.$set(association, 'submitting', false)
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_success_association_destroyed, 'success')
+                    this.msg.success(this.translations.main.messages_success_association_destroyed)
                     
                     this.sla.association_attributes = this.sla.association_attributes.filter((association)=>{
                         return association.id != association_id
@@ -159,7 +159,7 @@ export default {
                     
                     this.reloadSlaRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

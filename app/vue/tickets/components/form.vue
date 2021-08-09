@@ -165,10 +165,10 @@ export default {
             this.http.post(this.main_route, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_created, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_created)
                     this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -198,10 +198,10 @@ export default {
                         this.$set(this.data, 'sla', result.data.sla)
                         this.data.reload.sla = true
                     })
-                    this.alert(this.translations.main.messages_info_ticket_updated, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_updated)
                     this.reloadTicket()
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -216,7 +216,7 @@ export default {
                 if (result.successful) {
                     this.options = result.data
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -231,7 +231,7 @@ export default {
                     if (result.successful) {
                         this.data.ticket_images = result.data
                     } else {
-                        this.alert(result.error.message, 'danger')
+                        this.msg.error(result.error.message)
                     }
                 }).catch(error => {
                     console.log(error)
@@ -252,10 +252,10 @@ export default {
             this.http.delete(url).then(result => {
                 this.deleting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_destroyed, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_destroyed)
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -271,7 +271,7 @@ export default {
 
             this.http.delete(url).then(result => {
                 if (result.successful) {
-                    this.alert(this.translations.assignments.messages_info_assignment_deleted, 'success')
+                    this.msg.success(this.translations.assignments.messages_info_assignment_deleted)
                     
                     this.ticket.assignment_attributes = this.ticket.assignment_attributes.filter((assignment)=>{
                         return deleted_assignment.id != assignment.id
@@ -285,7 +285,7 @@ export default {
                     
                     this.reloadTicketRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
