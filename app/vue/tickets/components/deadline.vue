@@ -58,7 +58,7 @@ export default {
                     this.alert(this.translations.messages.put_deadline.successful)
                     this.bus.publish("patch:/help/ticket/deadline", deadline)
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

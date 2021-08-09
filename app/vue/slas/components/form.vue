@@ -108,7 +108,7 @@ export default {
                     this.alert(this.translations.main.messages_success_sla_created, 'success')
                     this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -132,7 +132,7 @@ export default {
                     this.alert(this.translations.main.messages_success_sla_updated, 'success')
                     this.reloadSlaActivities()
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -150,7 +150,7 @@ export default {
                     this.alert(this.translations.main.messages_success_sla_destroyed, 'success')
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

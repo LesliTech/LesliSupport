@@ -133,7 +133,7 @@ export default {
                     this.alert(this.translations.main.messages_info_ticket_priority_created, 'success')
                     this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -159,7 +159,7 @@ export default {
                 if (result.successful) {
                     this.alert(this.translations.main.messages_info_ticket_priority_updated, 'success')
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -183,7 +183,7 @@ export default {
                     this.alert(this.translations.main.messages_info_ticket_priority_destroyed, 'success')
                     this.$router.push('/')
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

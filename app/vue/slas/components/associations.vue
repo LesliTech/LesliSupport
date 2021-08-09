@@ -78,7 +78,7 @@ export default {
                     this.association_options = result.data
                     this.markAssociations()
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -125,7 +125,7 @@ export default {
 
                     this.reloadSlaRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -159,7 +159,7 @@ export default {
                     
                     this.reloadSlaRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

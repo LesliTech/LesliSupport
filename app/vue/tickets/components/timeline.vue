@@ -74,7 +74,7 @@ export default {
                     this.ticket_timelines = result.data
                     this.data.timelines = this.ticket_timelines
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -90,7 +90,7 @@ export default {
                     }].concat(result.data.actions)
                     this.options = result.data
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

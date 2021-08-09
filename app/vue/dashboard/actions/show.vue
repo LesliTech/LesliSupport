@@ -58,7 +58,7 @@ export default {
                 if (result.successful) {
                     this.dashboard = result.data
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

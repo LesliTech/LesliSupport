@@ -76,7 +76,7 @@ export default {
                     this.ticket_categories = result.data.ticket_categories
                     this.showTicketCategoryPath()
                 }else{
-                    this.alert(result.error,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -129,7 +129,7 @@ export default {
                     this.getTicketCategories()
                     this.alert(this.translations.main.messages_info_ticket_category_updated, 'success')
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -149,7 +149,7 @@ export default {
                     this.alert(this.translations.main.messages_info_ticket_category_created,'success')
                     this.$router.push(`${this.appMountPath}/${result.data.id}/edit`)
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -162,7 +162,7 @@ export default {
                 if (result.successful) {
                     this.ticket_category = result.data.filter(category => category.id == this.ticket_category_id)[0]
                 }else{
-                    this.alert(result.error,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -196,7 +196,7 @@ export default {
                     this.alert(this.translations.main.messages_info_ticket_category_destroyed, 'success')
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

@@ -10,7 +10,7 @@ pictures and any other information belongs to the owner of this platform.
 Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
 
-For more information read the license file including with this software.
+For more information read the license file including with this sosftware.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // ·
@@ -168,7 +168,7 @@ export default {
                     this.alert(this.translations.main.messages_info_ticket_created, 'success')
                     this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -201,7 +201,7 @@ export default {
                     this.alert(this.translations.main.messages_info_ticket_updated, 'success')
                     this.reloadTicket()
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -216,7 +216,7 @@ export default {
                 if (result.successful) {
                     this.options = result.data
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -231,7 +231,7 @@ export default {
                     if (result.successful) {
                         this.data.ticket_images = result.data
                     } else {
-                        this.alert(result.error.message, 'danger')
+                        this.msg.error(result.error.message)
                     }
                 }).catch(error => {
                     console.log(error)
@@ -255,7 +255,7 @@ export default {
                     this.alert(this.translations.main.messages_info_ticket_destroyed, 'success')
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -285,7 +285,7 @@ export default {
                     
                     this.reloadTicketRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
