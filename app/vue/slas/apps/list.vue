@@ -142,7 +142,7 @@ export default {
                         this.pagination.slas_count = result.data.total_count
                     }
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -201,7 +201,7 @@ export default {
                     this.sla_filters = result.data
                     this.getFilteredStatuses('')
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

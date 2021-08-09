@@ -105,10 +105,10 @@ export default {
             this.http.post(url, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_success_sla_created, 'success')
+                    this.msg.success(this.translations.main.messages_success_sla_created)
                     this.$router.push(`${this.appMountPath}/${result.data.id}`)
                 } else {
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -129,10 +129,10 @@ export default {
             this.http.put(url, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_success_sla_updated, 'success')
+                    this.msg.success(this.translations.main.messages_success_sla_updated)
                     this.reloadSlaActivities()
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -147,10 +147,10 @@ export default {
             this.http.delete(url).then(result => {
                 this.deleting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_success_sla_destroyed, 'success')
+                    this.msg.success(this.translations.main.messages_success_sla_destroyed)
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

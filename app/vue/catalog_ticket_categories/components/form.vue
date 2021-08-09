@@ -76,7 +76,7 @@ export default {
                     this.ticket_categories = result.data.ticket_categories
                     this.showTicketCategoryPath()
                 }else{
-                    this.alert(result.error,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -127,9 +127,9 @@ export default {
                 this.submitting = false
                 if (result.successful) {
                     this.getTicketCategories()
-                    this.alert(this.translations.main.messages_info_ticket_category_updated, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_category_updated)
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -146,10 +146,10 @@ export default {
             this.http.post(this.main_route, data).then(result => {
                 this.submitting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_category_created,'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_category_created)
                     this.$router.push(`${this.appMountPath}/${result.data.id}/edit`)
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -162,7 +162,7 @@ export default {
                 if (result.successful) {
                     this.ticket_category = result.data.filter(category => category.id == this.ticket_category_id)[0]
                 }else{
-                    this.alert(result.error,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -193,10 +193,10 @@ export default {
             this.http.delete(url).then(result => {
                 this.deleting = false
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_ticket_category_destroyed, 'success')
+                    this.msg.success(this.translations.main.messages_info_ticket_category_destroyed)
                     this.$router.push(`${this.appMountPath}/`)
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

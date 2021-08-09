@@ -89,7 +89,7 @@ export default {
                     this.loaded.assignment_options = true
                     this.markAssignables()
                 }else{
-                    this.alert(result.error.message, 'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -132,7 +132,7 @@ export default {
                         assignable_name: user.name || user.email,
                         users_id: user.id
                     })
-                    this.alert(this.translations.main.messages_info_assignment_created, 'success')
+                    this.msg.success(this.translations.main.messages_info_assignment_created)
 
                     // The user assigned the ticket to themselves, so we move to the edit view
                     if(user.id == lesli.current_user.id){
@@ -141,7 +141,7 @@ export default {
 
                     this.reloadTicketRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
@@ -161,7 +161,7 @@ export default {
             this.http.delete(url).then(result => {
                 this.$set(assignment, 'submitting', false)
                 if (result.successful) {
-                    this.alert(this.translations.main.messages_info_assignment_deleted, 'success')
+                    this.msg.success(this.translations.main.messages_info_assignment_deleted)
                     
                     this.ticket.assignment_attributes = this.ticket.assignment_attributes.filter((assignment)=>{
                         return assignment.id != assignment_id
@@ -175,7 +175,7 @@ export default {
                     
                     this.reloadTicketRecord()
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

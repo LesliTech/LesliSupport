@@ -113,7 +113,7 @@ export default {
                     this.data.ticket = this.ticket
                     this.data.sla = this.ticket.sla
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)

@@ -87,7 +87,7 @@ export default {
                     this.sla = this.parseBackendData(result.data)
                     this.data.sla = this.sla
                 }else{
-                    this.alert(result.error.message,'danger')
+                    this.msg.error(result.error.message)
                 }
             }).catch(error => {
                 console.log(error)
