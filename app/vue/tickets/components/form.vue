@@ -10,7 +10,7 @@ pictures and any other information belongs to the owner of this platform.
 Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
 
-For more information read the license file including with this sosftware.
+For more information read the license file including with this software.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // ·
