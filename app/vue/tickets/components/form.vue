@@ -78,7 +78,7 @@ export default {
             },
             auto_assignment: false,
             assignments_abilities: {
-                grant_create: false
+                create: false
             }
         }
     },
@@ -507,7 +507,7 @@ export default {
                 <b-tab-item :label="translations.main.view_tab_title_sla" v-if="viewType != 'new'">
                     <component-sla-data v-if="data.sla" shadowless></component-sla-data>
                 </b-tab-item>
-                <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new' && assignments_abilities.grant_create">
+                <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new' && assignments_abilities.create">
                     <component-assignments v-if="ticket_id" :ticket-id="ticket_id" :app-mount-path="appMountPath" ></component-assignments>
                 </b-tab-item>
                 <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
