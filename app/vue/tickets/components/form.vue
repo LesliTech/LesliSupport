@@ -102,7 +102,7 @@ export default {
         },
 
         setAbilities(){
-            this.assignments_abilities = this.abilities.privileges('ticket/assignments', 'deutsche_leibrenten')
+            this.assignments_abilities = this.abilities.privilege('ticket/assignments', 'cloud_help')
         },
 
         setAutoAssignment(){
