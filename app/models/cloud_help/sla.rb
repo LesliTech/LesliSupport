@@ -16,7 +16,7 @@ For more information read the license file including with this software.
 // · 
 
 =end
-    class Sla  < CloudObject::Base
+    class Sla  < CloudObject
         belongs_to  :account,       class_name: "CloudHelp::Account",           foreign_key: "cloud_help_accounts_id"
         has_many    :associations,  class_name: "CloudHelp::Sla::Association",  foreign_key: "cloud_help_slas_id"
         belongs_to  :user_creator,  class_name: "::User",                       foreign_key: "users_id", optional: true

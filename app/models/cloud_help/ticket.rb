@@ -16,7 +16,7 @@ For more information read the license file including with this software.
 // · 
 
 =end
-    class Ticket  < CloudObject::Base
+    class Ticket  < CloudObject
         include ActiveModel::Dirty
 
         belongs_to :account,    class_name: "CloudHelp::Account",                   foreign_key: "cloud_help_accounts_id"
