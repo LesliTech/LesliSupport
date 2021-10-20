@@ -19,6 +19,7 @@ For more information read the license file including with this software.
 // · 
 
 =end
-    class Ticket::ActionsController < CloudObject::ActionsController
+    class Ticket::ActionsController < ApplicationLesliController
+        include Interfaces::Controllers::Actions
     end
 end
