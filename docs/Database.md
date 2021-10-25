@@ -1,10 +1,3 @@
-<p align="center">
-	<img width="75" alt="CloudHelp logo" src="../app/assets/images/cloud_help/help-logo.svg" />
-</p>
-
-<h3 align="center">Database structure</h3>
-
-
 ### 07.02. CloudHelp
 ```
     00.01. help/account 
