@@ -7,7 +7,7 @@
 
 ### 07.02. CloudHelp
 ```
-    00.00. help/account 
+    00.01. help/account 
 
     01.01. help/catalog
     01.02. help/catalog/ticket_categories 
