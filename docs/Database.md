@@ -20,6 +20,9 @@
     02.03. help/workflow/associations
     02.04. help/workflow/actions
 
+    05.01. help/dashboards
+    05.02 help/dashboard/components
+
     10.01. help/tickets
     10.03. help/ticket/actions 
     10.04. help/ticket/activities 
@@ -29,7 +32,7 @@
     10.10. help/ticket/timelines
     10.11. help/ticket/assignments
 
-    11.00. help/slas
+    11.01. help/slas
     11.03. help/sla/actions 
     11.04. help/sla/activities 
     11.05. help/sla/discussions 
