@@ -2,9 +2,9 @@
 /*
 Copyright (c) 2020, all rights reserved.
 
-All the information provided by this platform is protected by international laws related  to 
-industrial property, intellectual property, copyright and relative international laws. 
-All intellectual or industrial property rights of the code, texts, trade mark, design, 
+All the information provided by this platform is protected by international laws related  to
+industrial property, intellectual property, copyright and relative international laws.
+All intellectual or industrial property rights of the code, texts, trade mark, design,
 pictures and any other information belongs to the owner of this platform.
 
 Without the written permission of the owner, any replication, modification,
@@ -100,7 +100,7 @@ export default {
             if(ticket){
                 ticket.prticketDefault()
             }
-            
+
             this.search = ''
         },
 
@@ -113,7 +113,8 @@ export default {
         },
 
         postAssignment(user){
-            let url = this.url.help(`/tickets/${this.ticketId}/assignments`)
+            let url = this.url.help(`tickets/:ticket_id/assignments`, {ticket_id: this.ticketId})
+
             let data = {
                 ticket_assignment: {
                     users_id: user.id,
@@ -149,20 +150,23 @@ export default {
         },
 
         deleteAssignment(assignment){
+            if (!assignment.assignment_id) return
+
             // If it is clicked from the main tab, the assignment object received will have the id in the 'assignment_id' field
             let assignment_id = assignment.assignment_id
             // However, if it is not clicked from the main tab, the object received will have the id in the 'id' field
             if(! assignment_id){
                 assignment_id = assignment.id
             }
-            let url = `${this.main_route}/${this.ticketId}/assignments/${assignment_id}`
+            let url = this.url.help(`tickets/:ticket_id/assignments/:id`, {ticket_id: this.ticketId, id: assignment_id})
+
             this.$set(assignment, 'submitting', true)
 
             this.http.delete(url).then(result => {
                 this.$set(assignment, 'submitting', false)
                 if (result.successful) {
                     this.msg.success(this.translations.main.messages_info_assignment_deleted)
-                    
+
                     this.ticket.assignment_attributes = this.ticket.assignment_attributes.filter((assignment)=>{
                         return assignment.id != assignment_id
                     })
@@ -172,7 +176,7 @@ export default {
                     })
                     user.assignment_id = null
                     user.checked = false
-                    
+
                     this.reloadTicketRecord()
                 }else{
                     this.msg.error(result.error.message)
