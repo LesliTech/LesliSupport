@@ -14,3 +14,4 @@ class CreateCloudHelpSlaActions < ActiveRecord::Migration[6.0]
         add_reference :cloud_help_sla_actions, :cloud_help_slas, foreign_key: true, index: { name: "help_sla_actions_slas" }
     end
 end
+

@@ -23,7 +23,7 @@ import componentWorkflowTransition from 'LesliVue/shared/workflows/components/tr
 import componentFormStatus from 'LesliVue/shared/workflows/components/form-status.vue'
 import componentSubscription from 'LesliVue/cloud_objects/subscription.vue'
 import componentDiscussion from 'LesliVue/cloud_objects/discussion.vue'
-import componentAction from 'LesliVue/cloud_objects/action.vue'
+import componentActions from 'LesliVue/cloud_objects/action.vue'
 import componentFile from 'LesliVue/cloud_objects/file.vue'
 
 
@@ -45,7 +45,7 @@ export default {
         'component-form-status': componentFormStatus,
         'component-discussion': componentDiscussion,
         'component-activities': componentActivities,
-        'component-action': componentAction,
+        'component-actions': componentActions,
         'component-timeline': componentTimeline,
         'component-title': componentTitle,
         'component-file': componentFile,
@@ -147,17 +147,21 @@ export default {
                 switch(tab){
                     case 'information':
                         this.active_tab = 0
+                        break
                     case 'discussions':
                         this.active_tab = 1
                         break
                     case 'files':
                         this.active_tab = 2
                         break
-                    case 'timeline':
+                    case 'actions':
                         this.active_tab = 3
                         break
-                    case 'activities':
+                    case 'timeline':
                         this.active_tab = 4
+                        break
+                    case 'activities':
+                        this.active_tab = 5
                         break
                 }
             }
@@ -165,20 +169,24 @@ export default {
     },
 
     computed: {
-        activeFilesTab(){
-            return this.active_tab == 2
-        },
-
         activeDiscussionsTab(){
             return this.active_tab == 1
         },
 
-        activeTimelinesTab(){
+        activeFilesTab(){
+            return this.active_tab == 2
+        },
+
+        activeActionsTab(){
             return this.active_tab == 3
         },
 
-        activeActivitiesTab(){
+        activeTimelinesTab(){
             return this.active_tab == 4
+        },
+
+        activeActivitiesTab(){
+            return this.active_tab == 5
         }
     },
 
@@ -265,6 +273,15 @@ export default {
                     :active="activeFilesTab"
                 >
                 </component-file>
+            </b-tab-item>
+
+            <b-tab-item :label="translations.core.view_text_quick_actions">
+                <component-actions
+                    cloud-module="help/ticket"
+                    :cloud-id="ticket_id"
+                    :active="activeActionsTab"
+                >
+                </component-actions>
             </b-tab-item>
 
             <b-tab-item :label="translations.main.view_btn_status_timeline">

@@ -1,4 +1,4 @@
 module CloudHelp
-  VERSION = '0.0.30'
+  VERSION = '1.0.0'
     BUILD = "20210928.2033"
 end
