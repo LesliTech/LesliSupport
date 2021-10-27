@@ -142,6 +142,9 @@ export default {
 
                     this.reloadTicketRecord()
                 }else{
+
+                    this.checkAssignables(user, false, 'email')
+
                     this.msg.error(result.error.message)
                 }
             }).catch(error => {
@@ -180,6 +183,8 @@ export default {
                     this.reloadTicketRecord()
                 }else{
                     this.msg.error(result.error.message)
+
+                    this.checkAssignables(assignment, true, 'assignment_id')
                 }
             }).catch(error => {
                 console.log(error)
@@ -201,6 +206,16 @@ export default {
                 this.$set(user, 'assignment_id', assignment.id)
                 this.$set(user, 'checked', true)
             })
+        },
+
+        checkAssignables(assignment, value, key){
+            let index = this.assignment_options.users.findIndex((assignment_user)=>{
+                return assignment_user[key] == assignment[key]
+            })
+
+            if (index => 0) {
+                this.$set(this.assignment_options.users[index], 'checked', value)
+            }
         },
 
         reloadTicketRecord(){
