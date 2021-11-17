@@ -159,6 +159,7 @@ export default {
                 ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
             }
             data.ticket.tags = data.ticket.tags.join(',')
+            data.ticket.reference_url = window.location.href
             data.ticket.description = JSON.stringify(data.ticket.description)
             this.submitting = true
 

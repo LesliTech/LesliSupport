@@ -89,10 +89,13 @@ For more information read the license file including with this software.
 =begin
 @controller_action_param :detail_attributes [Hash] The fields of the detail 
     record associated to this ticket
-@controller_action_param :detail_attributes.id: [Integer] The id of the detail of
+@controller_action_param :id: [Integer] The id of the detail of
     of this ticket. Since each ticket has only one detail, this attribute is optiona
-@controller_action_param :detail_attributes.subject [String] The subject of the ticket
-@controller_action_param :detail_attributes.description [String] A description of the issue.
+@controller_action_param :subject [String] The subject of the ticket
+@controller_action_param :reference_url [String] The url from which the ticket was created
+@controller_action_param :detail_attributes [Hash] The fields of the detail 
+    record associated to this ticket
+@controller_action_param :description [String] A description of the issue.
     Can be an HTML string
 @controller_action_param :tags [String], A small list of words, separated by commas
 @controller_action_param :deadline [Datetime] The date set as this ticket's deadline
@@ -114,18 +117,16 @@ For more information read the license file including with this software.
     # Executing this controller's action from javascript's frontend
     let data = {
         ticket:{
-            detail_attributes:{
-                cloud_help_catalog_ticket_types_id:2,
-                cloud_help_catalog_ticket_categories_id:1,
-                cloud_help_catalog_ticket_priorities_id:2,
-                subject:I would like a button to print my record,
-                description:`
-                    <div>In the <em>show screen</em>, 
-                    I would like you to add a button to print the record 
-                    I'm creating, istead of having to navigate to the 
-                    <strong>options menu</strong>. It would save me some time</div>
-                `
-            }
+            cloud_help_catalog_ticket_types_id:2,
+            cloud_help_catalog_ticket_categories_id:1,
+            cloud_help_catalog_ticket_priorities_id:2,
+            subject:I would like a button to print my record,
+            description:`
+                <div>In the <em>show screen</em>, 
+                I would like you to add a button to print the record 
+                I'm creating, istead of having to navigate to the 
+                <strong>options menu</strong>. It would save me some time</div>
+            `
         }
     }
     this.http.post('127.0.0.1/help/tickets', data);
@@ -142,11 +143,12 @@ For more information read the license file including with this software.
 =begin
 @controller_action_param :detail_attributes [Hash] The fields of the detail 
     record associated to this ticket
-@controller_action_param :detail_attributes.id: [Integer] The id of the detail of
+@controller_action_param :id: [Integer] The id of the detail of
     of this ticket. Since each ticket has only one detail, this attribute is optiona
-@controller_action_param :detail_attributes.subject [String] The subject of the ticket
-@controller_action_param :detail_attributes.description [String] A description of the issue.
+@controller_action_param :subject [String] The subject of the ticket
+@controller_action_param :description [String] A description of the issue.
     Can be an HTML string
+@controller_action_param :reference_url [String] The url from which the ticket was created
 @controller_action_param :tags [String], A small list of words, separated by commas
 @controller_action_param :deadline [Datetime] The date set as this ticket's deadline
 @controller_action_param :cloud_help_catalog_ticket_types_id [Integer] The id of the type
@@ -168,18 +170,16 @@ For more information read the license file including with this software.
     # Executing this controller's action from javascript's frontend
     let data = {
         ticket:{
-            detail_attributes:{
-                cloud_help_catalog_ticket_types_id:2,
-                cloud_help_catalog_ticket_categories_id:1,
-                cloud_help_catalog_ticket_priorities_id:2,
-                subject:I would like a button to print my record,
-                description:`
-                    <div>In the <em>show screen</em>, 
-                    I would like you to add a button to print the record 
-                    I'm creating, istead of having to navigate to the 
-                    <strong>options menu</strong>. It would save me some time</div>
-                `
-            }
+            cloud_help_catalog_ticket_types_id:2,
+            cloud_help_catalog_ticket_categories_id:1,
+            cloud_help_catalog_ticket_priorities_id:2,
+            subject:I would like a button to print my record,
+            description:`
+                <div>In the <em>show screen</em>, 
+                I would like you to add a button to print the record 
+                I'm creating, istead of having to navigate to the 
+                <strong>options menu</strong>. It would save me some time</div>
+            `
         }
     }
     this.http.post('127.0.0.1/help/tickets', data);
@@ -333,6 +333,7 @@ For more information read the license file including with this software.
                 :cloud_help_workflow_statuses_id,
                 :subject,
                 :description,
+                :reference_url,
                 :tags,
                 :hours_worked,
                 :deadline
