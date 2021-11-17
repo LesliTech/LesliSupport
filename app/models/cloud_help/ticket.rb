@@ -38,7 +38,7 @@ module CloudHelp
 
         has_many :assignments, foreign_key: "cloud_help_tickets_id"
 
-        before_validation :set_deadline :set_type, :set_sla, :set_workflow, on: :create
+        before_validation :set_deadline :set_type :set_sla :set_workflow on: :create
         after_update :after_update_actions
 
         # @return [Boolean] Whether this ticket was successfully saved or not. If it was not saved,
