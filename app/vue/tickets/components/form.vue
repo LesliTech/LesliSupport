@@ -340,9 +340,14 @@ export default {
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicket">
                         <div class="columns is-multiline" v-if="viewType != 'new'">
-                            <div class="column is-5">
+                            <div class="column is-4">
                                 <b-field :label="translations.main.column_users_id">
                                     <b-input v-model="ticket.user_creator_name" readonly></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-8">
+                                <b-field :label="translations.main.column_reference_url">
+                                    <b-input v-model="ticket.reference_url" readonly></b-input>
                                 </b-field>
                             </div>
                             <div class="column is-9">
