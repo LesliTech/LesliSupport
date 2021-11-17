@@ -25,7 +25,7 @@ module CloudHelp
 
             self.build_data_from_params(params, {
                 url: "/help/tickets/#{ticket.id}/edit",
-                title: I18n.t("help.tickets.mailer_ticket_assignment_subject"),
+                title: "#{I18n.t("help.tickets.mailer_ticket_assignment_subject")}: #{ticket.id} - #{ticket.subject}",
                 link_information: I18n.t("help.tickets.mailer_ticket_assignment_link_information"),
                 link_text: I18n.t("help.tickets.mailer_ticket_assignment_link_text"),
                 user: {
@@ -35,7 +35,7 @@ module CloudHelp
 
             mail(
                 to: email_address_with_name(user.email, user.full_name), 
-                subject: I18n.t("help.tickets.mailer_ticket_assignment_subject")
+                subject: "#{I18n.t("help.tickets.mailer_ticket_assignment_subject")}: #{ticket.id} - #{ticket.subject}"
             )
         end
     end

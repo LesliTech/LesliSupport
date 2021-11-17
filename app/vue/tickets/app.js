@@ -25,6 +25,7 @@ import app from 'LesliVue/app'
 import appList  from './apps/list.vue'
 import appEdit  from './apps/edit.vue'
 import appShow  from './apps/show.vue'
+
 import appNew   from './apps/new.vue'
 
 
@@ -46,6 +47,7 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
     ticket: null,
     ticket_assignable: false,
     assignment_options: {},
+    files_count: 0,
     reload: {
         timelines: false,
         activities: false,
