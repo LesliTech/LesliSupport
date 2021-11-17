@@ -140,6 +140,14 @@ module CloudHelp
             return ticket_index_response.payload
         end
 
+
+        def self.count(current_user)
+            current_user.account.help.tickets
+            .joins(:status)
+            .where("cloud_help_workflow_statuses.status_type not in (?)", ["completed_successfully", "completed_unsuccessfully"])
+            .where(user_creator: current_user).count
+        end
+
         def self.options(current_user, query)
             types = current_user.account.help.ticket_types.select(:id, :name).order(:name)
             categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
