@@ -26,6 +26,7 @@ class CreateCloudHelpAccountSettings < ActiveRecord::Migration[6.1]
             t.timestamps
         end
 
-        add_reference :cloud_help_account_settings, :cloud_help_accounts, foreign_key: true, index: {name: "help_account_settings_accounts"}
+        add_reference :cloud_help_account_settings,   :cloud_help_accounts, foreign_key: true, index: {name: "help_account_settings_accounts"}
+        add_foreign_key :cloud_help_account_settings, :users, column: :user_main_id
     end
 end
