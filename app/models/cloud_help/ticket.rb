@@ -392,9 +392,9 @@ module CloudHelp
                 current_user_olp = current_user.roles.order(object_level_permission: :desc).first.object_level_permission
                 reference_olp = 0
 
-                if user_creator
+                if user_creator && user_creator.roles.size > 0
                     reference_olp = user_creator.roles.order(object_level_permission: :desc).first.object_level_permission
-                elsif user_main
+                elsif user_main && user_main.roles.size > 0
                     reference_olp = user_main.roles.order(object_level_permission: :desc).first.object_level_permission
                 end
 
