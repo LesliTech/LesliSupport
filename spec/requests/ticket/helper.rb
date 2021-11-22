@@ -25,7 +25,7 @@ module Requests
 
                 ticket = help_account.tickets.new({
                     subject: Faker::Lorem.word,
-                    user_creator: account.users.order("random()").first,
+                    user_creator: user,
                     category: help_account.ticket_categories.order("random()").first,
                     priority: help_account.ticket_priorities.order("random()").first,
                     source: help_account.ticket_sources.order("random()").first,
