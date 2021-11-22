@@ -187,6 +187,10 @@ export default {
 
         activeActivitiesTab(){
             return this.active_tab == 5
+        },
+
+        filesTabLabel(){
+            return `${this.translations.core.view_btn_files} (${this.data.files_count || '?'})`
         }
     },
 
@@ -265,9 +269,9 @@ export default {
                 </div>
             </b-tab-item>
 
-            <b-tab-item :label="translations.core.view_btn_files">
+            <b-tab-item :label="filesTabLabel">
                 <component-file
-                    translations-file-types-path="help.ticket/files"
+                    :translations-file-types-paths="['help.ticket/files']"
                     cloud-module="help/ticket"
                     :cloud-id="ticket_id"
                     :active="activeFilesTab"

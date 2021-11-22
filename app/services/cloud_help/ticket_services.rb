@@ -85,6 +85,7 @@ module CloudHelp
                 "chws.number as status_number",                     "subject",
                 "description",                                      "deadline",
                 "tags",                                             "hours_worked",
+                "reference_url",
                 " coalesce(nullif(concat(ud.first_name, ' ', ud.last_name), ''), u.email) as user_creator_name"
             )
             .where("cloud_help_tickets.id = #{ticket.id}").first.attributes
