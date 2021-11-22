@@ -140,6 +140,14 @@ module CloudHelp
             return ticket_index_response.payload
         end
 
+
+        def self.count(current_user)
+            current_user.account.help.tickets
+            .joins(:status)
+            .where("cloud_help_workflow_statuses.status_type not in (?)", ["completed_successfully", "completed_unsuccessfully"])
+            .where(user_creator: current_user).count
+        end
+
         def self.options(current_user, query)
             types = current_user.account.help.ticket_types.select(:id, :name).order(:name)
             categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
@@ -384,9 +392,9 @@ module CloudHelp
                 current_user_olp = current_user.roles.order(object_level_permission: :desc).first.object_level_permission
                 reference_olp = 0
 
-                if user_creator
+                if user_creator && user_creator.roles.size > 0
                     reference_olp = user_creator.roles.order(object_level_permission: :desc).first.object_level_permission
-                elsif user_main
+                elsif user_main && user_main.roles.size > 0
                     reference_olp = user_main.roles.order(object_level_permission: :desc).first.object_level_permission
                 end
 
