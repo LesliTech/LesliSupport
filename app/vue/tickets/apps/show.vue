@@ -21,10 +21,10 @@ For more information read the license file including with this software.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import componentWorkflowTransition from 'LesliVue/shared/workflows/components/transition.vue'
 import componentFormStatus from 'LesliVue/shared/workflows/components/form-status.vue'
-import componentSubscription from 'LesliCoreVue/cloud_objects/subscription.vue'
-import componentDiscussion from 'LesliCoreVue/cloud_objects/discussion.vue'
-import componentAction from 'LesliCoreVue/cloud_objects/action.vue'
-import componentFile from 'LesliCoreVue/cloud_objects/file.vue'
+import componentSubscription from 'LesliVue/cloud_objects/subscription.vue'
+import componentDiscussion from 'LesliVue/cloud_objects/discussion.vue'
+import componentAction from 'LesliVue/cloud_objects/action.vue'
+import componentFile from 'LesliVue/cloud_objects/file.vue'
 
 import componentActivities from '../components/activities.vue'
 import componentTimeline from '../components/timeline.vue'
@@ -237,7 +237,12 @@ export default {
             </b-tab-item>
 
             <b-tab-item :label="translations.core.view_btn_files">
-                <component-file translations-file-types-path="help.ticket/files" cloud-module="help/ticket" :cloud-id="ticket_id" :active="activeFilesTab">
+                <component-file
+                    :translations-file-types-paths="['help.ticket/files']"
+                    cloud-module="help/ticket"
+                    :cloud-id="ticket_id"
+                    :active="activeFilesTab"
+                >
                 </component-file>
             </b-tab-item>
 
