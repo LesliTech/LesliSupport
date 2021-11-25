@@ -194,11 +194,15 @@ For more information read the license file including with this software.
                 update_params = completed_ticket_params
             end
 
-            ticket_update_response = CloudHelp::TicketServices.update(current_user, @ticket, update_params)
+            if @ticket.check_workflow_transitions(current_user, update_params)
+                ticket_update_response = CloudHelp::TicketServices.update(current_user, @ticket, update_params)
 
-            @ticket = ticket_update_response.payload
-            if ticket_update_response.successful?
-                respond_with_successful(@ticket.show(current_user, @query))
+                @ticket = ticket_update_response.payload
+                if ticket_update_response.successful?
+                    respond_with_successful(@ticket.show(current_user, @query))
+                else
+                    respond_with_error(@ticket.errors.full_messages.to_sentence)
+                end
             else
                 respond_with_error(@ticket.errors.full_messages.to_sentence)
             end
