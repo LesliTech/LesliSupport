@@ -52,4 +52,11 @@ app("CloudHelp", "[list|new|edit|show]", "/help/workflows", [{
     path: "/:id/edit",
     component: appEdit,
     props: props
-}])
+}],{
+    checks: {
+        reload: false,
+        selected_record_id: null,
+        records: [],
+        active_tab: 0 // 0 -> list, 1 -> new, 2 -> edit
+    }
+})
