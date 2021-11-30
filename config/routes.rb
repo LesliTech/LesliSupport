@@ -31,15 +31,17 @@ CloudHelp::Engine.routes.draw do
 
     resources :workflows do
         member do
-            get "actions/options",          to: "workflow/actions#options"
+            get "actions/options",                                                  to: "workflow/actions#options"
+            get "/checks/options",                                                  to: "workflow/checks#options"
         end
         collection do
             post "list" => :index
-            get  "associations/options",    to: "workflow/associations#options"
-            get "/resources/transition-options/:cloud_object_name/:cloud_object_id", to: "workflows#transition_options"
+            get  "associations/options",                                            to: "workflow/associations#options"
+            get "/resources/transition-options/:cloud_object_name/:cloud_object_id",to: "workflows#transition_options"
         end
         scope module: :workflow do
             resources :associations
+            resources :checks
             resources :statuses
             resources :actions do
                 collection do

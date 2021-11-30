@@ -1,15 +1,4 @@
-<p align="center">
-	<img width="100" alt="CloudBabel logo" src="app/assets/images/cloud_help/help-logo.svg" />
-</p>
-
-<h3 align="center">CloudHelp - Support ticket system</h3>
-
-<hr/>
-
-Version 1.2.0
-
-#### License
--------
+=begin
 Copyright (c) 2021, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
@@ -21,3 +10,14 @@ Without the written permission of the owner, any replication, modification,
 transmission, publication is strictly forbidden.
 
 For more information read the license file including with this software.
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+
+=end
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
+    class Workflow::ChecksController < Shared::Workflow::ChecksController
+    end
+end

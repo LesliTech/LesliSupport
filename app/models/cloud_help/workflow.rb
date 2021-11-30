@@ -21,7 +21,8 @@ For more information read the license file including with this software.
         belongs_to  :account,       class_name: "Account",                  foreign_key: "cloud_help_accounts_id"
         has_many    :associations,  class_name: "Workflow::Association",    foreign_key: "cloud_help_workflows_id"
         has_many    :actions,       class_name: "Workflow::Action",         foreign_key: "cloud_help_workflows_id"
-        
+        has_many    :checks,        class_name: "Workflow::Check",          foreign_key: "cloud_help_workflows_id"
+
         has_many(
             :statuses,
             inverse_of: :workflow,
