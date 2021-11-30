@@ -335,7 +335,17 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.deadline}}
+                            <span
+                                class="has-text-danger"
+                                v-if="props.row.deadline && !['completed_unsuccessfully','completed_successfully'].includes(props.row.status_type) && (new Date(props.row.deadline) < new Date()) "       
+                            >
+                                {{props.row.deadline_text}}
+                                <b-icon icon="exclamation-circle" size="is-small" type="is-danger">
+                                </b-icon>
+                            </span>
+                            <span v-else>
+                                {{props.row.deadline_text}}
+                            </span>
                         </b-table-column>
 
                         <b-table-column field="status_name" :label="translations.main.column_cloud_help_workflow_statuses_id" sortable>
@@ -380,6 +390,20 @@ export default {
                                 </span>
                             </template>
                             {{props.row.priority}}
+                        </b-table-column>
+
+                        <b-table-column field="user_creator" :label="translations.main.column_users_id" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="filters.sorting_field == 'user_creator'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            <b-tooltip type="is-white" :label="props.row.user_creator">
+                                <b-tag>{{extractInitials(props.row.user_creator)}}</b-tag>
+                                &nbsp;
+                            </b-tooltip>
                         </b-table-column>
 
                         <b-table-column field="assignables" :label="translations.main.column_user_main_id">

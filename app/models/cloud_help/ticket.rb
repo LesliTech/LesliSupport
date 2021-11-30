@@ -140,12 +140,9 @@ module CloudHelp
             return ticket_index_response.payload
         end
 
-
         def self.count(current_user)
-            current_user.account.help.tickets
-            .joins(:status)
-            .where("cloud_help_workflow_statuses.status_type not in (?)", ["completed_successfully", "completed_unsuccessfully"])
-            .where(user_creator: current_user).count
+            ticket_count_response = CloudHelp::TicketServices.count(current_user)
+            return ticket_count_response.payload
         end
 
         def self.options(current_user, query)
