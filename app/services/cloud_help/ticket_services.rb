@@ -164,7 +164,7 @@ module CloudHelp
                 "created_at",                                           "chctp.weight as priority_weight",
                 "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
                 "deadline",                                             "users_id",
-                "cloud_help_tickets.cloud_help_workflow_statuses_id"
+                "cloud_help_tickets.cloud_help_workflow_statuses_id",   "chws.status_type as status_type"
             )
 
             # We apply the previous filters in the main query
@@ -191,7 +191,7 @@ module CloudHelp
             response[:tickets] = tickets.map do |ticket|
                 ticket_attributes = ticket.attributes
                 ticket_attributes["editable"] = ticket.is_editable_by?(current_user)
-                ticket_attributes["deadline"] = LC::Date.to_string(ticket_attributes["deadline"])
+                ticket_attributes["deadline_text"] = LC::Date.to_string(ticket_attributes["deadline"])
                 ticket_attributes["created_at"] = LC::Date.to_string_datetime(ticket_attributes["created_at"])
                 ticket_attributes["assignment_type"] = Ticket::Assignment.assignment_types.key(ticket[:assignment_type])
 
@@ -210,6 +210,24 @@ module CloudHelp
             end
 
             return LC::Response.service(true, response)
+        end
+
+        def self.count(current_user)
+            tickets_count = current_user.account.help.tickets
+            .joins(:status)
+            .joins("
+                left join cloud_help_ticket_assignments chta on 
+                    chta.deleted_at is null and 
+                    chta.cloud_help_tickets_id = cloud_help_tickets.id
+            ").joins("
+                left join users on 
+                    cloud_help_tickets.users_id = users.id and
+                    users.id = #{current_user.id}
+            ").where("cloud_help_workflow_statuses.status_type not in (?)", ["completed_successfully", "completed_unsuccessfully"])
+            .where("cloud_help_tickets.users_id = ? or chta.users_id = ? ", current_user.id, current_user.id)
+            .count
+
+            return LC::Response.service(true, tickets_count)
         end
 
     end
