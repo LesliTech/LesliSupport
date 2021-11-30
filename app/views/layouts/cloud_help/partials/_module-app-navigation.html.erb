@@ -54,29 +54,23 @@
             <% end %>
         </li>
     <% end %>
-    <% if @tabs_granted["workflows"] || @tabs_granted["dashboards"]%>
-        <b-menu-item>
-            <template slot="label" slot-scope="props">
-                <i class="fas fa-cogs"></i>
-                <span><%= I18n.t("help.shared.sidebar_nav_settings") %></span>
-                <b-icon class="is-pulled-right" :icon="props.expanded ? 'caret-down' : 'caret-right'"></b-icon>
-            </template>
-            <% if @tabs_granted["workflows"]%>
-                <li>
-                    <%= link_to cloud_help.workflows_path, class: "" do %>
-                        <i class="fas fa-project-diagram"></i>
-                        <span><%= I18n.t("help.shared.sidebar_nav_workflows") %></span>
-                    <% end %>
-                </li>
+</template>
+    
+<template v-slot:settings>
+    <% if @tabs_granted["workflows"]%>
+        <li>
+            <%= link_to cloud_help.workflows_path, class: "" do %>
+                <i class="fas fa-project-diagram"></i>
+                <span><%= I18n.t("help.shared.sidebar_nav_workflows") %></span>
             <% end %>
-            <% if @tabs_granted["dashboards"]%>
-                <li>
-                    <%= link_to cloud_help.dashboards_path, class: "" do %>
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span><%= I18n.t("help.shared.sidebar_nav_dashboards") %></span>
-                    <% end %>
-                </li>
+        </li>
+    <% end %>
+    <% if @tabs_granted["dashboards"]%>
+        <li>
+            <%= link_to cloud_help.dashboards_path, class: "" do %>
+                <i class="fas fa-tachometer-alt"></i>
+                <span><%= I18n.t("help.shared.sidebar_nav_dashboards") %></span>
             <% end %>
-        </b-menu-item>
+        </li>
     <% end %>
 </template>
