@@ -88,7 +88,6 @@ CloudHelp::Engine.routes.draw do
                 post "list" => :index
             end
         end
-        
     end
 
     resources :tickets do
@@ -139,6 +138,13 @@ CloudHelp::Engine.routes.draw do
             resources :custom_fields
             
             resources :associations
+        end
+    end
+
+    resources :reports, only: :index do
+        collection do
+            get :tickets_general
+            get :tickets_open
         end
     end
 end
