@@ -31,14 +31,16 @@ export default {
     data(){
         return {
             translations: {
-                core: I18n.t('core.shared')
+                core: I18n.t('core.shared'),
+                main: I18n.t('help.reports'),
+                tickets: I18n.t('help.tickets')
             },
 
             filters: {
                 tickets: {
                     start_date: this.date.todayAtMidnight(),
                     end_date: this.date.todayAtMidnight(),
-                    users_id: null,
+                    user_assigned_id: null,
                     user_name: ''
                 }
             },
@@ -67,14 +69,30 @@ export default {
 
         selectUser(user){
             if(user){
-                this.filters.tickets.users_id = user.id
+                this.filters.tickets.user_assigned_id = user.id
             }else{
-                this.filters.tickets.users_id = null
+                this.filters.tickets.user_assigned_id = null
             }
         },
 
         setManualDateRange(){
             this.date_selection_shortcut = null
+        },
+
+        calculateQueryFilters(){
+            let query_filters = []
+
+            for(let key in this.filters.tickets){
+                if(this.filters.tickets[key]){
+                    if(this.filters.tickets[key] instanceof Date){
+                        query_filters.push(`filters[${key}]=${this.filters.tickets[key].toISOString()}`)
+                    }else{
+                        query_filters.push(`filters[${key}]=${this.filters.tickets[key]}`)
+                    }
+                }
+            }
+
+            return query_filters
         }
     },
 
@@ -87,14 +105,16 @@ export default {
                         this.filters.tickets.end_date = this.date.todayAtMidnight()
                         break
                     case 'monthly':
-                        this.filters.tickets.start_date = this.date.beginingOfMonth()
+                        this.filters.tickets.start_date = this.date.beginningOfMonth()
                         this.filters.tickets.end_date = this.date.endOfMonth()
                         break
                     case 'weekly':
-                        this.filters.tickets.start_date = this.date.beginingOfWeek(lesli.settings.datetime.start_week_on)
+                        this.filters.tickets.start_date = this.date.beginningOfWeek(lesli.settings.datetime.start_week_on)
                         this.filters.tickets.end_date = this.date.endOfWeek(lesli.settings.datetime.start_week_on)
-                        console.log(this.filters.tickets.start_date)
-                        console.log(this.filters.tickets.end_date)
+                        break
+                    case 'clear':
+                        this.filters.tickets.start_date = null
+                        this.filters.tickets.end_date = null
                         break
                 }
             }
@@ -108,18 +128,20 @@ export default {
             })
         },
 
-        queryFilters(){
-            let query_filters = []
+        generalQueryFilters(){
+            return this.calculateQueryFilters().join('&')
+        },
 
-            for(let key in this.filters.tickets){
-                if(this.filters.tickets[key]){
-                    if(this.filters.tickets[key] instanceof Date){
-                        query_filters.push(`filters[${key}]=${this.filters.tickets[key].toISOString()}`)
-                    }else{
-                        query_filters.push(`filters[${key}]=${this.filters.tickets[key]}`)
-                    }
-                }
-            }
+        openQueryFilters(){
+            let query_filters = this.calculateQueryFilters()
+            query_filters.push('filters[open]=true')
+
+            return query_filters.join('&')
+        },
+
+        overdueQueryFilters(){
+            let query_filters = this.calculateQueryFilters()
+            query_filters.push('filters[overdue]=true')
 
             return query_filters.join('&')
         }
@@ -128,19 +150,19 @@ export default {
 </script>
 <template>
     <section class="application-component">
-        <component-header :title="'(T) Reportes'">
+        <component-header :title="translations.main.view_title_reports">
         </component-header>
 
 
         <div class="card">
             <div class="card-content">
                 <b-tabs>
-                    <b-tab-item :label="'(T) Tickets'">
+                    <b-tab-item :label="translations.tickets.view_title_main">
                         <div class="columns is-multiline">
                             <div class="column is-4">
                                 <b-field
-                                    :label="'(T) Usuario'"
-                                    :message="'(T) Se mostrará información de todos los usuarios si no seleccionas uno en específico'"
+                                    :label="translations.tickets.column_user_main_id"
+                                    :message="translations.main.view_text_column_ticket_user_main_id_description"
                                 >
                                     <b-autocomplete
                                         :placeholder="translations.core.view_placeholder_select_option"
@@ -154,27 +176,30 @@ export default {
                                 </b-field>
                             </div>
                             <div class="column is-2">
-                                <b-field :label="'(T) Rango de Fechas'" :message="'(T) El rango semanal empieza en lunes y termina en doming'">
+                                <b-field :label="translations.main.view_input_date_range">
                                     <b-select expanded v-model="date_selection_shortcut">
                                         <option :value="null">
-                                            Manual
+                                            {{translations.main.column_enum_date_selection_shortcut_manual}}
                                         </option>
                                         <option value="daily">
-                                            Este Día
+                                            {{translations.main.column_enum_date_selection_shortcut_daily}}
                                         </option>
                                         <option value="weekly">
-                                            Esta Semana
+                                            {{translations.main.column_enum_date_selection_shortcut_weekly}}
                                         </option>
                                         <option value="monthly">
-                                            Este Mes
+                                            {{translations.main.column_enum_date_selection_shortcut_monthly}}
+                                        </option>
+                                        <option value="clear">
+                                            {{translations.main.column_enum_date_selection_shortcut_clear}}
                                         </option>
                                     </b-select>
                                 </b-field>
                             </div>
                             <div class="column is-3">
-                                <b-field>
+                                <b-field :message="translations.main.view_text_tickets_date_range_required_only_in_general">
                                     <template v-slot:label>
-                                        (T) Fecha de Inicio <sup class="has-text-danger">*</sup>
+                                        {{translations.main.view_input_start_date}}
                                     </template>
                                     <vc-date-picker
                                         v-model="filters.tickets.start_date"
@@ -196,7 +221,7 @@ export default {
                             <div class="column is-3">
                                 <b-field>
                                     <template v-slot:label>
-                                        (T) Fecha de Fin <sup class="has-text-danger">*</sup>
+                                        {{translations.main.view_input_end_date}}
                                     </template>
                                     <vc-date-picker
                                         v-model="filters.tickets.end_date"
@@ -216,45 +241,37 @@ export default {
                                 </b-field>
                             </div>
                             <div class="column is-12">
-                                <div class="buttons" v-if="filters.tickets.start_date && filters.tickets.end_date">
+                                <div class="buttons">
                                     <a
+                                        v-if="filters.tickets.start_date && filters.tickets.end_date"
                                         class="button is-info is-light has-text-dark"
-                                        :href="`/help/reports/tickets_general.xlsx?${queryFilters}`"
+                                        :href="`/help/reports/tickets_general.xlsx?${generalQueryFilters}`"
                                         target="_blank"
                                     >
                                         <b-icon icon="file-download"></b-icon>
-                                        <span >(T) Reporte General</span>
+                                        <span >{{translations.main.view_text_report_tickets_general}}</span>
                                     </a>
+                                    <button v-else disabled class="button is-info is-light has-text-dark" >
+                                        <b-icon icon="file-download"></b-icon>
+                                        <span >{{translations.main.view_text_report_tickets_general}}</span>
+                                    </button>
+
                                     <a
                                         class="button is-info is-light has-text-dark"
-                                        :href="`/help/reports/tickets_open.xlsx?${queryFilters}`"
+                                        :href="`/help/reports/tickets_general.xlsx?${openQueryFilters}`"
                                         target="_blank"
                                     >
                                         <b-icon icon="file-download"></b-icon>
-                                        <span >(T) Tickets Abiertos</span>
+                                        <span >{{translations.main.view_text_report_tickets_open}}</span>
                                     </a>
                                     <a
                                         class="button is-info is-light has-text-dark"
-                                        :href="`/help/reports/tickets_overdue.xlsx?${queryFilters}`"
+                                        :href="`/help/reports/tickets_general.xlsx?${overdueQueryFilters}`"
                                         target="_blank"
                                     >
                                         <b-icon icon="file-download"></b-icon>
-                                        <span >(T) Tickets Atrasados</span>
+                                        <span >{{translations.main.view_text_report_tickets_overdue}}</span>
                                     </a>
-                                </div>
-                                <div class="buttons" v-else>
-                                    <button disabled class="button is-info is-light has-text-dark" >
-                                        <b-icon icon="file-download"></b-icon>
-                                        <span >(T) Reporte General</span>
-                                    </button>
-                                    <button disabled class="button is-info is-light has-text-dark" >
-                                        <b-icon icon="file-download"></b-icon>
-                                        <span >(T) Tickets Abiertos</span>
-                                    </button>
-                                    <button disabled class="button is-info is-light has-text-dark" >
-                                        <b-icon icon="file-download"></b-icon>
-                                        <span >(T) Tickets Atrasados</span>
-                                    </button>
                                 </div>
                             </div>
                         </div>

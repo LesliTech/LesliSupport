@@ -144,7 +144,6 @@ CloudHelp::Engine.routes.draw do
     resources :reports, only: :index do
         collection do
             get :tickets_general
-            get :tickets_open
         end
     end
 end

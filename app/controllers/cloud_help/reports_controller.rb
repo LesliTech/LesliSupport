@@ -25,7 +25,7 @@ module CloudHelp
         def tickets_general
             respond_to do |format|
                 format.xlsx do
-                    send_file CloudHelp::ReportService::Ticket.general(current_user, @query) 
+                    send_file CloudHelp::Reports::TicketService.general(current_user, @query) 
                 end
             end
         end
