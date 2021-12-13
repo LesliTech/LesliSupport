@@ -28,6 +28,7 @@ module CloudHelp
                 file_headers = {
                     id: I18n.t("help.tickets.column_id"),
                     created_at: I18n.t("help.tickets.column_created_at"),
+                    creation_time: I18n.t("help.tickets.column_creation_time"),
                     user_creator: I18n.t("help.tickets.column_users_id"),
                     subject: I18n.t("help.tickets.column_subject"),
                     deadline: I18n.t("help.tickets.column_deadline"),
@@ -92,10 +93,15 @@ module CloudHelp
                     data = data.where("cloud_help_tickets.deadline <= ?", LC::Date.now)
                 end
 
+                total_hours = 0.0
+
                 data = data.map do |ticket|
+                    total_hours = total_hours + (ticket.hours_worked || 0)
+
                     {
                         file_headers[:id] => ticket.id,
-                        file_headers[:created_at] => LC::Date.to_string_datetime(ticket.created_at),
+                        file_headers[:created_at] => LC::Date.to_string(ticket.created_at),
+                        file_headers[:creation_time] => LC::Date.to_string_time(ticket.created_at),
                         file_headers[:user_creator] => ticket.user_creator_name,
                         file_headers[:subject] => ticket.subject,
                         file_headers[:deadline] => LC::Date.to_string(ticket.deadline),
@@ -106,6 +112,7 @@ module CloudHelp
                         file_headers[:status_name] => translate_status(ticket.status_name),
                         file_headers[:status_type] => translate_enum("status_type", ticket.status_type, "help.workflow/statuses"),
                         file_headers[:hours_worked] => ticket.hours_worked
+                        
                     }
                 end
 
@@ -120,11 +127,14 @@ module CloudHelp
 
                 title = "#{title} #{dates.join(" - ")}"
 
+                summary_text = "#{I18n.t("help.tickets.view_text_total_hours_worked")}: #{total_hours}"
+
                 return Docm::Generator::Xlsx.generate(
                     filename,
                     [[filename, data]],
                     style_data: CloudHelp::Reports::StyleService.tickets_general,
-                    title: {text: title, colspan: 12}
+                    title: {text: title, colspan: 13},
+                    summary: {text: summary_text, colspan: 13}
                 )
 
             end
