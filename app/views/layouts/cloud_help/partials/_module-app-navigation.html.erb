@@ -54,6 +54,14 @@
             <% end %>
         </li>
     <% end %>
+    <% if @tabs_granted["reports"]%>
+        <li>
+            <%= link_to cloud_help.reports_path, class: "" do %>
+                <i class="fas fa-file-excel"></i>
+                <span><%= I18n.t("help.shared.sidebar_nav_reports") %></span>
+            <% end %>
+        </li>
+    <% end %>
 </template>
     
 <template v-slot:settings>
