@@ -41,7 +41,7 @@ module CloudHelp
                 }
 
                 data = current_user.account.help.tickets
-                .joins("left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id")
+                .joins("left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id and chta.deleted_at is null")
                 .joins("left join users ua on chta.users_id = ua.id")
                 .joins("left join user_details uad on ua.id = uad.users_id")
                 .joins("inner join users uc on cloud_help_tickets.users_id = uc.id")

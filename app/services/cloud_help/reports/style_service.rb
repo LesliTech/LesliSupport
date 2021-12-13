@@ -34,7 +34,7 @@ module CloudHelp
                         title: {b:true, alignment: {horizontal: :center, vertical: :center}, sz: 14}
                     },
                     sheets: [{
-                        widths: [10, nil],
+                        widths: [10, nil, nil, 45, nil],
                         rows: [
                             {end_row: 0, columns: [{style_name: :header}]},
                             columns: [
