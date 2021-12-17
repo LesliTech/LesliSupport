@@ -28,6 +28,7 @@ module CloudHelp
                 file_headers = {
                     id: I18n.t("help.tickets.column_id"),
                     created_at: I18n.t("help.tickets.column_created_at"),
+                    creation_time: I18n.t("help.tickets.column_creation_time"),
                     user_creator: I18n.t("help.tickets.column_users_id"),
                     subject: I18n.t("help.tickets.column_subject"),
                     deadline: I18n.t("help.tickets.column_deadline"),
@@ -36,12 +37,11 @@ module CloudHelp
                     ticket_category_name: I18n.t("help.tickets.column_cloud_help_catalog_ticket_categories_id"),
                     user_assigned: I18n.t("help.tickets.column_user_main_id"),
                     status_name: I18n.t("help.tickets.column_cloud_help_workflow_statuses_id"),
-                    status_type: I18n.t("core.workflow/statuses.column_status_type"),
                     hours_worked: I18n.t("help.tickets.column_hours_worked")
                 }
 
                 data = current_user.account.help.tickets
-                .joins("left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id")
+                .joins("left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id and chta.deleted_at is null")
                 .joins("left join users ua on chta.users_id = ua.id")
                 .joins("left join user_details uad on ua.id = uad.users_id")
                 .joins("inner join users uc on cloud_help_tickets.users_id = uc.id")
@@ -58,14 +58,14 @@ module CloudHelp
                     "chctp.name as ticket_priority_name",
                     "cloud_help_workflow_statuses.name as status_name",
                     "cloud_help_workflow_statuses.status_type as status_type",
+                    "cloud_help_workflow_statuses.number as status_number",
                     "cloud_help_tickets.id",
                     "cloud_help_tickets.created_at",
                     "cloud_help_tickets.users_id",
                     :subject,
                     :deadline,
                     :hours_worked
-                ).order("user_assigned_name asc")
-                .order(id: :asc)
+                )
 
                 if query[:filters][:user_assigned_id]
                     data = data.where("ua.id = ?", query[:filters][:user_assigned_id])
@@ -92,10 +92,20 @@ module CloudHelp
                     data = data.where("cloud_help_tickets.deadline <= ?", LC::Date.now)
                 end
 
+                if query[:filters][:group_by_status]
+                    data = data.order(status_number: :desc)
+                end
+
+                data = data.order("user_assigned_name asc").order(id: :asc)
+
+                total_hours = 0.0
+
                 data = data.map do |ticket|
-                    {
+                    total_hours = total_hours + (ticket.hours_worked || 0)
+                    row = {
                         file_headers[:id] => ticket.id,
-                        file_headers[:created_at] => LC::Date.to_string_datetime(ticket.created_at),
+                        file_headers[:created_at] => LC::Date.to_string(ticket.created_at),
+                        file_headers[:creation_time] => LC::Date.to_string_time(ticket.created_at),
                         file_headers[:user_creator] => ticket.user_creator_name,
                         file_headers[:subject] => ticket.subject,
                         file_headers[:deadline] => LC::Date.to_string(ticket.deadline),
@@ -104,9 +114,16 @@ module CloudHelp
                         file_headers[:ticket_priority_name] => ticket.ticket_priority_name,
                         file_headers[:user_assigned] => ticket.user_assigned_name,
                         file_headers[:status_name] => translate_status(ticket.status_name),
-                        file_headers[:status_type] => translate_enum("status_type", ticket.status_type, "help.workflow/statuses"),
                         file_headers[:hours_worked] => ticket.hours_worked
+                        
                     }
+                    if query[:filters][:simplified]
+                        row.delete(file_headers[:creation_time])
+                        row.delete(file_headers[:ticket_priority_name])
+                        row.delete(file_headers[:user_assigned])
+                    end
+
+                    row
                 end
 
                 data = Docm::Parser::Xlsx.parse(data)
@@ -120,11 +137,17 @@ module CloudHelp
 
                 title = "#{title} #{dates.join(" - ")}"
 
+                summary_text = "#{I18n.t("help.tickets.view_text_total_hours_worked")}: #{total_hours}"
+
+                colspan = query[:filters][:simplified] ? 9 : 12
+                stylesheet = query[:filters][:simplified] ? CloudHelp::Reports::StyleService.tickets_general_simplified : CloudHelp::Reports::StyleService.tickets_general
+
                 return Docm::Generator::Xlsx.generate(
                     filename,
                     [[filename, data]],
-                    style_data: CloudHelp::Reports::StyleService.tickets_general,
-                    title: {text: title, colspan: 12}
+                    style_data: stylesheet,
+                    title: {text: title, colspan: colspan },
+                    summary: {text: summary_text, colspan: colspan}
                 )
 
             end
