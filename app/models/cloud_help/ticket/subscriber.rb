@@ -18,7 +18,7 @@ For more information read the license file including with this software.
 
 =end
     class Ticket::Subscriber < CloudObject::Subscriber
-        belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: 'cloud_help_tickets_id'
+        belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: "cloud_help_tickets_id"
 
 =begin
 @attribute [Enumerable<Symbol>] event
