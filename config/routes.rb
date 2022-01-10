@@ -35,7 +35,6 @@ CloudHelp::Engine.routes.draw do
             get "/checks/options",                                                  to: "workflow/checks#options"
         end
         collection do
-            post "list" => :index
             get  "associations/options",                                            to: "workflow/associations#options"
             get "/resources/transition-options/:cloud_object_name/:cloud_object_id",to: "workflows#transition_options"
         end
