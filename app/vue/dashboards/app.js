@@ -23,7 +23,7 @@ import app from "LesliCoreVue/app"
 // · Import apps and components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 import appList  from "LesliVue/shared/dashboards/apps/list.vue"
-import appEdit  from "LesliVue/shared/dashboards/apps/edit.vue"
+import appShow  from "LesliVue/shared/dashboards/apps/show.vue"
 import appNew   from "LesliVue/shared/dashboards/apps/new.vue"
 
 // · Import a list of all dashboard components
@@ -34,7 +34,7 @@ import componentTicketsByType from "./components/chart-tickets-by-type.vue"
 import componentTicketsByCategory from "./components/chart-tickets-by-category.vue"
 import componentHoursWorked from "./components/chart-hours-worked.vue"
 
-app("CloudHelp", "[list|new|edit]", "/help/dashboards", [{
+app("CloudHelp", "[list|new|show/edit]", "/help/dashboards", [{
     path: "/",
     component: appList,
     props: {
@@ -50,10 +50,12 @@ app("CloudHelp", "[list|new|edit]", "/help/dashboards", [{
     }
 },{
     path: "/:id",
-    component: appEdit,
+    component: appShow,
     props: {
         cloudEngine: "CloudHelp",
         engineNamespace: "help",
+        newResourceAnchorPath: "/help/tickets/new",
+        newResourceAnchorText: I18n.t("help.tickets.view_btn_create"),
         renderComponents: {
             "component-new-tickets": componentNewTickets,
             "component-my-tickets": componentMyTickets,
