@@ -17,7 +17,7 @@ For more information read the license file including with this software.
 
 =end
 CloudHelp::Engine.routes.draw do
-    root to: "dashboard#show"
+    root to: "dashboards#show"
 
     resources :custom_validations do
         scope module: :custom_validation do
@@ -35,7 +35,6 @@ CloudHelp::Engine.routes.draw do
             get "/checks/options",                                                  to: "workflow/checks#options"
         end
         collection do
-            post "list" => :index
             get  "associations/options",                                            to: "workflow/associations#options"
             get "/resources/transition-options/:cloud_object_name/:cloud_object_id",to: "workflows#transition_options"
         end

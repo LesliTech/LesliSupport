@@ -112,6 +112,7 @@ export default {
                     }
                     this.data.ticket = this.ticket
                     this.data.sla = this.ticket.sla
+                    this.data.files_count = this.ticket.files_count
                 }else{
                     this.msg.error(result.error.message)
                 }
@@ -190,7 +191,7 @@ export default {
         },
 
         filesTabLabel(){
-            return `${this.translations.core.view_btn_files} (${this.data.files_count || '?'})`
+            return `${this.translations.core.view_btn_files} (${this.data.files_count})`
         }
     },
 

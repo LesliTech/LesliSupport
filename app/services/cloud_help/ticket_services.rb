@@ -94,6 +94,7 @@ module CloudHelp
             data[:assignment_attributes] = ticket.assignments_info
             data[:editable] = ticket.is_editable_by?(current_user)
             data[:sla] = ticket.sla.show(current_user, query)
+            data[:files_count] = ticket.files.count
 
             return LC::Response.service(true, data)
         end

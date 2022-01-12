@@ -102,6 +102,7 @@ export default {
                     this.ticket = this.parseBackendData(result.data)
                     this.data.ticket = this.ticket
                     this.data.sla = this.ticket.sla
+                    this.data.files_count = this.ticket.files_count
                 }else{
                     this.msg.error(result.error.message)
                 }
@@ -169,6 +170,10 @@ export default {
 
         activeActivitiesTab(){
             return this.active_tab == 4
+        },
+
+        filesTabLabel(){
+            return `${this.translations.core.view_btn_files} (${this.data.files_count})`
         }
     }
 }
@@ -236,7 +241,7 @@ export default {
                 </div>
             </b-tab-item>
 
-            <b-tab-item :label="translations.core.view_btn_files">
+            <b-tab-item :label="filesTabLabel">
                 <component-file
                     :translations-file-types-paths="['help.ticket/files']"
                     cloud-module="help/ticket"
