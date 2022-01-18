@@ -58,6 +58,9 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
         sla: false
     },
     ticket_images: [],
+    third_party_subscriptions: {
+        enabled: true
+    },
     events: {
         post_auto_assignment: false,
         delete_auto_assignment: false
