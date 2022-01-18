@@ -47,6 +47,9 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
     ticket: null,
     ticket_assignable: false,
     assignment_options: {},
+    global: {
+        show_panel_subscriptions: false
+    },
     files_count: 0,
     reload: {
         timelines: false,

@@ -95,6 +95,7 @@ module CloudHelp
             data[:editable] = ticket.is_editable_by?(current_user)
             data[:sla] = ticket.sla.show(current_user, query)
             data[:files_count] = ticket.files.count
+            data[:subscribed] = (ticket.subscribers.where(user_creator: current_user).count > 0)
 
             return LC::Response.service(true, data)
         end
