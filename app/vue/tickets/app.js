@@ -47,6 +47,9 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
     ticket: null,
     ticket_assignable: false,
     assignment_options: {},
+    global: {
+        show_panel_subscriptions: false
+    },
     files_count: 0,
     reload: {
         timelines: false,
@@ -55,6 +58,9 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
         sla: false
     },
     ticket_images: [],
+    third_party_subscriptions: {
+        enabled: true
+    },
     events: {
         post_auto_assignment: false,
         delete_auto_assignment: false

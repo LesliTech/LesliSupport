@@ -20,22 +20,12 @@ For more information read the license file including with this software.
     class Ticket::Subscriber < CloudObject::Subscriber
         belongs_to :cloud_object, class_name: "CloudHelp::Ticket", foreign_key: "cloud_help_tickets_id"
 
-=begin
-@attribute [Enumerable<Symbol>] event
-    @return [:ticket_created, :ticket_closed, :discussion_created, :action_created, :file_created, :activity_created, :workflow_updated, :priority_updated, :type_category_updated, :assignment_updated, :deadline_updated ]
-=end
-        enum event: [
-            :ticket_created,
-            :ticket_closed,
-            :discussion_created,
-            :action_created,
-            :file_created,
-            :activity_created,
-            :workflow_updated,
-            :priority_updated,
-            :type_category_updated,
-            :assignment_updated,
-            :deadline_updated
-        ]
+        # @attribute [Enumerable<Symbol>] action
+        #     @return [:object_status_updated, :discussion_created]
+        enum action: {
+            object_status_updated: "object_status_updated",
+
+            discussion_created: "discussion_created"
+        }
     end
 end
