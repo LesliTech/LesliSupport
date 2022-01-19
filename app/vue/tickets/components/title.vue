@@ -34,6 +34,8 @@ export default {
                         </span>
                     </h4>
                 </div>
+                <slot name="custom-title">
+                </slot>
             </div>
             <div class="navbar-end">
                 <slot name="actions">

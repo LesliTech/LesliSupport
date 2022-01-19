@@ -166,6 +166,18 @@ export default {
                         break
                 }
             }
+        },
+
+        showSubscriptionsPanel(){
+            this.data.global.show_panel_subscriptions = ! this.data.global.show_panel_subscriptions
+        },
+
+        setSubscriptionsActive(){
+            this.ticket.subscribed = true
+        },
+
+        setSubscriptionsInactive(){
+            this.ticket.subscribed = false
         }
     },
 
@@ -209,6 +221,13 @@ export default {
 </script>
 <template>
     <section v-if="ticket" class="application-component">
+        <component-subscription
+            cloud-module="help/ticket"
+            :cloud-id="ticket_id"
+            @unsubscribed="setSubscriptionsInactive"
+            @subscribed="setSubscriptionsActive"
+        >
+        </component-subscription>
         <component-title
             v-if="ticket"
             :id="ticket.id"
@@ -218,6 +237,12 @@ export default {
                 object_utils.translateEnum(translations.workflow_statuses, 'column_enum_status', ticket.status)
             "
         >
+            <template v-slot:custom-title>
+                <div :class="['navbar-item is-clickable', {'has-text-warning': ticket.subscribed}]" @click="showSubscriptionsPanel">
+                    &nbsp;
+                    <i :class="['fa-lg', {'far fa-bell': ! ticket.subscribed, 'fas fa-bell': ticket.subscribed}]"></i>
+                </div>
+            </template>
             <template v-slot:actions>
                 <div class="navbar-item">
                     <component-workflow-transition
