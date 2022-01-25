@@ -38,7 +38,6 @@ export default {
         return {
             active_tab: 1,
             main_route: '/help/tickets',
-            users_route: '/administration/users/list.json?role=support&type=include',
             translations: {
                 main: I18n.t('help.ticket/assignments'),
                 core: I18n.t('core.shared'),
@@ -64,13 +63,18 @@ export default {
                 users: []
             },
             ticket: {},
-            assignments: []
+            assignments: [],
+            required_abilities: {
+                account_settings: this.abilities.privilege('account/settings', 'cloud_help'),
+                users: this.abilities.privilege('users', ''),
+                user_roles: this.abilities.privilege('user/roles', '')
+            }
         }
     },
 
     mounted(){
         this.setTicket()
-        this.getUsers()
+        this.getOptions()
     },
 
     methods: {
@@ -78,10 +82,11 @@ export default {
             this.ticket = this.data.ticket
         },
 
-        getUsers(){
+        getOptions(){
+            let url = this.url.help('tickets/assignments/options')
             this.loading.options = true
 
-            this.http.get(this.users_route).then(result => {
+            this.http.get(url).then(result => {
                 this.loading.options = false
                 if (result.successful) {
                     this.$set(this.assignment_options, 'users', result.data)
@@ -306,6 +311,17 @@ export default {
                 @icon-right-click="clearSearch">
             </b-input>
         </b-field>
+        <p><small>
+            <span v-if="required_abilities.account_settings.create">
+                {{translations.main.view_text_edit_assignment_role}}
+                <b><a href="/help/settings">{{translations.main.view_text_here}}</a></b>
+            </span>
+            <span v-if="required_abilities.users.update && required_abilities.user_roles.create">
+                {{translations.main.view_text_edit_users_role}}
+                <b><a href="/administration/users">{{translations.main.view_text_here}}</a></b>
+            </span>
+        </small></p>
+        <br>
         <component-data-loading v-if="loading.options" />
         <component-data-empty v-if="!loading.options && assignment_options.users.length == 0" />
         <b-table :data="currentUserPage">

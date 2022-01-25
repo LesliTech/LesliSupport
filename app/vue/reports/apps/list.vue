@@ -45,7 +45,6 @@ export default {
                 }
             },
             date_selection_shortcut: null,
-            support_role: 'support',
             users: []
         }
     },
@@ -56,7 +55,9 @@ export default {
 
     methods: {
         getUsers(){
-            this.http.get(`/administration/users/list.json?role=${this.support_role}`).then(result => {
+            let url = this.url.help('tickets/assignments/options')
+
+            this.http.get(url).then(result => {
                 if (result.successful) {
                     this.users = result.data
                 }else{

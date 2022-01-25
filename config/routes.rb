@@ -19,6 +19,14 @@ For more information read the license file including with this software.
 CloudHelp::Engine.routes.draw do
     root to: "dashboards#show"
 
+    scope module: :account do
+        resources :settings, only: [:index, :create, :destroy] do
+            collection do
+                get :options
+            end
+        end
+    end
+
     resources :custom_validations do
         scope module: :custom_validation do
             resource  :rule 
@@ -101,6 +109,7 @@ CloudHelp::Engine.routes.draw do
 
             get :options
             get "/files/options",               to: "ticket/files#options"
+            get "/assignments/options",         to: "ticket/assignments#options"
         end
         scope module: :ticket do
             resources :actions

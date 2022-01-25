@@ -53,6 +53,36 @@ For more information read the license file including with this software.
             end
         end
 
+        def self.options(current_user, query)
+            puts "??????"
+            role_id = current_user.account.help.settings.find_by(key: "tickets_assignments_role").value
+            support_role = nil
+            support_role = current_user.account.roles.with_deleted.find_by(id: role_id).name if role_id
+            
+            users = current_user.account.users
+            .joins("inner join user_details ud on ud.users_id = users.id")
+            .joins("
+                inner join (
+                    select
+                        ur.users_id, string_agg(r.\"name\", ', ') role_names
+                    from user_roles ur
+                    join roles r
+                        on r.id = ur.roles_id  and r.name in ('#{support_role}')
+                    where ur.deleted_at is null
+                    group by ur.users_id
+                ) roles on roles.users_id = users.id
+            ").where("users.active = ?", true)
+            .select(
+                :id,
+                :email,
+                "CONCAT(ud.first_name, ' ',ud.last_name) as name",
+                "role_names as roles"
+            ).order(name: :asc)
+            puts users.to_json
+
+            users
+        end
+
         private
 
 =begin

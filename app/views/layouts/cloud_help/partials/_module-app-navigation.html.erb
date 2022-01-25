@@ -65,6 +65,14 @@
 </template>
     
 <template v-slot:settings>
+    <% if @tabs_granted["settings"]%>
+        <li>
+            <%= link_to cloud_help.settings_path, class: "" do %>
+                <i class="fas fa-tools"></i>
+                <span><%= I18n.t("help.shared.sidebar_nav_account_settings") %></span>
+            <% end %>
+        </li>
+    <% end %>
     <% if @tabs_granted["workflows"]%>
         <li>
             <%= link_to cloud_help.workflows_path, class: "" do %>
@@ -82,3 +90,4 @@
         </li>
     <% end %>
 </template>
+
