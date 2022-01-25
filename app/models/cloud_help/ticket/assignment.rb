@@ -54,7 +54,6 @@ For more information read the license file including with this software.
         end
 
         def self.options(current_user, query)
-            puts "??????"
             role_id = current_user.account.help.settings.find_by(key: "tickets_assignments_role").value
             support_role = nil
             support_role = current_user.account.roles.with_deleted.find_by(id: role_id).name if role_id
