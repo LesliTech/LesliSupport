@@ -19,7 +19,7 @@ For more information read the license file including with this software.
 // · 
 
 =end
-    class Ticket::AssignmentsController < ApplicationController
+    class Ticket::AssignmentsController < ApplicationLesliController
         before_action :set_ticket, only: [:create, :destroy]
 
 =begin
@@ -63,7 +63,6 @@ For more information read the license file including with this software.
 =end
         def create
             return respond_with_not_found unless @ticket
-            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user, bypass_olp: true) || @ticket.assignments.empty?
 
             assignment = Ticket::Assignment.new(ticket_assignment_params)
             assignment.ticket = @ticket
@@ -103,6 +102,10 @@ For more information read the license file including with this software.
             else
                 respond_with_error(assignment.errors.full_messages.to_sentence)
             end
+        end
+
+        def options
+            return respond_with_successful(Ticket::Assignment.options(current_user, @query))
         end
 
         private
