@@ -45,18 +45,21 @@ export default {
                 }
             },
             date_selection_shortcut: null,
-            support_role: 'support',
-            users: []
+            users: [],
+            ticket_reports: []
         }
     },
 
     mounted(){
         this.getUsers()
+        this.initializeReportsTable()
     },
 
     methods: {
         getUsers(){
-            this.http.get(`/administration/users/list.json?role=${this.support_role}`).then(result => {
+            let url = this.url.help('tickets/assignments/options')
+
+            this.http.get(url).then(result => {
                 if (result.successful) {
                     this.users = result.data
                 }else{
@@ -65,6 +68,27 @@ export default {
             }).catch(error => {
                 console.log(error)
             })
+        },
+
+        initializeReportsTable(){
+            this.ticket_reports = [{
+                name: this.translations.main.view_text_report_tickets_general
+            },{
+                name: this.translations.main.view_text_report_tickets_open
+            },{
+                name: this.translations.main.view_text_report_tickets_overdue
+            }]
+        },
+
+        reportLink(report, format){
+            switch(report.name){
+                case this.translations.main.view_text_report_tickets_general:
+                    return  `/help/reports/tickets_general.${format}?${this.generalQueryFilters}`
+                case this.translations.main.view_text_report_tickets_open:
+                    return `/help/reports/tickets_general.${format}?${this.openQueryFilters}`
+                case this.translations.main.view_text_report_tickets_overdue:
+                    return `/help/reports/tickets_general.${format}?${this.overdueQueryFilters}`
+            }
         },
 
         selectUser(user){
@@ -145,7 +169,7 @@ export default {
 
             return query_filters.join('&')
         }
-    }
+    },
 }
 </script>
 <template>
@@ -240,39 +264,29 @@ export default {
                                     </vc-date-picker>
                                 </b-field>
                             </div>
-                            <div class="column is-12">
-                                <div class="buttons">
-                                    <a
-                                        v-if="filters.tickets.start_date && filters.tickets.end_date"
-                                        class="button is-info is-light has-text-dark"
-                                        :href="`/help/reports/tickets_general.xlsx?${generalQueryFilters}`"
-                                        target="_blank"
-                                    >
-                                        <b-icon icon="file-download"></b-icon>
-                                        <span >{{translations.main.view_text_report_tickets_general}}</span>
-                                    </a>
-                                    <button v-else disabled class="button is-info is-light has-text-dark" >
-                                        <b-icon icon="file-download"></b-icon>
-                                        <span >{{translations.main.view_text_report_tickets_general}}</span>
-                                    </button>
+                            <hr>
+                            <div class="column is-6 is-offset-3">
+                                <b-table :data="ticket_reports">
+                                    <template v-slot="props">
+                                        <b-table-column field="name" :label="translations.main.view_table_header_report">
+                                            {{props.row.name}}
+                                        </b-table-column>
 
-                                    <a
-                                        class="button is-info is-light has-text-dark"
-                                        :href="`/help/reports/tickets_general.xlsx?${openQueryFilters}`"
-                                        target="_blank"
-                                    >
-                                        <b-icon icon="file-download"></b-icon>
-                                        <span >{{translations.main.view_text_report_tickets_open}}</span>
-                                    </a>
-                                    <a
-                                        class="button is-info is-light has-text-dark"
-                                        :href="`/help/reports/tickets_general.xlsx?${overdueQueryFilters}`"
-                                        target="_blank"
-                                    >
-                                        <b-icon icon="file-download"></b-icon>
-                                        <span >{{translations.main.view_text_report_tickets_overdue}}</span>
-                                    </a>
-                                </div>
+                                        <b-table-column field="xlsxl" :label="translations.main.view_table_header_xlsx_file">
+                                            <a :href="reportLink(props.row, 'xlsx')" class="button is-outlined is-small">
+                                                <span>{{translations.main.view_btn_download}}</span>
+                                                <b-icon size="is-small" type="is-success" icon="file-excel"></b-icon>
+                                            </a>
+                                        </b-table-column>
+
+                                        <!-- b-table-column field="name" :label="translations.main.view_table_header_pdf_file">
+                                            <a :href="reportLink(props.row, 'pdf')" class="button is-outlined is-small">
+                                                <span>{{translations.main.view_btn_download}}</span>
+                                                <b-icon size="is-small" type="is-danger" icon="file-pdf"></b-icon>
+                                            </a>
+                                        </b-table-column -->
+                                    </template>
+                                </b-table>
                             </div>
                         </div>
                     </b-tab-item>
