@@ -145,12 +145,12 @@ export default {
         },
 
         // @return [void]
-        // @description Catches the submit ticket of the HTML form, and prtickets its default behavior. Depending on the
+        // @description Catches the submit ticket of the HTML form, and prevents its default behavior. Depending on the
         //      value of the *viewType* variable, executes a method that sends and HTTP post or put to the lesli API
         //  @example
         //      this.submitTicket() // will trigger a post if viewMode is 'new' or a put if viewMode is 'edit'
-        submitTicket(ticket){
-            if (ticket) { ticket.prticketDefault() }
+        submitTicket(event){
+            if (event) { event.preventDefault() }
 
             if(this.viewType == 'new'){
                 this.postTicket()
@@ -159,9 +159,9 @@ export default {
             }
         },
 
-        postTicket(ticket) {
-            if(ticket){
-                e.prticketDefault()
+        postTicket(event) {
+            if(event){
+                event.preventDefault()
             }
             let data = {
                 ticket: JSON.parse(JSON.stringify(this.ticket)) //We deep copy the object so tag changes to data will not affect this.ticket
