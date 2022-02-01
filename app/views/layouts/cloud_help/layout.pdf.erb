@@ -1,0 +1,38 @@
+<%
+=begin
+Copyright (c) 2021, all rights reserved.
+
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
+transmission, publication is strictly forbidden.
+
+For more information read the license file including with this software.
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+
+=end
+%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <%= wicked_pdf_stylesheet_link_tag "lesli/templates/application" %>
+        <%= wicked_pdf_stylesheet_link_tag application_stylesheet_theme_path()  %> 
+        <%= wicked_pdf_stylesheet_link_tag("cloud_help/pdf") %>
+        <%= wicked_pdf_stylesheet_link_tag controller_path %>
+
+        <link href="http://fonts.cdnfonts.com/css/arial-nova" rel="stylesheet">
+    </head>
+    <body style="font-family: 'Arial Nova', sans-serif;">
+        <main id="lesli-application">
+            <section>
+                <%= yield %>
+            </section>
+        </main>
+    </body>
+</html>
