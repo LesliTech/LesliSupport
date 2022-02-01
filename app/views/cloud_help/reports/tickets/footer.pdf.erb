@@ -1,0 +1,14 @@
+<div class="has-background-white">
+    <div class="w-75 inline-block">
+        <p class="has-text-grey-light quotation-footer has-background-white has-text-justified">
+            <small>
+                <b><%= @company.company_name %> </b>,
+                <b><%= I18n.t("core.accounts.column_address") %>:</b>  <%= @company.address %> 
+                <br>
+                <b><%= I18n.t("core.accounts.column_public_email") %>:</b>  <span class="has-text-info"><%= @company.public_email %> </span>,
+                <b><%= I18n.t("core.accounts.column_website") %>:</b>  <span class="has-text-info"><%= @company.website %> </span> ,
+                <b><%= I18n.t("core.accounts.column_phone_number_1") %>:</b>  <%= @company.phone_number_1 %> 
+            </small>
+        </p>
+    </div>
+</div>

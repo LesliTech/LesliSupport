@@ -279,12 +279,12 @@ export default {
                                             </a>
                                         </b-table-column>
 
-                                        <!-- b-table-column field="name" :label="translations.main.view_table_header_pdf_file">
+                                        <b-table-column field="name" :label="translations.main.view_table_header_pdf_file">
                                             <a :href="reportLink(props.row, 'pdf')" class="button is-outlined is-small">
                                                 <span>{{translations.main.view_btn_download}}</span>
                                                 <b-icon size="is-small" type="is-danger" icon="file-pdf"></b-icon>
                                             </a>
-                                        </b-table-column -->
+                                        </b-table-column>
                                     </template>
                                 </b-table>
                             </div>

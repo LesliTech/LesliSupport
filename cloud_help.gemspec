@@ -35,5 +35,7 @@ Gem::Specification.new do |spec|
     spec.metadata['allowed_push_host'] = 'https://rubygems.pkg.github.com/leitfaden'
 
     spec.add_dependency "rails", "~> 6.1.0"
+    spec.add_dependency "wkhtmltopdf-binary"
+    spec.add_dependency "wicked_pdf"
     
 end

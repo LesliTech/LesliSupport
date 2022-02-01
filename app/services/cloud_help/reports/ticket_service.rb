@@ -20,10 +20,70 @@ module CloudHelp
         class TicketService
             include ::Reports::Helper
 
-            def self.general(current_user, query)
+            def self.generate_xlsx(current_user, query)
+                report_data = self.get_data(current_user, query)
+                data = Docm::Parser::Xlsx.parse(report_data[:data])
+                total_hours = report_data[:total_hours]
+                assigned_user = current_user.account.users.find_by_id(query[:filters][:user_assigned_id])
+
                 filename =  translate_file_name("view_text_report_filename_tickets_general", "help.reports")
                 filename = translate_file_name("view_text_report_filename_tickets_open", "help.reports") if query[:filters][:open]
                 filename = translate_file_name("view_text_report_filename_tickets_overdue", "help.reports") if query[:filters][:overdue]
+
+                title = self.create_title(current_user, query)
+
+                summary_text = "#{I18n.t("help.tickets.view_text_total_hours_worked")}: #{total_hours}"
+
+                colspan = query[:filters][:simplified] ? 9 : 12
+                stylesheet = query[:filters][:simplified] ? CloudHelp::Reports::StyleService.tickets_general_simplified : CloudHelp::Reports::StyleService.tickets_general
+
+                return Docm::Generator::Xlsx.generate(
+                    filename,
+                    [[filename, data]],
+                    style_data: stylesheet,
+                    title: {text: title, colspan: colspan },
+                    summary: {text: summary_text, colspan: colspan}
+                )
+            end
+
+            def self.generate_pdf(current_user, query)
+                pdf = WickedPdf.new.pdf_from_string(
+                    render_to_string(
+                        self.pdf_template_path,
+                        layout: self.pdf_layout_path
+                    ),
+                    footer: {
+                        content: render_to_string(
+                            self.pdf_footer_path,
+                            layout: self.pdf_layout_path
+                        )
+                    },
+                    header: {
+                        content: render_to_string(
+                            self.pdf_header_path,
+                            layout: self.pdf_layout_path
+                        )
+                    },
+                    margins: self.pdf_margins
+                )
+            end
+
+            def self.create_title(current_user, query)
+                title = translate_file_name("view_text_report_filename_tickets_general", "help.reports")
+                title = translate_file_name("view_text_report_filename_tickets_open", "help.reports") if query[:filters][:open]
+                title = translate_file_name("view_text_report_filename_tickets_overdue", "help.reports") if query[:filters][:overdue]
+                assigned_user = current_user.account.users.find_by_id(query[:filters][:user_assigned_id])
+                title = "#{title}: #{assigned_user.full_name}" if assigned_user
+                dates = []
+                dates.push(LC::Date.to_string(query[:filters][:start_date])) if query[:filters][:start_date]
+                dates.push(LC::Date.to_string(query[:filters][:end_date])) if query[:filters][:end_date]
+
+                title = "#{title} #{dates.join(" - ")}"
+
+                return title
+            end
+
+            def self.get_data(current_user, query, translate_headers: true)
 
                 file_headers = {
                     id: I18n.t("help.tickets.column_id"),
@@ -102,54 +162,77 @@ module CloudHelp
 
                 data = data.map do |ticket|
                     total_hours = total_hours + (ticket.hours_worked || 0)
-                    row = {
-                        file_headers[:id] => ticket.id,
-                        file_headers[:created_at] => LC::Date.to_string(ticket.created_at),
-                        file_headers[:creation_time] => LC::Date.to_string_time(ticket.created_at),
-                        file_headers[:user_creator] => ticket.user_creator_name,
-                        file_headers[:subject] => ticket.subject,
-                        file_headers[:deadline] => LC::Date.to_string(ticket.deadline),
-                        file_headers[:ticket_type_name] => ticket.ticket_type_name,
-                        file_headers[:ticket_category_name] => ticket.ticket_category_name,
-                        file_headers[:ticket_priority_name] => ticket.ticket_priority_name,
-                        file_headers[:user_assigned] => ticket.user_assigned_name,
-                        file_headers[:status_name] => translate_status(ticket.status_name),
-                        file_headers[:hours_worked] => ticket.hours_worked
-                        
-                    }
-                    if query[:filters][:simplified]
-                        row.delete(file_headers[:creation_time])
-                        row.delete(file_headers[:ticket_priority_name])
-                        row.delete(file_headers[:user_assigned])
+
+                    if translate_headers
+                        row = {
+                            file_headers[:id] => ticket.id,
+                            file_headers[:created_at] => LC::Date.to_string(ticket.created_at),
+                            file_headers[:creation_time] => LC::Date.to_string_time(ticket.created_at),
+                            file_headers[:user_creator] => ticket.user_creator_name,
+                            file_headers[:subject] => ticket.subject,
+                            file_headers[:deadline] => LC::Date.to_string(ticket.deadline),
+                            file_headers[:ticket_type_name] => ticket.ticket_type_name,
+                            file_headers[:ticket_category_name] => ticket.ticket_category_name,
+                            file_headers[:ticket_priority_name] => ticket.ticket_priority_name,
+                            file_headers[:user_assigned] => ticket.user_assigned_name,
+                            file_headers[:status_name] => translate_status(ticket.status_name),
+                            file_headers[:hours_worked] => ticket.hours_worked
+                            
+                        }
+                        if query[:filters][:simplified]
+                            row.delete(file_headers[:creation_time])
+                            row.delete(file_headers[:ticket_priority_name])
+                            row.delete(file_headers[:user_assigned])
+                        end
+                    else
+                        row = {
+                            id: ticket.id,
+                            created_at: LC::Date.to_string(ticket.created_at),
+                            creation_time: LC::Date.to_string_time(ticket.created_at),
+                            user_creator: ticket.user_creator_name,
+                            subject: ticket.subject,
+                            deadline: LC::Date.to_string(ticket.deadline),
+                            ticket_type_name: ticket.ticket_type_name,
+                            ticket_category_name: ticket.ticket_category_name,
+                            ticket_priority_name: ticket.ticket_priority_name,
+                            user_assigned: ticket.user_assigned_name,
+                            status_name: translate_status(ticket.status_name),
+                            hours_worked: ticket.hours_worked
+                        }
                     end
 
                     row
                 end
 
-                data = Docm::Parser::Xlsx.parse(data)
-                assigned_user = current_user.account.users.find_by_id(query[:filters][:user_assigned_id])
+                {
+                    data: data,
+                    total_hours: total_hours
+                }
+            end
 
-                title = filename
-                title = "#{title}: #{assigned_user.full_name}" if assigned_user
-                dates = []
-                dates.push(LC::Date.to_string(query[:filters][:start_date])) if query[:filters][:start_date]
-                dates.push(LC::Date.to_string(query[:filters][:end_date])) if query[:filters][:end_date]
+            protected
 
-                title = "#{title} #{dates.join(" - ")}"
+            def self.pdf_template_path
+                return "cloud_help/reports/tickets/show"
+            end
 
-                summary_text = "#{I18n.t("help.tickets.view_text_total_hours_worked")}: #{total_hours}"
+            def self.pdf_footer_path
+                return "cloud_help/reports/tickets/footer"
+            end
 
-                colspan = query[:filters][:simplified] ? 9 : 12
-                stylesheet = query[:filters][:simplified] ? CloudHelp::Reports::StyleService.tickets_general_simplified : CloudHelp::Reports::StyleService.tickets_general
+            def self.pdf_layout_path
+                return "cloud_help/layout"
+            end
 
-                return Docm::Generator::Xlsx.generate(
-                    filename,
-                    [[filename, data]],
-                    style_data: stylesheet,
-                    title: {text: title, colspan: colspan },
-                    summary: {text: summary_text, colspan: colspan}
-                )
+            def self.pdf_header_path
+                return "cloud_help/reports/tickets/header"
+            end
 
+            def self.pdf_margins
+                return {
+                    top: "1cm",
+                    botton: "1cm"
+                }
             end
         end
     end
