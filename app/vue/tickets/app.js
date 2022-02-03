@@ -62,7 +62,6 @@ app("CloudHelp", "[list|new|edit|show]", "/help/tickets", [{
         enabled: true
     },
     events: {
-        post_auto_assignment: false,
-        delete_auto_assignment: false
+        post_auto_assignment: false
     }
 })
