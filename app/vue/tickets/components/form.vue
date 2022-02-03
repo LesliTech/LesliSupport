@@ -306,7 +306,7 @@ export default {
 
         autoAssignTicket(){
             if(this.auto_assignment){
-                this.data.tickets.post_auto_assignment = true
+                this.data.events.post_auto_assignment = true
             }else{
                 this.deleteTicketAssignment(this.ticket.assignment_attributes.find(assignment => assignment.users_id == lesli.current_user.id))
             }

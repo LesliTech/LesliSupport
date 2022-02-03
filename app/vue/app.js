@@ -261,7 +261,6 @@ app('CloudHelp', '/help', '[dashboards|ticket_types|ticket_priorities|ticket_cat
         sla: false,
     },
     events: {
-        post_auto_assignment: false,
-        delete_auto_assignment: false
+        post_auto_assignment: false
     }
 })

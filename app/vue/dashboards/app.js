@@ -55,7 +55,9 @@ app("CloudHelp", "[list|new|show/edit]", "/help/dashboards", [{
         cloudEngine: "CloudHelp",
         engineNamespace: "help",
         newResourceAnchorPath: "/help/tickets/new",
-        newResourceAnchorText: I18n.t("help.tickets.view_btn_create"),
+        newResourceAnchorText: ()=>{
+            return I18n.t("help.tickets.view_btn_create")
+        },
         renderComponents: {
             "component-new-tickets": componentNewTickets,
             "component-my-tickets": componentMyTickets,
