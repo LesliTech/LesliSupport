@@ -136,12 +136,12 @@ module CloudHelp
         #     #    }
         #     #]
         def self.index(current_user, query)
-            ticket_index_response = CloudHelp::TicketServices.index(current_user, query)
+            ticket_index_response = TicketServices.index(current_user, query)
             return ticket_index_response.payload
         end
 
         def self.count(current_user)
-            ticket_count_response = CloudHelp::TicketServices.count(current_user)
+            ticket_count_response = TicketServices.count(current_user)
             return ticket_count_response.payload
         end
 
