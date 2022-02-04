@@ -9,6 +9,6 @@ class CreateCloudHelpCatalogTicketTypes < ActiveRecord::Migration[6.0]
             t.timestamps
         end
 
-        add_reference :cloud_help_catalog_ticket_types, :cloud_help_accounts, foreign_key: true, foreign_key: true, index: {name: "help_catalog_ticket_types_accounts"}
+        add_reference :cloud_help_catalog_ticket_types, :cloud_help_accounts, foreign_key: true, index: {name: "help_catalog_ticket_types_accounts"}
     end
 end
