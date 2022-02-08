@@ -104,7 +104,7 @@ module CloudHelp
         #     #    }
         #     #}
         def show(current_user, query)
-            ticket_show_response = CloudHelp::TicketServices.show(current_user, self, query)
+            ticket_show_response = TicketServices.show(current_user, self, query)
             return ticket_show_response.payload
         end
 
@@ -136,12 +136,12 @@ module CloudHelp
         #     #    }
         #     #]
         def self.index(current_user, query)
-            ticket_index_response = CloudHelp::TicketServices.index(current_user, query)
+            ticket_index_response = TicketServices.index(current_user, query)
             return ticket_index_response.payload
         end
 
         def self.count(current_user)
-            ticket_count_response = CloudHelp::TicketServices.count(current_user)
+            ticket_count_response = TicketServices.count(current_user)
             return ticket_count_response.payload
         end
 
@@ -193,7 +193,7 @@ module CloudHelp
             .where("cloud_help_tickets.deadline is not null")
             .where("cloud_help_tickets.deadline >= ?", query[:filters][:start_date])
             .where("cloud_help_tickets.deadline <= ? ", query[:filters][:end_date])
-            .where("cloud_help_tickets.users_id = ? or cloud_help_tickets.user_main_id = ?", current_user.id, current_user.id)
+            .where("cloud_help_tickets.users_id = ? or cloud_help_tickets.user_main_id = ? or chta.users_id = ?", current_user.id, current_user.id, current_user.id)
 
 
             return tickets
@@ -257,8 +257,8 @@ module CloudHelp
 
             # workflow status is a spacial case because it's a foreign key
             if old_attributes["cloud_help_workflow_statuses_id"] != new_attributes["cloud_help_workflow_statuses_id"]
-                old_status = CloudHelp::Workflow::Status.with_deleted.find(old_attributes["cloud_help_workflow_statuses_id"]).name
-                new_status = CloudHelp::Workflow::Status.with_deleted.find(new_attributes["cloud_help_workflow_statuses_id"]).name
+                old_status = Workflow::Status.with_deleted.find(old_attributes["cloud_help_workflow_statuses_id"]).name
+                new_status = Workflow::Status.with_deleted.find(new_attributes["cloud_help_workflow_statuses_id"]).name
                 ticket.activities.create(
                     user_creator: current_user,
                     description: new_status,
@@ -295,8 +295,8 @@ module CloudHelp
 
             # SLA is a special case because it's a foreign key
             if old_attributes["cloud_help_slas_id"] != new_attributes["cloud_help_slas_id"]
-                old_sla = CloudHelp::Sla.with_deleted.find(old_attributes["cloud_help_slas_id"]).name
-                new_sla = CloudHelp::Sla.with_deleted.find(new_attributes["cloud_help_slas_id"]).name
+                old_sla = Sla.with_deleted.find(old_attributes["cloud_help_slas_id"]).name
+                new_sla = Sla.with_deleted.find(new_attributes["cloud_help_slas_id"]).name
                 ticket.activities.create(
                     user_creator: current_user,
                     description: new_sla,
