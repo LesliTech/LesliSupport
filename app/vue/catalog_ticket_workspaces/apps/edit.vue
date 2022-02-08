@@ -112,7 +112,7 @@ export default {
                 </div>
             </div>
         </component-header>
-        <component-form v-if="ticket_workspace" :ticket-type="ticket_workspace" view-type="edit" :app-mount-path="appMountPath" />
+        <component-form v-if="ticket_workspace" :ticket-workspace="ticket_workspace" view-type="edit" :app-mount-path="appMountPath" />
         <component-data-loading v-else size="is-medium" />
     </section>
 </template>

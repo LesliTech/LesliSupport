@@ -50,7 +50,7 @@ export default {
             },
             ticket_workspace: {
                 name: null,
-                weight: null
+                default: false
             }
         }
     },
@@ -80,6 +80,6 @@ export default {
                 </div>
             </div>
         </component-header>
-        <component-form :app-mount-path="appMountPath" :ticket-type="ticket_workspace" view-type="new"></component-form>
+        <component-form :app-mount-path="appMountPath" :ticket-workspace="ticket_workspace" view-type="new"></component-form>
     </section>
 </template>

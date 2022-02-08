@@ -252,6 +252,18 @@ export default {
                             {{props.row.name}}
                         </b-table-column>
 
+                        <b-table-column field="default" :label="translations.main.column_default" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="sorting.field == 'default'">
+                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            <span v-if="props.row.default"><b>{{translations.core.view_text_yes}}</b></span>
+                            <span v-else>{{translations.core.view_text_no}}</span>
+                        </b-table-column>
+
                         <b-table-column field="created_at" :label="translations.main.column_created_at" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}

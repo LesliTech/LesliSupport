@@ -52,11 +52,11 @@ module CloudHelp
 
         # POST /catalog/workspaces
         def create
-            catalog_workspace = Catalog::TicketWorkspace.new(workspace_params)
-            if catalog_workspace.save
-                respond_with_successful(catalog_workspace)
+            ticket_workspace = current_user.account.help.ticket_workspaces.new(workspace_params)
+            if ticket_workspace.save
+                respond_with_successful(ticket_workspace)
             else
-                respond_with_error(catalog_workspace.errors.full_messages.to_sentence)
+                respond_with_error(ticket_workspace.errors.full_messages.to_sentence)
             end
         end
 
@@ -86,12 +86,12 @@ module CloudHelp
 
         # Use callbacks to share common setup or constraints between actions.
         def set_workspace
-            @workspace = current_user.account.catalog_workspaces.find(class_name, params[:id])
+            @workspace = current_user.account.help.ticket_workspaces.find_by_id(params[:id])
         end
 
         # Only allow a list of trusted parameters through.
         def workspace_params
-            params.require(:catalog_workspace).permit(:id, :name)
+            params.require(:ticket_workspace).permit(:name, :default)
         end
     end
 end

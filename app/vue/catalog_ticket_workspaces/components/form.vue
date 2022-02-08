@@ -201,9 +201,17 @@ export default {
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicketWorkspace">
                         <div class="columns">
-                            <div class="column">
+                            <div class="column is-9">
                                 <b-field :label="translations.main.column_name">
                                     <b-input v-model="ticket_workspace.name" required="true"></b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-3">
+                                <b-field :label="translations.main.column_default">
+                                    <b-select expanded v-model="ticket_workspace.default">
+                                        <option :value="true">{{translations.core.view_text_yes}}</option>
+                                        <option :value="false">{{translations.core.view_text_no}}</option>
+                                    </b-select>
                                 </b-field>
                             </div>
                         </div>
