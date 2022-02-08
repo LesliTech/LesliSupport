@@ -132,7 +132,7 @@ For more information read the license file including with this software.
     this.http.post('127.0.0.1/help/tickets', data);
 =end
         def create
-            ticket_create_response = CloudHelp::TicketServices.create(current_user, ticket_params)
+            ticket_create_response = TicketServices.create(current_user, ticket_params)
             if ticket_create_response.successful?
                 respond_with_successful(ticket_create_response.payload)
             else
@@ -195,7 +195,7 @@ For more information read the license file including with this software.
             end
 
             if @ticket.check_workflow_transitions(current_user, update_params)
-                ticket_update_response = CloudHelp::TicketServices.update(current_user, @ticket, update_params)
+                ticket_update_response = TicketServices.update(current_user, @ticket, update_params)
 
                 @ticket = ticket_update_response.payload
                 if ticket_update_response.successful?
@@ -259,7 +259,7 @@ For more information read the license file including with this software.
             return respond_with_not_found unless @ticket
             return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
 
-            ticket_destroy_response = CloudHelp::TicketServices.destroy(current_user, @ticket)
+            ticket_destroy_response = TicketServices.destroy(current_user, @ticket)
 
             if ticket_destroy_response.successful?
                 respond_with_successful
