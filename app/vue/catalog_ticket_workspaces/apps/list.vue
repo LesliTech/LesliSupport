@@ -31,18 +31,8 @@ export default {
         }
     },
     
-    components: {
-
-    },
-
-    // @return [Object] Data used by this component's methods
-    // @description Returns the data needed for this component to work properly
-    // @data_variable main_route [String] the main route to which this component connects to the lesli API
-    // @data_variable ticket_workspaces [Array] An array of objects, each object represents a 
-    //      Ticket type, with the same params as the associated rails model
     data(){
         return {
-            main_route: '/help/catalog/ticket_workspaces',
             translations: {
                 main: I18n.t('help.catalog/ticket_workspaces'),
                 core: I18n.t('core.shared')
@@ -110,6 +100,20 @@ export default {
             this.loading = true
             this.storage.local("filters", this.filters)
             let url = `${this.main_route}/list.json`
+
+
+            let url = this.url.help('catalog/ticket_workspaces').order(
+                this.sorting.field,
+                this.sorting.order
+            ).paginate(
+                this.pagination.current_page,
+                this.filters.per_page
+            ).filters({
+                statuses: this.filters.statuses,
+                search_type: this.filters.search_type,
+                user_type: this.filters.user_type,
+                query: this.filters.query
+            })
 
             let data = {
                 filters: {
