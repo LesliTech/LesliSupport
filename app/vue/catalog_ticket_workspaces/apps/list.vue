@@ -99,7 +99,14 @@ export default {
         getTicketWorkspaces(reset_current_page = true) {
             this.loading = true
             this.storage.local("filters", this.filters)
-            let url = `${this.main_route}/list.json`
+
+            let filters = {
+                query: this.filters.query
+            }
+
+            if(reset_current_page){
+                this.pagination.current_page = 1
+            }
 
 
             let url = this.url.help('catalog/ticket_workspaces').order(
@@ -108,37 +115,13 @@ export default {
             ).paginate(
                 this.pagination.current_page,
                 this.filters.per_page
-            ).filters({
-                statuses: this.filters.statuses,
-                search_type: this.filters.search_type,
-                user_type: this.filters.user_type,
-                query: this.filters.query
-            })
+            ).filters(filters)
 
-            let data = {
-                filters: {
-                    query: this.filters.query
-                },
-                order: this.sorting.order,
-                orderColumn: this.sorting.field,
-                perPage: this.filters.per_page
-            }
-            if(reset_current_page){
-                this.pagination.current_page = 1
-                data.filters.get_total_count = true
-            }else{
-                data.filters.get_total_count = false
-            }
-            data.page = this.pagination.current_page
-
-            this.http.post(url, data).then(result => {
+            this.http.get(url).then(result => {
                 this.loading = false
                 if (result.successful) {
-                    this.ticket_workspaces = result.data.ticket_workspaces
-
-                    if(result.data.total_count != null){
-                        this.pagination.ticket_workspaces_count = result.data.total_count
-                    }
+                    this.ticket_workspaces = result.payload.records
+                    this.pagination.ticket_workspaces_count = result.payload.count_total
                 }else{
                     this.msg.error(result.error.message)
                 }
@@ -269,17 +252,6 @@ export default {
                             {{props.row.name}}
                         </b-table-column>
 
-                        <b-table-column field="weight" :label="translations.main.column_weight" sortable>
-                            <template slot="header" slot-scope="{ column }">
-                                {{ column.label }}
-                                <span v-if="sorting.field == 'weight'">
-                                    <b-icon v-if="sorting.order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
-                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
-                                </span>
-                            </template>
-                            {{props.row.weight}}
-                        </b-table-column>
-
                         <b-table-column field="created_at" :label="translations.main.column_created_at" sortable>
                             <template slot="header" slot-scope="{ column }">
                                 {{ column.label }}
@@ -288,7 +260,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.created_at}}
+                            {{props.row.created_at_date}}
                         </b-table-column>
                     </template>
                 </b-table>
