@@ -27,38 +27,38 @@ module CloudHelp
         def tickets_general
             respond_to do |format|
                 format.xlsx do
-                    send_file CloudHelp::Reports::TicketService.generate_xlsx(current_user, @query) 
+                    send_file Reports::TicketService.generate_xlsx(current_user, @query) 
                 end
 
                 format.pdf do
                     filename = "#{I18n.t("help.reports.view_file_template_tickets_report")}_#{Date.today.strftime("%Y%m%d")}.pdf"
 
-                    reports_data = CloudHelp::Reports::TicketService.get_data(current_user, @query, translate_headers: false)
+                    reports_data = Reports::TicketService.get_data(current_user, @query, translate_headers: false)
                     @data = reports_data[:data]
                     @total_hours = reports_data[:total_hours]
-                    @title =  CloudHelp::Reports::TicketService.create_title(current_user, @query)
+                    @title =  Reports::TicketService.create_title(current_user, @query)
                     @company = current_user.account
 
 
 
                     pdf = WickedPdf.new.pdf_from_string(
                         render_to_string(
-                            CloudHelp::Reports::TicketService.pdf_template_path,
-                            layout: CloudHelp::Reports::TicketService.pdf_layout_path
+                            Reports::TicketService.pdf_template_path,
+                            layout: Reports::TicketService.pdf_layout_path
                         ),
                         footer: {
                             content: render_to_string(
-                                CloudHelp::Reports::TicketService.pdf_footer_path,
-                                layout: CloudHelp::Reports::TicketService.pdf_layout_path
+                                Reports::TicketService.pdf_footer_path,
+                                layout: Reports::TicketService.pdf_layout_path
                             )
                         },
                         header: {
                             content: render_to_string(
-                                CloudHelp::Reports::TicketService.pdf_header_path,
-                                layout: CloudHelp::Reports::TicketService.pdf_layout_path
+                                Reports::TicketService.pdf_header_path,
+                                layout: Reports::TicketService.pdf_layout_path
                             )
                         },
-                        margins: CloudHelp::Reports::TicketService.pdf_margins
+                        margins: Reports::TicketService.pdf_margins
                     )
 
                     send_data(pdf, filename: filename)

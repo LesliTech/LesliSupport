@@ -35,7 +35,7 @@ module CloudHelp
                 summary_text = "#{I18n.t("help.tickets.view_text_total_hours_worked")}: #{total_hours}"
 
                 colspan = query[:filters][:simplified] ? 9 : 12
-                stylesheet = query[:filters][:simplified] ? CloudHelp::Reports::StyleService.tickets_general_simplified : CloudHelp::Reports::StyleService.tickets_general
+                stylesheet = query[:filters][:simplified] ? Reports::StyleService.tickets_general_simplified : Reports::StyleService.tickets_general
 
                 return Docm::Generator::Xlsx.generate(
                     filename,

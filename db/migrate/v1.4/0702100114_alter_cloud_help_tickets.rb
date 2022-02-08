@@ -16,18 +16,19 @@ For more information read the license file including with this software.
 // · 
 
 =end
-class CreateCloudHelpCatalogTicketWorkspaces < ActiveRecord::Migration[6.1]
+class AlterCloudHelpTickets < ActiveRecord::Migration[6.1]
     def change
-        create_table :cloud_help_catalog_ticket_workspaces do |t|
-            t.string :name
-            t.boolean :default, default: false
+        add_reference :cloud_help_tickets, :cloud_help_catalog_ticket_workspaces, foreign_key: true, index: { name: "help_tickets_catalog_ticket_workspaces" }
 
-            # acts_as_paranoid
-            t.datetime :deleted_at, index: true
-            
-            t.timestamps
+        # If there are acounts in the system, we add the Default Workspace
+        CloudHelp::Account.all.each do |account|
+            default_workspace = account.ticket_workspaces.find_by(default: true)
+
+            default_workspace = account.ticket_workspaces.create!(name: "Default", default: true) unless default_workspace
+
+            account.tickets.all.each do |ticket|
+                ticket.update!(workspace: default_workspace)
+            end
         end
-
-        add_reference :cloud_help_catalog_ticket_workspaces, :cloud_help_accounts, foreign_key: true, index: {name: "help_catalog_ticket_workspaces_accounts"}
     end
 end

@@ -25,6 +25,7 @@ module CloudHelp
         validates :name, presence: true
 
         after_update :validate_default_record
+        after_create :validate_default_record
         before_destroy :rollback_if_default
 
         def self.index(current_user, query)
@@ -74,7 +75,6 @@ module CloudHelp
         protected
 
         def validate_default_record
-            puts self.saved_changes
             if self.saved_changes["default"]
                 # Default changed from false to true
                 if self.saved_changes["default"][1]
