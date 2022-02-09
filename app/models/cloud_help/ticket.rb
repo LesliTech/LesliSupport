@@ -496,17 +496,6 @@ module CloudHelp
             return unless self.account
             return if self.workspace
 
-            puts "--------1"
-            puts self.account
-            puts "--------2"
-            puts self.account.ticket_workspaces
-            puts "--------3"
-            puts self.account.ticket_workspaces.find_by(default: true)
-            puts "--------4"
-            puts self.workspace
-
-            puts "--------5"
-
             self.workspace = self.account.ticket_workspaces.find_by(default: true)
         end
 
