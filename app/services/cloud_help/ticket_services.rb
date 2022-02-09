@@ -66,6 +66,8 @@ module CloudHelp
             ).joins(
                 "left join cloud_help_catalog_ticket_categories chctc on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = chctc.id"
             ).joins(
+                "left join cloud_help_catalog_ticket_workspaces chctw on cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = chctw.id"
+            ).joins(
                 "inner join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
             ).joins(
                 "inner join cloud_help_workflows chw on chws.cloud_help_workflows_id = chw.id"
@@ -85,7 +87,8 @@ module CloudHelp
                 "chws.number as status_number",                     "subject",
                 "description",                                      "deadline",
                 "tags",                                             "hours_worked",
-                "reference_url",
+                "reference_url",                                    "chctw.name as workspace",
+                "chctw.id as cloud_help_catalog_ticket_workspaces_id",
                 " coalesce(nullif(concat(ud.first_name, ' ', ud.last_name), ''), u.email) as user_creator_name"
             )
             .where("cloud_help_tickets.id = #{ticket.id}").first.attributes
@@ -148,6 +151,8 @@ module CloudHelp
             ).joins(
                 "inner join cloud_help_catalog_ticket_types chctt on cloud_help_tickets.cloud_help_catalog_ticket_types_id = chctt.id"
             ).joins(
+                "inner join cloud_help_catalog_ticket_workspaces chctw on cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = chctw.id"
+            ).joins(
                 "left join cloud_help_catalog_ticket_categories chctc on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = chctc.id"
             ).joins(
                 "inner join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
@@ -166,7 +171,8 @@ module CloudHelp
                 "created_at",                                           "chctp.weight as priority_weight",
                 "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
                 "deadline",                                             "users_id",
-                "cloud_help_tickets.cloud_help_workflow_statuses_id",   "chws.status_type as status_type"
+                "cloud_help_tickets.cloud_help_workflow_statuses_id",   "chws.status_type as status_type",
+                "chctw.name as workspace"
             )
 
             # We apply the previous filters in the main query

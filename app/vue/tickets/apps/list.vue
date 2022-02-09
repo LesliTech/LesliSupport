@@ -313,7 +313,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.id}}
+                            <small>{{props.row.id}}</small>
                         </b-table-column>
 
                         <b-table-column field="subject" :label="translations.main.column_subject" sortable>
@@ -324,7 +324,18 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.subject}}
+                            <small>{{props.row.subject}}</small>
+                        </b-table-column>
+
+                        <b-table-column field="workspace" :label="translations.main.column_cloud_help_catalog_ticket_workspaces_id" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="filters.sorting_field == 'workspace'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            <small>{{props.row.workspace}}</small>
                         </b-table-column>
 
                         <b-table-column field="deadline" :label="translations.main.column_deadline" sortable>
@@ -339,12 +350,16 @@ export default {
                                 class="has-text-danger"
                                 v-if="props.row.deadline && !['completed_unsuccessfully','completed_successfully'].includes(props.row.status_type) && (new Date(props.row.deadline) < new Date()) "       
                             >
-                                {{props.row.deadline_text}}
-                                <b-icon icon="exclamation-circle" size="is-small" type="is-danger">
-                                </b-icon>
+                                <small>
+                                    {{props.row.deadline_text}}
+                                    <b-icon icon="exclamation-circle" size="is-small" type="is-danger">
+                                    </b-icon>
+                                </small>
                             </span>
                             <span v-else>
-                                {{props.row.deadline_text}}
+                                <small>
+                                    {{props.row.deadline_text}}
+                                </small>
                             </span>
                         </b-table-column>
 
@@ -356,7 +371,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{object_utils.translateEnum(translations.core, 'column_enum_status', props.row.status_name)}}
+                            <small>{{object_utils.translateEnum(translations.core, 'column_enum_status', props.row.status_name)}}</small>
                         </b-table-column>
 
                         <b-table-column field="type" :label="translations.main.column_cloud_help_catalog_ticket_types_id" sortable>
@@ -367,7 +382,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.type}}
+                            <small>{{props.row.type}}</small>
                         </b-table-column>
 
                         <b-table-column field="category" :label="translations.main.column_cloud_help_catalog_ticket_categories_id" sortable>
@@ -389,7 +404,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.priority}}
+                            <small>{{props.row.priority}}</small>
                         </b-table-column>
 
                         <b-table-column field="user_creator" :label="translations.main.column_users_id" sortable>
