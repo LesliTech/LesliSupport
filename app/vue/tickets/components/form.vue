@@ -364,7 +364,7 @@ export default {
                                                 {{translations.main.view_text_add_ticket_workspace}}
                                             </a>
                                         </template>
-                                        <b-select 
+                                        <b-select
                                             :placeholder="translations.core.view_placeholder_select_option"
                                             expanded
                                             :disabled="loading.options"

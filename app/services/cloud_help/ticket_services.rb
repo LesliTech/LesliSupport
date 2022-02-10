@@ -119,6 +119,10 @@ module CloudHelp
                 filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR chta.users_id = #{current_user.id})")
             end
 
+            if filters["workspace_id"]
+                filters_query.push("(cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = #{filters["workspace_id"]})")
+            end
+
             # We filter by a text string written by the user
             if filters["query"] && !filters["query"].empty?
                 query_words = filters["query"].split(" ")

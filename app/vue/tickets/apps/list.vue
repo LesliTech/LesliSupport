@@ -51,6 +51,7 @@ export default {
                 range_after: 3
             },
             filters: {
+                cloud_help_catalog_ticket_workspaces_id: null,
                 search_type: null,
                 user_type: 'own',
                 query: '',
@@ -114,18 +115,23 @@ export default {
                 this.pagination.current_page = 1
             }
 
+            // We remove null values
+            let query_filters = {
+                statuses: this.filters.statuses,
+                search_type: this.filters.search_type,
+                user_type: this.filters.user_type,
+                query: this.filters.query,
+                workspace_id: this.filters.cloud_help_catalog_ticket_workspaces_id
+            }
+            query_filters = Object.fromEntries(Object.entries(query_filters).filter(([key, value]) => value != null));
+
             let url = this.url.help('tickets').order(
                 this.filters.sorting_field,
                 this.filters.sorting_order
             ).paginate(
                 this.pagination.current_page,
                 this.filters.per_page
-            ).filters({
-                statuses: this.filters.statuses,
-                search_type: this.filters.search_type,
-                user_type: this.filters.user_type,
-                query: this.filters.query
-            })
+            ).filters(query_filters)
 
             this.http.get(url).then(result => {
                 this.loading = false
@@ -274,6 +280,16 @@ export default {
                         <option :value="null">{{translations.main.view_text_filter_all_tickets}}</option>
                         <option value="active">{{translations.main.view_text_filter_active_tickets}}</option>
                         <option value="inactive">{{translations.main.view_text_filter_inactive_tickets}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control">
+                <div class="select">
+                    <select v-model="filters.cloud_help_catalog_ticket_workspaces_id" @change="getTickets" name="tickets-filters-workspace">
+                        <option :value="null">{{translations.main.view_text_filter_all_workspaces}}</option>
+                        <option v-for="workspace in ticket_filters.workspaces" :key="workspace.id" :value="workspace.id">
+                            {{workspace.name}}
+                        </option>
                     </select>
                 </div>
             </div>
