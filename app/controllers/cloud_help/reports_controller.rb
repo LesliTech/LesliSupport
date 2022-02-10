@@ -38,8 +38,7 @@ module CloudHelp
                     @total_hours = reports_data[:total_hours]
                     @title =  Reports::TicketService.create_title(current_user, @query)
                     @company = current_user.account
-
-
+                    @workspace = @company.help.ticket_workspaces.find_by_id(@query[:filters][:workspace_id]) if @query[:filters][:workspace_id]
 
                     pdf = WickedPdf.new.pdf_from_string(
                         render_to_string(

@@ -36,12 +36,15 @@ export default {
                 tickets: I18n.t('help.tickets')
             },
 
+            ticket_options: {},
+
             filters: {
                 tickets: {
                     start_date: this.date.todayAtMidnight(),
                     end_date: this.date.todayAtMidnight(),
                     user_assigned_id: null,
-                    user_name: ''
+                    user_name: '',
+                    workspace_id: null
                 }
             },
             date_selection_shortcut: null,
@@ -53,6 +56,7 @@ export default {
     mounted(){
         this.getUsers()
         this.initializeReportsTable()
+        this.getTicketOptions()
     },
 
     methods: {
@@ -67,6 +71,28 @@ export default {
                 }
             }).catch(error => {
                 console.log(error)
+            })
+        },
+
+        getTicketOptions(){
+            let url = this.url.help('tickets/options').filters({include: 'statuses'})
+
+            this.http.get(url).then(result => {
+                if (result.successful) {
+                    this.ticket_options = result.data
+                    this.getFilteredStatuses('')
+                }else{
+                    this.msg.error(result.error.message)
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
+        getFilteredStatuses(text){
+            text = text.toLowerCase()
+            this.filtered_statuses = this.ticket_options.statuses.filter((status) => {
+                return status.text.toLowerCase().includes(text)
             })
         },
 
@@ -183,6 +209,17 @@ export default {
                 <b-tabs>
                     <b-tab-item :label="translations.tickets.view_title_main">
                         <div class="columns is-multiline">
+                            <div class="column is-4">
+                                <b-field :label="translations.tickets.column_cloud_help_catalog_ticket_workspaces_id">
+                                    <b-select expanded v-model="filters.tickets.workspace_id">
+                                        <option :value="null">{{translations.tickets.view_text_filter_all_workspaces}}</option>
+                                        <option v-for="workspace in ticket_options.workspaces" :key="workspace.id" :value="workspace.id">
+                                            {{workspace.name}}
+                                        </option>
+                                    </b-select>
+                                </b-field>
+                            </div>
+                            <div class="column is-8"></div>
                             <div class="column is-4">
                                 <b-field
                                     :label="translations.tickets.column_user_main_id"
