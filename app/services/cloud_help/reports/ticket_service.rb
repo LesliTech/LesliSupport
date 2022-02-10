@@ -33,7 +33,10 @@ module CloudHelp
                 title = self.create_title(current_user, query)
 
                 summary_text = "#{I18n.t("help.tickets.view_text_total_hours_worked")}: #{total_hours}"
-
+                if report_data[:workspace]
+                    summary_text = "#{I18n.t("help.tickets.column_cloud_help_catalog_ticket_workspaces_id")}: #{report_data[:workspace]} - #{summary_text}"
+                end
+                
                 colspan = query[:filters][:simplified] ? 9 : 12
                 stylesheet = query[:filters][:simplified] ? Reports::StyleService.tickets_general_simplified : Reports::StyleService.tickets_general
 
@@ -127,6 +130,10 @@ module CloudHelp
                     :hours_worked
                 )
 
+                if query[:filters][:workspace_id]
+                    data = data.where("cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = ?", query[:filters][:workspace_id])
+                end
+
                 if query[:filters][:user_assigned_id]
                     data = data.where("ua.id = ?", query[:filters][:user_assigned_id])
                 end
@@ -204,10 +211,17 @@ module CloudHelp
                     row
                 end
 
-                {
+                result = {
                     data: data,
                     total_hours: total_hours
                 }
+
+                if query[:filters][:workspace_id]
+                    workspace = current_user.account.help.ticket_workspaces.find_by_id(query[:filters][:workspace_id])
+                    result[:workspace] = workspace.name if workspace
+                end
+
+                return result
             end
 
             protected

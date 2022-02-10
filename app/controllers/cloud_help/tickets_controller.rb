@@ -334,6 +334,7 @@ For more information read the license file including with this software.
                 :cloud_help_catalog_ticket_types_id,
                 :cloud_help_catalog_ticket_priorities_id,
                 :cloud_help_catalog_ticket_categories_id,
+                :cloud_help_catalog_ticket_workspaces_id,
                 :cloud_help_workflow_statuses_id,
                 :subject,
                 :description,

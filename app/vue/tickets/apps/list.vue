@@ -51,6 +51,7 @@ export default {
                 range_after: 3
             },
             filters: {
+                cloud_help_catalog_ticket_workspaces_id: null,
                 search_type: null,
                 user_type: 'own',
                 query: '',
@@ -114,18 +115,23 @@ export default {
                 this.pagination.current_page = 1
             }
 
+            // We remove null values
+            let query_filters = {
+                statuses: this.filters.statuses,
+                search_type: this.filters.search_type,
+                user_type: this.filters.user_type,
+                query: this.filters.query,
+                workspace_id: this.filters.cloud_help_catalog_ticket_workspaces_id
+            }
+            query_filters = Object.fromEntries(Object.entries(query_filters).filter(([key, value]) => value != null));
+
             let url = this.url.help('tickets').order(
                 this.filters.sorting_field,
                 this.filters.sorting_order
             ).paginate(
                 this.pagination.current_page,
                 this.filters.per_page
-            ).filters({
-                statuses: this.filters.statuses,
-                search_type: this.filters.search_type,
-                user_type: this.filters.user_type,
-                query: this.filters.query
-            })
+            ).filters(query_filters)
 
             this.http.get(url).then(result => {
                 this.loading = false
@@ -279,6 +285,16 @@ export default {
             </div>
             <div class="control">
                 <div class="select">
+                    <select v-model="filters.cloud_help_catalog_ticket_workspaces_id" @change="getTickets" name="tickets-filters-workspace">
+                        <option :value="null">{{translations.main.view_text_filter_all_workspaces}}</option>
+                        <option v-for="workspace in ticket_filters.workspaces" :key="workspace.id" :value="workspace.id">
+                            {{workspace.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="control">
+                <div class="select">
                     <select v-model="filters.per_page">
                         <option :value="10">10</option>
                         <option :value="15">15</option>
@@ -313,7 +329,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.id}}
+                            <small>{{props.row.id}}</small>
                         </b-table-column>
 
                         <b-table-column field="subject" :label="translations.main.column_subject" sortable>
@@ -324,7 +340,18 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.subject}}
+                            <small>{{props.row.subject}}</small>
+                        </b-table-column>
+
+                        <b-table-column field="workspace" :label="translations.main.column_cloud_help_catalog_ticket_workspaces_id" sortable>
+                            <template slot="header" slot-scope="{ column }">
+                                {{ column.label }}
+                                <span v-if="filters.sorting_field == 'workspace'">
+                                    <b-icon v-if="filters.sorting_order == 'asc'" size="is-small" icon="arrow-up" ></b-icon>
+                                    <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
+                                </span>
+                            </template>
+                            <small>{{props.row.workspace}}</small>
                         </b-table-column>
 
                         <b-table-column field="deadline" :label="translations.main.column_deadline" sortable>
@@ -339,12 +366,16 @@ export default {
                                 class="has-text-danger"
                                 v-if="props.row.deadline && !['completed_unsuccessfully','completed_successfully'].includes(props.row.status_type) && (new Date(props.row.deadline) < new Date()) "       
                             >
-                                {{props.row.deadline_text}}
-                                <b-icon icon="exclamation-circle" size="is-small" type="is-danger">
-                                </b-icon>
+                                <small>
+                                    {{props.row.deadline_text}}
+                                    <b-icon icon="exclamation-circle" size="is-small" type="is-danger">
+                                    </b-icon>
+                                </small>
                             </span>
                             <span v-else>
-                                {{props.row.deadline_text}}
+                                <small>
+                                    {{props.row.deadline_text}}
+                                </small>
                             </span>
                         </b-table-column>
 
@@ -356,7 +387,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{object_utils.translateEnum(translations.core, 'column_enum_status', props.row.status_name)}}
+                            <small>{{object_utils.translateEnum(translations.core, 'column_enum_status', props.row.status_name)}}</small>
                         </b-table-column>
 
                         <b-table-column field="type" :label="translations.main.column_cloud_help_catalog_ticket_types_id" sortable>
@@ -367,7 +398,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.type}}
+                            <small>{{props.row.type}}</small>
                         </b-table-column>
 
                         <b-table-column field="category" :label="translations.main.column_cloud_help_catalog_ticket_categories_id" sortable>
@@ -389,7 +420,7 @@ export default {
                                     <b-icon v-else size="is-small" icon="arrow-down"></b-icon>
                                 </span>
                             </template>
-                            {{props.row.priority}}
+                            <small>{{props.row.priority}}</small>
                         </b-table-column>
 
                         <b-table-column field="user_creator" :label="translations.main.column_users_id" sortable>
