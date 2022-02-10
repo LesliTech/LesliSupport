@@ -95,6 +95,8 @@ CloudHelp::Engine.routes.draw do
                 post "list" => :index
             end
         end
+
+        resources :ticket_workspaces
     end
 
     resources :tickets do

@@ -26,6 +26,7 @@ module CloudHelp
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id", optional: true
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id", optional: true
         belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id"
+        belongs_to :workspace,  class_name: "CloudHelp::Catalog::TicketWorkspace",  foreign_key: "cloud_help_catalog_ticket_workspaces_id"
         belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
         belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id"
 
@@ -38,7 +39,7 @@ module CloudHelp
 
         has_many :assignments, foreign_key: "cloud_help_tickets_id"
 
-        before_validation :set_deadline, :set_type, :set_sla, :set_workflow, on: :create
+        before_validation :set_deadline, :set_type, :set_sla, :set_workflow, :set_workspace, on: :create
         after_update :after_update_actions
 
         # @return [Boolean] Whether this ticket was successfully saved or not. If it was not saved,
@@ -104,7 +105,7 @@ module CloudHelp
         #     #    }
         #     #}
         def show(current_user, query)
-            ticket_show_response = CloudHelp::TicketServices.show(current_user, self, query)
+            ticket_show_response = TicketServices.show(current_user, self, query)
             return ticket_show_response.payload
         end
 
@@ -136,12 +137,12 @@ module CloudHelp
         #     #    }
         #     #]
         def self.index(current_user, query)
-            ticket_index_response = CloudHelp::TicketServices.index(current_user, query)
+            ticket_index_response = TicketServices.index(current_user, query)
             return ticket_index_response.payload
         end
 
         def self.count(current_user)
-            ticket_count_response = CloudHelp::TicketServices.count(current_user)
+            ticket_count_response = TicketServices.count(current_user)
             return ticket_count_response.payload
         end
 
@@ -149,11 +150,13 @@ module CloudHelp
             types = current_user.account.help.ticket_types.select(:id, :name).order(:name)
             categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
             priorities = current_user.account.help.ticket_priorities.order(weight: :asc).select(:id, :name, :weight)
+            workspaces = current_user.account.help.ticket_workspaces.select(:id, :name, :default).order(:name)
 
             ticket_options = {
                 types: types,
                 categories: categories,
-                priorities: priorities
+                priorities: priorities,
+                workspaces: workspaces
             }
 
             if query[:filters][:include] && query[:filters][:include] == "statuses"
@@ -193,7 +196,7 @@ module CloudHelp
             .where("cloud_help_tickets.deadline is not null")
             .where("cloud_help_tickets.deadline >= ?", query[:filters][:start_date])
             .where("cloud_help_tickets.deadline <= ? ", query[:filters][:end_date])
-            .where("cloud_help_tickets.users_id = ? or cloud_help_tickets.user_main_id = ?", current_user.id, current_user.id)
+            .where("cloud_help_tickets.users_id = ? or cloud_help_tickets.user_main_id = ? or chta.users_id = ?", current_user.id, current_user.id, current_user.id)
 
 
             return tickets
@@ -257,8 +260,8 @@ module CloudHelp
 
             # workflow status is a spacial case because it's a foreign key
             if old_attributes["cloud_help_workflow_statuses_id"] != new_attributes["cloud_help_workflow_statuses_id"]
-                old_status = CloudHelp::Workflow::Status.with_deleted.find(old_attributes["cloud_help_workflow_statuses_id"]).name
-                new_status = CloudHelp::Workflow::Status.with_deleted.find(new_attributes["cloud_help_workflow_statuses_id"]).name
+                old_status = Workflow::Status.with_deleted.find(old_attributes["cloud_help_workflow_statuses_id"]).name
+                new_status = Workflow::Status.with_deleted.find(new_attributes["cloud_help_workflow_statuses_id"]).name
                 ticket.activities.create(
                     user_creator: current_user,
                     description: new_status,
@@ -295,8 +298,8 @@ module CloudHelp
 
             # SLA is a special case because it's a foreign key
             if old_attributes["cloud_help_slas_id"] != new_attributes["cloud_help_slas_id"]
-                old_sla = CloudHelp::Sla.with_deleted.find(old_attributes["cloud_help_slas_id"]).name
-                new_sla = CloudHelp::Sla.with_deleted.find(new_attributes["cloud_help_slas_id"]).name
+                old_sla = Sla.with_deleted.find(old_attributes["cloud_help_slas_id"]).name
+                new_sla = Sla.with_deleted.find(new_attributes["cloud_help_slas_id"]).name
                 ticket.activities.create(
                     user_creator: current_user,
                     description: new_sla,
@@ -482,6 +485,20 @@ module CloudHelp
             
             self.sla = selected_sla
         end
+
+        # @return [void]
+        # @descriptions Sets a workspace for the ticket. If it is not set in the initial params
+        # @example
+        #     ticket = current_user.account.help.tickets.new(subject: "Ticket 1", category: "bug", user_creator: current_user)
+        #     ticket.save! # The set_workspace method will trigger here as a before_validation function
+        #     puts ticket.workspace # This will print either the default workspace or the one specified by the params
+        def set_workspace
+            return unless self.account
+            return if self.workspace
+
+            self.workspace = self.account.ticket_workspaces.find_by(default: true)
+        end
+
 
         # @return [void]
         # @description After a *ticket* is updated, this method triggers. It checks for the changes

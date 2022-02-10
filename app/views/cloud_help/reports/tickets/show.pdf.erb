@@ -34,6 +34,15 @@ For more information read the license file including with this software.
                             </small>
                             
                         </p>
+                        <% if @workspace %>
+                            <p>
+                                <small>
+                                    <b><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_workspaces_id") %>:</b>
+                                    <%= @workspace.name %>
+                                </small>
+                                
+                            </p>
+                        <% end %>
                     </td>
                 </tr>
             </tbody>

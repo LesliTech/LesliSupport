@@ -7,6 +7,7 @@
     01.03. help/catalog/ticket_priorities
     01.04. help/catalog/ticket_types
     01.05. help/catalog/ticket_sources
+    01.06. help/catalog/ticket_workspaces
 
     02.01. help/workflows
     02.02. help/workflow/statuses

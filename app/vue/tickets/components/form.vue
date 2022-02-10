@@ -87,6 +87,7 @@ export default {
                 catalog_ticket_types: this.abilities.privilege('catalog/ticket_types', 'cloud_help'),
                 catalog_ticket_categories: this.abilities.privilege('catalog/ticket_categories', 'cloud_help'),
                 catalog_ticket_priorities: this.abilities.privilege('catalog/ticket_priorities', 'cloud_help'),
+                catalog_ticket_workspaces: this.abilities.privilege('catalog/ticket_workspaces', 'cloud_help')
             },
         }
     },
@@ -350,13 +351,56 @@ export default {
             <b-tabs :expanded="expandedTabs">
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicket">
+                        <fieldset :disabled="viewType == 'show'">
+                            <div class="columns">
+                                <div class="column is-6">
+                                    <b-field :label="translations.main.column_cloud_help_catalog_ticket_workspaces_id">
+                                        <template v-slot:message>
+                                            <a
+                                                v-if="ticket_abilities.catalog_ticket_workspaces.create && viewType != 'show'"
+                                                href="/help/catalog/ticket_workspaces/new"
+                                                target="_blank"
+                                            >
+                                                {{translations.main.view_text_add_ticket_workspace}}
+                                            </a>
+                                        </template>
+                                        <b-select
+                                            :placeholder="translations.core.view_placeholder_select_option"
+                                            expanded
+                                            :disabled="loading.options"
+                                            v-model="ticket.cloud_help_catalog_ticket_workspaces_id"
+                                        >
+                                            <option
+                                                v-for="workspace in options.workspaces"
+                                                :key="workspace.id"
+                                                :value="workspace.id"
+                                            >
+                                                {{workspace.name}}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
+                                <div class="column is-6 has-text-right">
+                                    <b-field v-if="viewType != 'show'">
+                                        <template v-slot:label>
+                                            &nbsp;
+                                        </template>
+                                        <b-button :disabled="loading.options" @click="getTicketOptions">
+                                            <b-icon v-if="loading.options" size="is-small" icon="sync" custom-class="fa-spin"></b-icon>
+                                            <b-icon v-else size="is-small" icon="sync" ></b-icon>
+                                            <span>{{translations.main.view_btn_reload_options}}</span>
+                                        </b-button>
+                                    </b-field>
+                                </div>
+                            </div>
+                        </fieldset>
                         <div class="columns is-multiline" v-if="viewType != 'new'">
-                            <div class="column is-4">
+                            <div class="column is-5">
                                 <b-field :label="translations.main.column_users_id">
                                     <b-input v-model="ticket.user_creator_name" readonly></b-input>
                                 </b-field>
                             </div>
-                            <div class="column is-8">
+                            <div class="column is-7">
                                 <b-field :label="translations.main.column_reference_url">
                                     <b-input v-model="ticket.reference_url" readonly></b-input>
                                 </b-field>
@@ -416,105 +460,90 @@ export default {
                                 </div>
                             </div>
                             <div class="columns">
-                                <div class="column is-11">
-                                    <div class="columns">
-                                        <div class="column is-4">
-                                            <b-field>
-                                                <template v-slot:label>
-                                                    {{translations.main.column_cloud_help_catalog_ticket_types_id}}<sup class="has-text-danger">*</sup>
-                                                </template>
-                                                <template v-slot:message>
-                                                    <a
-                                                        v-if="ticket_abilities.catalog_ticket_types.create"
-                                                        href="/help/catalog/ticket_types/new"
-                                                        target="_blank"
-                                                    >
-                                                        {{translations.main.view_text_add_ticket_type}}
-                                                    </a>
-                                                </template>
-                                                <b-select 
-                                                    :placeholder="translations.core.view_placeholder_select_option"
-                                                    expanded
-                                                    required
-                                                    :disabled="loading.options"
-                                                    v-model="ticket.cloud_help_catalog_ticket_types_id"
-                                                >
-                                                    <option
-                                                        v-for="type in options.types"
-                                                        :key="type.id"
-                                                        :value="type.id"
-                                                    >
-                                                        {{type.name}}
-                                                    </option>
-                                                </b-select>
-                                            </b-field>
-                                        </div>
-                                        <div class="column is-4">
-                                            <b-field :label="translations.main.column_cloud_help_catalog_ticket_categories_id">
-                                                <template v-slot:message>
-                                                    <a
-                                                        v-if="ticket_abilities.catalog_ticket_categories.create"
-                                                        href="/help/catalog/ticket_categories/new"
-                                                        target="_blank"
-                                                    >
-                                                        {{translations.main.view_text_add_ticket_category}}
-                                                    </a>
-                                                </template>
-                                                <b-select
-                                                    :placeholder="translations.core.view_placeholder_select_option"
-                                                    expanded
-                                                    :disabled="loading.options"
-                                                    v-model="ticket.cloud_help_catalog_ticket_categories_id"
-                                                >
-                                                    <option
-                                                        v-for="category in options.categories"
-                                                        :key="category.id"
-                                                        :value="category.id"
-                                                    >   
-                                                        <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
-                                                        {{category.name}}
-                                                    </option>
-                                                </b-select>
-                                            </b-field>
-                                        </div>
-                                        <div class="column is-4">
-                                            <b-field :label="translations.main.column_cloud_help_catalog_ticket_priorities_id">
-                                                <template v-slot:message>
-                                                    <a
-                                                        v-if="ticket_abilities.catalog_ticket_priorities.create"
-                                                        href="/help/catalog/ticket_priorities/new"
-                                                        target="_blank"
-                                                    >
-                                                        {{translations.main.view_text_add_ticket_priority}}
-                                                    </a>
-                                                </template>
-                                                <b-select
-                                                    :placeholder="translations.core.view_placeholder_select_option"
-                                                    expanded
-                                                    :disabled="loading.options"
-                                                    v-model="ticket.cloud_help_catalog_ticket_priorities_id"
-                                                >
-                                                    <option
-                                                        v-for="priority in options.priorities"
-                                                        :key="priority.id"
-                                                        :value="priority.id"
-                                                    >
-                                                        {{priority.name}}
-                                                    </option>
-                                                </b-select>
-                                            </b-field>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="column is-1">
+                                <div class="column is-4">
                                     <b-field>
                                         <template v-slot:label>
-                                            &nbsp;
+                                            {{translations.main.column_cloud_help_catalog_ticket_types_id}}<sup class="has-text-danger">*</sup>
                                         </template>
-                                        <b-button expanded :disabled="loading.options" @click="getTicketOptions">
-                                            <b-icon v-if="loading.options" size="is-small" icon="sync" custom-class="fa-spin"></b-icon>
-                                            <b-icon v-else size="is-small" icon="sync" ></b-icon>
-                                        </b-button>
+                                        <template v-slot:message>
+                                            <a
+                                                v-if="ticket_abilities.catalog_ticket_types.create && viewType != 'show'"
+                                                href="/help/catalog/ticket_types/new"
+                                                target="_blank"
+                                            >
+                                                {{translations.main.view_text_add_ticket_type}}
+                                            </a>
+                                        </template>
+                                        <b-select 
+                                            :placeholder="translations.core.view_placeholder_select_option"
+                                            expanded
+                                            required
+                                            :disabled="loading.options"
+                                            v-model="ticket.cloud_help_catalog_ticket_types_id"
+                                        >
+                                            <option
+                                                v-for="type in options.types"
+                                                :key="type.id"
+                                                :value="type.id"
+                                            >
+                                                {{type.name}}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
+                                <div class="column is-4">
+                                    <b-field :label="translations.main.column_cloud_help_catalog_ticket_categories_id">
+                                        <template v-slot:message>
+                                            <a
+                                                v-if="ticket_abilities.catalog_ticket_categories.create && viewType != 'show'"
+                                                href="/help/catalog/ticket_categories/new"
+                                                target="_blank"
+                                            >
+                                                {{translations.main.view_text_add_ticket_category}}
+                                            </a>
+                                        </template>
+                                        <b-select
+                                            :placeholder="translations.core.view_placeholder_select_option"
+                                            expanded
+                                            :disabled="loading.options"
+                                            v-model="ticket.cloud_help_catalog_ticket_categories_id"
+                                        >
+                                            <option
+                                                v-for="category in options.categories"
+                                                :key="category.id"
+                                                :value="category.id"
+                                            >   
+                                                <span v-for="i in category.depth" :key="`${category.id}_${i}`">--</span>
+                                                {{category.name}}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
+                                <div class="column is-4">
+                                    <b-field :label="translations.main.column_cloud_help_catalog_ticket_priorities_id">
+                                        <template v-slot:message>
+                                            <a
+                                                v-if="ticket_abilities.catalog_ticket_priorities.create && viewType != 'show'"
+                                                href="/help/catalog/ticket_priorities/new"
+                                                target="_blank"
+                                            >
+                                                {{translations.main.view_text_add_ticket_priority}}
+                                            </a>
+                                        </template>
+                                        <b-select
+                                            :placeholder="translations.core.view_placeholder_select_option"
+                                            expanded
+                                            :disabled="loading.options"
+                                            v-model="ticket.cloud_help_catalog_ticket_priorities_id"
+                                        >
+                                            <option
+                                                v-for="priority in options.priorities"
+                                                :key="priority.id"
+                                                :value="priority.id"
+                                            >
+                                                {{priority.name}}
+                                            </option>
+                                        </b-select>
                                     </b-field>
                                 </div>
                             </div>
