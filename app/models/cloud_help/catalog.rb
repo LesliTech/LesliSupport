@@ -6,26 +6,25 @@ module CloudHelp
 
         def self.initialize_data(account)
             # Initializing Ticket Sources, default source is CloudHelp
-            Catalog::TicketSource.create!(name: "CloudHelp", account: account)
+            Catalog::TicketSource.create!(name: I18n.t("help.initial_values.catalog_ticket_source_cloud_help"), account: account)
 
             # Initializing Ticket Categories
-            Catalog::TicketCategory.create!(name: "User Management", account: account)
-            Catalog::TicketCategory.create!(name: "Role Management", account: account)
-            Catalog::TicketCategory.create!(name: "Account Management", account: account)
+            Catalog::TicketCategory.create!(name: I18n.t("help.initial_values.catalog_ticket_categories.user_management"), account: account)
+            Catalog::TicketCategory.create!(name: I18n.t("help.initial_values.catalog_ticket_categories.role_management"), account: account)
+            Catalog::TicketCategory.create!(name: I18n.t("help.initial_values.catalog_ticket_categories.account_management"), account: account)
 
             # Initializing Ticket Priorities
-            Catalog::TicketPriority.create!(name: "Lowest", weight: 1, account: account)
-            Catalog::TicketPriority.create!(name: "Low", weight: 10, account: account)
-            Catalog::TicketPriority.create!(name: "Medium", weight: 100, account: account)
-            Catalog::TicketPriority.create!(name: "High", weight: 1000, account: account)
-            Catalog::TicketPriority.create!(name: "Very High", weight: 5000, account: account)
-            Catalog::TicketPriority.create!(name: "Highest", weight: 100000, account: account)
+            Catalog::TicketPriority.create!(name: I18n.t("help.initial_values.catalog_ticket_priorities.lowest"), weight: 1, account: account)
+            Catalog::TicketPriority.create!(name: I18n.t("help.initial_values.catalog_ticket_priorities.low"), weight: 10, account: account)
+            Catalog::TicketPriority.create!(name: I18n.t("help.initial_values.catalog_ticket_priorities.medium"), weight: 100, account: account)
+            Catalog::TicketPriority.create!(name: I18n.t("help.initial_values.catalog_ticket_priorities.high"), weight: 1000, account: account)
+            Catalog::TicketPriority.create!(name: I18n.t("help.initial_values.catalog_ticket_priorities.highest"), weight: 5000, account: account)
 
             # Initializing Ticket Types
-            Catalog::TicketType.create!(name: "Change Request", account: account)
-            Catalog::TicketType.create!(name: "Bug", account: account)
-            Catalog::TicketType.create!(name: "General Question", account: account)
-            Catalog::TicketType.create!(name: "New Development", account: account)
+            Catalog::TicketType.create!(name: I18n.t("help.initial_values.catalog_ticket_types.change_request"), account: account)
+            Catalog::TicketType.create!(name: I18n.t("help.initial_values.catalog_ticket_types.bug"), account: account)
+            Catalog::TicketType.create!(name: I18n.t("help.initial_values.catalog_ticket_types.general_question"), account: account)
+            Catalog::TicketType.create!(name: I18n.t("help.initial_values.catalog_ticket_types.new_development"), account: account)
         end
     end
 end

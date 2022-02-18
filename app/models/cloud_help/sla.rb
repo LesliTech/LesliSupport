@@ -379,7 +379,7 @@ For more information read the license file including with this software.
         #     puts account.help.slas.first
         def self.initialize_data(help_account)
             default_sla = help_account.slas.new(
-                name: "Default SLA",
+                name: I18n.t("help.initial_values.slas.default_sla"),
                 default: true,
                 expected_response_time: 700,
                 expected_resolution_time: 7000
