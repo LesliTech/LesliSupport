@@ -6,7 +6,7 @@ module CloudHelp
 
         def self.initialize_data(account)
             # Initializing Ticket Sources, default source is CloudHelp
-            Catalog::TicketSource.create!(name: I18n.t("help.initial_values.catalog_ticket_source_cloud_help"), account: account)
+            Catalog::TicketSource.create!(name: I18n.t("help.initial_values.catalog_ticket_sources.cloud_help"), account: account)
 
             # Initializing Ticket Categories
             Catalog::TicketCategory.create!(name: I18n.t("help.initial_values.catalog_ticket_categories.user_management"), account: account)
