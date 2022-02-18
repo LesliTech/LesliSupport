@@ -25,6 +25,9 @@ module CloudHelp
             Catalog::TicketType.create!(name: I18n.t("help.initial_values.catalog_ticket_types.bug"), account: account)
             Catalog::TicketType.create!(name: I18n.t("help.initial_values.catalog_ticket_types.general_question"), account: account)
             Catalog::TicketType.create!(name: I18n.t("help.initial_values.catalog_ticket_types.new_development"), account: account)
+       
+            # Initializer Ticket Workspaces
+            Catalog::TicketWorkspace.create!(name: I18n.t("help.initial_values.catalog_ticket_workspaces.default"), default: true, account: account)
         end
     end
 end

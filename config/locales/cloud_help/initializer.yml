@@ -19,6 +19,8 @@
             change_request: "Change Request"
             general_question: "General Question"
             new_development: "New Development"
+        catalog_ticket_workspaces:
+            default: "Default Workspace"
         slas:
             default_sla: "Default SLA"
 :es:
@@ -41,6 +43,8 @@
             change_request: "Solicitud de Cambio"
             general_question: "Pregunta General"
             new_development: "Nuevo Desarrollo"
+        catalog_ticket_workspaces:
+            default: "Espacio de Trabajo Predeterminado"
         slas:
             default_sla: "ANS Predeterminado"
 :de:
@@ -63,5 +67,7 @@
             change_request: "Änderungsanforderung"
             general_question: "Allgemeine Frage"
             new_development: "Neue Entwicklung"
+        catalog_ticket_workspaces:
+            default: "Standard-Arbeitsbereich"
         slas:
             default_sla: "Standard Dienstleistungs-Güte-Vereinbarung"
