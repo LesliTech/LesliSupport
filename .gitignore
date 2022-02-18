@@ -2,3 +2,4 @@
 log/
 pkg/
 config/locales
+!config/locales/cloud_help/initializer.yml
