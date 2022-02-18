@@ -25,7 +25,7 @@ module CloudHelp
         belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id", optional: true
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id", optional: true
-        belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id"
+        belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id", optional: true
         belongs_to :workspace,  class_name: "CloudHelp::Catalog::TicketWorkspace",  foreign_key: "cloud_help_catalog_ticket_workspaces_id"
         belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
         belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id"
