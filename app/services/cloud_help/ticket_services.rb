@@ -155,7 +155,7 @@ module CloudHelp
             ).joins(
                 "inner join cloud_help_catalog_ticket_types chctt on cloud_help_tickets.cloud_help_catalog_ticket_types_id = chctt.id"
             ).joins(
-                "inner join cloud_help_catalog_ticket_workspaces chctw on cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = chctw.id"
+                "left join cloud_help_catalog_ticket_workspaces chctw on cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = chctw.id"
             ).joins(
                 "left join cloud_help_catalog_ticket_categories chctc on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = chctc.id"
             ).joins(
