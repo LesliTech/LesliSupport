@@ -19,7 +19,7 @@ For more information read the license file including with this software.
 
 // · List of Imported Components
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-import componentRichTextEditor from 'LesliCoreVue/components/forms/richtext-editor.vue'
+import componentRichTextEditor from 'LesliVue/components/editors/richtext.vue'
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
 
 
@@ -563,7 +563,7 @@ export default {
                             <div class="field">
                                 <label class="label">{{translations.main.column_description}}</label>
                                 <div class="control">
-                                    <component-rich-text-editor v-model="ticket.description" :type="editorType">
+                                    <component-rich-text-editor v-if="ticket.description" v-model="ticket.description" :mode="editorType">
                                     </component-rich-text-editor>
                                 </div>
                             </div>
