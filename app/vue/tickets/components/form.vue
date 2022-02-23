@@ -352,7 +352,7 @@ export default {
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicket">
                         <fieldset :disabled="viewType == 'show'">
-                            <div class="columns mb-1">
+                            <div class="columns mb-2">
                                 <div class="column is-6">
                                     <b-field :label="translations.main.column_cloud_help_catalog_ticket_workspaces_id">
                                         <template v-slot:message>
