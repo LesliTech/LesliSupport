@@ -208,12 +208,6 @@ export default {
                 object_utils.translateEnum(translations.workflow_statuses, 'column_enum_status', ticket.status)
             "
         >
-            <template v-slot:custom-title>
-                <div :class="['navbar-item is-clickable', {'has-text-warning': ticket.subscribed}]" @click="showSubscriptionsPanel">
-                    &nbsp;
-                    <i :class="['fa-lg', {'far fa-bell': ! ticket.subscribed, 'fas fa-bell': ticket.subscribed}]"></i>
-                </div>
-            </template>
             <template v-slot:actions>
                 <div class="navbar-item">
                     <component-workflow-transition
@@ -228,6 +222,9 @@ export default {
                 </div>
                 <div class="navbar-item">
                     <div class="buttons">
+                        <b-button :class="['is-active', {'has-text-warning': ticket.subscribed}]" @click="showSubscriptionsPanel">
+                            <i :class="['fa-lg', {'far fa-bell': ! ticket.subscribed, 'fas fa-bell': ticket.subscribed}]"></i>
+                        </b-button>
                         <router-link class="button" :to="`${appMountPath}/`">
                             <b-icon icon="list" size="is-small" />
                             <span>{{ translations.core.view_btn_list }}</span>

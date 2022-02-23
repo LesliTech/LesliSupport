@@ -66,7 +66,7 @@ export default {
                 cloud_help_catalog_ticket_priorities_id: null,
                 cloud_help_catalog_ticket_workspaces_id: null,
                 subject: null,
-                description: null,
+                description: {},
                 deadline: new Date(),
                 tags: [],
                 hours_worked: 0
