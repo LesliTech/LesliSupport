@@ -26,7 +26,7 @@ module CloudHelp
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id", optional: true
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id", optional: true
         belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id", optional: true
-        belongs_to :workspace,  class_name: "CloudHelp::Catalog::TicketWorkspace",  foreign_key: "cloud_help_catalog_ticket_workspaces_id"
+        belongs_to :workspace,  class_name: "CloudHelp::Catalog::TicketWorkspace",  foreign_key: "cloud_help_catalog_ticket_workspaces_id", optional: true
         belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
         belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id"
 
@@ -443,13 +443,20 @@ module CloudHelp
         private
 
         # @return [void]
-        # @descriptions Sets a default deadline 2 weeks from now for the ticket, if the deadline is not set
+        # @descriptions If there is no deadline, the deadline is set based on priority. I case no deadline nor priority are set,
+        #     the system sets a default deadline of 2 weeks from the creation day of the ticket
         # @example
         #     ticket = current_user.account.help.tickets.new(subject: "Ticket 1", category: "bug", user_creator: current_user)
         #     ticket.save! # The set_deadline will trigger here as a before_validation function
         #     puts ticket.deadline # This will print current_date + 2 weeks
         def set_deadline
-            update!(deadline: LC::Date.now + 2.weeks) unless deadline
+            return if deadline
+
+            if priority && priority.days_to_deadline
+                update!(deadline: LC::Date.now + priority.days_to_deadline.days)
+            else
+                update!(deadline: LC::Date.now + 2.weeks)
+            end
         end
         
         # @return [void]

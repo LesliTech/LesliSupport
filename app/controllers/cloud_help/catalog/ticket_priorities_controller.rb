@@ -201,7 +201,11 @@ For more information read the license file including with this software.
     #}
 =end
         def ticket_priority_params
-            params.fetch(:ticket_priority, {}).permit(:name, :weight)
+            params.fetch(:ticket_priority, {}).permit(
+                :name,
+                :weight,
+                :days_to_deadline
+            )
         end
     end
 end

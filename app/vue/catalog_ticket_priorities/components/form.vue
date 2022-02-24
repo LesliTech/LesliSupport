@@ -201,14 +201,28 @@ export default {
                 <b-tab-item :label="translations.shared.view_tab_title_general_information">
                     <form @submit="submitTicketPriority">
                         <div class="columns">
-                            <div class="column">
-                                <b-field :label="translations.main.column_name">
+                            <div class="column is-5">
+                                <b-field>
+                                    <template v-slot:label>
+                                        {{translations.main.column_name}}
+                                        <span class="has-text-danger">*</span>
+                                    </template>
                                     <b-input v-model="ticket_priority.name" required="true"></b-input>
                                 </b-field>
                             </div>
-                            <div class="column">
-                                <b-field :label="translations.main.column_weight" :message="translations.main.view_text_column_weight_description">
+                            <div class="column is-5">
+                                <b-field :message="translations.main.view_text_column_weight_description">
+                                    <template v-slot:label>
+                                        {{translations.main.column_weight}}
+                                        <span class="has-text-danger">*</span>
+                                    </template>
                                     <b-input max="1000000" min="0" step="1" v-model="ticket_priority.weight" type="number" required="true" >
+                                    </b-input>
+                                </b-field>
+                            </div>
+                            <div class="column is-2">
+                                <b-field :label="translations.main.column_days_to_deadline" :message="translations.main.view_text_column_days_to_deadline_description">
+                                    <b-input min="0" step="1" v-model="ticket_priority.days_to_deadline" type="number">
                                     </b-input>
                                 </b-field>
                             </div>
