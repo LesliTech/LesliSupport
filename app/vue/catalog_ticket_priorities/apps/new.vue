@@ -50,7 +50,8 @@ export default {
             },
             ticket_priority: {
                 name: null,
-                weight: null
+                weight: null,
+                days_to_deadline: null
             }
         }
     },
