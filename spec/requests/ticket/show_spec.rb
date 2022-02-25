@@ -46,7 +46,7 @@ RSpec.describe "GET:/help/tickets/:id with a valid request", type: :request do
                 next if ["created_at", "updated_at"].include? key
 
                 if key == "deadline"
-                    # expect(LC::Date.to_string(response_data["deadline"].to_date)).to eq(LC::Date.to_string(value))
+                    expect(LC::Date2.new(response_data["deadline"].date.to_s)).to eq(LC::Date2.new(value).date.to_s)
                     next
                 end
 
