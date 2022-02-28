@@ -35,7 +35,13 @@ Gem::Specification.new do |spec|
     spec.metadata['allowed_push_host'] = 'https://rubygems.pkg.github.com/leitfaden'
 
     spec.add_dependency "rails", "~> 6.1.0"
+    
+    # PDF Generation for Reports
     spec.add_dependency "wkhtmltopdf-binary"
     spec.add_dependency "wicked_pdf"
-    
+
+    # Allows management of subcategories for the catalog
+    # It exposes the standard relations (ancestors, parent, root, children, siblings, descendants)
+    # and allows them to be fetched in a single query.
+    spec.add_dependency "ancestry", "~> 4.1.0"
 end
