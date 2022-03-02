@@ -108,7 +108,7 @@ For more information read the license file including with this software.
 
         def self.index(current_user, query)
             # Parsing filters
-            filters = query[:filters]
+            filters = query[:filters] || {}
             filters_query = []
             
             # We filter by a text string written by the user

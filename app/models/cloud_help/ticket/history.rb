@@ -16,13 +16,48 @@ For more information read the license file including with this software.
 
 =end
 module CloudHelp
-  class Ticket::History < ApplicationRecord
-      def self.index(current_user, query)
-          []
-      end
+    class Ticket::History < ApplicationRecord
+        belongs_to :ticket, foreign_key: "cloud_help_tickets_id"
+        belongs_to :user_creator, class_name: "::User", foreign_key: "users_id"
 
-      def show(current_user, query)
-          self
-      end
-  end
+        def self.index(current_user, query, ticket)
+            return unless ticket
+
+            histories = ticket.histories
+            .joins(:user_creator)
+            .joins("inner join user_details ud on ud.users_id = users.id")
+            .select(
+                :id,
+                :users_id,
+                :created_at,
+                :content,
+                :label,
+                :email,
+                "concat(ud.first_name, ' ', ud.last_name) as user_creator_name"
+            )
+            
+            current_user_id = current_user.id
+            histories.map do |history|
+                {
+                    id: history.id,
+                    editable: history.users_id == current_user_id,
+                    created_at: LC::Date.to_string_datetime(history.created_at),
+                    content: history.content,
+                    user_creator_email: history.email,
+                    user_creator_name: history.user_creator_name
+                }
+            end
+        end
+
+        def show(current_user, query)
+            {
+                id: self.id,
+                created_at: LC::Date.to_string_datetime(self.created_at),
+                content: self.content,
+                editable: user_creator == current_user,
+                user_creator_email: user_creator.email,
+                user_creator_name: user_creator.full_name
+            }
+        end
+    end
 end

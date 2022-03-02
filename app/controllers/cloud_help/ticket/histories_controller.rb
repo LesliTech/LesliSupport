@@ -39,9 +39,10 @@ module CloudHelp
         def create
             return respond_with_not_found unless @ticket
             ticket_history = @ticket.histories.new(ticket_history_params)
+            ticket_history.user_creator = current_user
 
             if ticket_history.save
-                respond_with_successful(ticket_history)
+                respond_with_successful(ticket_history.show(current_user, @query))
             else
                 respond_with_error(ticket_history.errors.full_messages.to_sentence)
             end
@@ -80,7 +81,7 @@ module CloudHelp
         #     set_ticket
         #     puts @ticket # will display an instance of CloudHelp:Ticket
         def set_ticket
-            @ticket = current_user.account.help.tickets.find_by_id(params[:ticket_id) if  params[:ticket_id]
+            @ticket = current_user.account.help.tickets.find_by_id(params[:ticket_id]) if  params[:ticket_id]
         end
 
         # @return [void]
@@ -97,7 +98,7 @@ module CloudHelp
             set_ticket
             return unless @ticket
                 
-            @ticket_history = current_user.account.ticket_histories.find(class_name, params[:id]) if params[:id]
+            @ticket_history = @ticket.histories.find_by_id(params[:id]) if params[:id]
         end
 
         # @return [Parameters] Allowed parameters for the ticket history
