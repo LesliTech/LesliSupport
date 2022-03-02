@@ -102,7 +102,7 @@ CloudHelp::Engine.routes.draw do
             resources :custom_fields
 
             resources :assignments
-            resources :histories
+            resources :histories, only: [:index, :create, :show, :update, :destroy]
             resources :timelines do
                 collection do
                     get :options
