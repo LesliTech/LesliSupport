@@ -2,7 +2,6 @@ class CreateCloudHelpTicketHistories < ActiveRecord::Migration[6.1]
     def change
         create_table :cloud_help_ticket_histories do |t|
             t.text      :content
-            t.string    :label
 
             # acts_as_paranoid
             t.datetime  :deleted_at, index: true

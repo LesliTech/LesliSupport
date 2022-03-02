@@ -39,6 +39,23 @@ module Requests
                 return ticket
             end
 
+            def build_random_ticket_history(user, ticket)
+                content = Faker::Lorem.sentence(word_count: 5)
+
+                ticket.histories.create!({
+                    user_creator: user,
+                    content: content
+                })
+            end
+
+            def build_ticket_history_params(user)
+                {
+                    ticket_history: {
+                        content: Faker::Lorem.sentence(word_count: 5)
+                    }
+                }
+            end
+
             def build_random_ticket_action(user, ticket, group: nil)
                 group = Faker::Lorem.word unless group
 

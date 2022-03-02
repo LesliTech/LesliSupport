@@ -31,7 +31,6 @@ module CloudHelp
                 :users_id,
                 :created_at,
                 :content,
-                :label,
                 :email,
                 "concat(ud.first_name, ' ', ud.last_name) as user_creator_name"
             )
@@ -40,6 +39,7 @@ module CloudHelp
             histories.map do |history|
                 {
                     id: history.id,
+                    users_id: history.users_id,
                     editable: history.users_id == current_user_id,
                     created_at: LC::Date.to_string_datetime(history.created_at),
                     content: history.content,
@@ -52,6 +52,7 @@ module CloudHelp
         def show(current_user, query)
             {
                 id: self.id,
+                users_id: self.users_id,
                 created_at: LC::Date.to_string_datetime(self.created_at),
                 content: self.content,
                 editable: user_creator == current_user,

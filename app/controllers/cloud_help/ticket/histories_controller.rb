@@ -103,7 +103,7 @@ module CloudHelp
 
         # @return [Parameters] Allowed parameters for the ticket history
         # @description Sanitizes the parameters received from an HTTP call to only allow the specified ones.
-        #     Allowed params are :users_id, :content, :label
+        #     Allowed params are :users_id, :content
         # @example
         #     # supose params contains {
         #     #    "ticket_assignment": {
@@ -119,7 +119,7 @@ module CloudHelp
         #     #    "content": "This is the content"
         #     #}
         def ticket_history_params
-            params.fetch(:ticket_history, {}).permit(:users_id, :content, :label)
+            params.fetch(:ticket_history, {}).permit(:users_id, :content)
         end
     end
 end
