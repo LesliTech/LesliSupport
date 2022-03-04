@@ -1,3 +1,5 @@
+require "ancestry"
+
 module CloudHelp
 =begin
 
@@ -92,7 +94,8 @@ For more information read the license file including with this software.
         end
 
 =begin
-@param account [Account] The account of the *current_user*, used to filter the records 
+@param current_user [User] The user that made the request
+@param query [Hash] A hash containing filters, pagination and other specific things
 @return [Array] An array that contains a list of categories ordered in a nested way.
 @description Creates a list of categories. The list is ordered by parent category, 
     followed by children categories. If there are no children categories, the next 
@@ -102,10 +105,35 @@ For more information read the license file including with this software.
     categories = CloudHelp::TicketCategory.tree(current_user.account)
     puts categories.to_json
 =end
-        def self.tree(account)
-            roots = account.help.ticket_categories.where(ancestry: nil).order(name: :asc)
+
+        def self.index(current_user, query)
+            # Parsing filters
+            filters = query[:filters] || {}
+            filters_query = []
+            
+            # We filter by a text string written by the user
+            if filters["query"] && !filters["query"].empty?
+                query_words = filters["query"].split(" ")
+                query_words.each do |query_word|
+                    query_word = query_word.strip.downcase
+
+                    # first customer
+                    filters_query.push("(LOWER(name) SIMILAR TO '%#{query_word}%')")
+                end
+            end
+
+            # Executing the query
+            root_categories = current_user.account.help.ticket_categories.where(ancestry: nil)
+
+            # We apply the previous filters in the main query
+            unless filters_query.empty?
+                root_categories = root_categories.where(filters_query.join(' and '))
+            end
+
+            
+            root_categories = root_categories.order(name: :asc)
             data = []
-            roots.each_with_index do |root|
+            root_categories.each_with_index do |root|
                 data.concat(self.tree_recursion(root, true))
             end
             

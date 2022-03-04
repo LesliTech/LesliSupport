@@ -28,6 +28,7 @@ import componentFile from 'LesliVue/cloud_objects/file.vue'
 
 import componentActivities from '../components/activities.vue'
 import componentTimeline from '../components/timeline.vue'
+import componentHistory from '../components/history.vue'
 import componentTitle from '../components/title.vue'
 import componentForm from '../components/form.vue'
 
@@ -41,8 +42,9 @@ export default {
         'component-form-status': componentFormStatus,
         'component-discussion': componentDiscussion,
         'component-activities': componentActivities,
-        'component-action': componentAction,
         'component-timeline': componentTimeline,
+        'component-history': componentHistory,
+        'component-action': componentAction,
         'component-title': componentTitle,
         'component-file': componentFile,
         'component-form': componentForm
@@ -71,7 +73,10 @@ export default {
             ticket_id: null,
             ticket: null,
             new_ticket_status: null,
-            active_tab: 0
+            active_tab: 0,
+            ticket_abilities: {
+                histories: this.abilities.privilege('ticket/histories', 'cloud_help')
+            }
         }
     },
 
@@ -150,6 +155,9 @@ export default {
                     case 'activities':
                         this.active_tab = 4
                         break
+                    case 'histories':
+                        this.active_tab = 5
+                        break
                 }
             }
         },
@@ -182,6 +190,10 @@ export default {
 
         activeActivitiesTab(){
             return this.active_tab == 4
+        },
+
+        activeHistoriesTab(){
+            return this.active_tab == 5
         },
 
         filesTabLabel(){
@@ -279,6 +291,10 @@ export default {
 
             <b-tab-item :label="translations.core.view_btn_activities">
                 <component-activities :ticket-id="ticket_id" :active="activeActivitiesTab"></component-activities>
+            </b-tab-item>
+
+            <b-tab-item v-if="ticket_abilities.histories.create" :label="translations.main.view_tab_title_histories">
+                <component-history :ticket-id="ticket_id" :active="activeHistoriesTab"></component-history>
             </b-tab-item>
         </b-tabs>
     </section>
