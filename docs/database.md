@@ -25,6 +25,7 @@
     10.07. help/ticket/subscribers
     10.10. help/ticket/timelines
     10.11. help/ticket/assignments
+    10.12. help/ticket/histories
 
     11.01. help/slas
     11.03. help/sla/actions 

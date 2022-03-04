@@ -36,7 +36,7 @@ For more information read the license file including with this software.
         respond_to do |format|
             format.html {}
             format.json do 
-                ticket_categories = Catalog::TicketCategory.tree(current_user.account)
+                ticket_categories = Catalog::TicketCategory.index(current_user, @query)
                 responseWithSuccessful(ticket_categories)
             end
         end

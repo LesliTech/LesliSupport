@@ -35,14 +35,8 @@ export default {
 
     },
 
-    // @return [Object] Data used by this component's methods
-    // @description Returns the data needed for this component to work properly
-    // @data_variable main_route [String] the main route to which this component connects to the lesli API
-    // @data_variable ticket_priorities [Array] An array of objects, each object represents a 
-    //      Ticket priority, with the same params as the associated rails model
     data(){
         return {
-            main_route: '/help/catalog/ticket_priorities',
             translations: {
                 main: I18n.t('help.catalog/ticket_priorities'),
                 core: I18n.t('core.shared')
@@ -108,27 +102,25 @@ export default {
         //      console.log(this.ticket_priorities) // will display an array of objects, each representing a Ticket priority.
         getTicketPriorities(reset_current_page = true) {
             this.loading = true
-            this.storage.local("filters", this.filters)
-            let url = `${this.main_route}/list.json`
+            this.storage.local('filters', this.filters)
 
-            let data = {
-                filters: {
-                    query: this.filters.query
-                },
-                order: this.sorting.order,
-                orderColumn: this.sorting.field,
-                perPage: this.filters.per_page
+            let filters = {
+                query: this.filters.query
             }
+
             if(reset_current_page){
                 this.pagination.current_page = 1
-                data.filters.get_total_count = true
-            }else{
-                data.filters.get_total_count = false
             }
-            data.page = this.pagination.current_page
 
-            this.http.post(url, data).then(result => {
-                this.loading = false
+            let url = this.url.help('catalog/ticket_priorities').order(
+                this.sorting.field,
+                this.sorting.order
+            ).paginate(
+                this.pagination.current_page,
+                this.filters.per_page
+            ).filters(filters)
+
+            this.http.get(url).then(result => {
                 if (result.successful) {
                     this.ticket_priorities = result.data.ticket_priorities
 
@@ -140,6 +132,8 @@ export default {
                 }
             }).catch(error => {
                 console.log(error)
+            }).finally(()=>{
+                this.loading = false
             })
         },
         

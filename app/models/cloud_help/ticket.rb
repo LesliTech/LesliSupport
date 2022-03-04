@@ -38,6 +38,7 @@ module CloudHelp
         has_many :activities,   foreign_key: "cloud_help_tickets_id"
 
         has_many :assignments, foreign_key: "cloud_help_tickets_id"
+        has_many :histories,   foreign_key: "cloud_help_tickets_id"
 
         before_validation :set_deadline, :set_type, :set_sla, :set_workflow, :set_workspace, on: :create
         after_update :after_update_actions
@@ -148,7 +149,7 @@ module CloudHelp
 
         def self.options(current_user, query)
             types = current_user.account.help.ticket_types.select(:id, :name).order(:name)
-            categories = Catalog::TicketCategory.tree(current_user.account)[:ticket_categories]
+            categories = Catalog::TicketCategory.index(current_user, {})[:ticket_categories]
             priorities = current_user.account.help.ticket_priorities.order(weight: :asc).select(:id, :name, :weight)
             workspaces = current_user.account.help.ticket_workspaces.select(:id, :name, :default).order(:name)
 
