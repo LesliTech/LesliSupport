@@ -181,7 +181,7 @@ export default {
                 this.deleting = false
                 if (result.successful) {
                     this.msg.success(this.translations.main.messages_info_ticket_type_destroyed)
-                    this.$router.push('/')
+                    this.$router.push(`${this.appMountPath}/`)
                 }else{
                     this.msg.error(result.error.message)
                 }

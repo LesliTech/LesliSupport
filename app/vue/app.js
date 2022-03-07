@@ -30,6 +30,11 @@ import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
 import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
 import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
 
+// · Ticket workspaces components
+import ticketWorkspacesList  from './catalog_ticket_workspaces/apps/list.vue'
+import ticketWorkspacesEdit  from './catalog_ticket_workspaces/apps/edit.vue'
+import ticketWorkspacesNew   from './catalog_ticket_workspaces/apps/new.vue'
+
 // · Ticket categories components
 import ticketCategoriesList  from './catalog_ticket_categories/apps/list.vue'
 import ticketCategoriesEdit  from './catalog_ticket_categories/apps/edit.vue'
@@ -45,6 +50,9 @@ import ticketPrioritiesNew   from './catalog_ticket_priorities/apps/new.vue'
 import ticketTypesList  from './catalog_ticket_types/apps/list.vue'
 import ticketTypesNew   from './catalog_ticket_types/apps/new.vue'
 import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
+
+// · Report components
+import reportsList from './reports/apps/list.vue'
 
 // · Slas components
 import slasList from './slas/apps/list.vue'
@@ -73,7 +81,7 @@ import workflowsShow  from 'LesliVue/shared/workflows/apps/show.vue'
 import workflowsNew   from 'LesliVue/shared/workflows/apps/new.vue'
 
 // ·
-app('CloudHelp', '/help', '[account_settings|dashboards|ticket_types|ticket_priorities|ticket_categories|tickets|slas]', [
+app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket_types|ticket_priorities|ticket_categories|tickets|slas]', [
     {
         path: '/settings',
         component: settingsList
@@ -81,13 +89,13 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_types|ticket_prio
         path: '/',
         component: dashboardsShow,
         props: {
-            cloudEngine: "CloudHelp",
-            engineNamespace: "help",
-            newResourceAnchorPath: "/help/tickets/new",
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
+            newResourceAnchorPath: '/help/tickets/new',
             newResourceAnchorText: ()=>{
-                return I18n.t("help.tickets.view_btn_create")
+                return I18n.t('help.tickets.view_btn_create')
             },
-            appMountPath: '/help/',
+            appMountPath: '/help',
             renderComponents: {
                 'component-new-tickets': componentNewTickets,
                 'component-my-tickets': componentMyTickets,
@@ -117,11 +125,11 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_types|ticket_prio
         path: '/dashboards/:id',
         component: dashboardsShow,
         props: {
-            cloudEngine: "CloudHelp",
-            engineNamespace: "help",
-            newResourceAnchorPath: "/help/tickets/new",
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
+            newResourceAnchorPath: '/help/tickets/new',
             newResourceAnchorText: ()=>{
-                return I18n.t("help.tickets.view_btn_create")
+                return I18n.t('help.tickets.view_btn_create')
             },
             appMountPath: '/help/dashboards',
             renderComponents: {
@@ -134,36 +142,54 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_types|ticket_prio
             }
         }
     },{
-        path: "/workflows/",
+        path: '/workflows',
         component: workflowsList,
         props: {
-            cloudEngine: "CloudHelp",
-            engineNamespace: "help",
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
             appMountPath: '/help/workflows'
         }
     },{
-        path: "/workflows/new",
+        path: '/workflows/new',
         component: workflowsNew,
         props: {
-            cloudEngine: "CloudHelp",
-            engineNamespace: "help",
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
             appMountPath: '/help/workflows'
         }
     },{
-        path: "/workflows/:id",
+        path: '/workflows/:id',
         component: workflowsShow,
         props: {
-            cloudEngine: "CloudHelp",
-            engineNamespace: "help",
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
             appMountPath: '/help/workflows'
         }
     },{
-        path: "/workflows/:id/edit",
+        path: '/workflows/:id/edit',
         component: workflowsEdit,
         props: {
-            cloudEngine: "CloudHelp",
-            engineNamespace: "help",
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
             appMountPath: '/help/workflows'
+        }
+    },{
+        path: '/catalog/ticket_workspaces',
+        component: ticketWorkspacesList,
+        props: {
+            appMountPath: '/help/catalog/ticket_workspaces'
+        }
+    },{
+        path: '/catalog/ticket_workspaces/new',
+        component: ticketWorkspacesNew,
+        props: {
+            appMountPath: '/help/catalog/ticket_workspaces'
+        }
+    },{
+        path: '/catalog/ticket_workspaces/:id',
+        component: ticketWorkspacesEdit,
+        props: {
+            appMountPath: '/help/catalog/ticket_workspaces'
         }
     },{
         path: '/catalog/ticket_categories',
@@ -272,6 +298,12 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_types|ticket_prio
         component: ticketsEdit,
         props: {
             appMountPath: '/help/tickets'
+        }
+    },{
+        path: '/reports',
+        component: reportsList,
+        props: {
+            appMountPath: '/help/reports'
         }
     }
 ],{
