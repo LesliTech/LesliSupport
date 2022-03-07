@@ -22,10 +22,12 @@ import app from 'LesliVue/app2'
 
 // · Import apps and components
 
+// · Settings components
+import settingsList from './account_settings/apps/list.vue'
+
 // · Dashboard components
-import dashboardsShow from './dashboard/actions/show.vue'
 import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
-import dashboardsEdit  from 'LesliVue/shared/dashboards/apps/edit.vue'
+import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
 import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
 
 // · Ticket categories components
@@ -71,10 +73,30 @@ import workflowsShow  from 'LesliVue/shared/workflows/apps/show.vue'
 import workflowsNew   from 'LesliVue/shared/workflows/apps/new.vue'
 
 // ·
-app('CloudHelp', '/help', '[dashboards|ticket_types|ticket_priorities|ticket_categories|tickets|slas]', [
+app('CloudHelp', '/help', '[account_settings|dashboards|ticket_types|ticket_priorities|ticket_categories|tickets|slas]', [
     {
+        path: '/settings',
+        component: settingsList
+    },{
         path: '/',
-        component: dashboardsShow
+        component: dashboardsShow,
+        props: {
+            cloudEngine: "CloudHelp",
+            engineNamespace: "help",
+            newResourceAnchorPath: "/help/tickets/new",
+            newResourceAnchorText: ()=>{
+                return I18n.t("help.tickets.view_btn_create")
+            },
+            appMountPath: '/help/',
+            renderComponents: {
+                'component-new-tickets': componentNewTickets,
+                'component-my-tickets': componentMyTickets,
+                'component-unassigned-tickets': componentUnassignedTickets,
+                'component-tickets-by-type': componentTicketsByType,
+                'component-tickets-by-category': componentTicketsByCategory,
+                'component-hours-worked': componentHoursWorked
+            }
+        }
     },{
         path: '/dashboards',
         component: dashboardsList,
@@ -93,10 +115,14 @@ app('CloudHelp', '/help', '[dashboards|ticket_types|ticket_priorities|ticket_cat
         }
     },{
         path: '/dashboards/:id',
-        component: dashboardsEdit,
+        component: dashboardsShow,
         props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
+            cloudEngine: "CloudHelp",
+            engineNamespace: "help",
+            newResourceAnchorPath: "/help/tickets/new",
+            newResourceAnchorText: ()=>{
+                return I18n.t("help.tickets.view_btn_create")
+            },
             appMountPath: '/help/dashboards',
             renderComponents: {
                 'component-new-tickets': componentNewTickets,
