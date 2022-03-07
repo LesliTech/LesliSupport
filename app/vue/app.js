@@ -312,6 +312,12 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     ticket_assignable: false,
     assignment_options: {},
     ticket_images: [],
+    checks: {
+        reload: false,
+        selected_record_id: null,
+        records: [],
+        active_tab: 0 // 0 -> list, 1 -> new, 2 -> edit
+    },
     reload: {
         activities: false,
         timelines: false,
