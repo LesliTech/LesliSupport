@@ -2,9 +2,9 @@
 
 Copyright (c) 2020, all rights reserved.
 
-All the information provided by this platform is protected by international laws related  to 
-industrial property, intellectual property, copyright and relative international laws. 
-All intellectual or industrial property rights of the code, texts, trade mark, design, 
+All the information provided by this platform is protected by international laws related  to
+industrial property, intellectual property, copyright and relative international laws.
+All intellectual or industrial property rights of the code, texts, trade mark, design,
 pictures and any other information belongs to the owner of this platform.
 
 Without the written permission of the owner, any replication, modification,
@@ -13,7 +13,7 @@ transmission, publication is strictly forbidden.
 For more information read the license file including with this software.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 
 =end
 
@@ -34,11 +34,11 @@ Gem::Specification.new do |spec|
     spec.files = Dir["{app,config,db,lib}/**/*", "license", "Rakefile", "readme.md", "lesli.yml"]
     spec.metadata['allowed_push_host'] = 'https://rubygems.pkg.github.com/leitfaden'
 
-    spec.add_dependency "rails", "~> 6.1.0"
-    
+    spec.add_dependency "rails", "~> 7.0"
+
     # PDF Generation for Reports
-    spec.add_dependency "wkhtmltopdf-binary"
-    spec.add_dependency "wicked_pdf"
+    spec.add_dependency "wkhtmltopdf-binary", "~> 0.12.6"
+    spec.add_dependency "wicked_pdf", "~> 2.1.0"
 
     # Allows management of subcategories for the catalog
     # It exposes the standard relations (ancestors, parent, root, children, siblings, descendants)
