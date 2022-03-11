@@ -1,6 +1,6 @@
 <template>
     <% if @tabs_granted["dashboard"] %>
-        <%= nav_link("/help") do %>
+        <%= navigation_vue_item("/help") do %>
             <i class="fas fa-tachometer-alt"></i>
             <span><%= I18n.t("help.shared.sidebar_nav_dashboard") %>
         <% end %>
@@ -14,7 +14,7 @@
             </template>
             <% if @tabs_granted["ticket_workspaces"]%>
                 <li>
-                    <%= link_to cloud_help.ticket_workspaces_path, class: "" do %>
+                    <%= navigation_vue_item(cloud_help.ticket_workspaces_path) do %>
                         <i class="fas fa-object-group"></i>
                         <span><%= I18n.t("help.shared.sidebar_nav_ticket_workspaces") %></span>
                     <% end %>
@@ -22,7 +22,7 @@
             <% end %>
             <% if @tabs_granted["ticket_categories"]%>
                 <li>
-                    <%= link_to cloud_help.ticket_categories_path, class: "" do %>
+                    <%= navigation_vue_item(cloud_help.ticket_categories_path) do %>
                         <i class="far fa-bookmark"></i>
                         <span><%= I18n.t("help.shared.sidebar_nav_ticket_categories") %></span>
                     <% end %>
@@ -30,7 +30,7 @@
             <% end %>
             <% if @tabs_granted["ticket_priorities"]%>
                 <li>
-                    <%= link_to cloud_help.ticket_priorities_path, class: "" do %>
+                    <%= navigation_vue_item(cloud_help.ticket_priorities_path) do %>
                         <i class="fas fa-exclamation-circle"></i>
                         <span><%= I18n.t("help.shared.sidebar_nav_ticket_priorities") %></span>
                     <% end %>
@@ -38,7 +38,7 @@
             <% end %>
             <% if @tabs_granted["ticket_types"]%>
                 <li>
-                    <%= link_to cloud_help.ticket_types_path, class: "" do %>
+                    <%= navigation_vue_item(cloud_help.ticket_types_path) do %>
                         <i class="fas fa-bookmark"></i>
                         <span><%= I18n.t("help.shared.sidebar_nav_ticket_types") %></span>
                     <% end %>
@@ -48,7 +48,7 @@
     <% end %>
     <% if @tabs_granted["tickets"]%>
         <li>
-            <%= link_to cloud_help.tickets_path, class: "" do %>
+            <%= navigation_vue_item(cloud_help.tickets_path) do %>
                 <i class="fas fa-ticket-alt"></i>
                 <span><%= I18n.t("help.shared.sidebar_nav_tickets") %></span>
             <% end %>
@@ -56,7 +56,7 @@
     <% end %>
     <% if @tabs_granted["slas"]%>
         <li>
-            <%= link_to cloud_help.slas_path, class: "" do %>
+            <%= navigation_vue_item(cloud_help.slas_path) do %>
                 <i class="fas fa-file-contract"></i>
                 <span><%= I18n.t("help.shared.sidebar_nav_slas") %></span>
             <% end %>
@@ -64,7 +64,7 @@
     <% end %>
     <% if @tabs_granted["reports"]%>
         <li>
-            <%= link_to cloud_help.reports_path, class: "" do %>
+            <%= navigation_vue_item(cloud_help.reports_path) do %>
                 <i class="fas fa-file-excel"></i>
                 <span><%= I18n.t("help.shared.sidebar_nav_reports") %></span>
             <% end %>
@@ -75,7 +75,7 @@
 <template v-slot:settings>
     <% if @tabs_granted["settings"]%>
         <li>
-            <%= link_to cloud_help.settings_path, class: "" do %>
+            <%= navigation_vue_item(cloud_help.settings_path) do %>
                 <i class="fas fa-tools"></i>
                 <span><%= I18n.t("help.shared.sidebar_nav_account_settings") %></span>
             <% end %>
@@ -83,7 +83,7 @@
     <% end %>
     <% if @tabs_granted["workflows"]%>
         <li>
-            <%= link_to cloud_help.workflows_path, class: "" do %>
+            <%= navigation_vue_item(cloud_help.workflows_path) do %>
                 <i class="fas fa-project-diagram"></i>
                 <span><%= I18n.t("help.shared.sidebar_nav_workflows") %></span>
             <% end %>
@@ -91,7 +91,7 @@
     <% end %>
     <% if @tabs_granted["dashboards"]%>
         <li>
-            <%= link_to cloud_help.dashboards_path, class: "" do %>
+            <%= navigation_vue_item(cloud_help.dashboards_path) do %>
                 <i class="fas fa-tachometer-alt"></i>
                 <span><%= I18n.t("help.shared.sidebar_nav_dashboards") %></span>
             <% end %>
