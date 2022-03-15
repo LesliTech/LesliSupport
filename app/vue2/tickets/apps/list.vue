@@ -232,7 +232,7 @@ export default {
 }
 </script>
 <template>
-    <section class="application-component">
+    <section class="application-component app-tickets">
         <component-header 
             :title="translations.main.view_title_main">
             <div class="buttons">
