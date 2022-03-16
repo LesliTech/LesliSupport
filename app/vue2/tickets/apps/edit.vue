@@ -225,7 +225,7 @@ export default {
 }
 </script>
 <template>
-    <section v-if="ticket" class="application-component">
+    <section v-if="ticket" class="application-component app-tickets">
         <component-subscription
             cloud-module="help/ticket"
             :cloud-id="ticket_id"
