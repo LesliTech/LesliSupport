@@ -227,7 +227,7 @@ export default {
             if(this.filters_ready){
                 this.getTickets(true)
             }
-        },
+        }
     }
 }
 </script>
