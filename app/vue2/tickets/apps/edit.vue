@@ -207,6 +207,10 @@ export default {
             return this.active_tab == 5
         },
 
+        activeHistoriesTab(){
+            return this.active_tab == 6
+        },
+
         filesTabLabel(){
             return `${this.translations.core.view_btn_files} (${this.data.files_count})`
         }
