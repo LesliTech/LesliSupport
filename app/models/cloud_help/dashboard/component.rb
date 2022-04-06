@@ -103,8 +103,8 @@ module CloudHelp
             end
 
             data = Ticket
-            .joins(:priority)
             .joins(:status)
+            .joins("left join cloud_help_catalog_ticket_priorities chctp on chctp.id = cloud_help_tickets.cloud_help_catalog_ticket_priorities_id")
             .order("cloud_help_tickets.created_at desc")
             .where("cloud_help_workflow_statuses.status_type not in (?)", ['completed_successfully', 'completed_unsuccessfully'])
             .limit(configuration[:query][:pagination]["per_page"] || query[:pagination][:perPage])
@@ -112,8 +112,8 @@ module CloudHelp
                 "cloud_help_tickets.created_at",
                 "cloud_help_tickets.id",
                 "cloud_help_tickets.subject",
-                "cloud_help_catalog_ticket_priorities.name as priority_name",
-                "cloud_help_catalog_ticket_priorities.weight as priority_weight",
+                "chctp.name as priority_name",
+                "chctp.weight as priority_weight",
                 "CONCAT('/help/tickets/', cloud_help_tickets.id) as url"
             )
 
@@ -160,7 +160,7 @@ module CloudHelp
             end
 
             data = Ticket.joins(:status)
-            .joins(:priority)
+            .joins("left join cloud_help_catalog_ticket_priorities chctp on chctp.id = cloud_help_tickets.cloud_help_catalog_ticket_priorities_id")
             .joins("LEFT JOIN cloud_help_ticket_assignments CHTA on CHTA.cloud_help_tickets_id = cloud_help_tickets.id AND CHTA.deleted_at is NULL")
             .order("cloud_help_tickets.created_at asc")
             .where("cloud_help_workflow_statuses.status_type not in (?)", ['completed_successfully', 'completed_unsuccessfully'])
@@ -169,8 +169,8 @@ module CloudHelp
                 "cloud_help_tickets.deadline",
                 "cloud_help_tickets.id",
                 "cloud_help_tickets.subject",
-                "cloud_help_catalog_ticket_priorities.name as priority_name",
-                "cloud_help_catalog_ticket_priorities.weight as priority_weight",
+                "chctp.name as priority_name",
+                "chctp.weight as priority_weight",
                 "CONCAT('/help/tickets/', cloud_help_tickets.id) as url"
             )
 
