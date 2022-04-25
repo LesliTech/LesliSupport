@@ -64,7 +64,11 @@ For more information read the license file including with this software.
         def create
             return respond_with_not_found unless @ticket
 
-            assignment = Ticket::Assignment.new(ticket_assignment_params)
+            # We check if the assignment exists before attempting to create it
+            assignment = @ticket.assignments.find_by(users_id: ticket_assignment_params[:users_id])
+            return respond_with_successful(assignment) if assignment
+
+            assignment = @ticket.assignments.new(ticket_assignment_params)
             assignment.ticket = @ticket
 
             if assignment.save
