@@ -172,6 +172,12 @@ export default {
 
         setSubscriptionsInactive(){
             this.ticket.subscribed = false
+        },
+
+        goToEdit(status){
+            if(! ['completed_successfully', 'completed_unsuccessfully'].includes(status.status_type)){
+                this.$router.push(`${this.appMountPath}/${this.ticket_id}/edit`)
+            }
         }
     },
 
@@ -250,6 +256,7 @@ export default {
             </template>
         </component-title>
         <component-form-status
+            @statusChanged="goToEdit"
             :selected-status="new_ticket_status"
             status-foreign-key="cloud_help_workflow_statuses_id"
             cloud-object-variable="ticket"
