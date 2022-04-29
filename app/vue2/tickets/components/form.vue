@@ -321,7 +321,7 @@ export default {
         reloadTicket(){
             this.reloadTicketRecord()
             this.data.reload.ticket = true
-        }
+        },
     },
 
     watch: {
@@ -341,6 +341,14 @@ export default {
             }else{
                 return 'full'
             }
+        },
+
+        statusAllowsEdition(){
+            if(this.ticket && ['completed_successfully','completed_unsuccessfully'].includes(this.ticket.status_type)){
+                return false
+            }
+
+            return true
         }
     }
 }
@@ -412,7 +420,7 @@ export default {
                                         type="is-info"
                                         v-for="assignment in ticket.assignment_attributes"
                                         :key="assignment.id"
-                                        closable
+                                        :closable="statusAllowsEdition"
                                         @close="deleteTicketAssignment(assignment)"
                                     >
                                         <span>{{assignment.assignable_name}}</span>
@@ -422,7 +430,10 @@ export default {
                                     <span class="tag">{{translations.main.view_text_no_users_assigned}}</span>
                                 </div>
                             </div>
-                            <div v-if="data.ticket_assignable" class="column is-3">
+                            <div
+                                v-if="data.ticket_assignable && statusAllowsEdition"
+                                class="column is-3"
+                            >
                                 <b-field :label="translations.main.view_title_auto_assignment">
                                     <b-checkbox v-model="auto_assignment" @change.native="autoAssignTicket">
                                         {{translations.main.view_text_assign_ticket_to_self}}
@@ -581,7 +592,7 @@ export default {
                             </div>
                             <hr>
                             <div class="field has-text-right">
-                                <b-button v-if="viewType != 'show'" type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
+                                <b-button v-if="viewType != 'show' && statusAllowsEdition" type="is-primary" native-type="submit" :disabled="submitting" expanded class="submit-button">
                                     <span v-if="submitting">
                                         <i class="fas fa-circle-notch fa-spin"></i>
                                         &nbsp; {{translations.core.view_btn_saving}}
@@ -598,10 +609,16 @@ export default {
                 <b-tab-item :label="translations.main.view_tab_title_sla" v-if="viewType != 'new'">
                     <component-sla-data v-if="data.sla" shadowless></component-sla-data>
                 </b-tab-item>
-                <b-tab-item :label="translations.main.view_tab_title_assignments" v-if="viewType != 'new' && assignments_abilities.create">
+                <b-tab-item
+                    :label="translations.main.view_tab_title_assignments"
+                    v-if="viewType != 'new' && assignments_abilities.create && statusAllowsEdition"
+                >
                     <component-assignments v-if="ticket_id" :ticket-id="ticket_id" :app-mount-path="appMountPath" ></component-assignments>
                 </b-tab-item>
-                <b-tab-item :label="translations.shared.view_tab_title_delete_section" v-if="viewType == 'edit'">
+                <b-tab-item
+                    :label="translations.shared.view_tab_title_delete_section"
+                    v-if="viewType == 'edit' && statusAllowsEdition"
+                >
                     <span class="has-text-danger">
                         {{translations.main.view_text_delete_confirmation}}
                     </span>
