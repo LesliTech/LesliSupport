@@ -1,5 +1,4 @@
-<%#
-
+/*
 Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
@@ -13,13 +12,38 @@ transmission, publication is strictly forbidden.
 For more information read the license file including with this software.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
-
-%>
-
+// ·
+*/
 
 
-<%= navigation_lesli_item(cloud_help.root_path, I18n.t("bell.shared.sidebar_nav_dashboard"), "ri-dashboard-line") %>
-<%= navigation_lesli_item(cloud_help.tickets_path, I18n.t('help.tickets.view_title_main'), "ri-ticket-line") %>
+// · Import main app
+import app from "LesliVue/app"
 
+// · Import apps and components
+import appDashboard from "LesliVue/cloud-objects/dashboards/apps/show.vue"
 
+// // · Tickets components
+import ticketsIndex from './apps/tickets/index.vue'
+import ticketsNew from './apps/tickets/new.vue'
+import ticketsShow from './apps/tickets/show.vue'
+
+// ·
+app('CloudHelp', [
+    {
+        path: '/',
+        component: appDashboard
+    },
+    {
+        path: '/tickets',
+        component: ticketsIndex
+    },
+    {
+        path: '/tickets/new',
+        component: ticketsNew
+    },
+    {
+        path: '/tickets/:id',
+        component: ticketsShow
+    },
+
+])
