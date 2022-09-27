@@ -19,10 +19,12 @@ For more information read the license file including with this software.
 
 // · import vue tools
 import { onMounted } from "vue"
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 // . import components
 import formTicket from './components/form.vue'
+import slaInfo from './components/sla-info.vue'
+
 import ComponentDiscussions from "LesliVue/cloud-objects/discussion.vue"
 import ComponentFiles from "LesliVue/cloud-objects/file.vue"
 import ComponentWorkflowStatusDropdown from "LesliVue/shared/workflows/components/workflow-status-dropdown.vue"
@@ -31,6 +33,8 @@ import ComponentWorkflowStatusDropdown from "LesliVue/shared/workflows/component
 // · import lesli stores
 import { useTickets } from "CloudHelp/stores/tickets/tickets"
 
+// · initialize/inject plugins
+const route = useRoute()
 
 // · implement stores
 const storeTickets = useTickets()
@@ -38,6 +42,7 @@ const storeTickets = useTickets()
 //·
 const translations = {
     main: I18n.t('help.tickets'),
+    sla: I18n.t('help.slas'),
     core: {
         shared: I18n.t('core.shared')
     }
@@ -46,6 +51,7 @@ const translations = {
 // · initializing
 onMounted(() => {
     storeTickets.getTickets()
+    storeTickets.fetchTicket(route.params.id)
 })
 
 /**
@@ -78,12 +84,15 @@ const onUpdatedStatus = () => {
         <lesli-tabs v-model="tab">
             <lesli-tab-item title="Information" icon="info">
                 <form-ticket is-editable></form-ticket>
+                <sla-info></sla-info>
+
             </lesli-tab-item>
             <lesli-tab-item title="Discussions" icon="forum">
                 <component-discussions 
                     cloud-module="help" 
                     cloud-object="/tickets" 
                     :cloud-object-id="storeTickets.ticket.id"
+                    :onlyDiscussions="true"
                 >
                 </component-discussions>
             </lesli-tab-item>
@@ -99,9 +108,7 @@ const onUpdatedStatus = () => {
             <lesli-tab-item title="Timeline" icon="timeline">
 
             </lesli-tab-item>
-            <lesli-tab-item title="Activities log" icon="article">
 
-            </lesli-tab-item>
             <lesli-tab-item title="Internal comments" icon="comment">
 
             </lesli-tab-item>

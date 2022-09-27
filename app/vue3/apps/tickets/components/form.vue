@@ -50,15 +50,14 @@ const translations = {
 }
 
 /**
- * @description This function is used to update the user information
+ * @description This function is used to update the ticket information
  */
 const onUpdate = () => {
     storeTickets.updateTicket()
-    // storeUser.updateInformation()
 }
 
 /**
- * @description This function is used to create a new user
+ * @description This function is used to create a new ticket
  */
 const onCreate = () => {
     storeTickets.postTicket()
@@ -275,12 +274,5 @@ onMounted(() => {
 
         </form>
     </div>
-
-    <h2>SLA</h2>
-    <div class="box"></div>
-
-
-    <h2>SLA</h2>
-    <div class="box"></div>
 
 </template>

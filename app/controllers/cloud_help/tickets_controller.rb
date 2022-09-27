@@ -18,7 +18,7 @@ For more information read the license file including with this software.
 // · 
 
 =end
-    class TicketsController < ApplicationLesliController
+    class TicketsController < ApplicationController
 
         before_action :set_ticket, only: [:update, :destroy, :images]
 
