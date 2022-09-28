@@ -21,26 +21,11 @@ import { defineStore } from "pinia"
 
 
 // · 
-export const useTickets = defineStore("tickets", {
+export const useAssignments = defineStore("assignments", {
     state: () => {
         return {
-            loading: false,
-            tickets: [],
-            options: {},
-            ticket: {
-                cloud_help_catalog_ticket_types_id: null,
-                cloud_help_catalog_ticket_categories_id: null,
-                cloud_help_catalog_ticket_sources_id: null,
-                cloud_help_catalog_ticket_priorities_id: null,
-                cloud_help_catalog_ticket_workspaces_id: null,
-                subject: null,
-                description: {},
-                deadline: new Date(),
-                tags: [],
-                hours_worked: 0
-            },
-            users: {},
-            receiverUsers: {}
+
+
         }
     },
     actions: {
