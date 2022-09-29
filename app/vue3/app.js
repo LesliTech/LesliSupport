@@ -12,16 +12,45 @@ transmission, publication is strictly forbidden.
 For more information read the license file including with this software.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 */
 
 
-// · 
+// · Import main app
 import app from "LesliVue/app"
 
+// · Import apps and components
+import appDashboard from "LesliVue/cloud-objects/dashboards/apps/show.vue"
 
-// · 
+// // · Tickets components
+import ticketsIndex from './apps/tickets/index.vue'
+import ticketsNew from './apps/tickets/new.vue'
+import ticketsShow from './apps/tickets/show.vue'
 
+// // SLAs components
+import slasIndex from './apps/sla/index.vue'
 
-// · 
-app("CloudTeam", [])
+// ·
+app('CloudHelp', [
+    {
+        path: '/',
+        component: appDashboard
+    },
+    {
+        path: '/tickets',
+        component: ticketsIndex
+    },
+    {
+        path: '/tickets/new',
+        component: ticketsNew
+    },
+    {
+        path: '/tickets/:id',
+        component: ticketsShow
+    },
+    {
+        path: '/slas',
+        component: slasIndex
+    }
+
+])
