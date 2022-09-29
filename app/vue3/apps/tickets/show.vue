@@ -69,14 +69,12 @@ const onUpdatedStatus = () => {
         <lesli-header 
             :title="storeTickets.ticket.id"
         >
-            <!-- <component-workflow-status-dropdown
+            <component-workflow-status-dropdown
                     v-if="storeTickets.ticket.id"
-                    cloud-module="help"
-                    cloud-object="/tickets"
-                    :cloud-object-id="storeTickets.ticket.id"
                     @on-updated-status="onUpdatedStatus"
+                    :url="'/help/workflows/resources/transition-options/ticket/'+storeTickets.ticket.id+'.json'"
             >
-            </component-workflow-status-dropdown> -->
+            </component-workflow-status-dropdown>
             <button class="button is-fullwidth has-text-centered is-danger" @click="storeTickets.deleteTicket">
                 Delete
             </button>

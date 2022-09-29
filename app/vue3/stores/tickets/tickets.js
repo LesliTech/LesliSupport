@@ -38,15 +38,12 @@ export const useTickets = defineStore("tickets", {
                 deadline: new Date(),
                 tags: [],
                 hours_worked: 0
-            },
-            users: {},
-            receiverUsers: {}
+            }
         }
     },
     actions: {
 
         getTickets() {
-            this.getUsers()
             this.loading = true 
             this.http.get(this.url.help('tickets')).then(result => {
                 this.loading = false
@@ -149,21 +146,7 @@ export const useTickets = defineStore("tickets", {
                         })
                     }
                 })
-        },
-
-        getUsers() {
-            this.loading = true
-            this.http.get(this.url.admin('users/list')).then(result => {
-                this.users = result
-            }).catch(error => {
-                this.msg.danger(error)
-                console.log(error)
-            }).finally(() => {
-                this.loading = false
-            })
-        },
-
-
+        }
 
     }
 })

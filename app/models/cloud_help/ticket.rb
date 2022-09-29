@@ -139,7 +139,6 @@ module CloudHelp
         #     #]
         def self.index(current_user, query)
             ticket_index_response = TicketServices.index(current_user, query)
-            LC::Debug.msg(ticket_index_response)
             return ticket_index_response.payload
         end
 
