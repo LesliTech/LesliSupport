@@ -90,6 +90,7 @@ onMounted(() => {
                     <div class="field is-narrow">
                         <div class="control">
                             <lesli-select
+                                v-if="!storeTickets.loading"
                                 :options="storeTickets.options.workspaces"
                                 v-model="storeTickets.ticket.cloud_help_catalog_ticket_workspaces_id"
                             ></lesli-select>
@@ -107,7 +108,7 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="user_email" type="email" class="input" disabled  v-model="storeTickets.ticket.user_creator_name">
+                            <input class="input" disabled  v-model="storeTickets.ticket.user_creator_name">
                         </div>
                     </div>
                 </div>
@@ -122,7 +123,7 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="first_name"  type="text" class="input">
+                            <input name="reference_url"  type="text" class="input" v-model="storeTickets.ticket.reference_url">
                         </div>
                     </div>
                 </div>
@@ -145,13 +146,16 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> Subject </label>
-                    <span class="is-danger">*</span>
+                    <label class="label"> 
+                        Subject
+                        <span class="is-danger">*</span>
+                    </label>
+                    
                 </div>
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="user_alias"  class="input" required v-model="storeTickets.ticket.subject">
+                            <input name="subject" class="input" required v-model="storeTickets.ticket.subject">
                         </div>
                     </div>
                 </div>
@@ -164,7 +168,7 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="user_number"  class="input" type="date" v-model="storeTickets.ticket.deadline">
+                            <input name="deadline"  class="input" type="date" v-model="storeTickets.ticket.deadline">
                         </div>
                     </div>
                 </div>
@@ -172,13 +176,17 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> Type </label>
-                    <span class="is-danger">*</span>
+                    <label class="label"> 
+                        Type 
+                        <span class="is-danger">*</span>
+                    </label>
+
                 </div>
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
                             <lesli-select
+                                v-if="!storeTickets.loading"
                                 :options="storeTickets.options.types"
                                 v-model="storeTickets.ticket.cloud_help_catalog_ticket_types_id"
                             >
@@ -196,6 +204,7 @@ onMounted(() => {
                     <div class="field">
                         <div class="control">
                             <lesli-select
+                                v-if="!storeTickets.loading"
                                 :options="storeTickets.options.categories"
                                 v-model="storeTickets.ticket.cloud_help_catalog_ticket_categories_id"
                             ></lesli-select>
@@ -212,6 +221,7 @@ onMounted(() => {
                     <div class="field">
                         <div class="control">
                             <lesli-select
+                                v-if="!storeTickets.loading"
                                 :options="storeTickets.options.priorities"
                                 v-model="storeTickets.ticket.cloud_help_catalog_ticket_priorities_id"
                             ></lesli-select>
@@ -227,7 +237,7 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="user_title"  class="input">
+                            <input name="tags"  class="input">
                         </div>
                     </div>
                 </div>
@@ -240,7 +250,7 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="user_title" class="input">
+                            <input name="Hours word" class="input" type="number" v-model="storeTickets.ticket.hours_worked">
                         </div>
                     </div>
                 </div>
@@ -254,7 +264,7 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="user_title"  class="input">
+                            <input name="description"  class="input" v-model="storeTickets.ticket.description">
                         </div>
                     </div>
                 </div>

@@ -25,22 +25,41 @@ export const useHistory = defineStore("histories", {
     state: () => {
         return {
             loading: false,
-            histories: {}
-
+            histories: {},
+            history: ''
         }
     },
     actions: {
 
         getHistories(ticketId) {
-            let url = this.url.help(`tickets/${ticketId}/histories`)
             this.loading = true
-
-            this.http.get(url).then(result => {
+            this.http.get(this.url.help(`tickets/${ticketId}/histories`)).then(result => {
                 this.loading = false
                 this.histories = result
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
+        },
+
+        createHistory(ticketId){
+            let data = {
+                ticket_history: {
+                    content: this.history
+                }
+            }
+
+            this.http.post(this.url.help(`tickets/${ticketId}/histories`), data).then(result => {
+                    this.resetHistoryForm()
+                    this.histories.push(result)
+            }).catch(error => {
+                this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            }).finally(()=>{
+                this.submitting_form = false
+            })
+        },
+
+        resetHistoryForm(){
+            this.history = ''
         }
 
     }

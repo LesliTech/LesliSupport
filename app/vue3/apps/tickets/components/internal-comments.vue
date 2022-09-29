@@ -53,11 +53,34 @@ onMounted(() => {
     storeHistories.getHistories(route.params.id)
 })
 
+/**
+ * @description This function is used to create a new internal comment
+ */
+const onCreate = () => {
+    storeHistories.createHistory(route.params.id)
+
+}
+
 
 </script>
 <template>
 
     <h2>{{translations.histories.view_title_main}}</h2>
+
+    <div class="block">
+        <form @submit.prevent="onCreate()">
+            <div class="columns">
+                <div class="column is-6">
+                    <input name="comment" type="text" :placeholder="translations.histories.view_placeholder_add_history" class="input"  v-model="storeHistories.history">
+                </div>
+                <div class="column is-6">
+                    <lesli-button icon="save">{{ translations.shared.view_btn_save }}</lesli-button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
     <lesli-table 
         :records="storeHistories.histories"
         :columns="columns"

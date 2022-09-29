@@ -100,7 +100,8 @@ export const useTickets = defineStore("tickets", {
         },
 
         updateTicket(){
-            this.http.put(this.url.help('tickets'), this.ticket).then(result => {
+            console.log(this.ticket)
+            this.http.put(this.url.help('tickets/:id', this.ticket.id), this.ticket).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
