@@ -23,5 +23,16 @@
         end
     end
 %>
-<%= render partial: 'layouts/cloud_help/partials/module-app-navigation' %>
 
+<% if @tabs_granted["dashboard"] %>
+    <%= navigation_lesli_item("/help", I18n.t("help.shared.sidebar_nav_dashboard"), "ri-dashboard-3-line") %>
+<% end %>
+<% if @tabs_granted["tickets"]%>
+    <%= navigation_lesli_item(cloud_help.tickets_path, I18n.t("help.shared.sidebar_nav_tickets"), "ri-todo-line") %>
+<% end %>
+<% if @tabs_granted["slas"]%>
+    <%= navigation_lesli_item(cloud_help.slas_path, I18n.t("help.shared.sidebar_nav_slas"), "ri-file-paper-2-line") %>
+<% end %>
+<% if @tabs_granted["reports"]%>
+    <%= navigation_lesli_item(cloud_help.reports_path, I18n.t("help.shared.sidebar_nav_reports"), "ri-file-chart-line") %>
+<% end %>
