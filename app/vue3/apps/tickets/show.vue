@@ -24,6 +24,7 @@ import { useRouter, useRoute } from 'vue-router'
 // . import components
 import formTicket from './components/form.vue'
 import slaInfo from './components/sla-info.vue'
+import internalComments from './components/internal-comments.vue'
 
 import ComponentDiscussions from "LesliVue/cloud-objects/discussion.vue"
 import ComponentFiles from "LesliVue/cloud-objects/file.vue"
@@ -67,12 +68,15 @@ const onUpdatedStatus = () => {
 
     <section class="application-component">
         <lesli-header 
-            :title="storeTickets.ticket.id"
+            :title="storeTickets.ticket.id+' - '+storeTickets.ticket.subject+' - '+storeTickets.ticket.status"
         >
             <component-workflow-status-dropdown
                     v-if="storeTickets.ticket.id"
                     @on-updated-status="onUpdatedStatus"
-                    :url="'/help/workflows/resources/transition-options/ticket/'+storeTickets.ticket.id+'.json'"
+                    cloudObject="/tickets"
+                    cloudModule="help"
+                    :cloudObjectId="storeTickets.ticket.id"
+                    
             >
             </component-workflow-status-dropdown>
             <button class="button is-fullwidth has-text-centered is-danger" @click="storeTickets.deleteTicket">
@@ -108,7 +112,7 @@ const onUpdatedStatus = () => {
             </lesli-tab-item>
 
             <lesli-tab-item title="Internal comments" icon="comment">
-
+                <internal-comments></internal-comments>
             </lesli-tab-item>
         </lesli-tabs>
     </section>

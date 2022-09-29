@@ -21,19 +21,23 @@ import { defineStore } from "pinia"
 
 
 // · 
-export const useSlas = defineStore("sls", {
+export const useHistory = defineStore("histories", {
     state: () => {
         return {
             loading: false,
-            slas: {}
+            histories: {}
+
         }
     },
     actions: {
-        getSlas(){
+
+        getHistories(ticketId) {
+            let url = this.url.help(`tickets/${ticketId}/histories`)
             this.loading = true
-            this.http.get(this.url.help('slas')).then(result => {
+
+            this.http.get(url).then(result => {
                 this.loading = false
-                this.slas = result
+                this.histories = result
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })

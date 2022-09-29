@@ -18,60 +18,60 @@ For more information read the license file including with this software.
 
 
 // · import vue tools
-import { inject, onMounted, ref, onUnmounted } from "vue"
+import { onMounted } from "vue"
 
 // · import lesli stores
-import { useTickets } from "CloudHelp/stores/slas/sla"
+import { useHistory } from "CloudHelp/stores/tickets/history"
 
 // · import vue router composable
-import { useRouter, useRoute } from "vue-router"
+import { useRoute } from "vue-router"
 
 // · implement stores
-const storeSla = useSlas()
+const storeHistories = useHistory()
 
 // · initialize/inject plugins
-const router = useRouter()
-const url = inject("url")
 const route = useRoute()
 
 // · 
 const translations = {
-    users: I18n.t("core.users"),
-    shared: I18n.t("core.shared")
+    shared: I18n.t("core.shared"),
+    histories: I18n.t('help.ticket/histories')
 }
 
-/**
- * @description This function is used to update the user information
- */
- const onUpdate = () => {
-
-
-}
-
-/**
- * @description This function is used to create a new user
- */
-const onCreate = () => {
-
-}
-
-
+const columns = [{
+    field: "created_at",
+    label: "Created at",
+}, {
+    field: "user_creator_name",
+    label: "Creator",
+}, {
+    field: "content",
+    label: "Comment"
+}]
 
 onMounted(() => {
-
+    storeHistories.getHistories(route.params.id)
 })
+
 
 </script>
 <template>
-    <div class="box">
-        <form class="information" @submit.prevent="
-                isEditable
-                    ? onUpdate()
-                    : onCreate()
-        ">
-            
 
-        </form>
-    </div>
+    <h2>{{translations.histories.view_title_main}}</h2>
+    <lesli-table 
+        :records="storeHistories.histories"
+        :columns="columns"
+    >
+        <template #options="{ record, value }">
+            <a class="dropdown-item" >
+                <span class="material-icons">
+                    delete
+                </span>
+                <span>
+                    Delete
+                </span>
+            </a>
+        </template>
+    </lesli-table>
 
 </template>

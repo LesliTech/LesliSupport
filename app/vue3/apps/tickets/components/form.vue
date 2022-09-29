@@ -66,10 +66,10 @@ const onCreate = () => {
 
 
 onMounted(() => {
-    if (!props.isEditable){
-        storeTickets.resetTicketStore()
-    } else {
+    if (props.isEditable){
         storeTickets.fetchTicket(route.params?.id)
+    } else {
+        storeTickets.resetTicketStore()
     }
     storeTickets.getOptions()
 })

@@ -92,8 +92,6 @@ export const useTickets = defineStore("tickets", {
         },
 
         postTicket() {
-            this.receiverUsers.map(user => user.email),
-
             this.http.post(this.url.help('tickets'), this.ticket).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
@@ -110,7 +108,7 @@ export const useTickets = defineStore("tickets", {
         },
 
         resetTicketStore(){
-            this.ticket = { }
+            this.ticket = {}
         },
 
         fetchTicket(id=null){

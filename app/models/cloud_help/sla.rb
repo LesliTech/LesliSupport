@@ -178,7 +178,7 @@ For more information read the license file including with this software.
             )
 
             # We format the response
-            response[:slas] = slas.map do |sla|
+            response = slas.map do |sla|
                 sla_attributes = sla.attributes
                 sla_attributes["editable"] = sla.is_editable_by?(current_user)
                 sla_attributes["created_at"] = LC::Date.to_string_datetime(sla_attributes["created_at"])
