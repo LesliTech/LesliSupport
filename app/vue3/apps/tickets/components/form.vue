@@ -137,7 +137,7 @@ onMounted(() => {
                     <div class="field">
                         <div class="control">
                             <div v-for="user in storeTickets.ticket.assignment_attributes" :key="user">
-                                <span class="tag is-success">{{user}}</span>
+                                <span class="tag is-success">{{user.assignable_name}}</span>
                             </div>
                         </div>
                     </div>
@@ -237,7 +237,7 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="tags"  class="input">
+                            <input name="tags"  class="input" v-model="storeTickets.ticket.tags">
                         </div>
                     </div>
                 </div>

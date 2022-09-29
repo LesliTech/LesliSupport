@@ -21,13 +21,13 @@ For more information read the license file including with this software.
 import { onMounted } from "vue"
 
 // · import lesli stores
-import { useTickets } from "CloudHelp/stores/tickets/tickets"
+import { useAssignments } from "CloudHelp/stores/tickets/assignment"
 
 // · import vue router composable
 import { useRoute } from "vue-router"
 
 // · implement stores
-const storeTickets = useTickets()
+const storeAssignments = useAssignments()
 
 // · initialize/inject plugins
 const route = useRoute()
@@ -39,80 +39,53 @@ const translations = {
     sla: I18n.t('help.slas')
 }
 
+const columns = [{
+    field: "name",
+    label: "Name"
+}, {
+    field: "email",
+    label: "Email"
+}, {
+    field: "roles",
+    label: "Roles"
+}]
+
+
 onMounted(() => {
-    storeTickets.fetchTicket(route.params.id)
+    storeAssignments.getOptions()
+    storeAssignments.ticket_id = route.params.id
 })
 
 </script>
 <template>
-    <h2>SLA</h2>
+    <h2>Assignments</h2>
     <div class="box">
-        <div class="columns">
-            <div class="column">
-                <label>{{translations.sla.column_name}}</label>
-                <p>{{storeTickets.ticket.sla?.name}}</p>
-            </div>
+        <lesli-table 
+            :records="storeAssignments.users"
+            :columns="columns"
+        >
+            <template #roles="{ column, value }">
+                <span
+                    v-for="role in value"
+                    :key="role.id"
+                    class="tag is-success is-small is-rounded mr-1"
+                >
+                    {{ role.name }}
+                </span>
+            </template>
 
-            <div class="column">
-                <label>{{translations.sla.column_default}}</label>
-                <p v-if="storeTickets.ticket.sla?.default">yes</p>
-                <p v-else> no </p>
-            </div>
-        </div>
+            <template #options="{ record, value }">
+                <a class="dropdown-item" @click="storeAssignments.postAssignment(record)">
+                    <span class="material-icons">
+                        assignment
+                    </span>
+                    <span>
+                        Assign
+                    </span>
+                </a>
+            </template>
 
-        <div class="columns">
-            <div class="column">
-                <label>{{translations.sla.column_expected_response_time}}</label>
-                <p>{{storeTickets.ticket.sla?.expected_response_time}}</p>
-            </div>
-
-            <div class="column">
-                <label>{{translations.sla.column_expected_resolution_time}}</label>
-                <p>{{storeTickets.ticket.sla?.expected_resolution_time}}</p>
-            </div>
-
-            <div class="column">
-                <label>{{translations.sla.column_price_per_hour}}</label>
-                <p> {{storeTickets.ticket.sla?.price_per_hour}}</p>
-            </div>
-        </div>
-
-        <div class="colums">
-            <div class="column">
-                <label>{{translations.sla.view_tab_title_associations}}</label>
-                <div v-for="association in storeTickets.ticket.sla?.association_attributes" :key="association.id">
-                    <span class="tag is-info">{{association.ticket_type_name}}</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">{{translations.sla.column_body}}</label>
-            <div class="control">
-                <textarea class="textarea is-small" :v-model="storeTickets.ticket.sla?.body" disabled></textarea>
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">{{translations.sla.column_client_repercussions}}</label>
-            <div class="control">
-                <textarea class="textarea is-small" :v-model="storeTickets.ticket.sla?.client_repercussions" disabled></textarea>
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">{{translations.sla.column_provider_repercussions}}</label>
-            <div class="control">
-                <textarea class="textarea is-small" :v-model="storeTickets.ticket.sla?.provider_repercussions" disabled></textarea>
-            </div>
-        </div>
-
-        <div class="field">
-            <label class="label">{{translations.sla.column_exceptions}}</label>
-            <div class="control">
-                <textarea class="textarea is-small" :v-model="storeTickets.ticket.sla?.exceptions" disabled></textarea>
-            </div>
-        </div>
+        </lesli-table>
     </div>
 
 </template>

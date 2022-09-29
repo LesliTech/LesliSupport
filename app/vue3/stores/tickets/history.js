@@ -26,14 +26,15 @@ export const useHistory = defineStore("histories", {
         return {
             loading: false,
             histories: {},
-            history: ''
+            history: '',
+            ticket_id: null
         }
     },
     actions: {
 
-        getHistories(ticketId) {
+        getHistories(ticket_id) {
             this.loading = true
-            this.http.get(this.url.help(`tickets/${ticketId}/histories`)).then(result => {
+            this.http.get(this.url.help(`tickets/${ticket_id}/histories`)).then(result => {
                 this.loading = false
                 this.histories = result
             }).catch(error => {
@@ -41,14 +42,14 @@ export const useHistory = defineStore("histories", {
             })
         },
 
-        createHistory(ticketId){
+        createHistory(){
             let data = {
                 ticket_history: {
                     content: this.history
                 }
             }
 
-            this.http.post(this.url.help(`tickets/${ticketId}/histories`), data).then(result => {
+            this.http.post(this.url.help(`tickets/${this.ticket_id}/histories`), data).then(result => {
                     this.resetHistoryForm()
                     this.histories.push(result)
             }).catch(error => {
@@ -60,6 +61,29 @@ export const useHistory = defineStore("histories", {
 
         resetHistoryForm(){
             this.history = ''
+        },
+
+        deleteHistory(comment){
+            this.dialog
+            .confirmation({
+                title: "Delete comment",
+                text: "Are you sure you want to delete this comment?",
+                confirmText: "yes",
+                cancelText: "no"
+            })
+            .then(({ isConfirmed }) => {
+                if (isConfirmed) {
+                    let url = this.url.help(`tickets/${this.ticket_id}/histories/${comment.id}`)
+                    this.http.delete(url).then(result => {
+                        this.histories = this.histories.filter((history)=>{
+                            return history.id != comment.id
+                        })
+                        this.msg.success(I18n.t("core.users.messages_success_operation"))
+                    }).catch(error => {
+                        this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+                    })
+                }
+            })
         }
 
     }

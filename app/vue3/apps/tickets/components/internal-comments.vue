@@ -51,13 +51,14 @@ const columns = [{
 
 onMounted(() => {
     storeHistories.getHistories(route.params.id)
+    storeHistories.ticket_id = route.params.id
 })
 
 /**
  * @description This function is used to create a new internal comment
  */
 const onCreate = () => {
-    storeHistories.createHistory(route.params.id)
+    storeHistories.createHistory()
 
 }
 
@@ -86,7 +87,7 @@ const onCreate = () => {
         :columns="columns"
     >
         <template #options="{ record, value }">
-            <a class="dropdown-item" >
+            <a class="dropdown-item" @click="storeHistories.deleteHistory(record)">
                 <span class="material-icons">
                     delete
                 </span>

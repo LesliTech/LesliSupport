@@ -25,6 +25,7 @@ import { useRouter, useRoute } from 'vue-router'
 import formTicket from './components/form.vue'
 import slaInfo from './components/sla-info.vue'
 import internalComments from './components/internal-comments.vue'
+import assignments from './components/assignments.vue'
 
 import ComponentDiscussions from "LesliVue/cloud-objects/discussion.vue"
 import ComponentFiles from "LesliVue/cloud-objects/file.vue"
@@ -87,6 +88,7 @@ const onUpdatedStatus = () => {
             <lesli-tab-item title="Information" icon="info">
                 <form-ticket is-editable></form-ticket>
                 <sla-info></sla-info>
+                <assignments></assignments>
 
             </lesli-tab-item>
             <lesli-tab-item title="Discussions" icon="forum">
@@ -104,10 +106,6 @@ const onUpdatedStatus = () => {
                     cloud-object="/tickets"
                     :cloud-object-id="storeTickets.ticket.id"
                 ></component-files>
-
-            </lesli-tab-item>
-
-            <lesli-tab-item title="Timeline" icon="timeline">
 
             </lesli-tab-item>
 
