@@ -4,3 +4,4 @@
 
 //= link cloud_help/application.css
 //= link cloud_help/application.js
+//= link cloud_help/application-2.js
