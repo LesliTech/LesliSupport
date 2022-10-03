@@ -37,7 +37,7 @@ export default {
     //      Ticket type, with the same params as the associated rails model
     data(){
         return {
-            filters_route: '/help/tickets/options?filters[include]=statuses',
+            filters_route: '/help/tickets/options.json?filters[include]=statuses',
             translations: {
                 main: I18n.t('help.tickets'),
                 core: I18n.t('core.shared')
