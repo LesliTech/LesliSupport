@@ -220,7 +220,7 @@ export default {
         },
 
         getTicketOptions() {
-            let url = `${this.main_route}/options.json`
+            let url = this.url.help("tickets/options")
             this.loading.options = true
 
             this.http.get(url).then(result => {

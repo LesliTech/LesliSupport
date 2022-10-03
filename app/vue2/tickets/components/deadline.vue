@@ -44,6 +44,7 @@ export default {
 
     methods: {
         putTicketDeadline(){
+            let url = this.url.help("tickets/:ticket_id", { ticket_id: this.ticket_id })
             let deadline = this.deadline.toISOString()
             let data = {
                 ticket: {
@@ -53,7 +54,7 @@ export default {
                 }
             }
             this.show = false
-            this.http.patch( `/help/tickets/${this.ticket_id}.json`, data).then(result => {
+            this.http.patch( url, data).then(result => {
                 if (result.successful) {
                     this.msg.success(this.translations.messages.put_deadline.successful)
                     this.bus.publish("patch:/help/ticket/deadline", deadline)

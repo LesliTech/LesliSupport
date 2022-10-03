@@ -66,9 +66,9 @@ export default {
         },
 
         getTicketTimelines(){
-
+            let url = this.url.help("tickets/:ticket_id/timelines", { ticket_id: this.ticket_id })
             this.loading = true
-            this.http.get(`/help/tickets/${this.ticket_id}/timelines.json`).then(result => {
+            this.http.get(url).then(result => {
                 this.loading = false;
                 if (result.successful) {
                     this.ticket_timelines = result.data
@@ -82,7 +82,8 @@ export default {
         },
 
         getTicketTimelinesOptions(){
-            this.http.get(`/help/tickets/${this.ticket_id}/timelines/options.json`).then(result => {
+            let url = this.url.help("tickets/:ticket_id/timelines/options", { ticket_id: this.ticket_id})
+            this.http.get(url).then(result => {
                 if (result.successful) {
                     result.data.actions = [{
                         value: null,
