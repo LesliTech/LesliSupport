@@ -68,7 +68,7 @@ export default {
         getTicketTimelines(){
 
             this.loading = true
-            this.http.get(`/help/tickets/${this.ticket_id}/timelines`).then(result => {
+            this.http.get(`/help/tickets/${this.ticket_id}/timelines.json`).then(result => {
                 this.loading = false;
                 if (result.successful) {
                     this.ticket_timelines = result.data
@@ -82,7 +82,7 @@ export default {
         },
 
         getTicketTimelinesOptions(){
-            this.http.get(`/help/tickets/${this.ticket_id}/timelines/options`).then(result => {
+            this.http.get(`/help/tickets/${this.ticket_id}/timelines/options.json`).then(result => {
                 if (result.successful) {
                     result.data.actions = [{
                         value: null,

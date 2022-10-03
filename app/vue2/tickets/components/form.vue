@@ -172,7 +172,7 @@ export default {
             data.ticket.description = JSON.stringify(data.ticket.description)
             this.submitting = true
 
-            this.http.post(this.main_route, data).then(result => {
+            this.http.post(this.url.help("tickets"), data).then(result => {
                 this.submitting = false
                 if (result.successful) {
                     this.msg.success(this.translations.main.messages_info_ticket_created)
@@ -220,7 +220,7 @@ export default {
         },
 
         getTicketOptions() {
-            let url = `${this.main_route}/options`
+            let url = `${this.main_route}/options.json`
             this.loading.options = true
 
             this.http.get(url).then(result => {

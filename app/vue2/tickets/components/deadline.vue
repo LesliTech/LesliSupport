@@ -53,7 +53,7 @@ export default {
                 }
             }
             this.show = false
-            this.http.patch( `/help/tickets/${this.ticket_id}`, data).then(result => {
+            this.http.patch( `/help/tickets/${this.ticket_id}.json`, data).then(result => {
                 if (result.successful) {
                     this.msg.success(this.translations.messages.put_deadline.successful)
                     this.bus.publish("patch:/help/ticket/deadline", deadline)
