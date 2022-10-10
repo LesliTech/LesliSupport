@@ -22,6 +22,16 @@ For more information read the license file including with this software.
 
         before_action :set_ticket, only: [:update, :destroy, :images]
 
+
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: []
+            }
+        end
+
 =begin
 @return [HTML|JSON] HTML view for listing all tickets or a Json that contains a list 
     of all tickets associated to this *account*
