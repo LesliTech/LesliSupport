@@ -20,5 +20,12 @@ require_dependency "cloud_help/application_controller"
 
 module CloudHelp
     class Dashboard::ComponentsController < Shared::Dashboard::ComponentsController
+
+        def privileges
+            {
+                show: []
+            }
+        end
+
     end
 end
