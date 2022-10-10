@@ -28,7 +28,8 @@ For more information read the license file including with this software.
                 new: [],
                 edit: [],
                 show: [],
-                index: []
+                index: [],
+                destroy: []
             }
         end
 
