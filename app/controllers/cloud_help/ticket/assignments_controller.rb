@@ -22,6 +22,12 @@ For more information read the license file including with this software.
     class Ticket::AssignmentsController < ApplicationLesliController
         before_action :set_ticket, only: [:create, :destroy]
 
+        def privileges
+            {
+                new: []
+            }
+        end
+
 =begin
 @return [HTML|JSON] HTML view for listing all assignments of an ticket or a Json that contains a list of 
     all assignments associated to certain ticket 
