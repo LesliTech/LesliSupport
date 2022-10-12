@@ -27,7 +27,7 @@ import settingsList from './account_settings/apps/list.vue'
 
 // · Dashboard components
 import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
-import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
+// import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
 import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
 
 // · Ticket workspaces components
@@ -55,16 +55,16 @@ import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
 import reportsList from './reports/apps/list.vue'
 
 // · Slas components
-import slasList from './slas/apps/list.vue'
+// import slasList from './slas/apps/list.vue'
 import slasEdit from './slas/apps/edit.vue'
 import slasNew from './slas/apps/new.vue'
 import slasShow from './slas/apps/show.vue'
 
 // · Tickets components
-import ticketsList from './tickets/apps/list.vue'
-import ticketsEdit from './tickets/apps/edit.vue'
-import ticketsNew from './tickets/apps/new.vue'
-import ticketsShow from './tickets/apps/show.vue'
+// import ticketsList from './tickets/apps/list.vue'
+// import ticketsEdit from './tickets/apps/edit.vue'
+// import ticketsNew from './tickets/apps/new.vue'
+// import ticketsShow from './tickets/apps/show.vue'
 
 // · Import a list of all dashboard components
 import componentNewTickets from './dashboards/components/list-new-tickets.vue'
@@ -85,27 +85,29 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     {
         path: '/settings',
         component: settingsList
-    },{
-        path: '/',
-        component: dashboardsShow,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            newResourceAnchorPath: '/help/tickets/new',
-            newResourceAnchorText: ()=>{
-                return I18n.t('help.tickets.view_btn_create')
-            },
-            appMountPath: '/help',
-            renderComponents: {
-                'component-new-tickets': componentNewTickets,
-                'component-my-tickets': componentMyTickets,
-                'component-unassigned-tickets': componentUnassignedTickets,
-                'component-tickets-by-type': componentTicketsByType,
-                'component-tickets-by-category': componentTicketsByCategory,
-                'component-hours-worked': componentHoursWorked
-            }
-        }
-    },{
+    },
+    // {
+    //     path: '/',
+    //     component: dashboardsShow,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         newResourceAnchorPath: '/help/tickets/new',
+    //         newResourceAnchorText: ()=>{
+    //             return I18n.t('help.tickets.view_btn_create')
+    //         },
+    //         appMountPath: '/help',
+    //         renderComponents: {
+    //             'component-new-tickets': componentNewTickets,
+    //             'component-my-tickets': componentMyTickets,
+    //             'component-unassigned-tickets': componentUnassignedTickets,
+    //             'component-tickets-by-type': componentTicketsByType,
+    //             'component-tickets-by-category': componentTicketsByCategory,
+    //             'component-hours-worked': componentHoursWorked
+    //         }
+    //     }
+    // },
+    {
         path: '/dashboards',
         component: dashboardsList,
         props: {
@@ -251,13 +253,15 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
         props: {
             appMountPath: '/help/catalog/ticket_types'
         }
-    },{
-        path: '/slas',
-        component: slasList,
-        props: {
-            appMountPath: '/help/slas'
-        }
-    },{
+    },
+    // {
+    //     path: '/slas',
+    //     component: slasList,
+    //     props: {
+    //         appMountPath: '/help/slas'
+    //     }
+    // },
+    {
         path: '/slas/new',
         component: slasNew,
         props: {
@@ -275,31 +279,34 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
         props: {
             appMountPath: '/help/slas'
         }
-    },{
-        path: '/tickets',
-        component: ticketsList,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
-        path: '/tickets/new',
-        component: ticketsNew,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
-        path: '/tickets/:id',
-        component: ticketsShow,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
-        path: '/tickets/:id/edit',
-        component: ticketsEdit,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
+    },
+    //,{
+    //     path: '/tickets',
+    //     component: ticketsList,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },
+    // {
+    //     path: '/tickets/new',
+    //     component: ticketsNew,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },{
+    //     path: '/tickets/:id',
+    //     component: ticketsShow,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },{
+    //     path: '/tickets/:id/edit',
+    //     component: ticketsEdit,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },
+    {
         path: '/reports',
         component: reportsList,
         props: {
