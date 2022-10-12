@@ -19,18 +19,15 @@ For more information read the license file including with this software.
 
 =end
     class TicketsController < ApplicationController
-
         before_action :set_ticket, only: [:update, :destroy, :images]
-
 
         def privileges
             {
                 new: [],
                 edit: [],
                 show: [],
-                index: [],
+                index: ['options'],
                 destroy: []
-            }
         end
 
 =begin

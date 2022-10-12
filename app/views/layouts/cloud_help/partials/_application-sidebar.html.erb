@@ -43,14 +43,14 @@ For more information read the license file including with this software.
 %>
 
 <% if @tabs_granted["dashboard"] %>
-    <%= navigation_lesli_item("/help", I18n.t("help.shared.sidebar_nav_dashboard"), "ri-dashboard-3-line") %>
+    <%= navigation_lesli_item("/help", I18n.t("help.shared.sidebar_nav_dashboard"), "ri-dashboard-3-line", reload:true) %>
 <% end %>
 <% if @tabs_granted["tickets"]%>
-    <%= navigation_lesli_item(cloud_help.tickets_path, I18n.t("help.shared.sidebar_nav_tickets"), "ri-todo-line") %>
+    <%= navigation_lesli_item(cloud_help.tickets_path, I18n.t("help.shared.sidebar_nav_tickets"), "ri-todo-line", reload:true) %>
 <% end %>
 <% if @tabs_granted["slas"]%>
-    <%= navigation_lesli_item(cloud_help.slas_path, I18n.t("help.shared.sidebar_nav_slas"), "ri-file-paper-2-line") %>
+    <%= navigation_lesli_item(cloud_help.slas_path, I18n.t("help.shared.sidebar_nav_slas"), "ri-file-paper-2-line", reload:true) %>
 <% end %>
 <% if @tabs_granted["reports"]%>
-    <%= navigation_lesli_item(cloud_help.reports_path, I18n.t("help.shared.sidebar_nav_reports"), "ri-file-chart-line") %>
+    <%= navigation_lesli_item(cloud_help.reports_path, I18n.t("help.shared.sidebar_nav_reports"), "ri-file-chart-line", reload:true) %>
 <% end %>
