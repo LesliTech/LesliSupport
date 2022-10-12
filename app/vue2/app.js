@@ -27,7 +27,7 @@ import settingsList from './account_settings/apps/list.vue'
 
 // · Dashboard components
 import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
-// import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
+import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
 import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
 
 // · Ticket workspaces components
@@ -86,27 +86,27 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
         path: '/settings',
         component: settingsList
     },
-    // {
-    //     path: '/',
-    //     component: dashboardsShow,
-    //     props: {
-    //         cloudEngine: 'CloudHelp',
-    //         engineNamespace: 'help',
-    //         newResourceAnchorPath: '/help/tickets/new',
-    //         newResourceAnchorText: ()=>{
-    //             return I18n.t('help.tickets.view_btn_create')
-    //         },
-    //         appMountPath: '/help',
-    //         renderComponents: {
-    //             'component-new-tickets': componentNewTickets,
-    //             'component-my-tickets': componentMyTickets,
-    //             'component-unassigned-tickets': componentUnassignedTickets,
-    //             'component-tickets-by-type': componentTicketsByType,
-    //             'component-tickets-by-category': componentTicketsByCategory,
-    //             'component-hours-worked': componentHoursWorked
-    //         }
-    //     }
-    // },
+    {
+        path: '/',
+        component: dashboardsShow,
+        props: {
+            cloudEngine: 'CloudHelp',
+            engineNamespace: 'help',
+            newResourceAnchorPath: '/help/tickets/new',
+            newResourceAnchorText: ()=>{
+                return I18n.t('help.tickets.view_btn_create')
+            },
+            appMountPath: '/help',
+            renderComponents: {
+                'component-new-tickets': componentNewTickets,
+                'component-my-tickets': componentMyTickets,
+                'component-unassigned-tickets': componentUnassignedTickets,
+                'component-tickets-by-type': componentTicketsByType,
+                'component-tickets-by-category': componentTicketsByCategory,
+                'component-hours-worked': componentHoursWorked
+            }
+        }
+    },
     {
         path: '/dashboards',
         component: dashboardsList,
@@ -123,7 +123,8 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
             engineNamespace: 'help',
             appMountPath: '/help/dashboards'
         }
-    },{
+    },
+    {
         path: '/dashboards/:id',
         component: dashboardsShow,
         props: {
@@ -143,7 +144,8 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
                 'component-hours-worked': componentHoursWorked
             }
         }
-    },{
+    },
+    {
         path: '/workflows',
         component: workflowsList,
         props: {
