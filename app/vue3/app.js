@@ -20,7 +20,7 @@ For more information read the license file including with this software.
 import app from "LesliVue/app"
 
 // · Import apps and components
-import appDashboard from "LesliVue/cloud-objects/dashboards/apps/show.vue"
+// import appDashboard from "LesliVue/cloud-objects/dashboards/apps/show.vue"
 
 // // · Tickets components
 import ticketsIndex from './apps/tickets/index.vue'
@@ -32,10 +32,10 @@ import slasIndex from './apps/sla/index.vue'
 
 // ·
 app('CloudHelp', [
-    {
-        path: '/',
-        component: appDashboard
-    },
+    // {
+    //     path: '/',
+    //     component: appDashboard
+    // },
     {
         path: '/tickets',
         component: ticketsIndex
