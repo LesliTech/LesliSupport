@@ -22,6 +22,12 @@ For more information read the license file including with this software.
 
         before_action :set_sla, only: [:update, :destroy, :images]
 
+        def privileges
+            {
+                index: []
+            }
+        end
+
 =begin
 @return [HTML|JSON] HTML view for listing all slas or a Json that contains a list 
     of all slas associated to this *account*

@@ -19,8 +19,17 @@ For more information read the license file including with this software.
 
 =end
     class TicketsController < ApplicationController
-
         before_action :set_ticket, only: [:update, :destroy, :images]
+
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: ['options'],
+                destroy: []
+            }
+        end
 
 =begin
 @return [HTML|JSON] HTML view for listing all tickets or a Json that contains a list 

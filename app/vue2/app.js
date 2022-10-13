@@ -55,16 +55,16 @@ import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
 import reportsList from './reports/apps/list.vue'
 
 // · Slas components
-import slasList from './slas/apps/list.vue'
+// import slasList from './slas/apps/list.vue'
 import slasEdit from './slas/apps/edit.vue'
 import slasNew from './slas/apps/new.vue'
 import slasShow from './slas/apps/show.vue'
 
 // · Tickets components
-import ticketsList from './tickets/apps/list.vue'
-import ticketsEdit from './tickets/apps/edit.vue'
-import ticketsNew from './tickets/apps/new.vue'
-import ticketsShow from './tickets/apps/show.vue'
+// import ticketsList from './tickets/apps/list.vue'
+// import ticketsEdit from './tickets/apps/edit.vue'
+// import ticketsNew from './tickets/apps/new.vue'
+// import ticketsShow from './tickets/apps/show.vue'
 
 // · Import a list of all dashboard components
 import componentNewTickets from './dashboards/components/list-new-tickets.vue'
@@ -85,7 +85,8 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     {
         path: '/settings',
         component: settingsList
-    },{
+    },
+    {
         path: '/',
         component: dashboardsShow,
         props: {
@@ -105,7 +106,8 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
                 'component-hours-worked': componentHoursWorked
             }
         }
-    },{
+    },
+    {
         path: '/dashboards',
         component: dashboardsList,
         props: {
@@ -121,7 +123,8 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
             engineNamespace: 'help',
             appMountPath: '/help/dashboards'
         }
-    },{
+    },
+    {
         path: '/dashboards/:id',
         component: dashboardsShow,
         props: {
@@ -141,7 +144,8 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
                 'component-hours-worked': componentHoursWorked
             }
         }
-    },{
+    },
+    {
         path: '/workflows',
         component: workflowsList,
         props: {
@@ -251,13 +255,15 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
         props: {
             appMountPath: '/help/catalog/ticket_types'
         }
-    },{
-        path: '/slas',
-        component: slasList,
-        props: {
-            appMountPath: '/help/slas'
-        }
-    },{
+    },
+    // {
+    //     path: '/slas',
+    //     component: slasList,
+    //     props: {
+    //         appMountPath: '/help/slas'
+    //     }
+    // },
+    {
         path: '/slas/new',
         component: slasNew,
         props: {
@@ -275,31 +281,34 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
         props: {
             appMountPath: '/help/slas'
         }
-    },{
-        path: '/tickets',
-        component: ticketsList,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
-        path: '/tickets/new',
-        component: ticketsNew,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
-        path: '/tickets/:id',
-        component: ticketsShow,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
-        path: '/tickets/:id/edit',
-        component: ticketsEdit,
-        props: {
-            appMountPath: '/help/tickets'
-        }
-    },{
+    },
+    //,{
+    //     path: '/tickets',
+    //     component: ticketsList,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },
+    // {
+    //     path: '/tickets/new',
+    //     component: ticketsNew,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },{
+    //     path: '/tickets/:id',
+    //     component: ticketsShow,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },{
+    //     path: '/tickets/:id/edit',
+    //     component: ticketsEdit,
+    //     props: {
+    //         appMountPath: '/help/tickets'
+    //     }
+    // },
+    {
         path: '/reports',
         component: reportsList,
         props: {

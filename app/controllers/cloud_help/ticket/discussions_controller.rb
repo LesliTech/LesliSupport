@@ -20,5 +20,14 @@ For more information read the license file including with this software.
 
 =end
     class Ticket::DiscussionsController < CloudObject::DiscussionsController   
+
+        def privileges
+            {
+                new: [],
+                edit: [],
+                destroy: []
+            }
+        end
+
     end
 end
