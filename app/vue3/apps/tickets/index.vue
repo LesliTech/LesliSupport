@@ -92,11 +92,20 @@ function showTicket(ticket) {
             <lesli-button :to="url.help('tickets/new')" icon="add">
                 {{ translations.core.shared.view_btn_add }}
             </lesli-button>
+            <lesli-button @click="storeTickets.reloadTickets" icon="refresh">
+                {{ translations.core.shared.view_text_btn_reload }} 
+            </lesli-button>
         </lesli-header>
+
+        <lesli-toolbar @search="storeTickets.search"></lesli-toolbar>
 
         <lesli-table 
             :records="storeTickets.tickets"
             :columns="columns"
+            :loading="storeTickets.loading"
+            :pagination="storeTickets.index.pagination"
+            @paginate="storeTickets.paginateIndex"
+            @sort="storeTickets.sort"
             @click="showTicket">
         </lesli-table>
 

@@ -189,15 +189,21 @@ module CloudHelp
             # total count
             response[:total_count] = tickets.length
 
-            # Adding pagination to tickets
-            pagination = query[:pagination]
-            tickets = tickets.page(
-                pagination[:page]
-            ).per(
-                pagination[:perPage]
-            ).order(
-                "#{pagination[:orderBy]} #{pagination[:order]} NULLS LAST"
-            )
+            # tickets = tickets.order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
+
+            tickets = tickets.page(query[:pagination][:page])
+            .per(query[:pagination][:perPage])
+            .order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]} NULLS LAST")
+
+            # # Adding pagination to tickets
+            # pagination = query[:pagination]
+            # tickets = tickets.page(
+            #     pagination[:page]
+            # ).per(
+            #     pagination[:perPage]
+            # ).order(
+            #     "#{pagination[:orderBy]} #{pagination[:order]} NULLS LAST"
+            # )
 
             # We format the response
             response[:tickets] = tickets.map do |ticket|
