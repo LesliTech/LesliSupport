@@ -97,7 +97,57 @@ function showTicket(ticket) {
             </lesli-button>
         </lesli-header>
 
-        <lesli-toolbar @search="storeTickets.search"></lesli-toolbar>
+        <lesli-toolbar @search="storeTickets.search" :placeholder="translations.main.view_placeholder_text_filter">
+            <div class="block">
+                <lesli-select
+                    :options="[
+                        {
+                            label: translations.main.view_text_filter_everyones_tickets,
+                            value: null
+                        },
+                        {
+                            label: translations.main.view_text_filter_own_tickets,
+                            value: 'own'
+                        }
+                    ]"
+                    v-model="storeTickets.filters.user_type"
+                    @change="storeTickets.getTickets()"
+                >
+                </lesli-select>
+            </div>
+            <div class="block">
+                <lesli-select
+                    :options="[
+                        {
+                            label: translations.main.view_text_filter_all_tickets,
+                            value: null
+                        }, {
+                            label: translations.main.view_text_filter_active_tickets,
+                            value: 'active'
+                        }, {
+                            label: translations.main.view_text_filter_inactive_tickets,
+                            value: 'inactive'
+                        },
+                    ]"
+                    v-model="storeTickets.filters.search_type"
+                    @change="storeTickets.getTickets()"
+                >
+                </lesli-select>
+            </div>
+            <div class="block">
+                <lesli-select
+                    :options="[
+                        {
+                            label: translations.main.view_text_filter_all_workspaces,
+                            value: null
+                        }
+                    ]"
+                    v-model="storeTickets.filters.cloud_help_catalog_ticket_workspaces_id"
+                    @change="storeTickets.getTickets()"
+                >
+                </lesli-select>
+            </div>
+        </lesli-toolbar>
 
         <lesli-table 
             :records="storeTickets.tickets"

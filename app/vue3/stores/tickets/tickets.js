@@ -45,6 +45,11 @@ export const useTickets = defineStore("tickets", {
             index: { 
                 pagination: {},
                 records: []
+            },
+            filters: {
+                cloud_help_catalog_ticket_workspaces_id: null,
+                search_type: null,
+                user_type: 'own'
             }
         }
     },
@@ -52,7 +57,14 @@ export const useTickets = defineStore("tickets", {
 
         getTickets(url=this.url.help('tickets')) {
             this.loading = true 
-            this.http.get(url.paginate(this.pagination.page)).then(result => {
+            const query_filters = {}
+
+            for (const [key, value] of Object.entries(this.filters)) {
+                query_filters[key] = [value]
+            }
+
+            this.http.get(url.paginate(this.pagination.page).filter(query_filters)
+            ).then(result => {
                 this.loading = false
                 this.index = result
                 this.tickets = result.records
