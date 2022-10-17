@@ -105,49 +105,54 @@ module CloudHelp
 
         def self.index(current_user, query, params)
 
+            # get search string from query params
+            search_string = query[:search].downcase.gsub(" ","%") unless query[:search].blank?
+
             # Parsing filters
             filters = params[:f]
             filters_query = []
 
-            # We filter by search_type, available search_types are 'own' and 'active'
-            if filters["search_type"]
-                filters_query.push("(chws.status_type != 'completed_unsuccessfully' AND chws.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
-                filters_query.push("(chws.status_type = 'completed_unsuccessfully' OR chws.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
-            end
-
-            # We filter by user_type, which can be 'own' or null
-            if filters["user_type"].eql? "own"
-                filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR chta.users_id = #{current_user.id})")
-            end
-
-            if filters["workspace_id"]
-                filters_query.push("(cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = #{filters["workspace_id"]})")
-            end
-
-            # We filter by a text string written by the user
-            if filters["query"] && !filters["query"].empty?
-                query_words = filters["query"].split(" ")
-                query_words.each do |query_word|
-                    query_word = query_word.strip.downcase
-
-                    # first customer
-                    filters_query.push("(
-                        (CAST(cloud_help_tickets.id AS VARCHAR) = '#{query_word}') OR
-                        (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(chctc.name) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(chctt.name) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(chctp.name) SIMILAR TO '%#{query_word}%') OR
-                        (LOWER(tags) SIMILAR TO '%#{query_word}%')
-                    )")
+            unless filters.blank?
+                # We filter by search_type, available search_types are 'own' and 'active'
+                if filters["search_type"]
+                    filters_query.push("(chws.status_type != 'completed_unsuccessfully' AND chws.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
+                    filters_query.push("(chws.status_type = 'completed_unsuccessfully' OR chws.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
                 end
-            end
 
-            # We filter by statuses
-            if filters["statuses"] && !filters["statuses"].empty?
-                statuses_query = filters["statuses"].map do |status|
-                    "chws.id = '#{status["id"]}'"
+                # We filter by user_type, which can be 'own' or null
+                if filters["user_type"].eql? "own"
+                    filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR chta.users_id = #{current_user.id})")
                 end
-                filters_query.push("(#{statuses_query.join(' or ')})")
+
+                if filters["workspace_id"]
+                    filters_query.push("(cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = #{filters["workspace_id"]})")
+                end
+
+                # We filter by a text string written by the user
+                if filters["query"] && !filters["query"].empty?
+                    query_words = filters["query"].split(" ")
+                    query_words.each do |query_word|
+                        query_word = query_word.strip.downcase
+
+                        # first customer
+                        filters_query.push("(
+                            (CAST(cloud_help_tickets.id AS VARCHAR) = '#{query_word}') OR
+                            (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
+                            (LOWER(chctc.name) SIMILAR TO '%#{query_word}%') OR
+                            (LOWER(chctt.name) SIMILAR TO '%#{query_word}%') OR
+                            (LOWER(chctp.name) SIMILAR TO '%#{query_word}%') OR
+                            (LOWER(tags) SIMILAR TO '%#{query_word}%')
+                        )")
+                    end
+                end
+
+                # We filter by statuses
+                if filters["statuses"] && !filters["statuses"].empty?
+                    statuses_query = filters["statuses"].map do |status|
+                        "chws.id = '#{status["id"]}'"
+                    end
+                    filters_query.push("(#{statuses_query.join(' or ')})")
+                end
             end
 
             # Executing the query
@@ -185,26 +190,21 @@ module CloudHelp
                 tickets = tickets.where(filters_query.join(" AND "))
             end
 
+            unless search_string.blank?
+                tickets = tickets.where(
+                "(LOWER(subject) SIMILAR TO '%#{search_string}%') OR
+                (LOWER(chctc.name) SIMILAR TO '%#{search_string}%') OR
+                (LOWER(chctt.name) SIMILAR TO '%#{search_string}%') OR
+                (LOWER(chctp.name) SIMILAR TO '%#{search_string}%') OR
+                (LOWER(tags) SIMILAR TO '%#{search_string}%') 
+                ")
+            end
 
             response = {}
             # total count
             response[:total_count] = tickets.length
 
-            # tickets = tickets.order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
-
-            # tickets = tickets.page(query[:pagination][:page])
-            # .per(query[:pagination][:perPage])
-            # .order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]} NULLS LAST")
-
-            # Adding pagination to tickets
-            pagination = query[:pagination]
-            tickets = tickets.page(
-                pagination[:page]
-            ).per(
-                pagination[:perPage]
-            ).order(
-                "#{pagination[:orderBy]} #{pagination[:order]} NULLS LAST"
-            )
+            tickets = tickets.order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
 
             # We format the response
             response[:tickets] = tickets.map do |ticket|

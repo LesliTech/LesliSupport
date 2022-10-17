@@ -48,7 +48,8 @@ onMounted(() => {
 
 const columns = [{
     field: "id",
-    label: "ID"
+    label: "ID",
+    sort: true
 }, {
     field: "subject",
     label: "Subject",
