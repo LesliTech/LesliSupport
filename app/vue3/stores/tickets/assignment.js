@@ -21,12 +21,13 @@ import { defineStore } from "pinia"
 
 
 // · 
-export const useAssignments = defineStore("assignments", {
+export const useAssignments = defineStore("core.assignments", {
     state: () => {
         return {
             loading: false,
             users: {},
             ticket_id: null,
+            ticket: {}
         }
     },
     actions: {
@@ -56,6 +57,52 @@ export const useAssignments = defineStore("assignments", {
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
+        },
+
+        deleteAssignment(assignment){
+            let url = this.url.help(`tickets/:ticket_id/assignments/:id`, {ticket_id: this.ticket_id, id: assignment.id})
+            this.http.delete(url).then(result => {
+                this.msg.success(I18n.t("core.users.messages_success_operation"))
+            }).catch(error => {
+                this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            })
+        },
+
+        fetchTicket(id=null){
+            this.loading = true
+
+            let url = this.url.help('tickets')
+
+            if (id) { url = this.url.help('tickets/:id', id)}
+
+            this.http.get(url).then(result => {
+                this.ticket = result
+            }).catch(error => {
+                this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            }).finally(() => {
+                this.loading = false
+            })
+        },
+
+
+        checkAssignables(assignment, value, key){
+
+
+            this.ticket.assignment_attributes
+
+            let index = this.assignment_options.users.findIndex((assignment_user)=>{
+                return assignment_user[key] == assignment[key]
+            })
+
+            if (index => 0) {
+                this.$set(this.assignment_options.users[index], 'checked', value)
+            }
+
+            this.users.forEach((user)=>{
+
+
+            })
+            
         },
     }
 })

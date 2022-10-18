@@ -48,6 +48,9 @@ const columns = [{
 }, {
     field: "roles",
     label: "Roles"
+}, {
+    field: "assigned",
+    label: "Assigned"
 }]
 
 
@@ -55,6 +58,16 @@ onMounted(() => {
     storeAssignments.getOptions()
     storeAssignments.ticket_id = route.params.id
 })
+
+function submitAssignment(user){
+    if(user.checked){
+        console.log('assignment')
+        storeAssignments.postAssignment(user)
+    }else{
+        console.log('not assigned')
+        storeAssignments.deleteAssignment(user)
+    }
+}
 
 </script>
 <template>
@@ -74,15 +87,8 @@ onMounted(() => {
                 </span>
             </template>
 
-            <template #options="{ record, value }">
-                <a class="dropdown-item" @click="storeAssignments.postAssignment(record)">
-                    <span class="material-icons">
-                        assignment
-                    </span>
-                    <span>
-                        Assign
-                    </span>
-                </a>
+            <template #assigned="{ record, value }">
+                <input type="checkbox" v-model="record.checked" @input="submitAssignment(record)">
             </template>
 
         </lesli-table>
