@@ -18,6 +18,7 @@ For more information read the license file including with this software.
 
 // · 
 import { defineStore } from "pinia"
+import { useTickets } from "./tickets"
 
 
 // · 
@@ -27,7 +28,8 @@ export const useAssignments = defineStore("core.assignments", {
             loading: false,
             users: {},
             ticket_id: null,
-            ticket: {}
+            ticket: {},
+            storeTickets: useTickets()
         }
     },
     actions: {
@@ -59,10 +61,13 @@ export const useAssignments = defineStore("core.assignments", {
             })
         },
 
-        deleteAssignment(assignment){
-            let url = this.url.help(`tickets/:ticket_id/assignments/:id`, {ticket_id: this.ticket_id, id: assignment.id})
+        deleteAssignment(assignment_id){
+            let url = this.url.help(`tickets/:ticket_id/assignments/:id`, {ticket_id: this.storeTickets.ticket.id, id: assignment_id})
             this.http.delete(url).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
+                this.storeTickets.ticket.assignment_attributes = this.storeTickets.ticket.assignment_attributes.filter((assignment)=>{
+                    return assignment.id != assignment_id
+                })
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
@@ -85,25 +90,18 @@ export const useAssignments = defineStore("core.assignments", {
         },
 
 
-        checkAssignables(assignment, value, key){
+        // checkAssignables(assignment, value, key){
 
 
-            this.ticket.assignment_attributes
-
-            let index = this.assignment_options.users.findIndex((assignment_user)=>{
-                return assignment_user[key] == assignment[key]
-            })
-
-            if (index => 0) {
-                this.$set(this.assignment_options.users[index], 'checked', value)
-            }
-
-            this.users.forEach((user)=>{
-
-
-            })
-            
-        },
+        //     this.ticket.assignment_attributes.forEach((assign)=>{
+        //         this.users.forEach((user)=>{
+        //             if (user.id === assignment.users_id)){
+        //                 this.users.
+        //             }
+        //         })
+        //         console.log(assign)
+        //     })
+        // },
     }
 })
 

@@ -22,12 +22,14 @@ import { inject, onMounted, ref, onUnmounted } from "vue"
 
 // · import lesli stores
 import { useTickets } from "CloudHelp/stores/tickets/tickets"
+import { useAssignments } from "CloudHelp/stores/tickets/assignment"
 
 // · import vue router composable
 import { useRouter, useRoute } from "vue-router"
 
 // · implement stores
 const storeTickets = useTickets()
+const storeAssignments = useAssignments()
 
 // · initialize/inject plugins
 const router = useRouter()
@@ -136,9 +138,24 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <div v-for="user in storeTickets.ticket.assignment_attributes" :key="user">
-                                <span class="tag is-success">{{user.assignable_name}}</span>
+                            <div v-for="assignment in storeTickets.ticket.assignment_attributes" :key="assignment">
+                                <span class="tag is-success">{{assignment.assignable_name}}
+                                    <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)"></button>
+                                </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-horizontal" v-if="isEditable">
+                <div class="field-label is-normal">
+                    <label class="label"> Assign myself</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input type="checkbox" v-model="record.checked" @input="submitAssignment(record)">
                         </div>
                     </div>
                 </div>
