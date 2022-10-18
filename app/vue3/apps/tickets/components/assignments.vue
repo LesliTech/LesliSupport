@@ -36,21 +36,22 @@ const route = useRoute()
 const translations = {
     users: I18n.t("core.users"),
     shared: I18n.t("core.shared"),
-    sla: I18n.t('help.slas')
+    sla: I18n.t('help.slas'),
+    main: I18n.t('help.tickets')
 }
 
 const columns = [{
     field: "name",
-    label: "Name"
+    label: translations.users.view_table_header_name
 }, {
     field: "email",
-    label: "Email"
+    label: translations.users.view_table_header_email
 }, {
     field: "roles",
-    label: "Roles"
+    label: translations.users.view_table_header_role
 }, {
     field: "assigned",
-    label: "Assigned"
+    label: ""
 }]
 
 
@@ -72,7 +73,7 @@ function submitAssignment(user){
 
 </script>
 <template>
-    <h2>Assignments</h2>
+    <h2>{{translations.main.view_tab_title_assignments}}</h2>
     <div class="box">
         <lesli-table 
             :records="storeAssignments.users"

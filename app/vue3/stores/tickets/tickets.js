@@ -56,6 +56,7 @@ export const useTickets = defineStore("help.tickets", {
     actions: {
 
         getTickets(url=this.url.help('tickets')) {
+            this.tickets = {}
             this.loading = true 
             const query_filters = {}
 

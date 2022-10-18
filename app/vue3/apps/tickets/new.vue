@@ -53,7 +53,7 @@ onMounted(() => {
 
         <lesli-header :title="translations.main.view_title_main">
             <lesli-button :to="url.help('tickets')" icon="list">
-                tickets
+                {{translations.core.shared.view_btn_list}}
             </lesli-button>
         </lesli-header>
         <form-ticket></form-ticket>
