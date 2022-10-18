@@ -137,9 +137,10 @@ module CloudHelp
         #     #        "assignment_type":null,    "subject":"Testing"
         #     #    }
         #     #]
-        def self.index(current_user, query)
-            ticket_index_response = TicketServices.index(current_user, query)
-            return ticket_index_response.payload
+        def self.index(current_user, query, params)
+            ticket_index_response = TicketServices.index(current_user, query, params)
+            tickets = ticket_index_response.payload[:tickets]
+            Kaminari.paginate_array(tickets).page(query[:pagination][:page]).per(query[:pagination][:perPage])
         end
 
         def self.count(current_user)

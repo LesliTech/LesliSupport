@@ -83,14 +83,19 @@ const onUpdatedStatus = () => {
             <button class="button is-fullwidth has-text-centered is-danger" @click="storeTickets.deleteTicket">
                 Delete
             </button>
+            <lesli-button :to="url.help('tickets')" icon="list">
+                tickets
+            </lesli-button>
         </lesli-header>
         <lesli-tabs v-model="tab">
             <lesli-tab-item title="Information" icon="info">
                 <form-ticket is-editable></form-ticket>
-                <sla-info></sla-info>
-                <assignments></assignments>
-
             </lesli-tab-item>
+
+            <lesli-tab-item title="Assignments" icon="group">
+                <assignments></assignments>
+            </lesli-tab-item>
+
             <lesli-tab-item title="Discussions" icon="forum">
                 <component-discussions 
                     cloud-module="help" 
@@ -111,6 +116,10 @@ const onUpdatedStatus = () => {
 
             <lesli-tab-item title="Internal comments" icon="comment">
                 <internal-comments></internal-comments>
+            </lesli-tab-item>
+
+            <lesli-tab-item title="SLA" icon="article">
+                <sla-info></sla-info>
             </lesli-tab-item>
         </lesli-tabs>
     </section>

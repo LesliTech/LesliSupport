@@ -85,6 +85,7 @@ const onCreate = () => {
     <lesli-table 
         :records="storeHistories.histories"
         :columns="columns"
+        :loading="storeHistories.loading"
     >
         <template #options="{ record, value }">
             <a class="dropdown-item" @click="storeHistories.deleteHistory(record)">

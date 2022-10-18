@@ -52,6 +52,9 @@ onMounted(() => {
     <section class="application-component">
 
         <lesli-header :title="translations.main.view_title_main">
+            <lesli-button :to="url.help('tickets')" icon="list">
+                tickets
+            </lesli-button>
         </lesli-header>
         <form-ticket></form-ticket>
 
