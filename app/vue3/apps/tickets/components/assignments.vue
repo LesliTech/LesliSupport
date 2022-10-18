@@ -61,13 +61,15 @@ onMounted(() => {
     storeAssignments.fetchTicket(route.params.id)
 })
 
+/**
+ * @description This action is used to verify if a user is assigned or unassigned
+ * @param {Object} user The user to be checked
+ */
 function submitAssignment(user){
-    if(user.checked){
-        console.log('assignment')
+    if(!user.checked){
         storeAssignments.postAssignment(user)
     }else{
-        console.log('not assigned')
-        storeAssignments.deleteAssignment(user)
+        storeAssignments.deleteAssignment(user.assignment_id)
     }
 }
 

@@ -148,7 +148,9 @@ export const useTickets = defineStore("help.tickets", {
                 this.loading = false
             })
         },
-
+        /**
+         * @description This action is used to delete a ticket
+         */
         deleteTicket(){
             this.dialog
                 .confirmation({

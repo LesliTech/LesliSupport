@@ -33,7 +33,9 @@ export const useAssignments = defineStore("core.assignments", {
         }
     },
     actions: {
-
+        /**
+         * @description This action is used to fetch the users that can be assigned to tickets
+         */
         getOptions(){
             let url = this.url.help('tickets/assignments/options')
             this.loading = true
@@ -45,9 +47,12 @@ export const useAssignments = defineStore("core.assignments", {
             })
         },
 
+        /**
+         * @description This action is used to post a new assignment of a ticket
+         * @param {Object} user The user that is going to be assigned to the ticket
+         */
         postAssignment(user){
             let url = this.url.help(`tickets/:ticket_id/assignments`, {ticket_id: this.ticket_id})
-
             let data = {
                 ticket_assignment: {
                     users_id: user.id,
@@ -61,6 +66,10 @@ export const useAssignments = defineStore("core.assignments", {
             })
         },
 
+        /**
+         * @description This action is used to delete an assignment
+         * @param {String} assignment_id The id of the assignment that is being deleted
+         */
         deleteAssignment(assignment_id){
             let url = this.url.help(`tickets/:ticket_id/assignments/:id`, {ticket_id: this.storeTickets.ticket.id, id: assignment_id})
             this.http.delete(url).then(result => {
@@ -69,10 +78,14 @@ export const useAssignments = defineStore("core.assignments", {
                     return assignment.id != assignment_id
                 })
             }).catch(error => {
+                console.log(error)
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
-
+        /**
+         * @description This action is used to fetch the information of the actual ticket
+         * @param {Integer} id id of the ticket.
+         */
         fetchTicket(id=null){
             this.loading = true
 
@@ -86,22 +99,22 @@ export const useAssignments = defineStore("core.assignments", {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
                 this.loading = false
+                this.markAssignables()
             })
         },
-
-
-        // checkAssignables(assignment, value, key){
-
-
-        //     this.ticket.assignment_attributes.forEach((assign)=>{
-        //         this.users.forEach((user)=>{
-        //             if (user.id === assignment.users_id)){
-        //                 this.users.
-        //             }
-        //         })
-        //         console.log(assign)
-        //     })
-        // },
+        /**
+         * @description This action is used to mark as assigned the users that are already assigned
+         */
+        markAssignables(){
+            this.users_table = []
+            this.ticket.assignment_attributes.forEach((assignment)=>{
+                const user = this.users.find((user)=>{
+                    return user.id == assignment.users_id
+                })
+                user['checked'] = true
+                user['assignment_id'] = assignment.id
+            })
+        }
     }
 })
 
