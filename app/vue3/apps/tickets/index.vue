@@ -143,17 +143,6 @@ function extractInitials(name){
                 @change="storeTickets.getTickets()"
             >
             </lesli-select>
-            <lesli-select
-                :options="[
-                    {
-                        label: translations.main.view_text_filter_all_workspaces,
-                        value: null
-                    }
-                ]"
-                v-model="storeTickets.filters.cloud_help_catalog_ticket_workspaces_id"
-                @change="storeTickets.getTickets()"
-            >
-            </lesli-select>
         </lesli-toolbar>
 
         <lesli-table 
