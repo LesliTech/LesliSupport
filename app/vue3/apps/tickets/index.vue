@@ -48,41 +48,54 @@ onMounted(() => {
 
 const columns = [{
     field: "id",
-    label: "ID"
+    label: translations.main.column_id,
+    sort: true
 }, {
     field: "subject",
-    label: "Subject",
+    label: translations.main.column_subject,
     sort: true
 }, {
     field: "workspace",
-    label: "Workspace"
+    label: translations.main.column_cloud_help_catalog_ticket_workspaces_id
 }, {
     field: "deadline_text",
-    label: "Deadline"
+    label: translations.main.column_deadline
 }, {
     field: "status_name",
-    label: "Status",
+    label: translations.main.column_cloud_help_workflow_statuses_id,
     sort: true
 }, {
     field: "type",
-    label: "Type"
+    label: translations.main.column_cloud_help_catalog_ticket_types_id
 }, {
     field: "category",
-    label: "Category"
+    label: translations.main.column_cloud_help_catalog_ticket_categories_id
 }, {
     field: "priority",
-    label: "Priority"
+    label: translations.main.column_cloud_help_catalog_ticket_priorities_id
 }, {
     field: "user_creator",
-    label: "Creator"
+    label: translations.main.column_users_id
 }, {
-    field: "user_main_id",
-    label: "Assigned user"
+    field: "assignables",
+    label: translations.main.column_user_main_id
 }]
 
 function showTicket(ticket) {
     router.push(url.help("tickets/:id", ticket.id).s)
 }
+
+
+function extractInitials(name){
+    return name.split(" ").map((word)=>{
+        if(word){
+            return word[0].toUpperCase()
+        }else{
+            return ''
+        }
+    }).join("")
+}
+
 
 </script>
 <template>
@@ -92,12 +105,66 @@ function showTicket(ticket) {
             <lesli-button :to="url.help('tickets/new')" icon="add">
                 {{ translations.core.shared.view_btn_add }}
             </lesli-button>
+            <lesli-button @click="storeTickets.reloadTickets" icon="refresh">
+                {{ translations.core.shared.view_text_btn_reload }} 
+            </lesli-button>
         </lesli-header>
+
+        <lesli-toolbar @search="storeTickets.search" :placeholder="translations.main.view_placeholder_text_filter">
+            <lesli-select
+                :options="[
+                    {
+                        label: translations.main.view_text_filter_everyones_tickets,
+                        value: null
+                    },
+                    {
+                        label: translations.main.view_text_filter_own_tickets,
+                        value: 'own'
+                    }
+                ]"
+                v-model="storeTickets.filters.user_type"
+                @change="storeTickets.getTickets()"
+            >
+            </lesli-select>
+            <lesli-select
+                :options="[
+                    {
+                        label: translations.main.view_text_filter_all_tickets,
+                        value: null
+                    }, {
+                        label: translations.main.view_text_filter_active_tickets,
+                        value: 'active'
+                    }, {
+                        label: translations.main.view_text_filter_inactive_tickets,
+                        value: 'inactive'
+                    },
+                ]"
+                v-model="storeTickets.filters.search_type"
+                @change="storeTickets.getTickets()"
+            >
+            </lesli-select>
+        </lesli-toolbar>
 
         <lesli-table 
             :records="storeTickets.tickets"
             :columns="columns"
-            @click="showTicket">
+            :loading="storeTickets.loading"
+            :pagination="storeTickets.index.pagination"
+            @paginate="storeTickets.paginateIndex"
+            @sort="storeTickets.sort"
+            @click="showTicket"
+        >
+            <template #assignables="{ column, value }">
+                <span
+                    v-for="user in value"
+                    :key="user"
+                    class="tag is-success is-small is-rounded mr-1"
+                >
+                    {{ extractInitials(user) }}
+                </span>
+
+            </template>
+
         </lesli-table>
 
     </section>

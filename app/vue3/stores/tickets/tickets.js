@@ -21,7 +21,7 @@ import { defineStore } from "pinia"
 
 
 // · 
-export const useTickets = defineStore("tickets", {
+export const useTickets = defineStore("help.tickets", {
     state: () => {
         return {
             loading: false,
@@ -38,16 +38,37 @@ export const useTickets = defineStore("tickets", {
                 deadline: new Date(),
                 tags: [],
                 hours_worked: 0
+            },
+            pagination: {
+                page: 1
+            },
+            index: { 
+                pagination: {},
+                records: []
+            },
+            filters: {
+                cloud_help_catalog_ticket_workspaces_id: null,
+                search_type: null,
+                user_type: 'own'
             }
         }
     },
     actions: {
 
-        getTickets() {
+        getTickets(url=this.url.help('tickets')) {
+            this.tickets = {}
             this.loading = true 
-            this.http.get(this.url.help('tickets')).then(result => {
+            const query_filters = {}
+
+            for (const [key, value] of Object.entries(this.filters)) {
+                query_filters[key] = [value]
+            }
+
+            this.http.get(url.paginate(this.pagination.page).filter(query_filters)
+            ).then(result => {
                 this.loading = false
-                this.tickets = result.tickets
+                this.index = result
+                this.tickets = result.records
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
@@ -127,7 +148,9 @@ export const useTickets = defineStore("tickets", {
                 this.loading = false
             })
         },
-
+        /**
+         * @description This action is used to delete a ticket
+         */
         deleteTicket(){
             this.dialog
                 .confirmation({
@@ -145,7 +168,36 @@ export const useTickets = defineStore("tickets", {
                         })
                     }
                 })
-        }
+        },
+        /**
+        * @description This action is used to reload tickets
+        */
+        reloadTickets(){
+            this.tickets = []
+            this.getTickets()
+        },
+
+        paginateIndex(page) {
+            this.pagination.page = page
+            this.getTickets()
+        },
+
+        /**
+         * @description This action is used to sort the list of leads.
+         * @param {String} column The column to sort the list of leads
+         * @param {String} direction The direction to sort the list of leads (asc or desc)
+         */
+        sort(column, direction){
+            this.getTickets(this.url.help('tickets').order(column, direction), false)
+        },
+
+        /**
+         * @description This action is used to fetch with search results.
+         * @param {String} string The string to search for.
+         */
+        search(string) {
+            this.getTickets(this.url.help('tickets').search(string))
+        },
 
     }
 })

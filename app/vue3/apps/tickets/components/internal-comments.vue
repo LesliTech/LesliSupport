@@ -35,18 +35,23 @@ const route = useRoute()
 // · 
 const translations = {
     shared: I18n.t("core.shared"),
-    histories: I18n.t('help.ticket/histories')
+    histories: I18n.t('help.ticket/histories'),
+    help:{
+        shared: I18n.t('help.shared')
+    },
+    core: I18n.t('core.shared'),
+    main: I18n.t('help.ticket/histories')
 }
 
 const columns = [{
     field: "created_at",
-    label: "Created at",
+    label: translations.core.column_created_at,
 }, {
     field: "user_creator_name",
-    label: "Creator",
+    label: translations.main.column_users_id,
 }, {
     field: "content",
-    label: "Comment"
+    label: translations.main.column_content
 }]
 
 onMounted(() => {
@@ -85,6 +90,7 @@ const onCreate = () => {
     <lesli-table 
         :records="storeHistories.histories"
         :columns="columns"
+        :loading="storeHistories.loading"
     >
         <template #options="{ record, value }">
             <a class="dropdown-item" @click="storeHistories.deleteHistory(record)">
@@ -92,7 +98,7 @@ const onCreate = () => {
                     delete
                 </span>
                 <span>
-                    Delete
+                    {{translations.help.shared.view_tab_title_delete_section}}
                 </span>
             </a>
         </template>

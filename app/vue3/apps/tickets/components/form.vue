@@ -22,12 +22,14 @@ import { inject, onMounted, ref, onUnmounted } from "vue"
 
 // · import lesli stores
 import { useTickets } from "CloudHelp/stores/tickets/tickets"
+import { useAssignments } from "CloudHelp/stores/tickets/assignment"
 
 // · import vue router composable
 import { useRouter, useRoute } from "vue-router"
 
 // · implement stores
 const storeTickets = useTickets()
+const storeAssignments = useAssignments()
 
 // · initialize/inject plugins
 const router = useRouter()
@@ -46,7 +48,8 @@ const props = defineProps({
 // · 
 const translations = {
     users: I18n.t("core.users"),
-    shared: I18n.t("core.shared")
+    shared: I18n.t("core.shared"),
+    main: I18n.t('help.tickets')
 }
 
 /**
@@ -84,7 +87,7 @@ onMounted(() => {
         ">
             <div class="field is-horizontal">
                 <div class="field-label">
-                    <label class="label"> Workspace </label>
+                    <label class="label">{{translations.main.column_cloud_help_catalog_ticket_workspaces_id}}</label>
                 </div>
                 <div class="field-body">
                     <div class="field is-narrow">
@@ -102,7 +105,7 @@ onMounted(() => {
             <div class="field is-horizontal" v-if="isEditable">
                 <div class="field-label is-normal">
                     <label class="label"> 
-                        Creator
+                        {{translations.main.column_users_id}}
                     </label>
                 </div>
                 <div class="field-body">
@@ -117,7 +120,7 @@ onMounted(() => {
             <div class="field is-horizontal" v-if="isEditable">
                 <div class="field-label is-normal">
                     <label class="label"> 
-                        Reference URL
+                        {{translations.main.column_reference_url}}
                     </label>
                 </div>
                 <div class="field-body">
@@ -131,13 +134,15 @@ onMounted(() => {
 
             <div class="field is-horizontal" v-if="isEditable">
                 <div class="field-label is-normal">
-                    <label class="label"> Assigned users </label>
+                    <label class="label"> {{translations.main.view_title_assigned_users}} </label>
                 </div>
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <div v-for="user in storeTickets.ticket.assignment_attributes" :key="user">
-                                <span class="tag is-success">{{user.assignable_name}}</span>
+                            <div v-for="assignment in storeTickets.ticket.assignment_attributes" :key="assignment">
+                                <span class="tag is-success">{{assignment.assignable_name}}
+                                    <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)"></button>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -147,7 +152,7 @@ onMounted(() => {
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label"> 
-                        Subject
+                        {{translations.main.column_subject}}
                         <span class="is-danger">*</span>
                     </label>
                     
@@ -163,7 +168,7 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> Deadline </label>
+                    <label class="label"> {{translations.main.column_deadline}} </label>
                 </div>
                 <div class="field-body">
                     <div class="field">
@@ -177,7 +182,7 @@ onMounted(() => {
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label"> 
-                        Type 
+                        {{translations.main.column_cloud_help_catalog_ticket_types_id}} 
                         <span class="is-danger">*</span>
                     </label>
 
@@ -198,7 +203,7 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> Category </label>
+                    <label class="label"> {{translations.main.view_text_add_ticket_category}} </label>
                 </div>
                 <div class="field-body">
                     <div class="field">
@@ -215,7 +220,7 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> Priority </label>
+                    <label class="label"> {{translations.main.view_text_add_ticket_priority}} </label>
                 </div>
                 <div class="field-body">
                     <div class="field">
@@ -232,7 +237,7 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> Tags </label>
+                    <label class="label">{{translations.main.column_tags}}</label>
                 </div>
                 <div class="field-body">
                     <div class="field">
@@ -245,7 +250,7 @@ onMounted(() => {
 
             <div class="field is-horizontal" v-if="isEditable">
                 <div class="field-label is-normal">
-                    <label class="label"> Hour worked </label>
+                    <label class="label">{{translations.main.column_hours_worked}}</label>
                 </div>
                 <div class="field-body">
                     <div class="field">
@@ -259,7 +264,7 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> Description </label>
+                    <label class="label">{{translations.main.column_description}}</label>
                 </div>
                 <div class="field-body">
                     <div class="field">
