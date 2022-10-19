@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cloud_help (1.6.8)
+    cloud_help (1.6.10)
       ancestry (~> 4.1.0)
       rails (~> 7.0)
       wicked_pdf (~> 2.1.0)

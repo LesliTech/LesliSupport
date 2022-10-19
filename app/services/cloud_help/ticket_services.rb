@@ -225,7 +225,7 @@ module CloudHelp
                 ticket_attributes
             end
 
-            tickets
+            LC::Response.service(true, tickets)
         end
 
         def self.count(current_user)
