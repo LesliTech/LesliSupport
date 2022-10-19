@@ -21,7 +21,7 @@ import { defineStore } from "pinia"
 
 
 // · 
-export const useTickets = defineStore("tickets", {
+export const useTickets = defineStore("help.tickets", {
     state: () => {
         return {
             loading: false,
@@ -56,6 +56,7 @@ export const useTickets = defineStore("tickets", {
     actions: {
 
         getTickets(url=this.url.help('tickets')) {
+            this.tickets = {}
             this.loading = true 
             const query_filters = {}
 
@@ -147,7 +148,9 @@ export const useTickets = defineStore("tickets", {
                 this.loading = false
             })
         },
-
+        /**
+         * @description This action is used to delete a ticket
+         */
         deleteTicket(){
             this.dialog
                 .confirmation({

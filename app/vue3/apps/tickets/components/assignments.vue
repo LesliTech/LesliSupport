@@ -36,29 +36,46 @@ const route = useRoute()
 const translations = {
     users: I18n.t("core.users"),
     shared: I18n.t("core.shared"),
-    sla: I18n.t('help.slas')
+    sla: I18n.t('help.slas'),
+    main: I18n.t('help.tickets')
 }
 
 const columns = [{
     field: "name",
-    label: "Name"
+    label: translations.users.view_table_header_name
 }, {
     field: "email",
-    label: "Email"
+    label: translations.users.view_table_header_email
 }, {
     field: "roles",
-    label: "Roles"
+    label: translations.users.view_table_header_role
+}, {
+    field: "assigned",
+    label: ""
 }]
 
 
 onMounted(() => {
     storeAssignments.getOptions()
     storeAssignments.ticket_id = route.params.id
+    storeAssignments.fetchTicket(route.params.id)
 })
+
+/**
+ * @description This action is used to verify if a user is assigned or unassigned
+ * @param {Object} user The user to be checked
+ */
+function submitAssignment(user){
+    if(!user.checked){
+        storeAssignments.postAssignment(user)
+    }else{
+        storeAssignments.deleteAssignment(user.assignment_id)
+    }
+}
 
 </script>
 <template>
-    <h2>Assignments</h2>
+    <h2>{{translations.main.view_tab_title_assignments}}</h2>
     <div class="box">
         <lesli-table 
             :records="storeAssignments.users"
@@ -74,15 +91,8 @@ onMounted(() => {
                 </span>
             </template>
 
-            <template #options="{ record, value }">
-                <a class="dropdown-item" @click="storeAssignments.postAssignment(record)">
-                    <span class="material-icons">
-                        assignment
-                    </span>
-                    <span>
-                        Assign
-                    </span>
-                </a>
+            <template #assigned="{ record, value }">
+                <input type="checkbox" v-model="record.checked" @input="submitAssignment(record)">
             </template>
 
         </lesli-table>

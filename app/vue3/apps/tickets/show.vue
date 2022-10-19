@@ -47,7 +47,8 @@ const translations = {
     sla: I18n.t('help.slas'),
     core: {
         shared: I18n.t('core.shared')
-    }
+    },
+    shared: I18n.t('help.shared')
 }
 
 // · initializing
@@ -81,22 +82,22 @@ const onUpdatedStatus = () => {
             >
             </component-workflow-status-dropdown>
             <button class="button is-fullwidth has-text-centered is-danger" @click="storeTickets.deleteTicket">
-                Delete
+                {{translations.shared.view_tab_title_delete_section}}
             </button>
             <lesli-button :to="url.help('tickets')" icon="list">
-                tickets
+                {{translations.main.view_title_main}}
             </lesli-button>
         </lesli-header>
         <lesli-tabs v-model="tab">
-            <lesli-tab-item title="Information" icon="info">
+            <lesli-tab-item :title="translations.shared.view_tab_title_general_information" icon="info">
                 <form-ticket is-editable></form-ticket>
             </lesli-tab-item>
 
-            <lesli-tab-item title="Assignments" icon="group">
+            <lesli-tab-item :title="translations.main.view_tab_title_assignments" icon="group">
                 <assignments></assignments>
             </lesli-tab-item>
 
-            <lesli-tab-item title="Discussions" icon="forum">
+            <lesli-tab-item :title="translations.core.shared.view_btn_discussions" icon="forum">
                 <component-discussions 
                     cloud-module="help" 
                     cloud-object="/tickets" 
@@ -105,7 +106,7 @@ const onUpdatedStatus = () => {
                 >
                 </component-discussions>
             </lesli-tab-item>
-            <lesli-tab-item title="Files" icon="attach_file">
+            <lesli-tab-item :title="this.translations.core.shared.view_btn_files" icon="attach_file">
                 <component-files
                     cloud-module="help" 
                     cloud-object="/tickets"
@@ -114,11 +115,11 @@ const onUpdatedStatus = () => {
 
             </lesli-tab-item>
 
-            <lesli-tab-item title="Internal comments" icon="comment">
+            <lesli-tab-item :title="translations.main.view_tab_title_histories" icon="comment">
                 <internal-comments></internal-comments>
             </lesli-tab-item>
 
-            <lesli-tab-item title="SLA" icon="article">
+            <lesli-tab-item :title="translations.main.view_tab_title_sla" icon="article">
                 <sla-info></sla-info>
             </lesli-tab-item>
         </lesli-tabs>
