@@ -66,19 +66,18 @@ export const useTickets = defineStore("help.tickets", {
 
             this.http.get(url.paginate(this.pagination.page).filter(query_filters)
             ).then(result => {
-                this.loading = false
                 this.index = result
                 this.tickets = result.records
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            }).finally(() => {
+                this.loading = false
             })
         },
 
         getOptions(){
-            this.loading = true 
+            
             this.http.get(this.url.help('tickets/options')).then(result => {
-                this.loading = false
-                
                 this.options.types = result.types.map((type)=> {
                     return {
                         label: type.name,
@@ -108,6 +107,8 @@ export const useTickets = defineStore("help.tickets", {
                 })
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            }).finally(() => {
+                this.loading = false
             })
             
         },
@@ -121,7 +122,6 @@ export const useTickets = defineStore("help.tickets", {
         },
 
         updateTicket(){
-            console.log(this.ticket)
             this.http.put(this.url.help('tickets/:id', this.ticket.id), this.ticket).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
