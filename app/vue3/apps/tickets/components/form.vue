@@ -203,7 +203,7 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> {{translations.main.view_text_add_ticket_category}} </label>
+                    <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_categories_id}} </label>
                 </div>
                 <div class="field-body">
                     <div class="field">
@@ -220,7 +220,7 @@ onMounted(() => {
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                    <label class="label"> {{translations.main.view_text_add_ticket_priority}} </label>
+                    <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_priorities_id}} </label>
                 </div>
                 <div class="field-body">
                     <div class="field">
