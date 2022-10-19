@@ -41,6 +41,14 @@ const translations = {
     }
 }
 
+const props = defineProps({
+    appMountPath: {
+        type: String,
+        required: false,
+        default: "help/tickets",
+    }
+})
+
 // · initializing
 onMounted(() => {
     storeTickets.getTickets()
@@ -52,7 +60,7 @@ onMounted(() => {
     <section class="application-component">
 
         <lesli-header :title="translations.main.view_title_main">
-            <lesli-button :to="url.help('tickets')" icon="list">
+            <lesli-button :to="url.root(props.appMountPath)" icon="list">
                 {{translations.core.shared.view_btn_list}}
             </lesli-button>
         </lesli-header>

@@ -40,6 +40,15 @@ const translations = {
     }
 }
 
+// · defining props
+const props = defineProps({
+    appMountPath: {
+        type: String,
+        required: false,
+        default: "help/tickets",
+    }
+})
+
 // · initializing
 onMounted(() => {
     storeTickets.getTickets()
@@ -82,7 +91,7 @@ const columns = [{
 }]
 
 function showTicket(ticket) {
-    router.push(url.help("tickets/:id", ticket.id).s)
+    router.push(url.root(props.appMountPath +`/${ticket.id}`).s)
 }
 
 
@@ -102,7 +111,7 @@ function extractInitials(name){
     <section class="application-component">
 
         <lesli-header :title="translations.main.view_title_main">
-            <lesli-button :to="url.help('tickets/new')" icon="add">
+            <lesli-button :to="url.root(props.appMountPath+`/new`)" icon="add">
                 {{ translations.core.shared.view_btn_add }}
             </lesli-button>
             <lesli-button @click="storeTickets.reloadTickets" icon="refresh">
