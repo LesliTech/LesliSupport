@@ -50,6 +50,13 @@ const translations = {
     },
     shared: I18n.t('help.shared')
 }
+const props = defineProps({
+    appMountPath: {
+        type: String,
+        required: false,
+        default: "help/tickets",
+    }
+})
 
 // · initializing
 onMounted(() => {
@@ -84,7 +91,7 @@ const onUpdatedStatus = () => {
             <button class="button is-fullwidth has-text-centered is-danger" @click="storeTickets.deleteTicket">
                 {{translations.shared.view_tab_title_delete_section}}
             </button>
-            <lesli-button :to="url.help('tickets')" icon="list">
+            <lesli-button :to="url.root(props.appMountPath)" icon="list">
                 {{translations.main.view_title_main}}
             </lesli-button>
         </lesli-header>
