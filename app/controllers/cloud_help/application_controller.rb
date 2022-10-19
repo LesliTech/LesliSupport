@@ -18,7 +18,7 @@ For more information read the license file including with this software.
 
 =end
     class ApplicationController < ApplicationLesliController
-        # include Interfaces::Application::Responder
+        include Interfaces::Application::Responder
         # include Interfaces::Application::Requester
         protect_from_forgery with: :exception
         before_action :check_account

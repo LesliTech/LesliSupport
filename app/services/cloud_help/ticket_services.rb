@@ -115,13 +115,13 @@ module CloudHelp
             unless filters.blank?
                 # We filter by search_type, available search_types are 'own' and 'active'
                 if filters["search_type"]
-                    filters_query.push("(chws.status_type != 'completed_unsuccessfully' AND chws.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
-                    filters_query.push("(chws.status_type = 'completed_unsuccessfully' OR chws.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
+                    filters_query.push("(cloud_help_workflow_statuses.status_type != 'completed_unsuccessfully' AND cloud_help_workflow_statuses.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
+                    filters_query.push("(cloud_help_workflow_statuses.status_type = 'completed_unsuccessfully' OR cloud_help_workflow_statuses.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
                 end
 
                 # We filter by user_type, which can be 'own' or null
                 if filters["user_type"].eql? "own"
-                    filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR chta.users_id = #{current_user.id})")
+                    filters_query.push("(cloud_help_tickets.users_id = #{current_user.id} OR cloud_help_ticket_assignments.users_id = #{current_user.id})")
                 end
 
                 if filters["workspace_id"]
@@ -138,9 +138,9 @@ module CloudHelp
                         filters_query.push("(
                             (CAST(cloud_help_tickets.id AS VARCHAR) = '#{query_word}') OR
                             (LOWER(subject) SIMILAR TO '%#{query_word}%') OR
-                            (LOWER(chctc.name) SIMILAR TO '%#{query_word}%') OR
-                            (LOWER(chctt.name) SIMILAR TO '%#{query_word}%') OR
-                            (LOWER(chctp.name) SIMILAR TO '%#{query_word}%') OR
+                            (LOWER(cloud_help_catalog_ticket_categories.name) SIMILAR TO '%#{query_word}%') OR
+                            (LOWER(cloud_help_catalog_ticket_types.name) SIMILAR TO '%#{query_word}%') OR
+                            (LOWER(cloud_help_catalog_ticket_priorities.name) SIMILAR TO '%#{query_word}%') OR
                             (LOWER(tags) SIMILAR TO '%#{query_word}%')
                         )")
                     end
@@ -149,40 +149,42 @@ module CloudHelp
                 # We filter by statuses
                 if filters["statuses"] && !filters["statuses"].empty?
                     statuses_query = filters["statuses"].map do |status|
-                        "chws.id = '#{status["id"]}'"
+                        "cloud_help_workflow_statuses.id = '#{status["id"]}'"
                     end
                     filters_query.push("(#{statuses_query.join(' or ')})")
                 end
             end
 
             # Executing the query
-            tickets = current_user.account.help.tickets.joins(
-                "left join cloud_help_catalog_ticket_priorities chctp on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = chctp.id"
-            ).joins(
-                "inner join cloud_help_catalog_ticket_types chctt on cloud_help_tickets.cloud_help_catalog_ticket_types_id = chctt.id"
-            ).joins(
-                "left join cloud_help_catalog_ticket_workspaces chctw on cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = chctw.id"
-            ).joins(
-                "left join cloud_help_catalog_ticket_categories chctc on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = chctc.id"
-            ).joins(
-                "inner join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
-            ).joins(
-                "left join cloud_help_ticket_assignments chta on chta.deleted_at is null and chta.cloud_help_tickets_id = cloud_help_tickets.id AND chta.users_id = #{current_user.id}"
-            ).joins(
-                "left join users UC on UC.id = cloud_help_tickets.users_id"
-            ).joins(
-                "left join user_details UCD on UCD.users_id = UC.id"
+            tickets = current_user.account.help.tickets.eager_load(
+                :priority, 
+                :type, 
+                :workspace, 
+                :category, 
+                :status, 
+                :assignments, 
+                user_creator: :detail
             ).select(
-                "id",                                                   "chctp.name as priority",
-                "chctt.name as type",                                   "chws.name as status_name",
-                "chctc.name as category",                               "user_main_id",
-                "subject",                                              "chctc.id as cloud_help_catalog_ticket_categories_id",
-                "chctp.id as cloud_help_catalog_ticket_priorities_id",  "chctt.id as cloud_help_catalog_ticket_types_id",
-                "created_at",                                           "chctp.weight as priority_weight",
-                "UC.id as user_creator_id",                             "CONCAT(UCD.first_name, ' ', UCD.last_name) as user_creator",
-                "deadline",                                             "users_id",
-                "cloud_help_tickets.cloud_help_workflow_statuses_id",   "chws.status_type as status_type",
-                "chctw.name as workspace"
+                :id,
+                :subject,
+                :deadline,
+                :users_id,
+                :user_main_id,
+                :cloud_help_workflow_statuses_id,
+                "cloud_help_catalog_ticket_priorities.name as priority",
+                "cloud_help_catalog_ticket_priorities.id as cloud_help_catalog_ticket_priorities_id",
+                "cloud_help_catalog_ticket_priorities.weight as priority_weight",
+                "cloud_help_catalog_ticket_types.name as type",
+                "cloud_help_catalog_ticket_workspaces.name as workspace",
+                "cloud_help_catalog_ticket_types.id as cloud_help_catalog_ticket_types_id",
+                "cloud_help_catalog_ticket_categories.name as category",
+                "cloud_help_workflow_statuses.status_type as status_type",
+                "cloud_help_workflow_statuses.name as status_name",
+                "users.id as user_creator_id",
+                "CONCAT(user_details.first_name, ' ', user_details.last_name) as user_creator",
+                "cloud_help_catalog_ticket_categories.id as cloud_help_catalog_ticket_categories_id",
+                :created_at,
+                :cloud_help_catalog_ticket_workspaces_id
             )
 
             # We apply the previous filters in the main query
@@ -191,23 +193,18 @@ module CloudHelp
             end
 
             unless search_string.blank?
-                tickets = tickets.where(
-                "(LOWER(subject) SIMILAR TO '%#{search_string}%') OR
-                (LOWER(chctc.name) SIMILAR TO '%#{search_string}%') OR
-                (LOWER(chctt.name) SIMILAR TO '%#{search_string}%') OR
-                (LOWER(chctp.name) SIMILAR TO '%#{search_string}%') OR
-                (LOWER(tags) SIMILAR TO '%#{search_string}%') 
+                tickets = tickets.where("
+                    (LOWER(subject) SIMILAR TO '%#{search_string}%') OR
+                    (LOWER(cloud_help_catalog_ticket_categories.name)   SIMILAR TO '%#{search_string}%') OR
+                    (LOWER(cloud_help_catalog_ticket_types.name)        SIMILAR TO '%#{search_string}%') OR
+                    (LOWER(cloud_help_catalog_ticket_priorities.name)   SIMILAR TO '%#{search_string}%') OR
+                    (LOWER(tags) SIMILAR TO '%#{search_string}%') 
                 ")
             end
 
-            response = {}
-            # total count
-            response[:total_count] = tickets.length
-
             tickets = tickets.order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
 
-            # We format the response
-            response[:tickets] = tickets.map do |ticket|
+            tickets = tickets.map do |ticket|
                 ticket_attributes = ticket.attributes
                 ticket_attributes["editable"] = ticket.is_editable_by?(current_user)
                 ticket_attributes["deadline_text"] = LC::Date.to_string(ticket_attributes["deadline"])
@@ -228,7 +225,7 @@ module CloudHelp
                 ticket_attributes
             end
 
-            return LC::Response.service(true, response)
+            tickets
         end
 
         def self.count(current_user)
