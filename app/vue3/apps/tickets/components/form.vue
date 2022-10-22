@@ -269,24 +269,14 @@ onMounted(() => {
                     <label class="label">{{translations.main.column_description}}</label>
                 </div>
 
-
-       
-
-                    <div class="field-body">
+                <div class="field-body">
                     <div class="field">
                         <div class="control">
                             <editorRichText mode="small" v-model="storeTickets.ticket.description"></editorRichText>
                         </div>
                     </div>
                 </div>
-                    
-                <!-- <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input name="description"  class="input" v-model="storeTickets.ticket.description">
-                        </div>
-                    </div>
-                </div> -->
+
             </div>
 
             <div class="field is-horizontal">
