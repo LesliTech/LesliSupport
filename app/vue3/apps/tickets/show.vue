@@ -107,7 +107,7 @@ const onUpdatedStatus = () => {
             <lesli-tab-item :title="translations.core.shared.view_btn_discussions" icon="forum">
                 <component-discussions 
                     cloud-module="help" 
-                    cloud-object="/tickets" 
+                    cloud-object="tickets" 
                     :cloud-object-id="storeTickets.ticket.id"
                     :onlyDiscussions="true"
                 >
@@ -116,7 +116,7 @@ const onUpdatedStatus = () => {
             <lesli-tab-item :title="this.translations.core.shared.view_btn_files" icon="attach_file">
                 <component-files
                     cloud-module="help" 
-                    cloud-object="/tickets"
+                    cloud-object="tickets"
                     :cloud-object-id="storeTickets.ticket.id"
                 ></component-files>
 
