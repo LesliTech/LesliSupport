@@ -199,6 +199,19 @@ export const useTickets = defineStore("help.tickets", {
             this.getTickets(this.url.help('tickets').search(string))
         },
 
+        getTicketsFilters(){
+            this.http.get(this.url.help('tickets/options')).then(result => {
+                if (result.successful) {
+                    this.ticket_filters = result.data
+                    this.getFilteredStatuses('')
+                }else{
+                    this.msg.error(result.error.message)
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        },
+
     }
 })
 

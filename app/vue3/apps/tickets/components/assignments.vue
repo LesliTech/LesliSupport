@@ -56,7 +56,6 @@ const columns = [{
 
 
 onMounted(() => {
-    storeAssignments.getOptions()
     storeAssignments.ticket_id = route.params.id
     storeAssignments.fetchTicket(route.params.id)
 })
