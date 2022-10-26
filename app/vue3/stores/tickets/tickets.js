@@ -18,6 +18,7 @@ For more information read the license file including with this software.
 
 // · 
 import { defineStore } from "pinia"
+import dayjs from 'dayjs'
 
 
 // · 
@@ -34,7 +35,7 @@ export const useTickets = defineStore("help.tickets", {
                 cloud_help_catalog_ticket_priorities_id: null,
                 cloud_help_catalog_ticket_workspaces_id: null,
                 subject: null,
-                description: {},
+                description: '',
                 deadline: new Date(),
                 tags: [],
                 hours_worked: 0
@@ -49,7 +50,8 @@ export const useTickets = defineStore("help.tickets", {
             filters: {
                 cloud_help_catalog_ticket_workspaces_id: null,
                 search_type: null,
-                user_type: 'own'
+                user_type: 'own',
+                per_page: 10
             }
         }
     },
@@ -131,6 +133,7 @@ export const useTickets = defineStore("help.tickets", {
 
         resetTicketStore(){
             this.ticket = {}
+            this.ticket.description = ""
         },
 
         fetchTicket(id=null){
@@ -142,6 +145,16 @@ export const useTickets = defineStore("help.tickets", {
 
             this.http.get(url).then(result => {
                 this.ticket = result
+                try {
+                    const json = JSON.parse(this.ticket.description)
+                    if(json.html){
+                        this.ticket.description = json.html
+                    }
+                } catch (error) {
+                    this.ticket.description = result.description
+                }
+
+                this.ticket.deadline= dayjs(this.ticket.deadline).format('YYYY-MM-DD') //Change date format to show in date selector
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
@@ -198,7 +211,6 @@ export const useTickets = defineStore("help.tickets", {
         search(string) {
             this.getTickets(this.url.help('tickets').search(string))
         },
-
     }
 })
 

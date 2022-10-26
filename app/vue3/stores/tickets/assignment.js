@@ -39,9 +39,11 @@ export const useAssignments = defineStore("core.assignments", {
         getOptions(){
             let url = this.url.help('tickets/assignments/options')
             this.loading = true
+            this.users = {}
             this.http.get(url).then(result => {
                 this.loading = false
                 this.users = result
+                this.markAssignables()
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
@@ -60,6 +62,8 @@ export const useAssignments = defineStore("core.assignments", {
                 }
             }
             this.http.post(url, data).then(result => {
+                this.ticket.assignment_attributes.push(result) // Save the new assignment to the ticket object
+                this.markAssignables() // Mark the user as assigned 
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
@@ -78,7 +82,6 @@ export const useAssignments = defineStore("core.assignments", {
                     return assignment.id != assignment_id
                 })
             }).catch(error => {
-                console.log(error)
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
@@ -98,8 +101,8 @@ export const useAssignments = defineStore("core.assignments", {
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
+                this.getOptions()
                 this.loading = false
-                this.markAssignables()
             })
         },
         /**
