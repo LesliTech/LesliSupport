@@ -24,6 +24,8 @@ import { inject, onMounted, ref, onUnmounted } from "vue"
 import { useTickets } from "CloudHelp/stores/tickets/tickets"
 import { useAssignments } from "CloudHelp/stores/tickets/assignment"
 
+import editorRichText from "LesliVue/components/editors/richtext.vue"
+
 // · import vue router composable
 import { useRouter, useRoute } from "vue-router"
 
@@ -67,13 +69,16 @@ const onCreate = () => {
     router.push(url.help('tickets').toString())
 }
 
+/**
+ * Checking if the form is for a new ticket or for editing existing one
+*/
+if (props.isEditable){
+    storeTickets.fetchTicket(route.params?.id)
+} else {
+    storeTickets.ticket = {}
+}
 
 onMounted(() => {
-    if (props.isEditable){
-        storeTickets.fetchTicket(route.params?.id)
-    } else {
-        storeTickets.resetTicketStore()
-    }
     storeTickets.getOptions()
 })
 
@@ -266,13 +271,16 @@ onMounted(() => {
                 <div class="field-label is-normal">
                     <label class="label">{{translations.main.column_description}}</label>
                 </div>
+
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="description"  class="input" v-model="storeTickets.ticket.description">
+                            <editor-rich-text mode="small" v-model="storeTickets.ticket.description">
+                            </editor-rich-text>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="field is-horizontal">
