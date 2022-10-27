@@ -198,7 +198,6 @@ export const useTickets = defineStore("help.tickets", {
         search(string) {
             this.getTickets(this.url.help('tickets').search(string))
         },
-
     }
 })
 
