@@ -272,7 +272,8 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <editorRichText mode="small" v-model="storeTickets.ticket.description"></editorRichText>
+                            <editor-rich-text mode="small" v-model="storeTickets.ticket.description">
+                            </editor-rich-text>
                         </div>
                     </div>
                 </div>

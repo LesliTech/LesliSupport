@@ -142,6 +142,15 @@ export const useTickets = defineStore("help.tickets", {
 
             this.http.get(url).then(result => {
                 this.ticket = result
+                try {
+                    json = JSON.parse(this.ticket.description)
+                    if(json.html){
+                        this.ticket.description = json.html
+                    }
+                } catch (error) {
+                    this.ticket.description = result.description
+                }
+
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
