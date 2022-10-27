@@ -34,7 +34,7 @@ export const useTickets = defineStore("help.tickets", {
                 cloud_help_catalog_ticket_priorities_id: null,
                 cloud_help_catalog_ticket_workspaces_id: null,
                 subject: null,
-                description: {},
+                description: '',
                 deadline: new Date(),
                 tags: [],
                 hours_worked: 0
@@ -131,6 +131,7 @@ export const useTickets = defineStore("help.tickets", {
 
         resetTicketStore(){
             this.ticket = {}
+            this.ticket.description = ""
         },
 
         fetchTicket(id=null){
@@ -143,7 +144,7 @@ export const useTickets = defineStore("help.tickets", {
             this.http.get(url).then(result => {
                 this.ticket = result
                 try {
-                    json = JSON.parse(this.ticket.description)
+                    const json = JSON.parse(this.ticket.description)
                     if(json.html){
                         this.ticket.description = json.html
                     }
