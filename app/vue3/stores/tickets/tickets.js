@@ -18,6 +18,7 @@ For more information read the license file including with this software.
 
 // · 
 import { defineStore } from "pinia"
+import dayjs from 'dayjs'
 
 
 // · 
@@ -49,7 +50,8 @@ export const useTickets = defineStore("help.tickets", {
             filters: {
                 cloud_help_catalog_ticket_workspaces_id: null,
                 search_type: null,
-                user_type: 'own'
+                user_type: 'own',
+                per_page: 10
             }
         }
     },
@@ -152,6 +154,7 @@ export const useTickets = defineStore("help.tickets", {
                     this.ticket.description = result.description
                 }
 
+                this.ticket.deadline= dayjs(this.ticket.deadline).format('YYYY-MM-DD') //Change date format to show in date selector
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {

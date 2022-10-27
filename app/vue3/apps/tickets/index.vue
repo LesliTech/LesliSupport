@@ -84,7 +84,8 @@ const columns = [{
     label: translations.main.column_cloud_help_catalog_ticket_priorities_id
 }, {
     field: "user_creator",
-    label: translations.main.column_users_id
+    label: translations.main.column_users_id,
+    sort: true
 }, {
     field: "assignables",
     label: translations.main.column_user_main_id
@@ -149,6 +150,27 @@ function extractInitials(name){
                     },
                 ]"
                 v-model="storeTickets.filters.search_type"
+                @change="storeTickets.getTickets()"
+            >
+            </lesli-select>
+
+            <lesli-select
+                :options="[
+                    {
+                        label: '10',
+                        value: 10
+                    }, {
+                        label: '15',
+                        value: 15
+                    }, {
+                        label: '30',
+                        value: 30
+                    }, {
+                        label: '50',
+                        value: 50
+                    },
+                ]"
+                v-model="storeTickets.filters.per_page"
                 @change="storeTickets.getTickets()"
             >
             </lesli-select>
