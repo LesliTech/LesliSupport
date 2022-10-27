@@ -78,8 +78,8 @@ export const useTickets = defineStore("help.tickets", {
         },
 
         getOptions(){
-            
             this.http.get(this.url.help('tickets/options')).then(result => {
+                this.loading = true
                 this.options.types = result.types.map((type)=> {
                     return {
                         label: type.name,
@@ -131,11 +131,6 @@ export const useTickets = defineStore("help.tickets", {
             })
         },
 
-        resetTicketStore(){
-            this.ticket = {}
-            this.ticket.description = ""
-        },
-
         fetchTicket(id=null){
             this.loading = true
 
@@ -144,6 +139,7 @@ export const useTickets = defineStore("help.tickets", {
             if (id) { url = this.url.help('tickets/:id', id)}
 
             this.http.get(url).then(result => {
+                this.ticket = {}
                 this.ticket = result
                 try {
                     const json = JSON.parse(this.ticket.description)
