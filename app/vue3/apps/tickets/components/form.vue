@@ -69,16 +69,19 @@ const onCreate = () => {
     router.push(url.help('tickets').toString())
 }
 
+/**
+ * Checking if the form is for a new ticket or for editing existing one
+*/
+if (props.isEditable){
+    storeTickets.fetchTicket(route.params?.id)
+} else {
+    storeTickets.ticket = {}
+}
 
 onMounted(() => {
-    if (props.isEditable){
-        storeTickets.fetchTicket(route.params?.id)
-    } else {
-        storeTickets.resetTicketStore()
-    }
     storeTickets.getOptions()
 })
-const test = ref("<ul><li>Rename old Hauptmitarbeiter to Ankauf-Mitarbeiter</li><li>Workflow for reminders should be changed to be based on the new Hauptmitarbeiter field</li></ul><p><br></p>")
+
 </script>
 <template>
     <div class="box">
