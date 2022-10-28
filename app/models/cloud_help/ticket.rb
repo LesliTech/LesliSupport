@@ -138,18 +138,7 @@ module CloudHelp
         #     #    }
         #     #]
         def self.index(current_user, query, params)
-            filters = params[:f]
-
-            per_page = query[:pagination][:perPage] # Set default per page
-
-            # Check if the per page filter is used
-            unless filters.blank?
-                unless filters["per_page"].nil?
-                    per_page = filters["per_page"]
-                end
-            end
-            
-            Kaminari.paginate_array(TicketServices.index(current_user, query, params).payload).page(query[:pagination][:page]).per(per_page)
+            Kaminari.paginate_array(TicketServices.index(current_user, query, params).payload).page(query[:pagination][:page]).per(query[:pagination][:perPage])
         end
 
         def self.count(current_user)

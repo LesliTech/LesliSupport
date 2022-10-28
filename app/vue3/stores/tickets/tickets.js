@@ -28,6 +28,8 @@ export const useTickets = defineStore("help.tickets", {
             loading: false,
             tickets: [],
             options: {},
+            tags: [],
+            workspaces_options: 0,
             ticket: {
                 cloud_help_catalog_ticket_types_id: null,
                 cloud_help_catalog_ticket_categories_id: null,
@@ -37,7 +39,6 @@ export const useTickets = defineStore("help.tickets", {
                 subject: null,
                 description: '',
                 deadline: new Date(),
-                tags: [],
                 hours_worked: 0
             },
             pagination: {
@@ -56,17 +57,20 @@ export const useTickets = defineStore("help.tickets", {
         }
     },
     actions: {
-
+        /**
+         * @description This action is used to get the list of tickets
+         */
         getTickets(url=this.url.help('tickets')) {
             this.tickets = {}
             this.loading = true 
             const query_filters = {}
 
+            //Format filters to send them in the query string
             for (const [key, value] of Object.entries(this.filters)) {
                 query_filters[key] = [value]
             }
 
-            this.http.get(url.paginate(this.pagination.page).filter(query_filters)
+            this.http.get(url.paginate(this.pagination.page, this.filters.per_page).filter(query_filters)
             ).then(result => {
                 this.index = result
                 this.tickets = result.records
@@ -77,6 +81,9 @@ export const useTickets = defineStore("help.tickets", {
             })
         },
 
+        /**
+         * @description This action is used to get options for selectors in ticket form
+         */
         getOptions(){
             this.http.get(this.url.help('tickets/options')).then(result => {
                 this.loading = true
@@ -107,6 +114,9 @@ export const useTickets = defineStore("help.tickets", {
                         value: workspace.id
                     }
                 })
+
+                this.workspaces_options = Object.keys(this.options.workspaces).length
+
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
@@ -115,22 +125,65 @@ export const useTickets = defineStore("help.tickets", {
             
         },
 
+        /**
+         * @description This action is used to post a new ticket
+         */
         postTicket() {
-            this.http.post(this.url.help('tickets'), this.ticket).then(result => {
+            //Veriy if tags in tickets were selected 
+            let selected_tags = null
+            if (this.tags.length > 0) {
+                selected_tags = this.tags.map(tag => tag.name).join(',')
+            } else{
+                selected_tags = null
+            }
+
+            //If there is only one option to workspaces set the value to this option
+            if (this.workspaces_options == 1){
+                this.ticket.cloud_help_catalog_ticket_workspaces_id = this.options.workspaces[0].value
+            }
+
+            this.http.post(this.url.help('tickets'), {
+                ticket: {
+                    ...this.ticket,
+                    tags: selected_tags
+                }
+            }).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
 
+        /**
+         * @description This action is used to update a ticket
+         */
         updateTicket(){
-            this.http.put(this.url.help('tickets/:id', this.ticket.id), this.ticket).then(result => {
+
+            //Veriy if tags in tickets were selected 
+            let selected_tags = null
+            if (this.tags.length > 0) {
+                selected_tags = this.tags.map(tag => tag.name).join(',')
+            } else{
+                selected_tags = null
+            }
+
+            this.http.put(this.url.help('tickets/:id', this.ticket.id), {
+                ticket: {
+                    ...this.ticket,
+                    tags: selected_tags
+                }
+                
+            }).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
 
+        /**
+         * @description This action is used to fetch a ticket.
+         * @param {Integer} id The id of the ticket.
+         */
         fetchTicket(id=null){
             this.loading = true
 
@@ -141,6 +194,8 @@ export const useTickets = defineStore("help.tickets", {
             this.http.get(url).then(result => {
                 this.ticket = {}
                 this.ticket = result
+
+                // Parse ticket description to be compatible with old description format
                 try {
                     const json = JSON.parse(this.ticket.description)
                     if(json.html){
@@ -150,13 +205,23 @@ export const useTickets = defineStore("help.tickets", {
                     this.ticket.description = result.description
                 }
 
+                // Get the list of tags from a ticket and parse to a format used by the input tag component
+                this.tags = []
+                if (this.ticket.tags != null) {
+                    this.ticket.tags.split(',').forEach((tag)=>{
+                        this.tags.push({name: tag})
+                    })
+                }
+
                 this.ticket.deadline= dayjs(this.ticket.deadline).format('YYYY-MM-DD') //Change date format to show in date selector
+
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
                 this.loading = false
             })
         },
+
         /**
          * @description This action is used to delete a ticket
          */
@@ -178,6 +243,7 @@ export const useTickets = defineStore("help.tickets", {
                     }
                 })
         },
+
         /**
         * @description This action is used to reload tickets
         */
@@ -186,6 +252,10 @@ export const useTickets = defineStore("help.tickets", {
             this.getTickets()
         },
 
+        /**
+         * @description This action is used to paginate tickets from index
+         * @param {String} page The actual page showing.
+         */
         paginateIndex(page) {
             this.pagination.page = page
             this.getTickets()

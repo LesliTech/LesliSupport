@@ -64,9 +64,6 @@ const columns = [{
     label: translations.main.column_subject,
     sort: true
 }, {
-    field: "workspace",
-    label: translations.main.column_cloud_help_catalog_ticket_workspaces_id
-}, {
     field: "deadline_text",
     label: translations.main.column_deadline
 }, {
