@@ -144,7 +144,9 @@ module CloudHelp
 
             # Check if the per page filter is used
             unless filters.blank?
-                per_page = filters["per_page"]
+                unless filters["per_page"].nil?
+                    per_page = filters["per_page"]
+                end
             end
             
             Kaminari.paginate_array(TicketServices.index(current_user, query, params).payload).page(query[:pagination][:page]).per(per_page)
