@@ -78,8 +78,8 @@ export const useTickets = defineStore("help.tickets", {
         },
 
         getOptions(){
-            
             this.http.get(this.url.help('tickets/options')).then(result => {
+                this.loading = true
                 this.options.types = result.types.map((type)=> {
                     return {
                         label: type.name,

@@ -189,11 +189,33 @@ function extractInitials(name){
                 <span
                     v-for="user in value"
                     :key="user"
-                    class="tag is-success is-small is-rounded mr-1"
+                    class="tag is-info is-small is-rounded mr-1"
                 >
                     {{ extractInitials(user) }}
                 </span>
+            </template>
 
+            <template #priority="{ column, value }">
+                <span
+                    v-if="value =='High' || value =='Highest' || value =='Very High'"
+                    class="tag is-danger"
+                >
+                    {{ value }}
+                </span>
+
+                <span
+                    v-if="value =='Medium'"
+                    class="tag is-warning"
+                >
+                    {{ value }}
+                </span>
+
+                <span
+                    v-if="value =='Low' || value=='Lowest'"
+                    class="tag is-success"
+                >
+                    {{ value }}
+                </span>
             </template>
 
         </lesli-table>

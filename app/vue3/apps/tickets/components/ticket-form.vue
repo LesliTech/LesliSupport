@@ -36,6 +36,7 @@ const storeAssignments = useAssignments()
 // · initialize/inject plugins
 const router = useRouter()
 const url = inject("url")
+const date = inject("date")
 const route = useRoute()
 
 // · defining props
@@ -85,7 +86,7 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="box">
+    <div class="box" v-if="!storeTickets.loading">
         <form class="information" @submit.prevent="
                 isEditable
                     ? onUpdate()
