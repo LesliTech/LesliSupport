@@ -73,6 +73,7 @@ const onCreate = () => {
  * Checking if the form is for a new ticket or for editing existing one
 */
 if (props.isEditable){
+    storeTickets.ticket = {}
     storeTickets.fetchTicket(route.params?.id)
 } else {
     storeTickets.ticket = {}

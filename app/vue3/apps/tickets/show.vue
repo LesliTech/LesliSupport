@@ -22,7 +22,7 @@ import { onMounted } from "vue"
 import { useRouter, useRoute } from 'vue-router'
 
 // . import components
-import formTicket from './components/form.vue'
+import formTicket from './components/ticket-form.vue'
 import slaInfo from './components/sla-info.vue'
 import internalComments from './components/internal-comments.vue'
 import assignments from './components/assignments.vue'
@@ -76,16 +76,15 @@ const onUpdatedStatus = () => {
 <template>
 
     <section class="application-component">
-        <lesli-header 
+        <lesli-header
             :title="storeTickets.ticket.id+' - '+storeTickets.ticket.subject+' - '+storeTickets.ticket.status"
         >
             <component-workflow-status-dropdown
                     v-if="storeTickets.ticket.id"
-                    @on-updated-status="onUpdatedStatus"
+                    @on-updated-status="onUpdatedStatus()"
                     cloudObject="/tickets"
                     cloudModule="help"
                     :cloudObjectId="storeTickets.ticket.id"
-                    
             >
             </component-workflow-status-dropdown>
             <button class="button is-fullwidth has-text-centered is-danger" @click="storeTickets.deleteTicket">
@@ -95,6 +94,7 @@ const onUpdatedStatus = () => {
                 {{translations.main.view_title_main}}
             </lesli-button>
         </lesli-header>
+
         <lesli-tabs v-model="tab">
             <lesli-tab-item :title="translations.shared.view_tab_title_general_information" icon="info">
                 <form-ticket is-editable></form-ticket>
