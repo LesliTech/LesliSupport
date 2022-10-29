@@ -28,6 +28,7 @@ import { useTickets } from "CloudHelp/stores/tickets/tickets"
 // · initialize/inject plugins
 const router = useRouter()
 const url = inject("url")
+const date = inject("date")
 
 // · implement stores
 const storeTickets = useTickets()
@@ -64,11 +65,9 @@ const columns = [{
     label: translations.main.column_subject,
     sort: true
 }, {
-    field: "workspace",
-    label: translations.main.column_cloud_help_catalog_ticket_workspaces_id
-}, {
-    field: "deadline_text",
-    label: translations.main.column_deadline
+    field: "deadline",
+    label: translations.main.column_deadline,
+    sort: true
 }, {
     field: "status_name",
     label: translations.main.column_cloud_help_workflow_statuses_id,
@@ -189,10 +188,45 @@ function extractInitials(name){
                 <span
                     v-for="user in value"
                     :key="user"
-                    class="tag is-success is-small is-rounded mr-1"
+                    class="tag is-info is-small is-rounded mr-1"
                 >
                     {{ extractInitials(user) }}
                 </span>
+            </template>
+
+            <template #priority="{ column, value }">
+                <span
+                    v-if="value =='High' || value =='Highest' || value =='Very High'"
+                    class="tag is-danger"
+                >
+                    {{ value }}
+                </span>
+
+                <span
+                    v-if="value =='Medium'"
+                    class="tag is-warning"
+                >
+                    {{ value }}
+                </span>
+
+                <span
+                    v-if="value =='Low' || value=='Lowest'"
+                    class="tag is-success"
+                >
+                    {{ value }}
+                </span>
+            </template>
+
+            <template #deadline="{ column, value }">
+                <div v-if="value.getTime() <= new Date().getTime() ">
+                    <div class="icon-text">
+                        <span class="icon has-text-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>{{date.date(value)}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div v-else>{{ date.date(value)}}</div>
 
             </template>
 

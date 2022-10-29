@@ -36,6 +36,7 @@ const storeAssignments = useAssignments()
 // · initialize/inject plugins
 const router = useRouter()
 const url = inject("url")
+const date = inject("date")
 const route = useRoute()
 
 // · defining props
@@ -73,24 +74,24 @@ const onCreate = () => {
  * Checking if the form is for a new ticket or for editing existing one
 */
 if (props.isEditable){
+    storeTickets.ticket = {}
     storeTickets.fetchTicket(route.params?.id)
 } else {
     storeTickets.ticket = {}
+    storeTickets.tags = []
 }
 
-onMounted(() => {
-    storeTickets.getOptions()
-})
+storeTickets.getOptions()
 
 </script>
 <template>
-    <div class="box">
+    <div class="box" v-if="!storeTickets.loading">
         <form class="information" @submit.prevent="
                 isEditable
                     ? onUpdate()
                     : onCreate()
         ">
-            <div class="field is-horizontal">
+            <div class="field is-horizontal" v-if="storeTickets.workspaces_options > 1">
                 <div class="field-label">
                     <label class="label">{{translations.main.column_cloud_help_catalog_ticket_workspaces_id}}</label>
                 </div>
@@ -247,7 +248,23 @@ onMounted(() => {
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="tags"  class="input" v-model="storeTickets.ticket.tags">
+                            <lesli-input-tag
+                                v-model="storeTickets.tags"
+                                placeholder="tags"
+                                :options="[ 
+                                    {
+                                        name: 'Bug'
+                                    },
+                                    {
+                                        name: 'Report'
+                                    },
+                                    {
+                                        name: 'Performance'
+                                    }
+                                ]"
+                                :filterFields="['name']"
+                                showField="name"
+                            />
                         </div>
                     </div>
                 </div>

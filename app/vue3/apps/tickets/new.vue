@@ -22,7 +22,7 @@ import { onMounted } from "vue"
 import { useRouter } from 'vue-router'
 
 // . import components
-import formTicket from './components/form.vue'
+import formTicket from './components/ticket-form.vue'
 
 // · import lesli stores
 import { useTickets } from "CloudHelp/stores/tickets/tickets"
