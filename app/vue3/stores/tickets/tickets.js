@@ -125,10 +125,18 @@ export const useTickets = defineStore("help.tickets", {
          * @description This action is used to post a new ticket
          */
         postTicket() {
+            //Veriy if tags in tickets were selected 
+            let selected_tags = null
+            if (this.tags.length > 0) {
+                selected_tags = this.tags.map(tag => tag.name).join(',')
+            } else{
+                selected_tags = null
+            }
+
             this.http.post(this.url.help('tickets'), {
                 ticket: {
                     ...this.ticket,
-                    tags: this.tags.map(tag => tag.name).join(',')
+                    tags: selected_tags
                 }
             }).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
@@ -141,10 +149,19 @@ export const useTickets = defineStore("help.tickets", {
          * @description This action is used to update a ticket
          */
         updateTicket(){
+
+            //Veriy if tags in tickets were selected 
+            let selected_tags = null
+            if (this.tags.length > 0) {
+                selected_tags = this.tags.map(tag => tag.name).join(',')
+            } else{
+                selected_tags = null
+            }
+
             this.http.put(this.url.help('tickets/:id', this.ticket.id), {
                 ticket: {
                     ...this.ticket,
-                    tags: this.tags.map(tag => tag.name).join(',')
+                    tags: selected_tags
                 }
                 
             }).then(result => {

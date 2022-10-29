@@ -259,6 +259,9 @@ onMounted(() => {
                                     },
                                     {
                                         name: 'Report'
+                                    },
+                                    {
+                                        name: 'Performance'
                                     }
                                 ]"
                                 :filterFields="['name']"
