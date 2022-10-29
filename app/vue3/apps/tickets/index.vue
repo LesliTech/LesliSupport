@@ -28,6 +28,7 @@ import { useTickets } from "CloudHelp/stores/tickets/tickets"
 // · initialize/inject plugins
 const router = useRouter()
 const url = inject("url")
+const date = inject("date")
 
 // · implement stores
 const storeTickets = useTickets()
@@ -64,8 +65,9 @@ const columns = [{
     label: translations.main.column_subject,
     sort: true
 }, {
-    field: "deadline_text",
-    label: translations.main.column_deadline
+    field: "deadline",
+    label: translations.main.column_deadline,
+    sort: true
 }, {
     field: "status_name",
     label: translations.main.column_cloud_help_workflow_statuses_id,
@@ -213,6 +215,19 @@ function extractInitials(name){
                 >
                     {{ value }}
                 </span>
+            </template>
+
+            <template #deadline="{ column, value }">
+                <div v-if="value.getTime() <= new Date().getTime() ">
+                    <div class="icon-text">
+                        <span class="icon has-text-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>{{date.date(value)}}</span>
+                        </span>
+                    </div>
+                </div>
+                <div v-else>{{ date.date(value)}}</div>
+
             </template>
 
         </lesli-table>
