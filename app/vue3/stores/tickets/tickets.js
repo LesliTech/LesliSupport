@@ -28,6 +28,7 @@ export const useTickets = defineStore("help.tickets", {
             loading: false,
             tickets: [],
             options: {},
+            tags: [],
             ticket: {
                 cloud_help_catalog_ticket_types_id: null,
                 cloud_help_catalog_ticket_categories_id: null,
@@ -37,7 +38,6 @@ export const useTickets = defineStore("help.tickets", {
                 subject: null,
                 description: '',
                 deadline: new Date(),
-                tags: [],
                 hours_worked: 0
             },
             pagination: {
@@ -56,12 +56,15 @@ export const useTickets = defineStore("help.tickets", {
         }
     },
     actions: {
-
+        /**
+         * @description This action is used to get the list of tickets
+         */
         getTickets(url=this.url.help('tickets')) {
             this.tickets = {}
             this.loading = true 
             const query_filters = {}
 
+            //Format filters to send them in the query string
             for (const [key, value] of Object.entries(this.filters)) {
                 query_filters[key] = [value]
             }
@@ -77,6 +80,9 @@ export const useTickets = defineStore("help.tickets", {
             })
         },
 
+        /**
+         * @description This action is used to get options for selectors in ticket form
+         */
         getOptions(){
             this.http.get(this.url.help('tickets/options')).then(result => {
                 this.loading = true
@@ -115,22 +121,43 @@ export const useTickets = defineStore("help.tickets", {
             
         },
 
+        /**
+         * @description This action is used to post a new ticket
+         */
         postTicket() {
-            this.http.post(this.url.help('tickets'), this.ticket).then(result => {
+            this.http.post(this.url.help('tickets'), {
+                ticket: {
+                    ...this.ticket,
+                    tags: this.tags.map(tag => tag.name).join(',')
+                }
+            }).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
 
+        /**
+         * @description This action is used to update a ticket
+         */
         updateTicket(){
-            this.http.put(this.url.help('tickets/:id', this.ticket.id), this.ticket).then(result => {
+            this.http.put(this.url.help('tickets/:id', this.ticket.id), {
+                ticket: {
+                    ...this.ticket,
+                    tags: this.tags.map(tag => tag.name).join(',')
+                }
+                
+            }).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
 
+        /**
+         * @description This action is used to fetch a ticket.
+         * @param {Integer} id The id of the ticket.
+         */
         fetchTicket(id=null){
             this.loading = true
 
@@ -141,6 +168,8 @@ export const useTickets = defineStore("help.tickets", {
             this.http.get(url).then(result => {
                 this.ticket = {}
                 this.ticket = result
+
+                // Parse ticket description to be compatible with old description format
                 try {
                     const json = JSON.parse(this.ticket.description)
                     if(json.html){
@@ -150,13 +179,23 @@ export const useTickets = defineStore("help.tickets", {
                     this.ticket.description = result.description
                 }
 
+                // Get the list of tags from a ticket and parse to a format used by the input tag component
+                this.tags = []
+                if (this.ticket.tags != null) {
+                    this.ticket.tags.split(',').forEach((tag)=>{
+                        this.tags.push({name: tag})
+                    })
+                }
+
                 this.ticket.deadline= dayjs(this.ticket.deadline).format('YYYY-MM-DD') //Change date format to show in date selector
+
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
                 this.loading = false
             })
         },
+
         /**
          * @description This action is used to delete a ticket
          */
@@ -178,6 +217,7 @@ export const useTickets = defineStore("help.tickets", {
                     }
                 })
         },
+
         /**
         * @description This action is used to reload tickets
         */
@@ -186,6 +226,10 @@ export const useTickets = defineStore("help.tickets", {
             this.getTickets()
         },
 
+        /**
+         * @description This action is used to paginate tickets from index
+         * @param {String} page The actual page showing.
+         */
         paginateIndex(page) {
             this.pagination.page = page
             this.getTickets()
