@@ -29,6 +29,7 @@ export const useTickets = defineStore("help.tickets", {
             tickets: [],
             options: {},
             tags: [],
+            workspaces_options: 0,
             ticket: {
                 cloud_help_catalog_ticket_types_id: null,
                 cloud_help_catalog_ticket_categories_id: null,
@@ -113,6 +114,9 @@ export const useTickets = defineStore("help.tickets", {
                         value: workspace.id
                     }
                 })
+
+                this.workspaces_options = Object.keys(this.options.workspaces).length
+
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
@@ -131,6 +135,11 @@ export const useTickets = defineStore("help.tickets", {
                 selected_tags = this.tags.map(tag => tag.name).join(',')
             } else{
                 selected_tags = null
+            }
+
+            //If there is only one option to workspaces set the value to this option
+            if (this.workspaces_options == 1){
+                this.ticket.cloud_help_catalog_ticket_workspaces_id = this.options.workspaces[0].value
             }
 
             this.http.post(this.url.help('tickets'), {

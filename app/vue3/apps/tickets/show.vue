@@ -58,6 +58,7 @@ const props = defineProps({
     }
 })
 
+
 // · initializing
 onMounted(() => {
     storeTickets.getTickets()

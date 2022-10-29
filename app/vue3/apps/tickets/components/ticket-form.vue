@@ -81,9 +81,11 @@ if (props.isEditable){
     storeTickets.tags = []
 }
 
-onMounted(() => {
-    storeTickets.getOptions()
-})
+storeTickets.getOptions()
+
+// onMounted(() => {
+//     console.log(Object.keys(storeTickets.options.workspaces).length)
+// })
 
 </script>
 <template>
@@ -93,7 +95,7 @@ onMounted(() => {
                     ? onUpdate()
                     : onCreate()
         ">
-            <div class="field is-horizontal">
+            <div class="field is-horizontal" v-if="storeTickets.workspaces_options > 1">
                 <div class="field-label">
                     <label class="label">{{translations.main.column_cloud_help_catalog_ticket_workspaces_id}}</label>
                 </div>
