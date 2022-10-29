@@ -69,7 +69,7 @@ export const useTickets = defineStore("help.tickets", {
                 query_filters[key] = [value]
             }
 
-            this.http.get(url.paginate(this.pagination.page).filter(query_filters)
+            this.http.get(url.paginate(this.pagination.page, this.filters.per_page).filter(query_filters)
             ).then(result => {
                 this.index = result
                 this.tickets = result.records
