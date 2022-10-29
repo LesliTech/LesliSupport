@@ -198,16 +198,6 @@ export const useTickets = defineStore("help.tickets", {
                 this.ticket = {}
                 this.ticket = result
 
-                // Parse ticket description to be compatible with old description format
-                try {
-                    const json = JSON.parse(this.ticket.description)
-                    if(json.html){
-                        this.ticket.description = json.html
-                    }
-                } catch (error) {
-                    this.ticket.description = result.description
-                }
-
                 // Get the list of tags from a ticket and parse to a format used by the input tag component
                 this.tags = []
                 if (this.ticket.tags != null) {
