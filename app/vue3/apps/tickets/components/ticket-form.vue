@@ -83,10 +83,6 @@ if (props.isEditable){
 
 storeTickets.getOptions()
 
-// onMounted(() => {
-//     console.log(Object.keys(storeTickets.options.workspaces).length)
-// })
-
 </script>
 <template>
     <div class="box" v-if="!storeTickets.loading">
