@@ -74,6 +74,9 @@ export const useTickets = defineStore("help.tickets", {
             ).then(result => {
                 this.index = result
                 this.tickets = result.records
+                this.tickets.forEach((ticket)  =>{
+                    ticket.deadline = new Date(ticket.deadline)
+                })
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
