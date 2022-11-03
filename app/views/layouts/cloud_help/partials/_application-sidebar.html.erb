@@ -54,3 +54,14 @@ For more information read the license file including with this software.
 <% if @tabs_granted["reports"]%>
     <%= navigation_lesli_item(cloud_help.reports_path, I18n.t("help.shared.sidebar_nav_reports"), "ri-file-chart-line", reload:true) %>
 <% end %>
+
+<template #settings>
+    <% if @tabs_granted["settings"] || @tabs_granted["workflows"] || @tabs_granted["dashboards"] %>
+        <%= navigation_lesli_item(cloud_help.settings_path,                     I18n.t("help.shared.sidebar_nav_account_settings"),                  "ri-file-settings-line",             reload:true); %>
+        <%= navigation_lesli_item(cloud_help.workflows_path,                           I18n.t("help.shared.sidebar_nav_workflows"),       "ri-node-tree",      reload:true); %>
+        <%= navigation_lesli_item(cloud_help.dashboards_path,                      I18n.t("help.shared.sidebar_nav_dashboards"),   "ri-dashboard-line",        reload:true); %>
+    <% end %>
+</template>
+
+
+
