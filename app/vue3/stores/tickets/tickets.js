@@ -51,7 +51,7 @@ export const useTickets = defineStore("help.tickets", {
             filters: {
                 cloud_help_catalog_ticket_workspaces_id: null,
                 search_type: null,
-                user_type: 'own',
+                user_type: null,
                 per_page: 10
             }
         }

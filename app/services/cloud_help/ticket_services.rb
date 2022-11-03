@@ -194,10 +194,13 @@ module CloudHelp
 
             unless search_string.blank?
                 tickets = tickets.where("
+                    (CAST(cloud_help_tickets.id AS VARCHAR) = '#{search_string}') OR
                     (LOWER(subject) SIMILAR TO '%#{search_string}%') OR
                     (LOWER(cloud_help_catalog_ticket_categories.name)   SIMILAR TO '%#{search_string}%') OR
                     (LOWER(cloud_help_catalog_ticket_types.name)        SIMILAR TO '%#{search_string}%') OR
                     (LOWER(cloud_help_catalog_ticket_priorities.name)   SIMILAR TO '%#{search_string}%') OR
+                    (LOWER(user_details.first_name) SIMILAR TO '%#{search_string}%') OR
+                    (LOWER(user_details.last_name) SIMILAR TO '%#{search_string}%') OR
                     (LOWER(tags) SIMILAR TO '%#{search_string}%') 
                 ")
             end
