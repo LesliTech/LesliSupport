@@ -26,7 +26,6 @@ export const useTickets = defineStore("help.tickets", {
     state: () => {
         return {
             loading: false,
-            loading_options: false,
             tickets: [],
             options: {},
             tags: [],
