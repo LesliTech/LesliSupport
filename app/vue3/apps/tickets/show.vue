@@ -61,7 +61,6 @@ const props = defineProps({
 
 // · initializing
 onMounted(() => {
-    storeTickets.getTickets()
     storeTickets.fetchTicket(route.params.id)
 })
 
@@ -77,13 +76,15 @@ const onUpdatedStatus = () => {
 <template>
 
     <section class="application-component">
+        <lesli-loading v-if="storeTickets.loading"></lesli-loading>
         <lesli-header
+            v-else
             :title="storeTickets.ticket.id+' - '+storeTickets.ticket.subject+' - '+storeTickets.ticket.status"
         >
             <component-workflow-status-dropdown
                     v-if="storeTickets.ticket.id"
-                    @on-updated-status="onUpdatedStatus()"
-                    cloudObject="/tickets"
+                    @on-updated-status="onUpdatedStatus"
+                    cloudObject="tickets"
                     cloudModule="help"
                     :cloudObjectId="storeTickets.ticket.id"
             >
