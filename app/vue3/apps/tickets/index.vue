@@ -50,11 +50,10 @@ const props = defineProps({
     }
 })
 
-// · initializing
-onMounted(() => {
-    storeTickets.getTickets()
-    storeTickets.getOptions()
-})
+
+// . On create
+storeTickets.getTickets()
+
 
 const columns = [{
     field: "id",
@@ -109,7 +108,6 @@ function extractInitials(name){
 </script>
 <template>
     <section class="application-component">
-
         <lesli-header :title="translations.main.view_title_main">
             <lesli-button :to="url.root(props.appMountPath+`/new`)" icon="add">
                 {{ translations.core.shared.view_btn_add }}
@@ -233,4 +231,5 @@ function extractInitials(name){
         </lesli-table>
 
     </section>
+
 </template>
