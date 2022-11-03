@@ -60,9 +60,8 @@ const props = defineProps({
 
 
 // · initializing
-onMounted(() => {
-    storeTickets.fetchTicket(route.params.id)
-})
+storeTickets.fetchTicket(route.params.id)
+
 
 /**
  * @description This function is called when the user updates the status of the project.
