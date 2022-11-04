@@ -37,7 +37,7 @@ For more information read the license file including with this software.
             privilege_name = "index"
             privilege_name = tab[:privilege] if tab[:privilege]
 
-            @tabs_granted[tab[:name]] = privilege[privilege_name]
+            @tabs_granted[tab[:name]] = privilege.include? privilege_name
         end
     end
 %>
