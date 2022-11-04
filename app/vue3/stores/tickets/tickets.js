@@ -50,8 +50,8 @@ export const useTickets = defineStore("help.tickets", {
             },
             filters: {
                 cloud_help_catalog_ticket_workspaces_id: null,
-                search_type: null,
-                user_type: 'own',
+                search_type: 'active',
+                user_type: null,
                 per_page: 10
             }
         }
@@ -61,7 +61,7 @@ export const useTickets = defineStore("help.tickets", {
          * @description This action is used to get the list of tickets
          */
         getTickets(url=this.url.help('tickets')) {
-            this.tickets = {}
+            this.tickets = []
             this.loading = true 
             const query_filters = {}
 
@@ -88,8 +88,9 @@ export const useTickets = defineStore("help.tickets", {
          * @description This action is used to get options for selectors in ticket form
          */
         getOptions(){
+            this.loading = true
+            this.options = {}
             this.http.get(this.url.help('tickets/options')).then(result => {
-                this.loading = true
                 this.options.types = result.types.map((type)=> {
                     return {
                         label: type.name,
@@ -187,15 +188,13 @@ export const useTickets = defineStore("help.tickets", {
          * @description This action is used to fetch a ticket.
          * @param {Integer} id The id of the ticket.
          */
-        fetchTicket(id=null){
+        fetchTicket(id){
+
             this.loading = true
-
-            let url = this.url.help('tickets')
-
-            if (id) { url = this.url.help('tickets/:id', id)}
+            this.ticket = {}
+            const url = this.url.help('tickets/:id', id)
 
             this.http.get(url).then(result => {
-                this.ticket = {}
                 this.ticket = result
 
                 // Get the list of tags from a ticket and parse to a format used by the input tag component
@@ -269,7 +268,7 @@ export const useTickets = defineStore("help.tickets", {
          */
         search(string) {
             this.getTickets(this.url.help('tickets').search(string))
-        },
+        }
     }
 })
 
