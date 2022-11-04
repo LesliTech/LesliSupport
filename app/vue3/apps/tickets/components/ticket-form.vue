@@ -128,7 +128,7 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <input name="reference_url"  type="text" class="input" v-model="storeTickets.ticket.reference_url">
+                        <input name="reference_url"  type="text" class="input" v-model="storeTickets.ticket.reference_url" :disabled="storeTickets.ticket.status=='closed'" >
                     </div>
                 </div>
             </div>
@@ -143,7 +143,7 @@ if (props.isEditable){
                     <div class="control">
                         <div v-for="assignment in storeTickets.ticket.assignment_attributes" :key="assignment">
                             <span class="tag is-success">{{assignment.assignable_name}}
-                                <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)"></button>
+                                <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)" v-if="storeTickets.ticket.status!='closed'"></button>
                             </span>
                         </div>
                     </div>
@@ -162,7 +162,7 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <input name="subject" class="input" required v-model="storeTickets.ticket.subject">
+                        <input name="subject" class="input" required v-model="storeTickets.ticket.subject" :disabled="storeTickets.ticket.status=='closed'">
                     </div>
                 </div>
             </div>
@@ -175,7 +175,7 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <input name="deadline"  class="input" type="date" v-model="storeTickets.ticket.deadline">
+                        <input name="deadline"  class="input" type="date" v-model="storeTickets.ticket.deadline" :disabled="storeTickets.ticket.status=='closed'">
                     </div>
                 </div>
             </div>
@@ -192,9 +192,12 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
+                        <input name="type" class="input" type="text" v-model="storeTickets.ticket.type" disabled v-if="storeTickets.ticket.status=='closed'">
                         <lesli-select
+                            v-if="storeTickets.ticket.status!='closed'"
                             :options="storeTickets.options.types"
                             v-model="storeTickets.ticket.cloud_help_catalog_ticket_types_id"
+                            :disabled="storeTickets.ticket.status=='closed'"
                         >
                         </lesli-select>
                     </div>
@@ -226,8 +229,9 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
+                        <input name="priority" class="input" type="text" v-model="storeTickets.ticket.priority" disabled v-if="storeTickets.ticket.status=='closed'">
                         <lesli-select
-                            v-if="storeTickets.options.priorities"
+                            v-if="storeTickets.options.priorities && storeTickets.ticket.status!='closed'"
                             :options="storeTickets.options.priorities"
                             v-model="storeTickets.ticket.cloud_help_catalog_ticket_priorities_id"
                         ></lesli-select>
@@ -243,7 +247,14 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <lesli-input-tag
+                        <div  v-if="storeTickets.ticket.status=='closed'">
+                            <div v-for="tag in storeTickets.ticket.tags" :key="tag">
+                                <pre>{{tag}}</pre>
+                                <span class="tag is-success">{{tag}}</span>
+                            </div>
+                        </div>
+
+                        <lesli-input-tag 
                             v-model="storeTickets.tags"
                             placeholder="tags"
                             :options="[ 
@@ -272,7 +283,7 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <input name="Hours word" class="input" type="number" v-model="storeTickets.ticket.hours_worked">
+                        <input name="Hours word" class="input" type="number" v-model="storeTickets.ticket.hours_worked" :disabled="storeTickets.ticket.status=='closed'">
                     </div>
                 </div>
             </div>
@@ -287,7 +298,8 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <editor-rich-text mode="small" v-model="storeTickets.ticket.description">
+                        <textarea v-model="storeTickets.ticket.description" v-if="storeTickets.ticket.status=='closed'" disabled class="textarea"></textarea>
+                        <editor-rich-text mode="small" v-model="storeTickets.ticket.description" v-if="storeTickets.ticket.status!='closed'">
                         </editor-rich-text>
                     </div>
                 </div>
@@ -295,7 +307,7 @@ if (props.isEditable){
 
         </div>
 
-        <div class="field is-horizontal">
+        <div class="field is-horizontal" v-if="storeTickets.ticket.status!='closed'">
             <div class="field-label is-normal">
             </div>
             <div class="field-body">
