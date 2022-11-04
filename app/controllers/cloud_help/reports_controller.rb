@@ -23,11 +23,7 @@ module CloudHelp
 
         def privileges
             {
-                new: [],
-                edit: [],
-                index: [],
-                show: [],
-                destroy: []
+                index: []
             }
         end
 
