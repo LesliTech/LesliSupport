@@ -87,7 +87,7 @@ export const useTickets = defineStore("help.tickets", {
         /**
          * @description This action is used to get options for selectors in ticket form
          */
-        getOptions(ticket_id=null){
+        getOptions(){
             this.loading = true
             this.options = {}
             this.http.get(this.url.help('tickets/options')).then(result => {
@@ -125,10 +125,6 @@ export const useTickets = defineStore("help.tickets", {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
                 this.loading = false
-                /* If a ticket id is given, fetch the info from the ticket corresponding */
-                if(ticket_id){
-                    this.fetchTicket(ticket_id)
-                }
             })
             
         },

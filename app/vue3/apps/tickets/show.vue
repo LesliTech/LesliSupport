@@ -66,6 +66,13 @@ const onUpdatedStatus = () => {
     storeTickets.fetchTicket(route.params.id)
 }
 
+
+// · initializing
+onMounted(() => {
+    storeTickets.getOptions() // get options for ticket form
+})
+
+
 </script>
 <template>
 

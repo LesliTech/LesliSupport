@@ -51,9 +51,10 @@ const props = defineProps({
 })
 
 
-// . On create
-storeTickets.getTickets()
-
+// · initializing
+onMounted(() => {
+    storeTickets.getTickets()
+})
 
 const columns = [{
     field: "id",
