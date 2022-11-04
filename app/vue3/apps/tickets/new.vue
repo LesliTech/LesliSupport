@@ -50,10 +50,7 @@ const props = defineProps({
 })
 
 // · initializing
-onMounted(() => {
-    storeTickets.getTickets()
-})
-
+storeTickets.getOptions()
 
 </script>
 <template>

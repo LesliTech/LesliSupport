@@ -59,16 +59,18 @@ const props = defineProps({
 })
 
 
-// · initializing
-storeTickets.fetchTicket(route.params.id)
-
-
 /**
  * @description This function is called when the user updates the status of the project.
  */
 const onUpdatedStatus = () => {
     storeTickets.fetchTicket(route.params.id)
 }
+
+
+// · initializing
+onMounted(() => {
+    storeTickets.getOptions() // get options for ticket form
+})
 
 
 </script>

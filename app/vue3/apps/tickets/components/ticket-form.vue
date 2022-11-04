@@ -70,251 +70,244 @@ const onCreate = () => {
     router.push(url.help('tickets').toString())
 }
 
+
 /**
  * Checking if the form is for a new ticket or for editing existing one
 */
 if (props.isEditable){
     storeTickets.ticket = {}
-    storeTickets.fetchTicket(route.params?.id)
+    storeTickets.fetchTicket(route.params.id)
 } else {
     storeTickets.ticket = {}
     storeTickets.tags = []
 }
 
-storeTickets.getOptions()
-
 </script>
 <template>
-    <div class="box" v-if="!storeTickets.loading">
-        <form class="information" @submit.prevent="
-                isEditable
-                    ? onUpdate()
-                    : onCreate()
-        ">
-            <div class="field is-horizontal" v-if="storeTickets.workspaces_options > 1">
-                <div class="field-label">
-                    <label class="label">{{translations.main.column_cloud_help_catalog_ticket_workspaces_id}}</label>
+    <form class="information"
+        v-if="!storeTickets.loading"
+        @submit.prevent="isEditable ? onUpdate() : onCreate()"
+    >
+        <div class="field is-horizontal" v-if="storeTickets.workspaces_options > 1">
+            <div class="field-label">
+                <label class="label">{{translations.main.column_cloud_help_catalog_ticket_workspaces_id}}</label>
+            </div>
+            <div class="field-body">
+                <div class="field is-narrow">
+                    <div class="control">
+                        <lesli-select
+                            :options="storeTickets.options.workspaces"
+                            v-model="storeTickets.ticket.cloud_help_catalog_ticket_workspaces_id"
+                        ></lesli-select>
+                    </div>
                 </div>
-                <div class="field-body">
-                    <div class="field is-narrow">
-                        <div class="control">
-                            <lesli-select
-                                v-if="!storeTickets.loading"
-                                :options="storeTickets.options.workspaces"
-                                v-model="storeTickets.ticket.cloud_help_catalog_ticket_workspaces_id"
-                            ></lesli-select>
+            </div>
+        </div>
+
+        <div class="field is-horizontal" v-if="isEditable">
+            <div class="field-label is-normal">
+                <label class="label"> 
+                    {{translations.main.column_users_id}}
+                </label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" disabled  v-model="storeTickets.ticket.user_creator_name">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal" v-if="isEditable">
+            <div class="field-label is-normal">
+                <label class="label"> 
+                    {{translations.main.column_reference_url}}
+                </label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input name="reference_url"  type="text" class="input" v-model="storeTickets.ticket.reference_url">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal" v-if="isEditable">
+            <div class="field-label is-normal">
+                <label class="label"> {{translations.main.view_title_assigned_users}} </label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <div v-for="assignment in storeTickets.ticket.assignment_attributes" :key="assignment">
+                            <span class="tag is-success">{{assignment.assignable_name}}
+                                <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)"></button>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="field is-horizontal" v-if="isEditable">
-                <div class="field-label is-normal">
-                    <label class="label"> 
-                        {{translations.main.column_users_id}}
-                    </label>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label"> 
+                    {{translations.main.column_subject}}
+                    <span class="is-danger">*</span>
+                </label>
+                
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input name="subject" class="input" required v-model="storeTickets.ticket.subject">
+                    </div>
                 </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" disabled  v-model="storeTickets.ticket.user_creator_name">
-                        </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label"> {{translations.main.column_deadline}} </label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input name="deadline"  class="input" type="date" v-model="storeTickets.ticket.deadline">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label"> 
+                    {{translations.main.column_cloud_help_catalog_ticket_types_id}} 
+                    <span class="is-danger">*</span>
+                </label>
+
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <lesli-select
+                            :options="storeTickets.options.types"
+                            v-model="storeTickets.ticket.cloud_help_catalog_ticket_types_id"
+                        >
+                        </lesli-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_categories_id}} </label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <lesli-select
+                            v-if="storeTickets.options.categories"
+                            :options="storeTickets.options.categories"
+                            v-model="storeTickets.ticket.cloud_help_catalog_ticket_categories_id"
+                        ></lesli-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_priorities_id}} </label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <lesli-select
+                            v-if="storeTickets.options.priorities"
+                            :options="storeTickets.options.priorities"
+                            v-model="storeTickets.ticket.cloud_help_catalog_ticket_priorities_id"
+                        ></lesli-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">{{translations.main.column_tags}}</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <lesli-input-tag
+                            v-model="storeTickets.tags"
+                            placeholder="tags"
+                            :options="[ 
+                                {
+                                    name: 'Bug'
+                                },
+                                {
+                                    name: 'Report'
+                                },
+                                {
+                                    name: 'Performance'
+                                }
+                            ]"
+                            :filterFields="['name']"
+                            showField="name"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal" v-if="isEditable">
+            <div class="field-label is-normal">
+                <label class="label">{{translations.main.column_hours_worked}}</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input name="Hours word" class="input" type="number" v-model="storeTickets.ticket.hours_worked">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">{{translations.main.column_description}}</label>
+            </div>
+
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <editor-rich-text mode="small" v-model="storeTickets.ticket.description">
+                        </editor-rich-text>
                     </div>
                 </div>
             </div>
 
-            <div class="field is-horizontal" v-if="isEditable">
-                <div class="field-label is-normal">
-                    <label class="label"> 
-                        {{translations.main.column_reference_url}}
-                    </label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input name="reference_url"  type="text" class="input" v-model="storeTickets.ticket.reference_url">
-                        </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <lesli-button icon="save">
+                            {{ translations.shared.view_btn_save }}
+                        </lesli-button>                 
                     </div>
                 </div>
             </div>
-
-            <div class="field is-horizontal" v-if="isEditable">
-                <div class="field-label is-normal">
-                    <label class="label"> {{translations.main.view_title_assigned_users}} </label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <div v-for="assignment in storeTickets.ticket.assignment_attributes" :key="assignment">
-                                <span class="tag is-success">{{assignment.assignable_name}}
-                                    <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)"></button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label"> 
-                        {{translations.main.column_subject}}
-                        <span class="is-danger">*</span>
-                    </label>
-                    
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input name="subject" class="input" required v-model="storeTickets.ticket.subject">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label"> {{translations.main.column_deadline}} </label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input name="deadline"  class="input" type="date" v-model="storeTickets.ticket.deadline">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label"> 
-                        {{translations.main.column_cloud_help_catalog_ticket_types_id}} 
-                        <span class="is-danger">*</span>
-                    </label>
-
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <lesli-select
-                                v-if="!storeTickets.loading"
-                                :options="storeTickets.options.types"
-                                v-model="storeTickets.ticket.cloud_help_catalog_ticket_types_id"
-                            >
-                            </lesli-select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_categories_id}} </label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <lesli-select
-                                v-if="!storeTickets.loading"
-                                :options="storeTickets.options.categories"
-                                v-model="storeTickets.ticket.cloud_help_catalog_ticket_categories_id"
-                            ></lesli-select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_priorities_id}} </label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <lesli-select
-                                v-if="!storeTickets.loading"
-                                :options="storeTickets.options.priorities"
-                                v-model="storeTickets.ticket.cloud_help_catalog_ticket_priorities_id"
-                            ></lesli-select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">{{translations.main.column_tags}}</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <lesli-input-tag
-                                v-model="storeTickets.tags"
-                                placeholder="tags"
-                                :options="[ 
-                                    {
-                                        name: 'Bug'
-                                    },
-                                    {
-                                        name: 'Report'
-                                    },
-                                    {
-                                        name: 'Performance'
-                                    }
-                                ]"
-                                :filterFields="['name']"
-                                showField="name"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="field is-horizontal" v-if="isEditable">
-                <div class="field-label is-normal">
-                    <label class="label">{{translations.main.column_hours_worked}}</label>
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <input name="Hours word" class="input" type="number" v-model="storeTickets.ticket.hours_worked">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                    <label class="label">{{translations.main.column_description}}</label>
-                </div>
-
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <editor-rich-text mode="small" v-model="storeTickets.ticket.description">
-                            </editor-rich-text>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                </div>
-                <div class="field-body">
-                    <div class="field">
-                        <div class="control">
-                            <lesli-button icon="save">
-                                {{ translations.shared.view_btn_save }}
-                            </lesli-button>                 
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </form>
-    </div>
+        </div>
+    </form>
 
 </template>
