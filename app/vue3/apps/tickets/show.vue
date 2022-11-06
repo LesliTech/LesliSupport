@@ -116,7 +116,7 @@ onMounted(() => {
                 >
                 </component-discussions>
             </lesli-tab-item>
-            <lesli-tab-item :title="this.translations.core.shared.view_btn_files" icon="attach_file">
+            <lesli-tab-item :title="translations.core.shared.view_btn_files" icon="attach_file">
                 <component-files
                     cloud-module="help" 
                     cloud-object="tickets"
