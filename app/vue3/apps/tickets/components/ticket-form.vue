@@ -220,7 +220,11 @@ if (props.isEditable){
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="priority" class="input" type="text" v-model="storeTickets.ticket.priority">
+                            <lesli-select
+                                v-if="storeTickets.options.priorities"
+                                :options="storeTickets.options.priorities"
+                                v-model="storeTickets.ticket.cloud_help_catalog_ticket_priorities_id"
+                            ></lesli-select>
                         </div>
                     </div>
                 </div>
@@ -492,6 +496,9 @@ if (props.isEditable){
             </div>
 
             <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"></label>
+                </div>
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
