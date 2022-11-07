@@ -298,8 +298,7 @@ if (props.isEditable){
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <textarea v-model="storeTickets.ticket.description" v-if="storeTickets.ticket.status=='closed'" disabled class="textarea"></textarea>
-                        <editor-rich-text mode="small" v-model="storeTickets.ticket.description" v-if="storeTickets.ticket.status!='closed'">
+                        <editor-rich-text mode="small" v-model="storeTickets.ticket.description">
                         </editor-rich-text>
                     </div>
                 </div>
