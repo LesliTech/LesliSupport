@@ -113,7 +113,7 @@ function extractInitials(name){
             <lesli-button :to="url.root(props.appMountPath+`/new`)" icon="add">
                 {{ translations.core.shared.view_btn_add }}
             </lesli-button>
-            <lesli-button @click="storeTickets.reloadTickets" icon="refresh">
+            <lesli-button @click="storeTickets.reloadTickets" icon="refresh" :loading="storeTickets.loading">
                 {{ translations.core.shared.view_text_btn_reload }} 
             </lesli-button>
         </lesli-header>
