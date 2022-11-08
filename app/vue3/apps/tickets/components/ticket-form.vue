@@ -93,7 +93,6 @@ if (props.isEditable){
         v-if="!storeTickets.loading"
         @submit.prevent="isEditable ? onUpdate() : onCreate()"
     >
-    <pre>{{props.path}}</pre>
         <div class="field is-horizontal" v-if="storeTickets.workspaces_options > 1">
             <div class="field-label">
                 <label class="label">{{translations.main.column_cloud_help_catalog_ticket_workspaces_id}}</label>
