@@ -56,7 +56,7 @@ const translations = {
  * @description This function is used to update the sla information
  */
 const onUpdate = () => {
-    //storeSla.updateSla()
+    storeSla.updateSla()
 }
 
 /**

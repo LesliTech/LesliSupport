@@ -75,6 +75,16 @@ export const useSlas = defineStore("help.sla", {
             this.pagination.page = page
             this.getSlas()
         },
+        updateSla(){
+            this.http.put(this.url.help('slas/:id', this.sla.id), {
+                sla: this.sla
+            }).then(result => {
+                this.msg.success(I18n.t("core.users.messages_success_operation"))
+            }).catch(error => {
+                this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+
+            })
+        }
 
     }
 })
