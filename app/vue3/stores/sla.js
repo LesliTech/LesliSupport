@@ -21,11 +21,12 @@ import { defineStore } from "pinia"
 
 
 // · 
-export const useSlas = defineStore("sls", {
+export const useSlas = defineStore("help.sla", {
     state: () => {
         return {
             loading: false,
-            slas: {}
+            slas: {},
+            sla:{}
         }
     },
     actions: {
@@ -35,6 +36,18 @@ export const useSlas = defineStore("sls", {
                 this.loading = false
                 this.slas = result
             }).catch(error => {
+                this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            })
+        },
+        postSla(){
+            this.loading = true
+            this.http.post(this.url.help('slas'), {
+                sla: this.sla
+            }).then(result => {
+                this.msg.success(I18n.t("core.users.messages_success_operation"))
+                this.loading = false
+            }).catch(error => {
+                console.log(error)
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         }

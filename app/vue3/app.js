@@ -29,6 +29,7 @@ import ticketsShow from './apps/tickets/show.vue'
 
 // // SLAs components
 import slasIndex from './apps/sla/index.vue'
+import slaNew from './apps/sla/new.vue'
 
 // ·
 app('CloudHelp', [
@@ -51,6 +52,10 @@ app('CloudHelp', [
     {
         path: '/slas',
         component: slasIndex
+    },
+    {
+        path: '/slas/new',
+        component: slaNew
     }
 
 ])

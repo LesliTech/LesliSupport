@@ -315,10 +315,10 @@ For more information read the license file including with this software.
                 :expected_response_time,
                 :expected_resolution_time,
                 :price_per_hour,
-                {body: {}},
-                {provider_repercussions: {}},
-                {client_repercussions: {}},
-                {exceptions: {}},
+                :body,
+                :provider_repercussions,
+                :client_repercussions,
+                :exceptions,
                 :default,
                 :user_main_id
             )
