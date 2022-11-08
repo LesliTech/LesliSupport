@@ -26,13 +26,20 @@ export const useSlas = defineStore("help.sla", {
         return {
             loading: false,
             slas: {},
-            sla:{}
+            sla:{},
+            pagination: {
+                page: 1
+            },
+            index: { 
+                pagination: {},
+                records: []
+            },
         }
     },
     actions: {
         getSlas(){
             this.loading = true
-            this.http.get(this.url.help('slas')).then(result => {
+            this.http.get(this.url.help('slas').paginate(this.pagination.page)).then(result => {
                 this.loading = false
                 this.slas = result
             }).catch(error => {
@@ -50,7 +57,24 @@ export const useSlas = defineStore("help.sla", {
                 console.log(error)
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
-        }
+        },
+        fetchSla(id){
+            this.sla = {}
+            this.http.get(this.url.help('slas/:id', id)).then(result => {
+                this.sla = result
+            }).catch(error => {
+                console.log(error)
+                this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            })
+        },
+        /**
+         * @description This action is used to paginate slas from index
+         * @param {String} page The actual page showing.
+         */
+        paginateIndex(page) {
+            this.pagination.page = page
+            this.getSlas()
+        },
 
     }
 })

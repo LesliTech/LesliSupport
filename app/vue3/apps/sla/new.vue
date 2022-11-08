@@ -38,26 +38,16 @@ const translations = {
     core: I18n.t('core.shared')
 }
 
-const props = defineProps({
-    appMountPath: {
-        type: String,
-        required: false,
-        default: "help/tickets",
-    }
-})
-
 // · initializing
 
 </script>
 <template>
     <section class="application-component">
-
         <lesli-header :title="translations.main.view_title_main">
             <lesli-button :to="url.help('slas')" icon="list">
                 {{translations.core.view_btn_list}}
             </lesli-button>
         </lesli-header>
         <sla-form></sla-form>
-
     </section>
 </template>

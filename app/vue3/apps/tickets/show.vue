@@ -60,7 +60,7 @@ const props = defineProps({
 
 
 /**
- * @description This function is called when the user updates the status of the project.
+ * @description This function is called when the user updates the status of the ticket.
  */
 const onUpdatedStatus = () => {
     storeTickets.fetchTicket(route.params.id)

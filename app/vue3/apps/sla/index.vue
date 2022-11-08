@@ -81,6 +81,9 @@ function showSla(sla) {
         <lesli-table 
             :records="storeSla.slas"
             :columns="columns"
+            :link="(sla) => url.help(`slas/${sla.id}`).s"
+            :pagination="storeSla.index.pagination"
+            @paginate="storeSla.paginateIndex"
             @click="showSla">
         </lesli-table>
 

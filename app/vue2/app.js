@@ -270,13 +270,14 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     //         appMountPath: '/help/slas'
     //     }
     // },
+    // {
+    //     path: '/slas/:id',
+    //     component: slasShow,
+    //     props: {
+    //         appMountPath: '/help/slas'
+    //     }
+    // },
     {
-        path: '/slas/:id',
-        component: slasShow,
-        props: {
-            appMountPath: '/help/slas'
-        }
-    },{
         path: '/slas/:id/edit',
         component: slasEdit,
         props: {

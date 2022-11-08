@@ -53,32 +53,28 @@ const translations = {
 }
 
 /**
- * @description This function is used to update the ticket information
+ * @description This function is used to update the sla information
  */
 const onUpdate = () => {
     //storeSla.updateSla()
-    // storeTickets.updateTicket()
 }
 
 /**
- * @description This function is used to create a new ticket
+ * @description This function is used to create a new sla
  */
 const onCreate = () => {
     storeSla.postSla()
-    // storeTickets.postTicket()
-    // router.push(url.help('tickets').toString())
+    router.push(url.help('slas').toString())
 }
 
-
 /**
- * Checking if the form is for a new ticket or for editing existing one
+ * Checking if the form is for a new sla or for editing existing one
 */
 if (props.isEditable){
-    // storeTickets.ticket = {}
-    // storeTickets.fetchTicket(route.params.id)
+    storeSla.sla = {}
+    storeSla.fetchSla(route.params.id)
 } else {
-    // storeTickets.ticket = {}
-    // storeTickets.tags = []
+    storeSla.sla = {}
 }
 
 </script>
@@ -87,7 +83,6 @@ if (props.isEditable){
         v-if="!storeSla.loading"
         @submit.prevent="isEditable ? onUpdate() : onCreate()"
     >
-
         <div class="columns">
             <div class="column is-8">
                 <div class="field">
@@ -187,10 +182,6 @@ if (props.isEditable){
             </div>
         </div>
 
-
-        <!--tessssssssssst-->
-        
-        
         <div class="field is-horizontal is-expanded">
             <div class="field-label is-normal">
             </div>

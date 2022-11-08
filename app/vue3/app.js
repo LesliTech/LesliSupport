@@ -30,6 +30,7 @@ import ticketsShow from './apps/tickets/show.vue'
 // // SLAs components
 import slasIndex from './apps/sla/index.vue'
 import slaNew from './apps/sla/new.vue'
+import slaShow from './apps/sla/show.vue'
 
 // ·
 app('CloudHelp', [
@@ -56,6 +57,10 @@ app('CloudHelp', [
     {
         path: '/slas/new',
         component: slaNew
-    }
+    },
+    {
+        path: '/slas/:id/',
+        component: slaShow
+    },
 
 ])
