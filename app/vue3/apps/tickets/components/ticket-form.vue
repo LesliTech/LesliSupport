@@ -46,6 +46,11 @@ const props = defineProps({
         required: false,
         default: false,
     },
+    path: {
+        type: String,
+        required: false,
+        default: "help/tickets",
+    }
 })
 
 // · 
@@ -67,7 +72,7 @@ const onUpdate = () => {
  */
 const onCreate = () => {
     storeTickets.postTicket()
-    router.push(url.help('tickets').toString())
+    router.push(url.root(props.path).toString())
 }
 
 
