@@ -50,7 +50,7 @@ const translations = {
  * @description This function is called when the user updates the status of the sla.
  */
 const onUpdatedStatus = () => {
-    // storeSla.fetchSla(route.params.id)
+    storeSla.fetchSla(route.params.id)
 }
 
 </script>
@@ -62,14 +62,6 @@ const onUpdatedStatus = () => {
             v-else
             :title="storeSla.sla.name"
         >
-            <!-- <component-workflow-status-dropdown
-                    v-if="storeSla.sla.id"
-                    @on-updated-status="onUpdatedStatus"
-                    cloudObject="slas"
-                    cloudModule="help"
-                    :cloudObjectId="storeTickets.ticket.id"
-            >
-            </component-workflow-status-dropdown> -->
             <lesli-button :to="url.help('slas')" icon="list">
                 {{translations.main.view_title_main}}
             </lesli-button>
