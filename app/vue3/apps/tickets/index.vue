@@ -90,11 +90,10 @@ const columns = [{
     label: translations.main.column_user_main_id
 }]
 
-function showTicket(ticket) {
-    router.push(url.root(props.appMountPath +`/${ticket.id}`).s)
-}
-
-
+/**
+ * @description Function that extract the initials from the name of the users assigned to a ticket
+ * @param {string} name name of the user assigned to the ticket
+ */
 function extractInitials(name){
     return name.split(" ").map((word)=>{
         if(word){
@@ -181,7 +180,7 @@ function extractInitials(name){
             :pagination="storeTickets.index.pagination"
             @paginate="storeTickets.paginateIndex"
             @sort="storeTickets.sort"
-            @click="showTicket"
+            :link="(ticket) => url.root(`${props.appMountPath}/${ticket.id}`).s"
         >
             <template #assignables="{ column, value }">
                 <span

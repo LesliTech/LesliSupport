@@ -86,6 +86,7 @@ const onUpdatedStatus = () => {
                     cloud-module="help" 
                     cloud-object="slas"
                     :cloud-object-id="storeSla.sla.id"
+                    :accepted-files="['images', 'documents', 'plaintext']"
                 ></component-files>
 
             </lesli-tab-item>
