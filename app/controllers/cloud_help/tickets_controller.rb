@@ -23,9 +23,16 @@ For more information read the license file including with this software.
 
         def privileges
             {
-                new: [],
+                new: ["options"],
                 edit: [],
-                show: [],
+                show: [
+                    "CloudHelp::Workflows#transition_options",
+                    "CloudHelp::Ticket::Assignments#options",
+                    "CloudHelp::Ticket::Discussions#index",
+                    "CloudHelp::Ticket::Files#index",
+                    "CloudHelp::Ticket::Files#options",
+                    "CloudHelp::Ticket::Histories#index"
+                ],
                 index: ['options'],
                 destroy: []
             }
