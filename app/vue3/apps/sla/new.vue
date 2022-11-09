@@ -18,14 +18,15 @@ For more information read the license file including with this software.
 
 
 // · import vue tools
-import { onMounted, inject } from "vue"
+import { onMounted } from "vue"
 import { useRouter } from 'vue-router'
 
+// . import components
+import slaForm from './components/sla-form.vue'
 
 // · import lesli stores
 import { useSlas } from "CloudHelp/stores/sla"
 
-// · initialize/inject plugins
 const router = useRouter()
 
 // · implement stores
@@ -33,59 +34,20 @@ const storeSla = useSlas()
 
 //·
 const translations = {
-    sla: I18n.t('help.slas'),
-    core: {
-        shared: I18n.t('core.shared')
-    }
+    main: I18n.t('help.slas'),
+    core: I18n.t('core.shared')
 }
 
 // · initializing
-onMounted(() => {
-    storeSla.getSlas()
-})
-
-const columns = [{
-    field: "id",
-    label: "ID"
-}, {
-    field: "name",
-    label: "Name",
-}, {
-    field: "default",
-    label: "Default"
-}, {
-    field: "status",
-    label: "Status",
-}, {
-    field: "expected_response_time",
-    label: "Response Time (Hrs)",
-}, {
-    field: "expected_resolution_time",
-    label: "Resolution Time (Hrs)"
-}]
-
-function showSla(sla) {
-    router.push(url.help("sla/:id", sla.id).s)
-}
 
 </script>
 <template>
     <section class="application-component">
-
-        <lesli-header :title="translations.sla.view_title_main">
-            <lesli-button :to="url.help('slas/new')" icon="add">
-                {{ translations.core.shared.view_btn_add }}
+        <lesli-header :title="translations.main.view_title_main">
+            <lesli-button :to="url.help('slas')" icon="list">
+                {{translations.core.view_btn_list}}
             </lesli-button>
         </lesli-header>
-
-        <lesli-table 
-            :records="storeSla.slas"
-            :columns="columns"
-            :link="(sla) => url.help(`slas/${sla.id}`).s"
-            :pagination="storeSla.index.pagination"
-            @paginate="storeSla.paginateIndex"
-            @click="showSla">
-        </lesli-table>
-
+        <sla-form></sla-form>
     </section>
 </template>
