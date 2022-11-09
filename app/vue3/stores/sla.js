@@ -54,7 +54,6 @@ export const useSlas = defineStore("help.sla", {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
                 this.loading = false
             }).catch(error => {
-                console.log(error)
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
@@ -63,7 +62,6 @@ export const useSlas = defineStore("help.sla", {
             this.http.get(this.url.help('slas/:id', id)).then(result => {
                 this.sla = result
             }).catch(error => {
-                console.log(error)
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
         },
