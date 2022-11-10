@@ -310,13 +310,13 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     //         appMountPath: '/help/tickets'
     //     }
     // },
-    {
-        path: '/reports',
-        component: reportsList,
-        props: {
-            appMountPath: '/help/reports'
-        }
-    }
+    // {
+    //     path: '/reports',
+    //     component: reportsList,
+    //     props: {
+    //         appMountPath: '/help/reports'
+    //     }
+    // }
 ],{
     ticket: null,
     sla: null,
