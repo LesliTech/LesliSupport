@@ -21,6 +21,7 @@ For more information read the license file including with this software.
 import { onMounted, inject, watch } from "vue"
 import { useRouter } from 'vue-router'
 
+import dayjs from "dayjs"
 
 // · import lesli stores
 import { useReports } from "CloudHelp/stores/reports"
@@ -69,38 +70,47 @@ const ticket_reports = [
 ]
 
 
-
+/**
+ * @description This function is used to generate the link to download the report
+ * @param {Object} report the name of the report
+ * @param {String} format the format of the report
+*/
 function reportLink(report, format){
     switch(report.name){
         case translations.main.view_text_report_tickets_general:
-            return  `/help/reports/tickets_general.${format}`
+            return  `/help/reports/tickets_general.${format}?${storeReports.generalQueryFilters()}`
         case translations.main.view_text_report_tickets_open:
-            return `/help/reports/tickets_general.${format}`
+            return `/help/reports/tickets_general.${format}?${storeReports.openQueryFilters()}`
         case translations.main.view_text_report_tickets_overdue:
-            return `/help/reports/tickets_general.${format}`
+            return `/help/reports/tickets_general.${format}?${storeReports.overdueQueryFilters()}`
     }
 }
 
+/**
+ * Set user id to filters when selecting a user in autocomplete
+*/
 function selectUser(){
     if (storeReports.user){
         storeReports.filters.user_assigned_id = storeReports.user.id
     }
 }
 
-
+/**
+ * Set date based on the selected option
+*/
 watch(() => storeReports.date_select_shortcut, () => {
     if(storeReports.date_select_shortcut){
         switch(storeReports.date_select_shortcut){
             case 'daily':
-                storeReports.filters.end_date = 'daily'
+                storeReports.filters.end_date = dayjs().startOf('day').format('YYYY-MM-DD')
                 break
             case 'monthly':
-                storeReports.filters.start_date = 'monthly'
-                storeReports.filters.end_date = 'monthly'
+                storeReports.filters.start_date = dayjs().startOf('month').format('YYYY-MM-DD')
+                storeReports.filters.end_date = dayjs().endOf('month').format('YYYY-MM-DD')
                 break
             case 'weekly':
-                storeReports.filters.start_date = 'weekly'
-                storeReports.filters.end_date = 'weekly'
+                storeReports.filters.start_date = dayjs().startOf('week').format('YYYY-MM-DD')
+                storeReports.filters.end_date = dayjs().endOf('week').format('YYYY-MM-DD')
                 break
             case 'clear':
                 storeReports.filters.start_date = null

@@ -44,27 +44,55 @@ export const useReports = defineStore("help.report", {
         }
     },
     actions: {
+        /**
+         * @description This action is used to get users for autocomplete selection
+        */
         getUsers(){
-
             this.http.get(this.url.help('tickets/assignments/options')).then(result => {
                 this.user_options = result
             }).catch(error => {
                 console.log(error)
             })
         },
-
+        /**
+         * @description This action is used to join all filters for a report
+        */
         updateFilters(){
-            let query_filters = []
-
-            for(let key in this.filters.tickets){
-                if(this.filters.tickets[key]){
-                    if(this.filters.tickets[key] instanceof Date){
-                        query_filters.push(`filters[${key}]=${this.filters.tickets[key].toISOString()}`)
+            const query_filters = []
+            for(let key in this.filters){
+                if(this.filters[key]){
+                    if(this.filters[key] instanceof Date){
+                        query_filters.push(`filters[${key}]=${this.filters[key].toISOString()}`)
                     }else{
-                        query_filters.push(`filters[${key}]=${this.filters.tickets[key]}`)
+                        query_filters.push(`filters[${key}]=${this.filters[key]}`)
                     }
                 }
             }
+            return query_filters
+        },
+        /**
+         * @description This action is used to set filters for all tickets
+        */
+        generalQueryFilters(){
+            return this.updateFilters().join('&')
+        },
+        /**
+         * @description This action is used to set filters for open tickets
+        */
+        openQueryFilters(){
+            const query_filters = this.updateFilters()
+            query_filters.push('filters[open]=true')
+
+            return query_filters.join('&')
+        },
+        /**
+         * @description This action is used to set filters tickets with past deadlines
+        */
+        overdueQueryFilters(){
+            const query_filters = this.updateFilters()
+            query_filters.push('filters[overdue]=true')
+
+            return query_filters.join('&')
         }
 
     }
