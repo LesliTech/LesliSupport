@@ -24,7 +24,15 @@ For more information read the license file including with this software.
 
         def privileges
             {
-                index: []
+                index: [],
+                show: [
+                    "CloudHelp::Sla::Discussions#index",
+                    "CloudHelp::Sla::Files#index",
+                    "CloudHelp::Sla::Files#options",
+                    "CloudHelp::Sla::Activities#index"
+                ],
+                new: [],
+                destroy: []
             }
         end
 

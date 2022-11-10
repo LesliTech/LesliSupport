@@ -24,7 +24,8 @@ For more information read the license file including with this software.
         def privileges
             {
                 new: [],
-                destroy: []
+                destroy: [],
+                index: []
             }
         end
 
