@@ -273,7 +273,7 @@ if (props.isEditable){
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="Hours word" class="input" type="number" v-model="storeTickets.ticket.hours_worked">
+                            <input name="Hours_worked" class="input" type="number" step="any" v-model="storeTickets.ticket.hours_worked">
                         </div>
                     </div>
                 </div>
@@ -477,7 +477,7 @@ if (props.isEditable){
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input name="Hours_worked" class="input" type="number" v-model="storeTickets.ticket.hours_worked">
+                            <input name="Hours_worked" class="input" type="number" step="any" v-model="storeTickets.ticket.hours_worked">
                         </div>
                     </div>
                 </div>

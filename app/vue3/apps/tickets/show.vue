@@ -121,6 +121,7 @@ onMounted(() => {
                     cloud-module="help" 
                     cloud-object="tickets"
                     :cloud-object-id="storeTickets.ticket.id"
+                    :accepted-files="['images', 'documents', 'plaintext']"
                 ></component-files>
 
             </lesli-tab-item>

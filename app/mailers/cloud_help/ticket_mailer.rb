@@ -24,7 +24,7 @@ module CloudHelp
             ticket = params[:ticket]
 
             self.build_data_from_params(params, {
-                url: "/help/tickets/#{ticket.id}/edit",
+                url: "/help/tickets/#{ticket.id}",
                 title: "#{I18n.t("help.tickets.mailer_ticket_assignment_subject")}: #{ticket.id} - #{ticket.subject}",
                 link_information: I18n.t("help.tickets.mailer_ticket_assignment_link_information"),
                 link_text: I18n.t("help.tickets.mailer_ticket_assignment_link_text"),

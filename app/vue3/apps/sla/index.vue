@@ -64,10 +64,6 @@ const columns = [{
     label: "Resolution Time (Hrs)"
 }]
 
-function showSla(sla) {
-    router.push(url.help("sla/:id", sla.id).s)
-}
-
 </script>
 <template>
     <section class="application-component">
@@ -84,7 +80,7 @@ function showSla(sla) {
             :link="(sla) => url.help(`slas/${sla.id}`).s"
             :pagination="storeSla.index.pagination"
             @paginate="storeSla.paginateIndex"
-            @click="showSla">
+        >
         </lesli-table>
 
     </section>
