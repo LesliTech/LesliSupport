@@ -22,46 +22,32 @@ import { onMounted } from "vue"
 import { useRouter } from 'vue-router'
 
 // . import components
-import formTicket from './components/ticket-form.vue'
+import slaForm from './components/sla-form.vue'
 
 // · import lesli stores
-import { useTickets } from "CloudHelp/stores/tickets/tickets"
+import { useSlas } from "CloudHelp/stores/sla"
 
-// · initialize/inject plugins
 const router = useRouter()
 
 // · implement stores
-const storeTickets = useTickets()
+const storeSla = useSlas()
 
 //·
 const translations = {
-    main: I18n.t('help.tickets'),
-    core: {
-        shared: I18n.t('core.shared')
-    }
+    main: I18n.t('help.slas'),
+    core: I18n.t('core.shared')
 }
 
-const props = defineProps({
-    appMountPath: {
-        type: String,
-        required: false,
-        default: "help/tickets",
-    }
-})
-
 // · initializing
-storeTickets.getOptions()
 
 </script>
 <template>
     <section class="application-component">
-
         <lesli-header :title="translations.main.view_title_main">
-            <lesli-button :to="url.root(props.appMountPath)" icon="list">
-                {{translations.core.shared.view_btn_list}}
+            <lesli-button :to="url.help('slas')" icon="list">
+                {{translations.core.view_btn_list}}
             </lesli-button>
         </lesli-header>
-        <form-ticket :path="props.appMountPath"></form-ticket>
-
+        <sla-form></sla-form>
     </section>
 </template>

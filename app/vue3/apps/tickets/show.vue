@@ -18,7 +18,7 @@ For more information read the license file including with this software.
 
 
 // · import vue tools
-import { onMounted } from "vue"
+import { onMounted, computed } from "vue"
 import { useRouter, useRoute } from 'vue-router'
 
 // . import components
@@ -60,11 +60,13 @@ const props = defineProps({
 
 
 /**
- * @description This function is called when the user updates the status of the project.
+ * @description This function is called when the user updates the status of the ticket.
  */
 const onUpdatedStatus = () => {
     storeTickets.fetchTicket(route.params.id)
 }
+
+const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.subject} - ${storeTickets.ticket.status}`)
 
 
 // · initializing
@@ -77,10 +79,8 @@ onMounted(() => {
 <template>
 
     <section class="application-component">
-        <lesli-loading v-if="storeTickets.loading"></lesli-loading>
         <lesli-header
-            v-else
-            :title="storeTickets.ticket.id+' - '+storeTickets.ticket.subject+' - '+storeTickets.ticket.status"
+            :title="title"
         >
             <component-workflow-status-dropdown
                     v-if="storeTickets.ticket.id"
@@ -100,7 +100,7 @@ onMounted(() => {
 
         <lesli-tabs v-model="tab">
             <lesli-tab-item :title="translations.shared.view_tab_title_general_information" icon="info">
-                <form-ticket is-editable></form-ticket>
+                <form-ticket is-editable :path="props.appMountPath"></form-ticket>
             </lesli-tab-item>
 
             <lesli-tab-item :title="translations.main.view_tab_title_assignments" icon="group">

@@ -267,6 +267,7 @@ export const useTickets = defineStore("help.tickets", {
          * @param {String} string The string to search for.
          */
         search(string) {
+            this.pagination.page = 1
             this.getTickets(this.url.help('tickets').search(string))
         }
     }

@@ -23,7 +23,7 @@ import { useRouter } from 'vue-router'
 
 
 // · import lesli stores
-import { useSlas } from "CloudHelp/stores/slas/sla"
+import { useSlas } from "CloudHelp/stores/sla"
 
 // · initialize/inject plugins
 const router = useRouter()
@@ -73,7 +73,7 @@ function showSla(sla) {
     <section class="application-component">
 
         <lesli-header :title="translations.sla.view_title_main">
-            <lesli-button :to="url.help('sla/new')" icon="add">
+            <lesli-button :to="url.help('slas/new')" icon="add">
                 {{ translations.core.shared.view_btn_add }}
             </lesli-button>
         </lesli-header>
@@ -81,6 +81,9 @@ function showSla(sla) {
         <lesli-table 
             :records="storeSla.slas"
             :columns="columns"
+            :link="(sla) => url.help(`slas/${sla.id}`).s"
+            :pagination="storeSla.index.pagination"
+            @paginate="storeSla.paginateIndex"
             @click="showSla">
         </lesli-table>
 
