@@ -61,7 +61,7 @@ storeTickets.getOptions()
                 {{translations.core.shared.view_btn_list}}
             </lesli-button>
         </lesli-header>
-        <form-ticket></form-ticket>
+        <form-ticket :path="props.appMountPath"></form-ticket>
 
     </section>
 </template>

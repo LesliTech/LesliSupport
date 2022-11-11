@@ -22,7 +22,8 @@ module CloudHelp
     
         def privileges
             {
-                show: []
+                show: ["CloudHelp::Dashboard::Components#show"],
+                index: []
             }
         end
 
