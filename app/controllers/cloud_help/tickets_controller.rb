@@ -31,7 +31,8 @@ For more information read the license file including with this software.
                     "CloudHelp::Ticket::Discussions#index",
                     "CloudHelp::Ticket::Files#index",
                     "CloudHelp::Ticket::Files#options",
-                    "CloudHelp::Ticket::Histories#index"
+                    "CloudHelp::Ticket::Histories#index",
+                    "CloudHelp::Ticket::Activities#index"
                 ],
                 index: ['options'],
                 destroy: []
