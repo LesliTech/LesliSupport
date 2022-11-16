@@ -56,9 +56,9 @@ import reportsList from './reports/apps/list.vue'
 
 // · Slas components
 // import slasList from './slas/apps/list.vue'
-import slasEdit from './slas/apps/edit.vue'
-import slasNew from './slas/apps/new.vue'
-import slasShow from './slas/apps/show.vue'
+// import slasEdit from './slas/apps/edit.vue'
+// import slasNew from './slas/apps/new.vue'
+// import slasShow from './slas/apps/show.vue'
 
 // · Tickets components
 // import ticketsList from './tickets/apps/list.vue'
@@ -277,13 +277,13 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     //         appMountPath: '/help/slas'
     //     }
     // },
-    {
-        path: '/slas/:id/edit',
-        component: slasEdit,
-        props: {
-            appMountPath: '/help/slas'
-        }
-    },
+    // {
+    //     path: '/slas/:id/edit',
+    //     component: slasEdit,
+    //     props: {
+    //         appMountPath: '/help/slas'
+    //     }
+    // },
     //,{
     //     path: '/tickets',
     //     component: ticketsList,
@@ -310,13 +310,13 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     //         appMountPath: '/help/tickets'
     //     }
     // },
-    {
-        path: '/reports',
-        component: reportsList,
-        props: {
-            appMountPath: '/help/reports'
-        }
-    }
+    // {
+    //     path: '/reports',
+    //     component: reportsList,
+    //     props: {
+    //         appMountPath: '/help/reports'
+    //     }
+    // }
 ],{
     ticket: null,
     sla: null,

@@ -32,6 +32,9 @@ import slasIndex from './apps/sla/index.vue'
 import slaNew from './apps/sla/new.vue'
 import slaShow from './apps/sla/show.vue'
 
+// // · Reports components
+import reportsIndex from './apps/reports/index.vue'
+
 // ·
 app('CloudHelp', [
     // {
@@ -61,6 +64,10 @@ app('CloudHelp', [
     {
         path: '/slas/:id/',
         component: slaShow
+    },
+    {
+        path: '/reports',
+        component: reportsIndex
     },
 
 ])
