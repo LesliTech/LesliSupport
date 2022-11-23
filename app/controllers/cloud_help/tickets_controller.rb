@@ -75,7 +75,6 @@ For more information read the license file including with this software.
                 format.json do
                     set_ticket
                     return respond_with_not_found unless @ticket 
-
                     respond_with_successful(@ticket.show(current_user, @query))
                 end
             end

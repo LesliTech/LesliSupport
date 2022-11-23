@@ -35,12 +35,19 @@ import slaShow from './apps/sla/show.vue'
 // // · Reports components
 import reportsIndex from './apps/reports/index.vue'
 
+// · Ticket priorities components
+import prioritiesIndex from './apps/catalog/priorities/index.vue'
+
 // ·
 app('CloudHelp', [
     // {
     //     path: '/',
     //     component: appDashboard
     // },
+    {
+        path: '/catalog/ticket_priorities',
+        component: prioritiesIndex
+    },
     {
         path: '/tickets',
         component: ticketsIndex

@@ -1,9 +1,6 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -19,8 +16,23 @@ For more information read the license file including with this software.
 // · 
 
 =end
+
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
+
     class Catalog::TicketPrioritiesController < ApplicationLesliController
         before_action :set_ticket_priority, only: [:update, :destroy]
+
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: [],
+                destroy: []
+            }
+        end
 
 =begin
 @return [HTML|JSON] HTML view for listing all ticket priorities or a Json that contains a list 
@@ -36,7 +48,7 @@ For more information read the license file including with this software.
             respond_to do |format|
                 format.html {}
                 format.json do
-                    responseWithSuccessful(Catalog::TicketPriority.index(current_user, @query))
+                    respond_with_successful(Catalog::TicketPriority.index(current_user, @query))
                 end
             end
         end
