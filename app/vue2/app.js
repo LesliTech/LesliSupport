@@ -47,9 +47,9 @@ import ticketCategoriesNew   from './catalog_ticket_categories/apps/new.vue'
 // import ticketPrioritiesNew   from './catalog_ticket_priorities/apps/new.vue'
 
 // · Ticket types components
-import ticketTypesList  from './catalog_ticket_types/apps/list.vue'
-import ticketTypesNew   from './catalog_ticket_types/apps/new.vue'
-import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
+// import ticketTypesList  from './catalog_ticket_types/apps/list.vue'
+// import ticketTypesNew   from './catalog_ticket_types/apps/new.vue'
+// import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
 
 // · Report components
 // import reportsList from './reports/apps/list.vue'
@@ -239,25 +239,25 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     //         appMountPath: '/help/catalog/ticket_priorities'
     //     }
     // }
-    ,{
-        path: '/catalog/ticket_types',
-        component: ticketTypesList,
-        props: {
-            appMountPath: '/help/catalog/ticket_types'
-        }
-    },{
-        path: '/catalog/ticket_types/new',
-        component: ticketTypesNew,
-        props: {
-            appMountPath: '/help/catalog/ticket_types'
-        }
-    },{
-        path: '/catalog/ticket_types/:id',
-        component: ticketTypesEdit,
-        props: {
-            appMountPath: '/help/catalog/ticket_types'
-        }
-    },
+    // ,{
+    //     path: '/catalog/ticket_types',
+    //     component: ticketTypesList,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_types'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_types/new',
+    //     component: ticketTypesNew,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_types'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_types/:id',
+    //     component: ticketTypesEdit,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_types'
+    //     }
+    // },
     // {
     //     path: '/slas',
     //     component: slasList,

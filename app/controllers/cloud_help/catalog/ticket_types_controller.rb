@@ -1,9 +1,6 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -19,8 +16,21 @@ For more information read the license file including with this software.
 // · 
 
 =end
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
     class Catalog::TicketTypesController < ApplicationLesliController
         before_action :set_ticket_type, only: [:update, :destroy]
+        
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: [],
+                destroy: []
+            }
+        end
 
 =begin
 @return [HTML|JSON] HTML view for listing all ticket types or a Json that contains a list of all ticket types 

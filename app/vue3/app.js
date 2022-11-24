@@ -37,6 +37,14 @@ import reportsIndex from './apps/reports/index.vue'
 
 // · Ticket priorities components
 import prioritiesIndex from './apps/catalog/priorities/index.vue'
+import prioritiesShow from './apps/catalog/priorities/show.vue'
+import prioritiesNew from './apps/catalog/priorities/new.vue'
+
+// · Ticket types components
+import typesIndex from './apps/catalog/types/index.vue'
+import typesShow from './apps/catalog/types/show.vue'
+import typesNew from './apps/catalog/types/new.vue'
+
 
 // ·
 app('CloudHelp', [
@@ -47,6 +55,26 @@ app('CloudHelp', [
     {
         path: '/catalog/ticket_priorities',
         component: prioritiesIndex
+    },
+    {
+        path: '/catalog/ticket_priorities/:id',
+        component: prioritiesShow
+    },
+    {
+        path: '/catalog/ticket_priorities/new',
+        component: prioritiesNew
+    },
+    {
+        path: '/catalog/ticket_types',
+        component: typesIndex
+    },
+    {
+        path: '/catalog/ticket_types/:id',
+        component: typesShow
+    },
+    {
+        path: '/catalog/ticket_types/new',
+        component: typesNew
     },
     {
         path: '/tickets',

@@ -52,7 +52,7 @@ For more information read the license file including with this software.
     <lesli-navigation-list label="<%=I18n.t("help.shared.sidebar_nav_catalog") %>" icon="ri-book-open-fill">
         <%= navigation_lesli_item(cloud_help.ticket_priorities_path, I18n.t("help.shared.sidebar_nav_ticket_priorities"), "ri-error-warning-line", reload:true) %>
         <%= navigation_lesli_item(cloud_help.ticket_types_path, I18n.t("help.shared.sidebar_nav_ticket_types"), "ri-bookmark-fill", reload:true) %>
-        <%= navigation_lesli_item(cloud_help.ticket_sources_path, I18n.t("help.shared.sidebar_nav_ticket_workspaces"), "ri-dashboard-line", reload:true) %>
+        <%= navigation_lesli_item(cloud_help.ticket_workspaces_path, I18n.t("help.shared.sidebar_nav_ticket_workspaces"), "ri-dashboard-line", reload:true) %>
         <%= navigation_lesli_item(cloud_help.ticket_categories_path, I18n.t("help.shared.sidebar_nav_ticket_categories"), "ri-list-unordered", reload:true) %>
     </lesli-navigation-list>
 <% end %>
