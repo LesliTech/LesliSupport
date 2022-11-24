@@ -31,9 +31,9 @@ import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
 import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
 
 // · Ticket workspaces components
-import ticketWorkspacesList  from './catalog_ticket_workspaces/apps/list.vue'
-import ticketWorkspacesEdit  from './catalog_ticket_workspaces/apps/edit.vue'
-import ticketWorkspacesNew   from './catalog_ticket_workspaces/apps/new.vue'
+// import ticketWorkspacesList  from './catalog_ticket_workspaces/apps/list.vue'
+// import ticketWorkspacesEdit  from './catalog_ticket_workspaces/apps/edit.vue'
+// import ticketWorkspacesNew   from './catalog_ticket_workspaces/apps/new.vue'
 
 // · Ticket categories components
 import ticketCategoriesList  from './catalog_ticket_categories/apps/list.vue'
@@ -177,25 +177,27 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
             engineNamespace: 'help',
             appMountPath: '/help/workflows'
         }
-    },{
-        path: '/catalog/ticket_workspaces',
-        component: ticketWorkspacesList,
-        props: {
-            appMountPath: '/help/catalog/ticket_workspaces'
-        }
-    },{
-        path: '/catalog/ticket_workspaces/new',
-        component: ticketWorkspacesNew,
-        props: {
-            appMountPath: '/help/catalog/ticket_workspaces'
-        }
-    },{
-        path: '/catalog/ticket_workspaces/:id',
-        component: ticketWorkspacesEdit,
-        props: {
-            appMountPath: '/help/catalog/ticket_workspaces'
-        }
-    },{
+    },
+    // {
+    //     path: '/catalog/ticket_workspaces',
+    //     component: ticketWorkspacesList,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_workspaces'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_workspaces/new',
+    //     component: ticketWorkspacesNew,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_workspaces'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_workspaces/:id',
+    //     component: ticketWorkspacesEdit,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_workspaces'
+    //     }
+    // },
+    {
         path: '/catalog/ticket_categories',
         component: ticketCategoriesList,
         props: {

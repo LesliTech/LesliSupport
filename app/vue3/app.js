@@ -45,6 +45,11 @@ import typesIndex from './apps/catalog/types/index.vue'
 import typesShow from './apps/catalog/types/show.vue'
 import typesNew from './apps/catalog/types/new.vue'
 
+// · Ticket workspaces components
+import workspacesIndex from './apps/catalog/workspaces/index.vue'
+import workspacesShow from './apps/catalog/workspaces/show.vue'
+import workspacesNew from './apps/catalog/workspaces/new.vue'
+
 
 // ·
 app('CloudHelp', [
@@ -75,6 +80,18 @@ app('CloudHelp', [
     {
         path: '/catalog/ticket_types/new',
         component: typesNew
+    },
+    {
+        path: '/catalog/ticket_workspaces',
+        component: workspacesIndex
+    },
+    {
+        path: '/catalog/ticket_workspaces/:id',
+        component: workspacesShow
+    },
+    {
+        path: '/catalog/ticket_workspaces/new',
+        component: workspacesNew
     },
     {
         path: '/tickets',
