@@ -32,7 +32,6 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
                 pagination: {},
                 records: []
             },
-            priorities: {},
             priority: {}
         }
     },
@@ -42,8 +41,8 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
          */
         getPriorities(url=this.url.help('catalog/ticket_priorities')) {
             this.loading = true 
-            this.http.get(url).then(result => {
-                this.priorities = result.ticket_priorities
+            this.http.get(url.paginate(this.pagination.page)).then(result => {
+                this.index = result
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
@@ -111,6 +110,33 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
                     })
                 }
             })
+        }, 
+
+        /**
+         * @description This action is used to paginate priorities from index
+         * @param {String} page The actual page showing.
+         */
+        paginateIndex(page) {
+            this.pagination.page = page
+            this.getPriorities()
+        },
+
+        /**
+         * @description This action is used to sort the list of priorities.
+         * @param {String} column The column to sort the list of priorities
+         * @param {String} direction The direction to sort the list of priorities (asc or desc)
+         */
+        sort(column, direction){
+            this.getPriorities(this.url.help('catalog/ticket_priorities').order(column, direction), false)
+        },
+
+        /**
+         * @description This action is used to fetch with search results.
+         * @param {String} string The string to search for.
+         */
+        search(string) {
+            this.pagination.page = 1
+            this.getPriorities(this.url.help('catalog/ticket_priorities').search(string))
         }
     }
 

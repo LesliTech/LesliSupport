@@ -53,12 +53,9 @@ const columns = [{
     label: translations.main.column_name,
     sort: true
 }, {
-    field: "default",
-    label: translations.main.column_default,
+    field: "created_at_date",
+    label: translations.main.column_created_at,
     sort: true
-}, {
-    field: "created_at",
-    label: translations.main.column_created_at
 }]
 
 </script>
@@ -78,7 +75,27 @@ const columns = [{
             @paginate="storeWorkspaces.paginateIndex"
             @sort="storeWorkspaces.sort"
             :link="(workspace) => url.help(`catalog/ticket_workspaces/${workspace.id}`).s"
-        >        
+        >
+            <template #name="{ value, record }">
+
+
+                <p  v-if="record.default===true">
+                    <span class="icon-text">
+                        <span class="icon">
+                            <span class="has-text-success material-icons">
+                                check_box_icon
+                            </span>
+                        </span>
+                        <span>
+                            {{value + ` (Default workspace)`}}
+                        </span>
+                    </span>
+                </p>
+
+                <p v-else>
+                    {{value}}
+                </p>
+            </template>        
         </lesli-table>
 
     </section>

@@ -42,7 +42,7 @@ const translations = {
 <template>
     <section class="application-component">
         <lesli-header :title="translations.main.view_title_new">
-            <lesli-button :to="url.help('catalog/ticket_workspace')" icon="list">
+            <lesli-button :to="url.help('catalog/ticket_workspaces')" icon="list">
                 {{translations.core.view_btn_list}}
             </lesli-button>
         </lesli-header>

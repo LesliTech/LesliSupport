@@ -82,46 +82,67 @@ if (props.isEditable){
         v-if="!storeWorkspaces.loading"
         @submit.prevent="isEditable ? onUpdate() : onCreate()"
     >
-        <!-- Workspace name -->
-        <div class="columns">
-            <div class="column is-8">
-                <div class="field">
-                    <label class="label">
+        <fieldset>
+            <!-- Workspace name -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"> 
                         {{translations.main.column_name}}<sup class="has-text-danger">*</sup>
                     </label>
-                    <div class="control is-expanded">
-                        <input class="input" v-model="storeWorkspaces.workspace.name" required type="text">
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" v-model="storeWorkspaces.workspace.name" required type="text">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Workspace is default? -->
-        <div class="columns">
-            <div class="column is-4">
-                <label class="label">
-                    {{translations.main.column_default}}<sup class="has-text-danger">*</sup>
-                </label>
-                <div class="control">
-                    <input class="input" type="text" v-model="storeWorkspaces.workspace.default" required>
+            <!-- Workspace is default? -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"> 
+                        {{translations.main.column_default}}<sup class="has-text-danger">*</sup>
+                    </label>
                 </div>
-            </div>
-        </div>
-
-        <!-- Save button -->
-        <div class="field is-horizontal is-expanded">
-            <div class="field-label is-normal">
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <lesli-button icon="save" :loading="storeWorkspaces.loading">
-                            {{ translations.core.view_btn_save }}
-                        </lesli-button>                 
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <lesli-select
+                                :options="[
+                                    {
+                                        label: translations.core.view_text_yes,
+                                        value: true
+                                    }, {
+                                        label: translations.core.view_text_no,
+                                        value: false
+                                    }
+                                ]"
+                                v-model="storeWorkspaces.workspace.default"
+                            >
+                            </lesli-select>                        
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Save button -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"></label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <lesli-button icon="save">
+                                {{ translations.core.view_btn_save }}
+                            </lesli-button>                 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
     </form>
 
 </template>

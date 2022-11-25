@@ -40,9 +40,6 @@ const translations = {
     core: I18n.t('core.shared')
 }
 
-
-const title = computed(() => `${storePriorities.priority.id} - ${storePriorities.priority.name}`)
-
 /**
  * @description This function is used to delete a priority
  */
@@ -59,10 +56,9 @@ onMounted(() => {
 
 </script>
 <template>
-
     <section class="application-component">
         <lesli-header
-            :title="title"
+            :title="translations.main.view_title_edit"
         >
             <button class="button is-fullwidth has-text-centered is-danger" @click="onDelete">
                 {{translations.core.view_tab_title_delete_section}}
@@ -71,9 +67,9 @@ onMounted(() => {
                 {{translations.main.view_title_main}}
             </lesli-button>
         </lesli-header>
-        <priority-form is-editable></priority-form>
-
-
+        <div class="box">
+            <priority-form is-editable></priority-form>
+        </div>
     </section>
 
 </template>

@@ -82,58 +82,72 @@ if (props.isEditable){
         v-if="!storePriorities.loading"
         @submit.prevent="isEditable ? onUpdate() : onCreate()"
     >
-        <!-- Priority type name -->
-        <div class="columns">
-            <div class="column is-8">
-                <div class="field">
-                    <label class="label">
+
+        <fieldset>
+            <!-- Priority type name -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"> 
                         {{translations.main.column_name}}<sup class="has-text-danger">*</sup>
                     </label>
-                    <div class="control is-expanded">
-                        <input class="input" v-model="storePriorities.priority.name" required type="text">
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" v-model="storePriorities.priority.name" required type="text">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Priority weight -->
-        <div class="columns">
-            <div class="column is-4">
-                <label class="label">
-                    {{translations.main.column_weight}}<sup class="has-text-danger">*</sup>
-                </label>
-                <div class="control">
-                    <input class="input" type="number" v-model="storePriorities.priority.weight" required>
+            <!-- Priority weight -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"> 
+                        {{translations.main.column_weight}}<sup class="has-text-danger">*</sup>
+                    </label>
                 </div>
-            </div>
-        </div>
-
-        <!-- Priority days to deadline -->
-        <div class="columns">
-            <div class="column">
-                <label class="label">
-                    {{translations.main.column_days_to_deadline}}
-                </label>
-                <div class="control">
-                    <input class="input" type="number" v-model="storePriorities.priority.days_to_deadline">
-                </div>
-            </div>
-        </div>
-
-        <!-- Save button -->
-        <div class="field is-horizontal is-expanded">
-            <div class="field-label is-normal">
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <lesli-button icon="save" :loading="storePriorities.loading">
-                            {{ translations.core.view_btn_save }}
-                        </lesli-button>                 
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="number" v-model="storePriorities.priority.weight" required>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Priority days to deadline -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"> 
+                        {{translations.main.column_days_to_deadline}}
+                    </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="number" v-model="storePriorities.priority.days_to_deadline">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save button -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"></label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <lesli-button icon="save">
+                                {{ translations.core.view_btn_save }}
+                            </lesli-button>                 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
     </form>
 
 </template>

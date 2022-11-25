@@ -49,6 +49,8 @@ const translations = {
                 {{translations.core.view_btn_list}}
             </lesli-button>
         </lesli-header>
-        <priority-form></priority-form>
+        <div class="box">
+            <priority-form></priority-form>
+        </div>
     </section>
 </template>

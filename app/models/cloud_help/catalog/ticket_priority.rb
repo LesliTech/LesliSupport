@@ -48,29 +48,24 @@ For more information read the license file including with this software.
                 ticket_priorities = ticket_priorities.where(filters_query.join(' and '))
             end
 
-            response = {}
-            # total count
-            response[:total_count] = ticket_priorities.length if filters["get_total_count"]
-
             # Adding pagination to ticket_priorities
-            pagination = query[:pagination]
-            ticket_priorities = ticket_priorities.page(
-                pagination[:page]
-            ).per(
-                pagination[:perPage]
-            ).order(
-                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
+            ticket_priorities = ticket_priorities.page(query[:pagination][:page])
+            .per(query[:pagination][:perPage])
+            .order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
+
+            # Selecting columns 
+            ticket_priorities = ticket_priorities.select(
+                :id,
+                :name,
+                :weight,
+                :days_to_deadline,
+                :cloud_help_accounts_id,
+                LC::Date2.new.date.db_column("created_at"),
+                LC::Date2.new.date.db_column("updated_at"),
+                LC::Date2.new.date.db_column("deleted_at")
             )
-
-            # We format the response
-            response[:ticket_priorities] = ticket_priorities.map do |ticket_priority|
-                ticket_priority_attributes = ticket_priority.attributes
-                ticket_priority_attributes["created_at"] = LC::Date.to_string_datetime(ticket_priority_attributes["created_at"])
-
-                ticket_priority_attributes
-            end
             
-            response
+            ticket_priorities
         end
 
         def show

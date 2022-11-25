@@ -61,8 +61,9 @@ const columns = [{
     label: translations.main.column_days_to_deadline,
     sort: true
 }, {
-    field: "created_at",
-    label: translations.main.column_created_at
+    field: "created_at_string",
+    label: translations.main.column_created_at,
+    sort: true
 }]
 
 </script>
@@ -75,7 +76,7 @@ const columns = [{
         </lesli-header>
         
         <lesli-table 
-            :records="storePriorities.priorities"
+            :records="storePriorities.index.records"
             :columns="columns"
             :loading="storePriorities.loading"
             :pagination="storePriorities.index.pagination"
@@ -83,6 +84,14 @@ const columns = [{
             @sort="storePriorities.sort"
             :link="(priority) => url.help(`catalog/ticket_priorities/${priority.id}`).s"
         >
+            <template #days_to_deadline="{value}">
+                <p v-if="value">
+                    {{value}}
+                </p>
+                <p v-else>
+                    N/A
+                </p>
+            </template>
         
         </lesli-table>
 
