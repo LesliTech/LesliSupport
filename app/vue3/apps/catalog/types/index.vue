@@ -53,21 +53,48 @@ const columns = [{
     label: translations.main.column_name,
     sort: true
 }, {
-    field: "created_at",
-    label: translations.main.column_created_at
+    field: "created_at_string",
+    label: translations.main.column_created_at,
+    sort: true
 }]
 
 </script>
 <template>
     <section class="application-component">
         <lesli-header :title="translations.main.view_title_main">
+            <lesli-button @click="storeTypes.reloadTypes" icon="refresh" :loading="storeTypes.loading">
+                {{ translations.core.view_text_btn_reload }} 
+            </lesli-button>
             <lesli-button :to="url.help('catalog/ticket_types/new')" icon="add">
                 {{ translations.core.view_btn_add }}
             </lesli-button>
         </lesli-header>
+
+        <lesli-toolbar @search="storeTypes.search" :placeholder="translations.main.view_placeholder_text_filter">
+            <lesli-select
+                :options="[
+                    {
+                        label: '10',
+                        value: 10
+                    }, {
+                        label: '15',
+                        value: 15
+                    }, {
+                        label: '30',
+                        value: 30
+                    }, {
+                        label: '50',
+                        value: 50
+                    },
+                ]"
+                v-model="storeTypes.filters.per_page"
+                @change="storeTypes.getTypes()"
+            >
+            </lesli-select>
+        </lesli-toolbar>
         
         <lesli-table 
-            :records="storeTypes.types"
+            :records="storeTypes.index.records"
             :columns="columns"
             :loading="storeTypes.loading"
             :pagination="storeTypes.index.pagination"

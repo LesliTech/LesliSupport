@@ -68,8 +68,9 @@ onMounted(() => {
                 {{translations.main.view_title_main}}
             </lesli-button>
         </lesli-header>
-        <type-form is-editable></type-form>
-
+        <div class="box">
+            <type-form is-editable></type-form>
+        </div>
 
     </section>
 

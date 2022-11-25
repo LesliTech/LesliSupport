@@ -29,36 +29,23 @@ module CloudHelp
         before_destroy :rollback_if_default
 
         def self.index(current_user, query)
-            # Parsing filters
-            filters = query[:filters]
-            filters_query = []
-
-            # We filter by a text string written by the user
-            if filters["query"] && !filters["query"].empty?
-                query_words = filters["query"].split(" ")
-                query_words.each do |query_word|
-                    query_word = query_word.strip.downcase
-
-                    # first customer
-                    filters_query.push("(LOWER(name) SIMILAR TO '%#{query_word}%')")
-                end
-            end
+            # get search string from query params
+            search_string = query[:search].downcase.gsub(" ","%") unless query[:search].blank?
 
             # Executing the query
             workspaces = current_user.account.help.ticket_workspaces.select(:id, :name, :default, LC::Date2.new.db_timestamps)
 
-            # We apply the previous filters in the main query
-            unless filters_query.empty?
-                workspaces = workspaces.where(filters_query.join(" AND "))
+            # We filter by a text string written by the user
+            unless search_string.blank?
+                workspaces = workspaces.where("
+                        (CAST(id AS VARCHAR) SIMILAR TO :search_string)  OR
+                        (LOWER(name) SIMILAR TO  :search_string)
+                    ", search_string: "%#{sanitize_sql_like(search_string, " ")}%")
             end
 
-            workspaces = workspaces.page(
-                query[:pagination][:page]
-            ).per(
-                query[:pagination][:perPage]
-            ).order(
-                "#{query[:pagination][:orderBy]} #{query[:pagination][:order]} NULLS LAST"
-            )
+            workspaces = workspaces.page(query[:pagination][:page])
+            .per(query[:pagination][:perPage])
+            .order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]} NULLS LAST")
 
             workspaces
         end

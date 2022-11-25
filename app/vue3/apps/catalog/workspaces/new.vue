@@ -46,6 +46,8 @@ const translations = {
                 {{translations.core.view_btn_list}}
             </lesli-button>
         </lesli-header>
-        <workspace-form></workspace-form>
+        <div class="box">
+            <workspace-form></workspace-form>
+        </div>
     </section>
 </template>

@@ -94,7 +94,7 @@ if (props.isEditable){
                 <div class="field-body">
                     <div class="field">
                         <div class="control">
-                            <input class="input" v-model="storeTypes.type.name">
+                            <input class="input" v-model="storeTypes.type.name" required>
                         </div>
                     </div>
                 </div>

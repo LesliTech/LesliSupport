@@ -66,9 +66,31 @@ const columns = [{
                 {{ translations.core.view_btn_add }}
             </lesli-button>
         </lesli-header>
+        <lesli-toolbar @search="storeWorkspaces.search" :placeholder="translations.main.view_placeholder_text_filter">
+            <lesli-select
+                :options="[
+                    {
+                        label: '10',
+                        value: 10
+                    }, {
+                        label: '15',
+                        value: 15
+                    }, {
+                        label: '30',
+                        value: 30
+                    }, {
+                        label: '50',
+                        value: 50
+                    },
+                ]"
+                v-model="storeWorkspaces.filters.per_page"
+                @change="storeWorkspaces.getWorkspaces()"
+            >
+            </lesli-select>
+        </lesli-toolbar>
         
         <lesli-table 
-            :records="storeWorkspaces.workspaces"
+            :records="storeWorkspaces.index.records"
             :columns="columns"
             :loading="storeWorkspaces.loading"
             :pagination="storeWorkspaces.index.pagination"

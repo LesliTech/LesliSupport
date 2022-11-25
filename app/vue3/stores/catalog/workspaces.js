@@ -32,8 +32,10 @@ export const useTicketWorkspaces = defineStore("help.ticket_workspaces", {
                 pagination: {},
                 records: []
             },
-            workspaces: {},
-            workspace: {}
+            workspace: {},
+            filters: {
+                per_page: 10
+            }
         }
     },
     actions: {
@@ -44,7 +46,7 @@ export const useTicketWorkspaces = defineStore("help.ticket_workspaces", {
             console.log(url)
             this.loading = true 
             this.http.get(url).then(result => {
-                this.workspaces = result.records
+                this.index = result
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
@@ -114,7 +116,39 @@ export const useTicketWorkspaces = defineStore("help.ticket_workspaces", {
                     })
                 }
             })
-        }
+        },
+        /**
+         * @description This action is used to paginate workspaces from index
+         * @param {String} page The actual page showing.
+         */
+        paginateIndex(page) {
+            this.pagination.page = page
+            this.getWorkspaces()
+        },
+        /**
+         * @description This action is used to sort the list of workspaces.
+         * @param {String} column The column to sort the list of workspaces
+         * @param {String} direction The direction to sort the list of workspaces (asc or desc)
+         */
+        sort(column, direction){
+            this.getWorkspaces(this.url.help('catalog/ticket_workspaces').order(column, direction), false)
+        },
+
+        /**
+         * @description This action is used to fetch with search results.
+         * @param {String} string The string to search for.
+         */
+        search(string) {
+            this.pagination.page = 1
+            this.getWorkspaces(this.url.help('catalog/ticket_workspaces').search(string))
+        },
+        /**
+        * @description This action is used to reload tickets workspaces
+        */
+        reloadWorkspaces(){
+            this.index.records = []
+            this.getWorkspaces()
+        },
     }
 
 })

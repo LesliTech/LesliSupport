@@ -32,7 +32,10 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
                 pagination: {},
                 records: []
             },
-            priority: {}
+            priority: {},
+            filters: {
+                per_page: 10
+            }
         }
     },
     actions: {
@@ -41,7 +44,7 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
          */
         getPriorities(url=this.url.help('catalog/ticket_priorities')) {
             this.loading = true 
-            this.http.get(url.paginate(this.pagination.page)).then(result => {
+            this.http.get(url.paginate(this.pagination.page, this.filters.per_page)).then(result => {
                 this.index = result
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
@@ -111,7 +114,6 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
                 }
             })
         }, 
-
         /**
          * @description This action is used to paginate priorities from index
          * @param {String} page The actual page showing.
@@ -120,7 +122,6 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
             this.pagination.page = page
             this.getPriorities()
         },
-
         /**
          * @description This action is used to sort the list of priorities.
          * @param {String} column The column to sort the list of priorities
@@ -129,7 +130,6 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
         sort(column, direction){
             this.getPriorities(this.url.help('catalog/ticket_priorities').order(column, direction), false)
         },
-
         /**
          * @description This action is used to fetch with search results.
          * @param {String} string The string to search for.
@@ -137,6 +137,13 @@ export const useTicketPriorities = defineStore("help.ticket_priorities", {
         search(string) {
             this.pagination.page = 1
             this.getPriorities(this.url.help('catalog/ticket_priorities').search(string))
+        },
+        /**
+        * @description This action is used to reload priorities
+        */
+        reloadPriorities(){
+            this.index.records = []
+            this.getPriorities()
         }
     }
 

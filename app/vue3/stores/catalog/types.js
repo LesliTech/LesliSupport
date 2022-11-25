@@ -32,8 +32,10 @@ export const useTicketTypes = defineStore("help.ticket_types", {
                 pagination: {},
                 records: []
             },
-            types: {},
-            type: {}
+            type: {},
+            filters: {
+                per_page: 10
+            }
         }
     },
     actions: {
@@ -42,8 +44,8 @@ export const useTicketTypes = defineStore("help.ticket_types", {
          */
         getTypes(url=this.url.help('catalog/ticket_types')) {
             this.loading = true 
-            this.http.get(url).then(result => {
-                this.types = result.ticket_types
+            this.http.get(url.paginate(this.pagination.page, this.filters.per_page)).then(result => {
+                this.index = result
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
@@ -89,8 +91,8 @@ export const useTicketTypes = defineStore("help.ticket_types", {
             })
         },
         /**
-         * @description This action is used to delete a priority
-         * @param {Integer} id the id of the priority to be deleted
+         * @description This action is used to delete a type
+         * @param {Integer} id the id of the type to be deleted
          */
         deleteType(id){
             this.dialog
@@ -111,7 +113,39 @@ export const useTicketTypes = defineStore("help.ticket_types", {
                     })
                 }
             })
-        }
+        },
+        /**
+         * @description This action is used to paginate types from index
+         * @param {String} page The actual page showing.
+         */
+        paginateIndex(page) {
+            this.pagination.page = page
+            this.getTypes()
+        },
+        /**
+         * @description This action is used to sort the list of types.
+         * @param {String} column The column to sort the list of types
+         * @param {String} direction The direction to sort the list of types (asc or desc)
+         */
+        sort(column, direction){
+            this.getTypes(this.url.help('catalog/ticket_types').order(column, direction), false)
+        },
+
+        /**
+         * @description This action is used to fetch with search results.
+         * @param {String} string The string to search for.
+         */
+        search(string) {
+            this.pagination.page = 1
+            this.getTypes(this.url.help('catalog/ticket_types').search(string))
+        },
+        /**
+        * @description This action is used to reload tickets types
+        */
+        reloadTypes(){
+            this.index.records = []
+            this.getTypes()
+        },
     }
 
 })

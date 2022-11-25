@@ -25,29 +25,21 @@ For more information read the license file including with this software.
         validates :weight, presence: true
 
         def self.index(current_user, query)
-            # Parsing filters
-            filters = query[:filters]
-            filters_query = []
+
+            # get search string from query params
+            search_string = query[:search].downcase.gsub(" ","%") unless query[:search].blank?
             
-            # We filter by a text string written by the user
-            if filters["query"] && !filters["query"].empty?
-                query_words = filters["query"].split(" ")
-                query_words.each do |query_word|
-                    query_word = query_word.strip.downcase
-
-                    # first customer
-                    filters_query.push("(LOWER(name) SIMILAR TO '%#{query_word}%')")
-                end
-            end
-
             # Executing the query
             ticket_priorities = current_user.account.help.ticket_priorities
 
-            # We apply the previous filters in the main query
-            unless filters_query.empty?
-                ticket_priorities = ticket_priorities.where(filters_query.join(' and '))
+            # We filter by a text string written by the user
+            unless search_string.blank?
+                ticket_priorities = ticket_priorities.where("
+                        (CAST(id AS VARCHAR) SIMILAR TO :search_string)  OR
+                        (LOWER(name) SIMILAR TO  :search_string)
+                    ", search_string: "%#{sanitize_sql_like(search_string, " ")}%")
             end
-
+            
             # Adding pagination to ticket_priorities
             ticket_priorities = ticket_priorities.page(query[:pagination][:page])
             .per(query[:pagination][:perPage])

@@ -46,7 +46,7 @@ module CloudHelp
             respond_to do |format|
                 format.html {}
                 format.json do
-                    responseWithSuccessful(Catalog::TicketType.index(current_user, @query))
+                    respond_with_pagination(Catalog::TicketType.index(current_user, @query))
                 end
             end
         end
