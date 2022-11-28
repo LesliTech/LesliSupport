@@ -100,10 +100,10 @@ export const useTicketWorkspaces = defineStore("help.ticket_workspaces", {
         deleteWorkspace(id){
             this.dialog
             .confirmation({
-                title: "Delete workspace",
-                text: "Are you sure you want to delete this workspace?",
-                confirmText: "yes",
-                cancelText: "no"
+                title: I18n.t("help.catalog/ticket_workspaces.view_text_delete_workspace"),
+                text: I18n.t("help.catalog/ticket_workspaces.view_text_delete_confirmation"),
+                confirmText: I18n.t("core.shared.view_text_yes"),
+                cancelText: I18n.t("core.shared.view_text_no")
             })
             .then(({ isConfirmed }) => {
                 if (isConfirmed) {

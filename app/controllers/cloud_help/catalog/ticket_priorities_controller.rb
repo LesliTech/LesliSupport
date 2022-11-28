@@ -71,7 +71,7 @@ module CloudHelp
                     set_ticket_priority
                     return responseWithNotFound unless @ticket_priority
 
-                    responseWithSuccessful(@ticket_priority.show)
+                    respond_with_successful(@ticket_priority.show)
                 end
             end
         end
@@ -119,9 +119,9 @@ module CloudHelp
             ticket_priority.cloud_help_accounts_id = current_user.account.id
 
             if ticket_priority.save
-                responseWithSuccessful(ticket_priority)
+                respond_with_successful(ticket_priority)
             else
-                responseWithError(ticket_priority.errors.full_messages.to_sentence)
+                respond_with_error(ticket_priority.errors.full_messages.to_sentence)
             end
         end
 
@@ -146,9 +146,9 @@ module CloudHelp
             return responseWithNotFound unless @ticket_priority
 
             if @ticket_priority.update(ticket_priority_params)
-                responseWithSuccessful(@ticket_priority)
+                respond_with_successful(@ticket_priority)
             else
-                responseWithError(@ticket_priority.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_priority.errors.full_messages.to_sentence)
             end
         end
 
@@ -166,9 +166,9 @@ module CloudHelp
             return responseWithNotFound unless @ticket_priority
 
             if @ticket_priority.destroy
-                responseWithSuccessful
+                respond_with_successful
             else
-                responseWithError(@ticket_priority.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_priority.errors.full_messages.to_sentence)
             end
         end
 

@@ -1,6 +1,6 @@
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -47,7 +47,7 @@ module CloudHelp
                 format.html {}
                 format.json do 
                     ticket_categories = Catalog::TicketCategory.index(current_user, @query)
-                    responseWithSuccessful(ticket_categories)
+                    respond_with_successful(ticket_categories)
                 end
             end
         end
@@ -71,7 +71,7 @@ module CloudHelp
                     set_ticket_category
                     return responseWithNotFound unless @ticket_category
 
-                    responseWithSuccessful(@ticket_category.show)
+                    respond_with_successful(@ticket_category.show)
                 end
             end
         end
@@ -119,9 +119,9 @@ module CloudHelp
             ticket_category.cloud_help_accounts_id = current_user.account.id
             
             if ticket_category.save
-                responseWithSuccessful(ticket_category)
+                respond_with_successful(ticket_category)
             else
-                responseWithError(ticket_category.errors.full_messages.to_sentence)
+                respond_with_error(ticket_category.errors.full_messages.to_sentence)
             end
         end
 
@@ -146,9 +146,9 @@ module CloudHelp
             return responseWithNotFound unless @ticket_category
 
             if @ticket_category.update(ticket_category_params)
-                responseWithSuccessful(@ticket_category)
+                respond_with_successful(@ticket_category)
             else
-                responseWithError(@ticket_category.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_category.errors.full_messages.to_sentence)
             end
         end
 
@@ -167,9 +167,9 @@ module CloudHelp
             return responseWithNotFound unless @ticket_category
             
             if @ticket_category.destroy
-                responseWithSuccessful
+                respond_with_successful
             else
-                responseWithError(@ticket_category.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_category.errors.full_messages.to_sentence)
             end
         end
 

@@ -69,7 +69,7 @@ module CloudHelp
                     set_ticket_type
                     return responseWithNotFound unless @ticket_type
 
-                    responseWithSuccessful(@ticket_type.show)
+                    respond_with_successful(@ticket_type.show)
                 end
             end
         end
@@ -116,9 +116,9 @@ module CloudHelp
             ticket_type.cloud_help_accounts_id = current_user.account.id
 
             if ticket_type.save
-                responseWithSuccessful(ticket_type)
+                respond_with_successful(ticket_type)
             else
-                responseWithError(ticket_type.errors.full_messages.to_sentence)
+                respond_with_error(ticket_type.errors.full_messages.to_sentence)
             end
         end
 
@@ -141,9 +141,9 @@ module CloudHelp
             return responseWithNotFound unless @ticket_type
 
             if @ticket_type.update(ticket_type_params)
-                responseWithSuccessful(@ticket_type)
+                respond_with_successful(@ticket_type)
             else
-                responseWithError(@ticket_type.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_type.errors.full_messages.to_sentence)
             end
         end
 
@@ -162,9 +162,9 @@ module CloudHelp
             return responseWithNotFound unless @ticket_type
 
             if @ticket_type.destroy
-                responseWithSuccessful
+                respond_with_successful
             else
-                responseWithError(@ticket_type.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_type.errors.full_messages.to_sentence)
             end
         end
 
