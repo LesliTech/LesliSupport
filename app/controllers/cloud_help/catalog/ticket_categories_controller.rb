@@ -69,7 +69,7 @@ module CloudHelp
                 format.html {}
                 format.json do
                     set_ticket_category
-                    return responseWithNotFound unless @ticket_category
+                    return respond_with_not_found unless @ticket_category
 
                     respond_with_successful(@ticket_category.show)
                 end
@@ -143,7 +143,7 @@ module CloudHelp
     this.http.put(`127.0.0.1/help/ticket_categories/${ticket_category_id}`, data);
 =end
         def update
-            return responseWithNotFound unless @ticket_category
+            return respond_with_not_found unless @ticket_category
 
             if @ticket_category.update(ticket_category_params)
                 respond_with_successful(@ticket_category)
@@ -164,7 +164,7 @@ module CloudHelp
     this.http.delete(`127.0.0.1/help/ticket_categories/${ticket_category_id}`);
 =end
         def destroy
-            return responseWithNotFound unless @ticket_category
+            return respond_with_not_found unless @ticket_category
             
             if @ticket_category.destroy
                 respond_with_successful

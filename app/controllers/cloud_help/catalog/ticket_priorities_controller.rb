@@ -69,7 +69,7 @@ module CloudHelp
                 format.html {}
                 format.json do
                     set_ticket_priority
-                    return responseWithNotFound unless @ticket_priority
+                    return respond_with_not_found unless @ticket_priority
 
                     respond_with_successful(@ticket_priority.show)
                 end
@@ -143,7 +143,7 @@ module CloudHelp
     this.http.put(`127.0.0.1/help/ticket_priorities/${ticket_priority_id}`, data);
 =end
         def update
-            return responseWithNotFound unless @ticket_priority
+            return respond_with_not_found unless @ticket_priority
 
             if @ticket_priority.update(ticket_priority_params)
                 respond_with_successful(@ticket_priority)
@@ -163,7 +163,7 @@ module CloudHelp
     this.http.delete(`127.0.0.1/help/ticket_priorities/${ticket_priority_id}`);
 =end
         def destroy
-            return responseWithNotFound unless @ticket_priority
+            return respond_with_not_found unless @ticket_priority
 
             if @ticket_priority.destroy
                 respond_with_successful

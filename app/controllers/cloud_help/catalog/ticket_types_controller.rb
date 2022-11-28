@@ -67,7 +67,7 @@ module CloudHelp
                 format.html {}
                 format.json do
                     set_ticket_type
-                    return responseWithNotFound unless @ticket_type
+                    return respond_with_not_found unless @ticket_type
 
                     respond_with_successful(@ticket_type.show)
                 end
@@ -138,7 +138,7 @@ module CloudHelp
     this.http.patch(`127.0.0.1/help/ticket_types/${ticket_type_id}`, data);
 =end
         def update
-            return responseWithNotFound unless @ticket_type
+            return respond_with_not_found unless @ticket_type
 
             if @ticket_type.update(ticket_type_params)
                 respond_with_successful(@ticket_type)
@@ -159,7 +159,7 @@ module CloudHelp
     this.http.delete(`127.0.0.1/help/ticket_types/${ticket_type_id}`);
 =end
         def destroy
-            return responseWithNotFound unless @ticket_type
+            return respond_with_not_found unless @ticket_type
 
             if @ticket_type.destroy
                 respond_with_successful
