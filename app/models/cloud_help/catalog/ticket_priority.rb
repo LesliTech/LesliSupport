@@ -1,7 +1,6 @@
-module CloudHelp
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -17,6 +16,7 @@ For more information read the license file including with this software.
 // · 
 
 =end
+module CloudHelp
     class Catalog::TicketPriority < ApplicationLesliRecord
         belongs_to  :account, class_name: "CloudHelp::Account", foreign_key: "cloud_help_accounts_id"
         has_many    :tickets, class_name: "CloudHelp::Ticket",  foreign_key: "cloud_help_catalog_ticket_priorities_id"
