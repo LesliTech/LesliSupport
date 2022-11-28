@@ -87,10 +87,10 @@ export const useTickets = defineStore("help.tickets", {
         /**
          * @description This action is used to get options for selectors in ticket form
          */
-        getOptions(){
+        async getOptions(){
             this.loading = true
             this.options = {}
-            this.http.get(this.url.help('tickets/options')).then(result => {
+            return this.http.get(this.url.help('tickets/options')).then(result => {
                 this.options.types = result.types.map((type)=> {
                     return {
                         label: type.name,

@@ -81,8 +81,11 @@ const onCreate = () => {
 */
 if (props.isEditable){
     storeTickets.ticket = {}
-    storeTickets.fetchTicket(route.params.id)
+    storeTickets.getOptions().then(() => {
+        storeTickets.fetchTicket(route.params.id)    
+    })
 } else {
+    storeTickets.getOptions() // get options for ticket form
     storeTickets.ticket = {}
     storeTickets.tags = []
 }
