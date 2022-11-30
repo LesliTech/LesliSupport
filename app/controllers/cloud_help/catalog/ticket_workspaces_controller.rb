@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2021, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -20,6 +20,16 @@ require_dependency "cloud_help/application_controller"
 module CloudHelp
     class Catalog::TicketWorkspacesController < ApplicationController
         before_action :set_workspace, only: [:show, :update, :destroy]
+
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: [],
+                destroy: []
+            }
+        end
 
         # GET /catalog/workspaces
         def index

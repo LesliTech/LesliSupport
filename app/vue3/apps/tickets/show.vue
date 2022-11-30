@@ -69,12 +69,6 @@ const onUpdatedStatus = () => {
 const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.subject} - ${storeTickets.ticket.status}`)
 
 
-// · initializing
-onMounted(() => {
-    storeTickets.getOptions() // get options for ticket form
-})
-
-
 </script>
 <template>
 

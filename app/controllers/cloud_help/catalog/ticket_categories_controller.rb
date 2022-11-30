@@ -1,9 +1,6 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -19,8 +16,21 @@ For more information read the license file including with this software.
 // · 
 
 =end
-  class Catalog::TicketCategoriesController < ApplicationLesliController
-    before_action :set_ticket_category, only: [:update, :destroy]
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
+    class Catalog::TicketCategoriesController < ApplicationLesliController
+        before_action :set_ticket_category, only: [:update, :destroy]
+
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: [],
+                destroy: []
+            }
+        end
 
 =begin
 @return [HTML|JSON] HTML view for listing all ticket categories or a Json that contains a list of all ticket categories 
@@ -32,15 +42,15 @@ For more information read the license file including with this software.
     # Executing this controller's action from javascript's frontend
     this.http.get(`127.0.0.1/help/ticket_categories`);
 =end
-    def index
-        respond_to do |format|
-            format.html {}
-            format.json do 
-                ticket_categories = Catalog::TicketCategory.index(current_user, @query)
-                responseWithSuccessful(ticket_categories)
+        def index
+            respond_to do |format|
+                format.html {}
+                format.json do 
+                    ticket_categories = Catalog::TicketCategory.index(current_user, @query)
+                    respond_with_successful(ticket_categories)
+                end
             end
         end
-    end
 
 =begin
 @return [HTML|Json] HTML view showing the requested ticket category or a Json that contains the
@@ -54,17 +64,17 @@ For more information read the license file including with this software.
     let ticket_category_id = 1;
     this.http.get(`127.0.0.1/help/ticket_categories/${ticket_category_id}`);
 =end
-    def show
-        respond_to do |format|
-            format.html {}
-            format.json do
-                set_ticket_category
-                return responseWithNotFound unless @ticket_category
+        def show
+            respond_to do |format|
+                format.html {}
+                format.json do
+                    set_ticket_category
+                    return respond_with_not_found unless @ticket_category
 
-                responseWithSuccessful(@ticket_category.show)
+                    respond_with_successful(@ticket_category.show)
+                end
             end
         end
-    end
 
 =begin
 @return [HTML] HTML view for creating a new ticket category
@@ -73,8 +83,8 @@ For more information read the license file including with this software.
     # Executing this controller's action from javascript's frontend
     this.url.go('/help/ticket_categories/new')
 =end
-    def new
-    end
+        def new
+        end
 
 =begin
 @return [HTML] HTML view for editing the ticket category
@@ -84,8 +94,8 @@ For more information read the license file including with this software.
     let ticket_category_id = 3;
     this.url.go(`/help/ticket_categories/${ticket_category_id}/edit`)
 =end
-    def edit
-    end
+        def edit
+        end
 
 =begin
 @controller_action_param :name [String] The name of the new category
@@ -104,16 +114,16 @@ For more information read the license file including with this software.
     };
     this.http.post('127.0.0.1/help/ticket_categorys', data);
 =end
-    def create
-        ticket_category = Catalog::TicketCategory.new(ticket_category_params)
-        ticket_category.cloud_help_accounts_id = current_user.account.id
-        
-        if ticket_category.save
-            responseWithSuccessful(ticket_category)
-        else
-            responseWithError(ticket_category.errors.full_messages.to_sentence)
+        def create
+            ticket_category = Catalog::TicketCategory.new(ticket_category_params)
+            ticket_category.cloud_help_accounts_id = current_user.account.id
+            
+            if ticket_category.save
+                respond_with_successful(ticket_category)
+            else
+                respond_with_error(ticket_category.errors.full_messages.to_sentence)
+            end
         end
-    end
 
 =begin
 @controller_action_param :name [String] The name of the category
@@ -132,15 +142,15 @@ For more information read the license file including with this software.
     };
     this.http.put(`127.0.0.1/help/ticket_categories/${ticket_category_id}`, data);
 =end
-    def update
-        return responseWithNotFound unless @ticket_category
+        def update
+            return respond_with_not_found unless @ticket_category
 
-        if @ticket_category.update(ticket_category_params)
-            responseWithSuccessful(@ticket_category)
-        else
-            responseWithError(@ticket_category.errors.full_messages.to_sentence)
+            if @ticket_category.update(ticket_category_params)
+                respond_with_successful(@ticket_category)
+            else
+                respond_with_error(@ticket_category.errors.full_messages.to_sentence)
+            end
         end
-    end
 
 =begin
 @return [Json] Json that contains wheter the ticket category was successfully deleted or not. 
@@ -153,17 +163,17 @@ For more information read the license file including with this software.
     let ticket_category_id = 4;
     this.http.delete(`127.0.0.1/help/ticket_categories/${ticket_category_id}`);
 =end
-    def destroy
-        return responseWithNotFound unless @ticket_category
-        
-        if @ticket_category.destroy
-            responseWithSuccessful
-        else
-            responseWithError(@ticket_category.errors.full_messages.to_sentence)
+        def destroy
+            return respond_with_not_found unless @ticket_category
+            
+            if @ticket_category.destroy
+                respond_with_successful
+            else
+                respond_with_error(@ticket_category.errors.full_messages.to_sentence)
+            end
         end
-    end
 
-    private
+        private
 =begin
 @return [void]
 @description Sets the variable @ticket_category. The variable contains the *ticket* *category* 
@@ -174,12 +184,12 @@ For more information read the license file including with this software.
     set_ticket_category
     puts @ticket_category # will display an instance of CloudHelp:TicketCategory
 =end
-        def set_ticket_category
-            @ticket_category = Catalog::TicketCategory.find_by(
-                id: params[:id],
-                cloud_help_accounts_id: current_user.account.id
-            )
-        end
+            def set_ticket_category
+                @ticket_category = Catalog::TicketCategory.find_by(
+                    id: params[:id],
+                    cloud_help_accounts_id: current_user.account.id
+                )
+            end
 
 =begin
 @return [Parameters] Allowed parameters for the ticket category
@@ -202,8 +212,8 @@ For more information read the license file including with this software.
     #    }
     #}
 =end
-        def ticket_category_params
-            params.fetch(:ticket_category, {}).permit(:name, :parent_id)
-        end
-  end
+            def ticket_category_params
+                params.fetch(:ticket_category, {}).permit(:name, :parent_id)
+            end
+    end
 end

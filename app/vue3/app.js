@@ -35,12 +35,64 @@ import slaShow from './apps/sla/show.vue'
 // // · Reports components
 import reportsIndex from './apps/reports/index.vue'
 
+// · Ticket priorities components
+import prioritiesIndex from './apps/catalog/priorities/index.vue'
+import prioritiesShow from './apps/catalog/priorities/show.vue'
+import prioritiesNew from './apps/catalog/priorities/new.vue'
+
+// · Ticket types components
+import typesIndex from './apps/catalog/types/index.vue'
+import typesShow from './apps/catalog/types/show.vue'
+import typesNew from './apps/catalog/types/new.vue'
+
+// · Ticket workspaces components
+import workspacesIndex from './apps/catalog/workspaces/index.vue'
+import workspacesShow from './apps/catalog/workspaces/show.vue'
+import workspacesNew from './apps/catalog/workspaces/new.vue'
+
+
 // ·
 app('CloudHelp', [
     // {
     //     path: '/',
     //     component: appDashboard
     // },
+    {
+        path: '/catalog/ticket_priorities',
+        component: prioritiesIndex
+    },
+    {
+        path: '/catalog/ticket_priorities/:id',
+        component: prioritiesShow
+    },
+    {
+        path: '/catalog/ticket_priorities/new',
+        component: prioritiesNew
+    },
+    {
+        path: '/catalog/ticket_types',
+        component: typesIndex
+    },
+    {
+        path: '/catalog/ticket_types/:id',
+        component: typesShow
+    },
+    {
+        path: '/catalog/ticket_types/new',
+        component: typesNew
+    },
+    {
+        path: '/catalog/ticket_workspaces',
+        component: workspacesIndex
+    },
+    {
+        path: '/catalog/ticket_workspaces/:id',
+        component: workspacesShow
+    },
+    {
+        path: '/catalog/ticket_workspaces/new',
+        component: workspacesNew
+    },
     {
         path: '/tickets',
         component: ticketsIndex

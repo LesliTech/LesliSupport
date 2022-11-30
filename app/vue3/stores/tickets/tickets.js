@@ -87,10 +87,10 @@ export const useTickets = defineStore("help.tickets", {
         /**
          * @description This action is used to get options for selectors in ticket form
          */
-        getOptions(){
+        async getOptions(){
             this.loading = true
             this.options = {}
-            this.http.get(this.url.help('tickets/options')).then(result => {
+            return this.http.get(this.url.help('tickets/options')).then(result => {
                 this.options.types = result.types.map((type)=> {
                     return {
                         label: type.name,
@@ -254,9 +254,9 @@ export const useTickets = defineStore("help.tickets", {
         },
 
         /**
-         * @description This action is used to sort the list of leads.
-         * @param {String} column The column to sort the list of leads
-         * @param {String} direction The direction to sort the list of leads (asc or desc)
+         * @description This action is used to sort the list of tickets.
+         * @param {String} column The column to sort the list of tickets
+         * @param {String} direction The direction to sort the list of tickets (asc or desc)
          */
         sort(column, direction){
             this.getTickets(this.url.help('tickets').order(column, direction), false)

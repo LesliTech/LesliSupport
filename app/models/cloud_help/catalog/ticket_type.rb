@@ -1,6 +1,6 @@
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -24,52 +24,37 @@ module CloudHelp
         validates :name, presence: true
 
         def self.index(current_user, query)
-            # Parsing filters
-            filters = query[:filters]
-            filters_query = []
-            
-            # We filter by a text string written by the user
-            if filters["query"] && !filters["query"].empty?
-                query_words = filters["query"].split(" ")
-                query_words.each do |query_word|
-                    query_word = query_word.strip.downcase
 
-                    # first customer
-                    filters_query.push("(LOWER(name) SIMILAR TO '%#{query_word}%')")
-                end
-            end
+            # get search string from query params
+            search_string = query[:search].downcase.gsub(" ","%") unless query[:search].blank?
 
             # Executing the query
             ticket_types = current_user.account.help.ticket_types
 
-            # We apply the previous filters in the main query
-            unless filters_query.empty?
-                ticket_types = ticket_types.where(filters_query.join(' and '))
+            # We filter by a text string written by the user
+            unless search_string.blank?
+                ticket_types = ticket_types.where("
+                        (CAST(id AS VARCHAR) SIMILAR TO :search_string)  OR
+                        (LOWER(name) SIMILAR TO  :search_string)
+                    ", search_string: "%#{sanitize_sql_like(search_string, " ")}%")
             end
 
-            response = {}
-            # total count
-            response[:total_count] = ticket_types.length if filters["get_total_count"]
+            # Adding pagination to ticket_priorities
+            ticket_types = ticket_types.page(query[:pagination][:page])
+            .per(query[:pagination][:perPage])
+            .order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
 
-            # Adding pagination to ticket_types
-            pagination = query[:pagination]
-            ticket_types = ticket_types.page(
-                pagination[:page]
-            ).per(
-                pagination[:perPage]
-            ).order(
-                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
+            # Selecting columns 
+            ticket_types = ticket_types.select(
+                :id,
+                :name,
+                :cloud_help_accounts_id,
+                LC::Date2.new.date.db_column("created_at"),
+                LC::Date2.new.date.db_column("updated_at"),
+                LC::Date2.new.date.db_column("deleted_at")
             )
 
-            # We format the response
-            response[:ticket_types] = ticket_types.map do |ticket_type|
-                ticket_type_attributes = ticket_type.attributes
-                ticket_type_attributes["created_at"] = LC::Date.to_string_datetime(ticket_type_attributes["created_at"])
-
-                ticket_type_attributes
-            end
-            
-            response
+            ticket_types
         end
 
         def show

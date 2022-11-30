@@ -1,9 +1,6 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -19,8 +16,21 @@ For more information read the license file including with this software.
 // · 
 
 =end
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
     class Catalog::TicketTypesController < ApplicationLesliController
         before_action :set_ticket_type, only: [:update, :destroy]
+        
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: [],
+                destroy: []
+            }
+        end
 
 =begin
 @return [HTML|JSON] HTML view for listing all ticket types or a Json that contains a list of all ticket types 
@@ -36,7 +46,7 @@ For more information read the license file including with this software.
             respond_to do |format|
                 format.html {}
                 format.json do
-                    responseWithSuccessful(Catalog::TicketType.index(current_user, @query))
+                    respond_with_pagination(Catalog::TicketType.index(current_user, @query))
                 end
             end
         end
@@ -57,9 +67,9 @@ For more information read the license file including with this software.
                 format.html {}
                 format.json do
                     set_ticket_type
-                    return responseWithNotFound unless @ticket_type
+                    return respond_with_not_found unless @ticket_type
 
-                    responseWithSuccessful(@ticket_type.show)
+                    respond_with_successful(@ticket_type.show)
                 end
             end
         end
@@ -106,9 +116,9 @@ For more information read the license file including with this software.
             ticket_type.cloud_help_accounts_id = current_user.account.id
 
             if ticket_type.save
-                responseWithSuccessful(ticket_type)
+                respond_with_successful(ticket_type)
             else
-                responseWithError(ticket_type.errors.full_messages.to_sentence)
+                respond_with_error(ticket_type.errors.full_messages.to_sentence)
             end
         end
 
@@ -128,12 +138,12 @@ For more information read the license file including with this software.
     this.http.patch(`127.0.0.1/help/ticket_types/${ticket_type_id}`, data);
 =end
         def update
-            return responseWithNotFound unless @ticket_type
+            return respond_with_not_found unless @ticket_type
 
             if @ticket_type.update(ticket_type_params)
-                responseWithSuccessful(@ticket_type)
+                respond_with_successful(@ticket_type)
             else
-                responseWithError(@ticket_type.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_type.errors.full_messages.to_sentence)
             end
         end
 
@@ -149,12 +159,12 @@ For more information read the license file including with this software.
     this.http.delete(`127.0.0.1/help/ticket_types/${ticket_type_id}`);
 =end
         def destroy
-            return responseWithNotFound unless @ticket_type
+            return respond_with_not_found unless @ticket_type
 
             if @ticket_type.destroy
-                responseWithSuccessful
+                respond_with_successful
             else
-                responseWithError(@ticket_type.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_type.errors.full_messages.to_sentence)
             end
         end
 

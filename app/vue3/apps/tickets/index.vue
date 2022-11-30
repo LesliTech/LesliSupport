@@ -182,7 +182,7 @@ function extractInitials(name){
             @sort="storeTickets.sort"
             :link="(ticket) => url.root(`${props.appMountPath}/${ticket.id}`).s"
         >
-            <template #assignables="{ column, value }">
+            <template #assignables="{ value }">
                 <span
                     v-for="user in value"
                     :key="user"
@@ -192,7 +192,7 @@ function extractInitials(name){
                 </span>
             </template>
 
-            <template #priority="{ column, value }">
+            <template #priority="{ value }">
                 <span
                     v-if="value =='High' || value =='Highest' || value =='Very High'"
                     class="tag is-danger"
@@ -215,7 +215,7 @@ function extractInitials(name){
                 </span>
             </template>
 
-            <template #deadline="{ column, value }">
+            <template #deadline="{ value }">
                 <div v-if="value.getTime() <= new Date().getTime() ">
                     <div class="icon-text">
                         <span class="icon has-text-danger">
@@ -225,7 +225,6 @@ function extractInitials(name){
                     </div>
                 </div>
                 <div v-else>{{ date.date(value)}}</div>
-
             </template>
 
         </lesli-table>
