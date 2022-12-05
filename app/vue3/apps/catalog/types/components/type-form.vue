@@ -18,7 +18,7 @@ For more information read the license file including with this software.
 
 
 // · import vue tools
-import { inject, onMounted, ref, onUnmounted } from "vue"
+import { inject } from "vue"
 
 // · import vue router composable
 import { useRouter, useRoute } from "vue-router"

@@ -22,13 +22,13 @@ module CloudHelp
         belongs_to :account,    class_name: "CloudHelp::Account",                   foreign_key: "cloud_help_accounts_id"
         belongs_to :user_creator, class_name: "::User",                             foreign_key: "users_id"
         belongs_to :user_main,  class_name: "::User",                               foreign_key: "user_main_id", optional: true
-        belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
+        belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id", optional: true
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id", optional: true
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id", optional: true
         belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id", optional: true
         belongs_to :workspace,  class_name: "CloudHelp::Catalog::TicketWorkspace",  foreign_key: "cloud_help_catalog_ticket_workspaces_id", optional: true
-        belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
-        belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id"
+        belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id", optional: true
+        belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id", optional: true
 
         has_many :discussions,  foreign_key: "cloud_help_tickets_id"
         has_many :actions,      foreign_key: "cloud_help_tickets_id"
@@ -468,7 +468,7 @@ module CloudHelp
         def set_type
             return unless account 
 
-            if self.type.blank?
+            if self.type.blank? && !self.account.ticket_types.first.nil?
                 self.type = self.account.ticket_types.first
             end
         end
@@ -484,9 +484,13 @@ module CloudHelp
 
             slas = account.slas
             
-            selected_sla = slas.joins(:associations).where(
-                "cloud_help_sla_associations.cloud_help_catalog_ticket_types_id = ?", type.id
-            ).first
+            LC::Debug.msg(slas)
+
+            unless type.blank?
+                selected_sla = slas.joins(:associations).where(
+                    "cloud_help_sla_associations.cloud_help_catalog_ticket_types_id = ?", type.id
+                ).first
+            end
 
             selected_sla = slas.find_by(default: true) unless selected_sla
             
