@@ -483,8 +483,6 @@ module CloudHelp
             return unless account 
 
             slas = account.slas
-            
-            LC::Debug.msg(slas)
 
             unless type.blank?
                 selected_sla = slas.joins(:associations).where(
