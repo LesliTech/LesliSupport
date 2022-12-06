@@ -116,7 +116,7 @@ module CloudHelp
 
             unless filters.blank?
                 # We filter by search_type, available search_types are 'own' and 'active'
-                if filters["search_type"]
+                if filters["search_type"] && current_user.account.help.workflows.count > 0
                     filters_query.push("(cloud_help_workflow_statuses.status_type != 'completed_unsuccessfully' AND cloud_help_workflow_statuses.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
                     filters_query.push("(cloud_help_workflow_statuses.status_type = 'completed_unsuccessfully' OR cloud_help_workflow_statuses.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
                 end

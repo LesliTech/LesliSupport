@@ -228,9 +228,9 @@ module CloudHelp
             ticket.activities.create(
                 user_creator: current_user,
                 category: "action_status",
-                description: ticket.status.name,
+                description: ticket.status&.name,
                 field_name: "cloud_help_workflow_statuses_id",
-                value_to: ticket.status.name
+                value_to: ticket.status&.name
             )
         end
 
@@ -386,7 +386,7 @@ module CloudHelp
         def is_editable_by?(current_user, bypass_olp: false, bypass_status: false)
             return false unless current_user
 
-            return false if (! bypass_status) && (status.completed_successfully? || status.completed_unsuccessfully? )
+            return false if (! bypass_status) && (status&.completed_successfully? || status&.completed_unsuccessfully? )
 
             unless bypass_olp
                 current_user_olp = current_user.roles.order(object_level_permission: :desc).first.object_level_permission

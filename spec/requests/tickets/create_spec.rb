@@ -59,7 +59,8 @@ RSpec.describe "POST:/help/tickets.json", type: :request do
             subject: Faker::Lorem.word,
             description: Faker::Lorem.paragraph,
             deadline: Time.now,
-            tags: "#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word}"
+            tags: "#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word}",
+            reference_url: Faker::Internet.url
         }
 
         post("/help/tickets.json", params: {
@@ -79,7 +80,7 @@ RSpec.describe "POST:/help/tickets.json", type: :request do
             { key: "users_id", expected_type: "integer" },
             { key: "cloud_help_catalog_ticket_priorities_id", expected_type: "nil" },
             { key: "cloud_help_catalog_ticket_categories_id", expected_type: "nil" },
-            { key: "reference_url", expected_type: "nil" },
+            { key: "reference_url", expected_type: "string", expected_value: new_ticket_params[:reference_url] },
             { key: "deadline", expected_type: "string", expected_value: new_ticket_params[:deadline] }
         ])
     end
