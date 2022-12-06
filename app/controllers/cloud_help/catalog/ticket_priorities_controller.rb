@@ -1,9 +1,6 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -19,8 +16,23 @@ For more information read the license file including with this software.
 // · 
 
 =end
+
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
+
     class Catalog::TicketPrioritiesController < ApplicationLesliController
         before_action :set_ticket_priority, only: [:update, :destroy]
+
+        def privileges
+            {
+                new: [],
+                edit: [],
+                show: [],
+                index: [],
+                destroy: []
+            }
+        end
 
 =begin
 @return [HTML|JSON] HTML view for listing all ticket priorities or a Json that contains a list 
@@ -36,7 +48,7 @@ For more information read the license file including with this software.
             respond_to do |format|
                 format.html {}
                 format.json do
-                    responseWithSuccessful(Catalog::TicketPriority.index(current_user, @query))
+                    respond_with_pagination(Catalog::TicketPriority.index(current_user, @query))
                 end
             end
         end
@@ -57,9 +69,9 @@ For more information read the license file including with this software.
                 format.html {}
                 format.json do
                     set_ticket_priority
-                    return responseWithNotFound unless @ticket_priority
+                    return respond_with_not_found unless @ticket_priority
 
-                    responseWithSuccessful(@ticket_priority.show)
+                    respond_with_successful(@ticket_priority.show)
                 end
             end
         end
@@ -107,9 +119,9 @@ For more information read the license file including with this software.
             ticket_priority.cloud_help_accounts_id = current_user.account.id
 
             if ticket_priority.save
-                responseWithSuccessful(ticket_priority)
+                respond_with_successful(ticket_priority)
             else
-                responseWithError(ticket_priority.errors.full_messages.to_sentence)
+                respond_with_error(ticket_priority.errors.full_messages.to_sentence)
             end
         end
 
@@ -131,12 +143,12 @@ For more information read the license file including with this software.
     this.http.put(`127.0.0.1/help/ticket_priorities/${ticket_priority_id}`, data);
 =end
         def update
-            return responseWithNotFound unless @ticket_priority
+            return respond_with_not_found unless @ticket_priority
 
             if @ticket_priority.update(ticket_priority_params)
-                responseWithSuccessful(@ticket_priority)
+                respond_with_successful(@ticket_priority)
             else
-                responseWithError(@ticket_priority.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_priority.errors.full_messages.to_sentence)
             end
         end
 
@@ -151,12 +163,12 @@ For more information read the license file including with this software.
     this.http.delete(`127.0.0.1/help/ticket_priorities/${ticket_priority_id}`);
 =end
         def destroy
-            return responseWithNotFound unless @ticket_priority
+            return respond_with_not_found unless @ticket_priority
 
             if @ticket_priority.destroy
-                responseWithSuccessful
+                respond_with_successful
             else
-                responseWithError(@ticket_priority.errors.full_messages.to_sentence)
+                respond_with_error(@ticket_priority.errors.full_messages.to_sentence)
             end
         end
 

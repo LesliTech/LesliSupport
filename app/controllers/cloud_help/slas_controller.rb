@@ -1,8 +1,5 @@
-require_dependency "cloud_help/application_controller"
-
-module CloudHelp
 =begin
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2022, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -18,6 +15,9 @@ For more information read the license file including with this software.
 // · 
 
 =end
+require_dependency "cloud_help/application_controller"
+
+module CloudHelp
     class SlasController < ApplicationLesliController
 
         before_action :set_sla, only: [:update, :destroy, :images]
@@ -153,7 +153,7 @@ For more information read the license file including with this software.
 
                 respond_with_successful(sla)
             else
-                responseWithError(sla.errors.full_messages.to_sentence)
+                respond_with_error(sla.errors.full_messages.to_sentence)
             end
         end
 

@@ -31,9 +31,9 @@ import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
 import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
 
 // · Ticket workspaces components
-import ticketWorkspacesList  from './catalog_ticket_workspaces/apps/list.vue'
-import ticketWorkspacesEdit  from './catalog_ticket_workspaces/apps/edit.vue'
-import ticketWorkspacesNew   from './catalog_ticket_workspaces/apps/new.vue'
+// import ticketWorkspacesList  from './catalog_ticket_workspaces/apps/list.vue'
+// import ticketWorkspacesEdit  from './catalog_ticket_workspaces/apps/edit.vue'
+// import ticketWorkspacesNew   from './catalog_ticket_workspaces/apps/new.vue'
 
 // · Ticket categories components
 import ticketCategoriesList  from './catalog_ticket_categories/apps/list.vue'
@@ -42,17 +42,17 @@ import ticketCategoriesShow  from './catalog_ticket_categories/apps/show.vue'
 import ticketCategoriesNew   from './catalog_ticket_categories/apps/new.vue'
 
 // · Ticket priorities components
-import ticketPrioritiesList  from './catalog_ticket_priorities/apps/list.vue'
-import ticketPrioritiesEdit  from './catalog_ticket_priorities/apps/edit.vue'
-import ticketPrioritiesNew   from './catalog_ticket_priorities/apps/new.vue'
+// import ticketPrioritiesList  from './catalog_ticket_priorities/apps/list.vue'
+// import ticketPrioritiesEdit  from './catalog_ticket_priorities/apps/edit.vue'
+// import ticketPrioritiesNew   from './catalog_ticket_priorities/apps/new.vue'
 
 // · Ticket types components
-import ticketTypesList  from './catalog_ticket_types/apps/list.vue'
-import ticketTypesNew   from './catalog_ticket_types/apps/new.vue'
-import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
+// import ticketTypesList  from './catalog_ticket_types/apps/list.vue'
+// import ticketTypesNew   from './catalog_ticket_types/apps/new.vue'
+// import ticketTypesEdit  from './catalog_ticket_types/apps/edit.vue'
 
 // · Report components
-import reportsList from './reports/apps/list.vue'
+// import reportsList from './reports/apps/list.vue'
 
 // · Slas components
 // import slasList from './slas/apps/list.vue'
@@ -177,25 +177,27 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
             engineNamespace: 'help',
             appMountPath: '/help/workflows'
         }
-    },{
-        path: '/catalog/ticket_workspaces',
-        component: ticketWorkspacesList,
-        props: {
-            appMountPath: '/help/catalog/ticket_workspaces'
-        }
-    },{
-        path: '/catalog/ticket_workspaces/new',
-        component: ticketWorkspacesNew,
-        props: {
-            appMountPath: '/help/catalog/ticket_workspaces'
-        }
-    },{
-        path: '/catalog/ticket_workspaces/:id',
-        component: ticketWorkspacesEdit,
-        props: {
-            appMountPath: '/help/catalog/ticket_workspaces'
-        }
-    },{
+    },
+    // {
+    //     path: '/catalog/ticket_workspaces',
+    //     component: ticketWorkspacesList,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_workspaces'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_workspaces/new',
+    //     component: ticketWorkspacesNew,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_workspaces'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_workspaces/:id',
+    //     component: ticketWorkspacesEdit,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_workspaces'
+    //     }
+    // },
+    {
         path: '/catalog/ticket_categories',
         component: ticketCategoriesList,
         props: {
@@ -219,43 +221,45 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
         props: {
             appMountPath: '/help/catalog/ticket_categories'
         }
-    },{
-        path: '/catalog/ticket_priorities',
-        component: ticketPrioritiesList,
-        props: {
-            appMountPath: '/help/catalog/ticket_priorities'
-        }
-    },{
-        path: '/catalog/ticket_priorities/new',
-        component: ticketPrioritiesNew,
-        props: {
-            appMountPath: '/help/catalog/ticket_priorities'
-        }
-    },{
-        path: '/catalog/ticket_priorities/:id',
-        component: ticketPrioritiesEdit,
-        props: {
-            appMountPath: '/help/catalog/ticket_priorities'
-        }
-    },{
-        path: '/catalog/ticket_types',
-        component: ticketTypesList,
-        props: {
-            appMountPath: '/help/catalog/ticket_types'
-        }
-    },{
-        path: '/catalog/ticket_types/new',
-        component: ticketTypesNew,
-        props: {
-            appMountPath: '/help/catalog/ticket_types'
-        }
-    },{
-        path: '/catalog/ticket_types/:id',
-        component: ticketTypesEdit,
-        props: {
-            appMountPath: '/help/catalog/ticket_types'
-        }
-    },
+    }
+    // ,{
+    //     path: '/catalog/ticket_priorities',
+    //     component: ticketPrioritiesList,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_priorities'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_priorities/new',
+    //     component: ticketPrioritiesNew,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_priorities'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_priorities/:id',
+    //     component: ticketPrioritiesEdit,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_priorities'
+    //     }
+    // }
+    // ,{
+    //     path: '/catalog/ticket_types',
+    //     component: ticketTypesList,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_types'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_types/new',
+    //     component: ticketTypesNew,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_types'
+    //     }
+    // },{
+    //     path: '/catalog/ticket_types/:id',
+    //     component: ticketTypesEdit,
+    //     props: {
+    //         appMountPath: '/help/catalog/ticket_types'
+    //     }
+    // },
     // {
     //     path: '/slas',
     //     component: slasList,
