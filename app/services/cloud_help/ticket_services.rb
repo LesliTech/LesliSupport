@@ -20,6 +20,7 @@ module CloudHelp
     class TicketServices
 
         def self.create(current_user, ticket_params)
+
             ticket = current_user.account.help.tickets.new(ticket_params)
             ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
             ticket.user_creator = current_user
@@ -59,24 +60,25 @@ module CloudHelp
         end
 
         def self.show(current_user, ticket, query)
+
             data = Ticket.joins(
                 "left join cloud_help_catalog_ticket_priorities chctp on cloud_help_tickets.cloud_help_catalog_ticket_priorities_id = chctp.id"
             ).joins(
-                "inner join cloud_help_catalog_ticket_types chctt on cloud_help_tickets.cloud_help_catalog_ticket_types_id = chctt.id"
+                "left join cloud_help_catalog_ticket_types chctt on cloud_help_tickets.cloud_help_catalog_ticket_types_id = chctt.id"
             ).joins(
                 "left join cloud_help_catalog_ticket_categories chctc on cloud_help_tickets.cloud_help_catalog_ticket_categories_id = chctc.id"
             ).joins(
                 "left join cloud_help_catalog_ticket_workspaces chctw on cloud_help_tickets.cloud_help_catalog_ticket_workspaces_id = chctw.id"
             ).joins(
-                "inner join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
+                "left join cloud_help_workflow_statuses chws on cloud_help_tickets.cloud_help_workflow_statuses_id = chws.id"
             ).joins(
-                "inner join cloud_help_workflows chw on chws.cloud_help_workflows_id = chw.id"
+                "left join cloud_help_workflows chw on chws.cloud_help_workflows_id = chw.id"
             ).joins(
                 "left join cloud_help_ticket_assignments chta on cloud_help_tickets.id = chta.cloud_help_tickets_id and chta.deleted_at is null"
             ).joins(
-                "inner join users u on cloud_help_tickets.users_id = u.id"
+                "left join users u on cloud_help_tickets.users_id = u.id"
             ).joins(
-                "inner join user_details ud on u.id = ud.users_id"
+                "left join user_details ud on u.id = ud.users_id"
             ).select(
                 "cloud_help_tickets.id as id",                      "cloud_help_tickets.created_at as created_at",
                 "chctp.name as priority",                           "chctt.name as type",
@@ -96,7 +98,7 @@ module CloudHelp
             data[:category] = ticket.category.full_path if ticket.category
             data[:assignment_attributes] = ticket.assignments_info
             data[:editable] = ticket.is_editable_by?(current_user)
-            data[:sla] = ticket.sla.show(current_user, query)
+            data[:sla] = ticket.sla.show(current_user, query) if ticket.sla
             data[:files_count] = ticket.files.count
             data[:subscribed] = (ticket.subscribers.where(user_creator: current_user).count > 0)
 
@@ -114,7 +116,7 @@ module CloudHelp
 
             unless filters.blank?
                 # We filter by search_type, available search_types are 'own' and 'active'
-                if filters["search_type"]
+                if filters["search_type"] && current_user.account.help.workflows.count > 0
                     filters_query.push("(cloud_help_workflow_statuses.status_type != 'completed_unsuccessfully' AND cloud_help_workflow_statuses.status_type != 'completed_successfully')") if filters["search_type"].eql? "active"
                     filters_query.push("(cloud_help_workflow_statuses.status_type = 'completed_unsuccessfully' OR cloud_help_workflow_statuses.status_type = 'completed_successfully')") if filters["search_type"].eql? "inactive"
                 end

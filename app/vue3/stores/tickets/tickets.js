@@ -153,6 +153,7 @@ export const useTickets = defineStore("help.tickets", {
                 }
             }).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
+                this.getTickets()
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
