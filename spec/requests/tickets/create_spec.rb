@@ -26,7 +26,6 @@ RSpec.describe "POST:/help/tickets.json", type: :request do
     # test cases
 
     it "should be able to create a ticket only with subject" do
-
         new_ticket_params = {
             subject: Faker::Lorem.word
         }
@@ -54,7 +53,6 @@ RSpec.describe "POST:/help/tickets.json", type: :request do
     end
 
     it "should be able to create a ticket with all the params from ticket form" do
-
         new_ticket_params = {
             subject: Faker::Lorem.word,
             description: Faker::Lorem.paragraph,
@@ -81,9 +79,8 @@ RSpec.describe "POST:/help/tickets.json", type: :request do
             { key: "cloud_help_catalog_ticket_priorities_id", expected_type: "nil" },
             { key: "cloud_help_catalog_ticket_categories_id", expected_type: "nil" },
             { key: "reference_url", expected_type: "string", expected_value: new_ticket_params[:reference_url] },
-            { key: "deadline", expected_type: "string", expected_value: new_ticket_params[:deadline] }
+            { key: "deadline", expected_type: "string" }
         ])
     end
-
 
 end
