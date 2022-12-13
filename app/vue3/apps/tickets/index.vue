@@ -215,8 +215,9 @@ function extractInitials(name){
                 </span>
             </template>
 
-            <template #deadline="{ value }">
-                <div v-if="value.getTime() <= new Date().getTime() ">
+            <template #deadline="{ value, record }">
+                <div v-if="value?.getTime() <= new Date().getTime()">
+                    
                     <div class="icon-text">
                         <span class="icon has-text-danger">
                             <i class="fas fa-exclamation-triangle"></i>
@@ -224,6 +225,9 @@ function extractInitials(name){
                         </span>
                     </div>
                 </div>
+
+                <div v-else-if="value === null ">N/A</div>
+
                 <div v-else>{{ date.date(value)}}</div>
             </template>
 
