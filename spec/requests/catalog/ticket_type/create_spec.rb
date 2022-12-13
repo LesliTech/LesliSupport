@@ -23,7 +23,6 @@ RSpec.describe 'POST:/help/catalog/ticket_types', type: :request do
     include_context "request user authentication"
 
     it "is expected to create a new ticket type" do
-
         type_params = {
             name: Faker::Lorem.word
         }
@@ -51,7 +50,6 @@ RSpec.describe 'POST:/help/catalog/ticket_types', type: :request do
     end
 
     it "is expected to respond with error if type params are not sent " do
-
         post("/help/catalog/ticket_types.json")
 
         # shared examples
@@ -59,7 +57,6 @@ RSpec.describe 'POST:/help/catalog/ticket_types', type: :request do
     end
 
     it "is expected to respond with error if type params are empty" do
-
         type_params = {}
 
         post("/help/catalog/ticket_types.json", params: {
