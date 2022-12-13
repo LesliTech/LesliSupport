@@ -22,13 +22,13 @@ module CloudHelp
         belongs_to :account,    class_name: "CloudHelp::Account",                   foreign_key: "cloud_help_accounts_id"
         belongs_to :user_creator, class_name: "::User",                             foreign_key: "users_id"
         belongs_to :user_main,  class_name: "::User",                               foreign_key: "user_main_id", optional: true
-        belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id"
+        belongs_to :type,       class_name: "CloudHelp::Catalog::TicketType",       foreign_key: "cloud_help_catalog_ticket_types_id", optional: true
         belongs_to :category,   class_name: "CloudHelp::Catalog::TicketCategory",   foreign_key: "cloud_help_catalog_ticket_categories_id", optional: true
         belongs_to :priority,   class_name: "CloudHelp::Catalog::TicketPriority",   foreign_key: "cloud_help_catalog_ticket_priorities_id", optional: true
         belongs_to :source,     class_name: "CloudHelp::Catalog::TicketSource",     foreign_key: "cloud_help_catalog_ticket_sources_id", optional: true
         belongs_to :workspace,  class_name: "CloudHelp::Catalog::TicketWorkspace",  foreign_key: "cloud_help_catalog_ticket_workspaces_id", optional: true
-        belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id"
-        belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id"
+        belongs_to :status,     class_name: "CloudHelp::Workflow::Status",          foreign_key: "cloud_help_workflow_statuses_id", optional: true
+        belongs_to :sla,        class_name: "CloudHelp::Sla",                       foreign_key: "cloud_help_slas_id", optional: true
 
         has_many :discussions,  foreign_key: "cloud_help_tickets_id"
         has_many :actions,      foreign_key: "cloud_help_tickets_id"
@@ -228,9 +228,9 @@ module CloudHelp
             ticket.activities.create(
                 user_creator: current_user,
                 category: "action_status",
-                description: ticket.status.name,
+                description: ticket.status&.name,
                 field_name: "cloud_help_workflow_statuses_id",
-                value_to: ticket.status.name
+                value_to: ticket.status&.name
             )
         end
 
@@ -386,7 +386,7 @@ module CloudHelp
         def is_editable_by?(current_user, bypass_olp: false, bypass_status: false)
             return false unless current_user
 
-            return false if (! bypass_status) && (status.completed_successfully? || status.completed_unsuccessfully? )
+            return false if (! bypass_status) && (status&.completed_successfully? || status&.completed_unsuccessfully? )
 
             unless bypass_olp
                 current_user_olp = current_user.roles.order(object_level_permission: :desc).first.object_level_permission
@@ -468,7 +468,7 @@ module CloudHelp
         def set_type
             return unless account 
 
-            if self.type.blank?
+            if self.type.blank? && !self.account.ticket_types.first.nil?
                 self.type = self.account.ticket_types.first
             end
         end
@@ -483,10 +483,12 @@ module CloudHelp
             return unless account 
 
             slas = account.slas
-            
-            selected_sla = slas.joins(:associations).where(
-                "cloud_help_sla_associations.cloud_help_catalog_ticket_types_id = ?", type.id
-            ).first
+
+            unless type.blank?
+                selected_sla = slas.joins(:associations).where(
+                    "cloud_help_sla_associations.cloud_help_catalog_ticket_types_id = ?", type.id
+                ).first
+            end
 
             selected_sla = slas.find_by(default: true) unless selected_sla
             

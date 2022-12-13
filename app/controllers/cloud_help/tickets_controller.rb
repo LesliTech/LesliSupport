@@ -205,7 +205,7 @@ For more information read the license file including with this software.
 
             # When the ticket is closed, the only available field for update is the status
             update_params = ticket_params
-            if ["completed_successfully", "completed_unsuccessfully"].include? @ticket.status.status_type
+            if ["completed_successfully", "completed_unsuccessfully"].include? @ticket.status&.status_type
                 update_params = completed_ticket_params
             end
 

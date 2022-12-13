@@ -36,8 +36,6 @@ RSpec.describe 'POST:/help/catalog/ticket_workspaces', type: :request do
         # shared examples
         expect_response_with_successful
 
-        puts response_body
-
         # custom specs
         expect(response_body).to be_a(Object)
 
@@ -58,14 +56,13 @@ RSpec.describe 'POST:/help/catalog/ticket_workspaces', type: :request do
     end
 
     it "is expected to respond with error if workspace params are not sent " do
-
         post("/help/catalog/ticket_workspaces.json")
+
         # shared examples
         expect_response_with_error
     end
 
     it "is expected to respond with error if workspace params are empty" do
-
         workspace_params = {}
 
         post("/help/catalog/ticket_workspaces.json", params: {
@@ -77,7 +74,6 @@ RSpec.describe 'POST:/help/catalog/ticket_workspaces', type: :request do
     end
 
     it "is expected to respond with error if name param is not sent" do
-
         workspace_params = {
             default: Faker::Lorem.word
         }
@@ -89,6 +85,5 @@ RSpec.describe 'POST:/help/catalog/ticket_workspaces', type: :request do
         # shared examples
         expect_response_with_error
     end
-
 
 end

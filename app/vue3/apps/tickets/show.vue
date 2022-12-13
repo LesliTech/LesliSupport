@@ -77,7 +77,7 @@ const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.
             :title="title"
         >
             <component-workflow-status-dropdown
-                    v-if="storeTickets.ticket.id"
+                    v-if="(storeTickets.ticket.id && storeTickets.ticket.cloud_help_workflow_statuses_id)"
                     @on-updated-status="onUpdatedStatus"
                     cloudObject="tickets"
                     cloudModule="help"
@@ -124,7 +124,7 @@ const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.
                 <internal-comments></internal-comments>
             </lesli-tab-item>
 
-            <lesli-tab-item :title="translations.main.view_tab_title_sla" icon="article">
+            <lesli-tab-item :title="translations.main.view_tab_title_sla" icon="article" v-if="storeTickets.ticket.sla">
                 <sla-info></sla-info>
             </lesli-tab-item>
         </lesli-tabs>

@@ -185,7 +185,6 @@ if (props.isEditable){
                 <div class="field-label is-normal">
                     <label class="label"> 
                         {{translations.main.column_cloud_help_catalog_ticket_types_id}} 
-                        <span class="is-danger">*</span>
                     </label>
 
                 </div>
@@ -389,7 +388,6 @@ if (props.isEditable){
                 <div class="field-label is-normal">
                     <label class="label"> 
                         {{translations.main.column_cloud_help_catalog_ticket_types_id}} 
-                        <span class="is-danger">*</span>
                     </label>
 
                 </div>

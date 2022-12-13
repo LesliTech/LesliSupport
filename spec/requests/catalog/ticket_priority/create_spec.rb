@@ -23,7 +23,6 @@ RSpec.describe 'POST:/help/catalog/ticket_priorities', type: :request do
     include_context "request user authentication"
 
     it "is expected to create a new ticket priority" do
-
         priority_params = {
             name: Faker::Lorem.word,
             weight: Faker::Number.between(from: 1, to: 10000),
@@ -38,7 +37,6 @@ RSpec.describe 'POST:/help/catalog/ticket_priorities', type: :request do
         expect_response_with_successful
 
         # custom specs
-        puts response_body
         expect(response_body).to be_a(Object)
 
         expect(response_body).to have_key("id")
@@ -62,7 +60,6 @@ RSpec.describe 'POST:/help/catalog/ticket_priorities', type: :request do
     end
 
     it "is expected to respond with error if priority params are not sent " do
-
         post("/help/catalog/ticket_priorities.json")
 
         # shared examples
@@ -70,7 +67,6 @@ RSpec.describe 'POST:/help/catalog/ticket_priorities', type: :request do
     end
 
     it "is expected to respond with error if priority params are empty" do
-
         priority_params = {}
 
         post("/help/catalog/ticket_priorities.json", params: {
@@ -83,7 +79,6 @@ RSpec.describe 'POST:/help/catalog/ticket_priorities', type: :request do
 
 
     it "is expected to respond with error if name priority are not sent" do
-
         priority_params = {
             weight: Faker::Number.between(from: 1, to: 10000),
             days_to_deadline: Faker::Number.between(from: 1, to: 60)
@@ -98,7 +93,6 @@ RSpec.describe 'POST:/help/catalog/ticket_priorities', type: :request do
     end
 
     it "is expected to respond with error if weight priority are not sent" do
-
         priority_params = {
             name: Faker::Lorem.word,
             days_to_deadline: Faker::Number.between(from: 1, to: 60)

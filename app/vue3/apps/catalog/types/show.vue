@@ -18,7 +18,7 @@ For more information read the license file including with this software.
 
 
 // · import vue tools
-import { onMounted, computed } from "vue"
+import { onMounted, inject } from "vue"
 import { useRouter, useRoute } from 'vue-router'
 
 // . import components
@@ -30,6 +30,8 @@ import { useTicketTypes } from "CloudHelp/stores/catalog/types"
 // · initialize/inject plugins
 const route = useRoute()
 const router = useRouter()
+const url = inject("url")
+
 
 // · implement stores
 const storeTypes = useTicketTypes()
@@ -45,7 +47,7 @@ const translations = {
  */
 const onDelete = () => {
     storeTypes.deleteType(route.params.id)
-    router.push(url.help('catalog/ticket_types').toString())
+    router.push(url.help('catalog/ticket_types').s)
 }
 
 // · initializing
