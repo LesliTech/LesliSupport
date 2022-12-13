@@ -47,6 +47,11 @@ RSpec.describe "POST:/help/tickets.json", type: :request do
             { key: "users_id", expected_type: "integer" },
             { key: "cloud_help_catalog_ticket_priorities_id", expected_type: "nil" },
             { key: "cloud_help_catalog_ticket_categories_id", expected_type: "nil" },
+            { key: "cloud_help_catalog_ticket_types_id", expected_type: "nil" },
+            { key: "cloud_help_catalog_ticket_sources_id", expected_type: "nil" },
+            { key: "cloud_help_slas_id", expected_type: "nil" },
+            { key: "cloud_help_catalog_ticket_workspaces_id", expected_type: "nil" },
+
             { key: "reference_url", expected_type: "nil" },
             { key: "deadline", expected_type: "string" }
         ])
