@@ -216,8 +216,7 @@ function extractInitials(name){
             </template>
 
             <template #deadline="{ value, record }">
-                <div v-if="value?.getTime() <= new Date().getTime()">
-                    
+                <div v-if="value?.getTime() <= new Date().getTime()">                    
                     <div class="icon-text">
                         <span class="icon has-text-danger">
                             <i class="fas fa-exclamation-triangle"></i>

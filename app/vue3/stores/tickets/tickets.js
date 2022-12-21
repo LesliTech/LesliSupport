@@ -76,7 +76,7 @@ export const useTickets = defineStore("help.tickets", {
                 this.tickets = result.records
                 this.tickets.forEach((ticket)  =>{
                     if (ticket.deadline != null){
-                        ticket.deadline = new Date(ticket.deadline) 
+                        ticket.deadline = new Date(ticket.deadline)
                     }
                 })
             }).catch(error => {
@@ -208,7 +208,7 @@ export const useTickets = defineStore("help.tickets", {
                     })
                 }
 
-                this.ticket.deadline= dayjs(this.ticket.deadline).add(1,'day').format('YYYY-MM-DD') //Change date format to show in date selector
+                this.ticket.deadline= dayjs(this.ticket.deadline).format('YYYY-MM-DD') //Change date format to show in date selector
 
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
