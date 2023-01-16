@@ -70,9 +70,11 @@ module CloudHelp
         #     }
         def self.options(current_user, query)
 
-            options = current_user.account.roles.map {|role| {value: role.id, label: I18n.t("core.roles.column_enum_role_#{role.name}", default: role.name)} }
+            role_options = current_user.account.roles.map {|role| {value: role.id, label: I18n.t("core.roles.column_enum_role_#{role.name}", default: role.name)} }
 
-            options
+            return {
+                roles: role_options
+            }
         end
 
         def show(current_user, query)

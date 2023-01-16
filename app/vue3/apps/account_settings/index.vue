@@ -53,9 +53,9 @@ onMounted(() => {
 </script>
 <template>
     <section class="application-component">
-
         <lesli-header :title="translations.account.settings.view_title_account_settings"></lesli-header>
-        <settings-form></settings-form>
-
+        <div class="box">
+            <settings-form></settings-form>
+        </div>
     </section>
 </template>

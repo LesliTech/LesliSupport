@@ -38,7 +38,8 @@ const route = useRoute()
 // · 
 const translations = {
     core: I18n.t('core.shared'),
-    shared: I18n.t('help.shared')
+    shared: I18n.t('help.shared'),
+    settings: I18n.t('help.account/settings')
 }
 
 onMounted(() => {
@@ -55,33 +56,29 @@ onMounted(() => {
         <div class="columns">
             <div class="column">
                 <label class="label">
-                    Role assignment
+                    {{  translations.settings.column_setting_tickets_assignments_role }}
                 </label>
                 <div class="control">
                     <lesli-select
                         v-if="storeSettings.options"
                         :options="storeSettings.options"
-                        v-model="storeSettings.role_assignment.value"
+                        v-model="storeSettings.settings.role_assignment"
                     ></lesli-select>
+                    <p>{{ translations.settings.view_text_column_setting_tickets_assignments_role_description }}</p>
                 </div>
             </div>
 
         </div>
 
-
-        <div class="field is-horizontal is-expanded">
-            <div class="field-label is-normal">
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <lesli-button icon="save" :loading="storeSettings.loading">
-                            save
-                        </lesli-button>                 
-                    </div>
-                </div>
+        <div class="columns">
+            <div class="column">
+                <lesli-button icon="save" :loading="storeSettings.loading">
+                    {{ translations.core.view_btn_save }}
+                </lesli-button>   
             </div>
         </div>
+
+
     </form>
 
 </template>

@@ -32,39 +32,56 @@ export const useSettings = defineStore("help.account.settings", {
                 pagination: {},
                 records: []
             },
-            settings : {},
-            options : {},
-            role_assignment: {}
+            settings : {
+                role_assignment: null 
+            },
+            options : {}
         }
     },
     actions: {
-
+        /**
+        * @description This action is used to get the options for the settings
+        */
         getOptions(){
             this.loading = true
 
             this.http.get(this.url.help('settings/options')).then(result => {
-                this.options = result
+                this.options = result.roles
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
                 this.loading = false
             })
         },
-
+        /**
+        * @description This action is used to get the actual values for the account settings
+        */
         getSettings(){
             this.loading = true
             this.http.get(this.url.help('settings')).then(result => {
-                this.role_assignment = result
+                result.forEach((setting)=>{
+                    if (setting.key === "tickets_assignments_role"){
+                        this.settings.role_assignment = setting.value
+                    }
+                })
+                // this.settings.role_assignment = result[0].value
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
                 this.loading = false
             })
         },
-
+        /**
+        * @description This action is used to get the actual values for the account settings
+        */
         postSettings() {
             this.loading = true
-            this.http.post(this.url.help('settings'), { settings: this.role_assignment }).then(result => {
+            this.http.post(this.url.help('settings'), { 
+                settings: {  
+                    key: "tickets_assignments_role", 
+                    value: this.settings.role_assignment 
+                }
+            }).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
