@@ -40,16 +40,16 @@ module CloudHelp
 
         # POST /settings
         def create
-            if params[:settings].empty?
+            if account_settings_params.empty?
                 return respond_with_not_found
             end
 
-            params[:settings].each do |param|
-                setting = current_user.account.help.settings.find_by(key: param[:key])
+            account_settings_params.each do |param|
+                setting = current_user.account.help.settings.find_by(key: account_settings_params[:key])
                 if setting.present?
-                    setting.update(value: param[:value])
+                    setting.update(value: account_settings_params[:value])
                 else
-                    current_user.account.help.settings.create!(key: param[:key], value: param[:value])
+                    current_user.account.help.settings.create!(key:account_settings_params[:key], value: account_settings_params[:value])
                 end
             end
 
@@ -85,5 +85,11 @@ module CloudHelp
         def set_account_setting
             @setting = current_user.account.help.settings.find_by(id: params[:id])
         end
+
+
+        def account_settings_params
+            params.require(:settings).permit(:key, :value)
+        end
+
     end
 end

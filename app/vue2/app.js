@@ -23,7 +23,7 @@ import app from 'LesliVue/app2'
 // · Import apps and components
 
 // · Settings components
-import settingsList from './account_settings/apps/list.vue'
+// import settingsList from './account_settings/apps/list.vue'
 
 // · Dashboard components
 import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
@@ -82,10 +82,10 @@ import workflowsNew   from 'LesliVue/shared/workflows/apps/new.vue'
 
 // ·
 app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket_types|ticket_priorities|ticket_categories|tickets|slas]', [
-    {
-        path: '/settings',
-        component: settingsList
-    },
+    // {
+    //     path: '/settings',
+    //     component: settingsList
+    // },
     {
         path: '/',
         component: dashboardsShow,
