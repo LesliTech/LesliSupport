@@ -64,7 +64,6 @@ export const useSettings = defineStore("help.account.settings", {
                         this.settings.role_assignment = setting.value
                     }
                 })
-                // this.settings.role_assignment = result[0].value
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             }).finally(() => {
