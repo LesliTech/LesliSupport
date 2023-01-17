@@ -38,19 +38,7 @@ module CloudHelp
         #     This will return the following settings: 
         #         - tickets.assignments_role
         def self.index(current_user, query)
-            tickets_settings = [
-                "tickets_assignments_role"
-            ]
-            
-            query_filters = []
-
-            selected_settings = tickets_settings
-
-            selected_settings.map do |setting|
-                query_filters.push("key = '#{setting}'")
-            end
-
-            current_user.account.help.settings.where(query_filters.join(" or ")).order(:id)
+            return current_user.account.help.settings
         end
 
         # @return [Hash] A hash containing the options for all settings selected by the **query** param
