@@ -36,18 +36,18 @@ RSpec.describe 'GET:/help/settings.json', type: :request do
 
         # shared specs
         expect(@response_body_data).to be_a(Object)
-        expect(response_body["settings"].last).to be_a(Object)
+        expect(response_body.last).to be_a(Object)
 
-        expect(response_body["settings"].last).to have_key("id")
-        expect(response_body["settings"].last["id"]).to be_a(Integer)
+        expect(response_body.last).to have_key("id")
+        expect(response_body.last["id"]).to be_a(Integer)
 
-        expect(response_body["settings"].last).to have_key("key")
-        expect(response_body["settings"].last["key"]).to be_a(String)
-        expect(response_body["settings"].last["key"]).to be_eql(new_setting.key)
+        expect(response_body.last).to have_key("key")
+        expect(response_body.last["key"]).to be_a(String)
+        expect(response_body.last["key"]).to be_eql(new_setting.key)
 
-        expect(response_body["settings"].last).to have_key("value")
-        expect(response_body["settings"].last["value"]).to be_a(String)
-        expect(response_body["settings"].last["value"]).to be_eql(new_setting.value)
+        expect(response_body.last).to have_key("value")
+        expect(response_body.last["value"]).to be_a(String)
+        expect(response_body.last["value"]).to be_eql(new_setting.value)
 
     end
 end

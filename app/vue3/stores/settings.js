@@ -59,7 +59,7 @@ export const useSettings = defineStore("help.account.settings", {
         getSettings(){
             this.loading = true
             this.http.get(this.url.help('settings')).then(result => {
-                result.settings.forEach((setting)=>{
+                result.forEach((setting)=>{
                     if (setting.key === "tickets_assignments_role"){
                         this.settings.role_assignment = setting.value
                     }
