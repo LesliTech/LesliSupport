@@ -1,9 +1,8 @@
 <template>
-    <% if @tabs_granted["dashboard"] %>
-        <%= navigation_vue_item("/help") do %>
-            <i class="fas fa-tachometer-alt"></i>
-            <span><%= I18n.t("help.shared.sidebar_nav_dashboard") %>
-        <% end %>
+
+    <%= navigation_vue_item("/help") do %>
+        <i class="fas fa-tachometer-alt"></i>
+        <span><%= I18n.t("help.shared.sidebar_nav_dashboard") %>
     <% end %>
     <% if @tabs_granted["ticket_categories"] || @tabs_granted["ticket_priorities"] || @tabs_granted["ticket_sources"] || @tabs_granted["ticket_types"] || @tabs_granted["ticket_workspaces"] %>
         <b-menu-item>
