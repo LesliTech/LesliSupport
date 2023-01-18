@@ -145,23 +145,25 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
             }
         }
     },
+    // {
+    //     path: '/workflows',
+    //     component: workflowsList,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/workflows'
+    //     }
+    // },
+    // {
+    //     path: '/workflows/new',
+    //     component: workflowsNew,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/workflows'
+    //     }
+    // },
     {
-        path: '/workflows',
-        component: workflowsList,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/workflows'
-        }
-    },{
-        path: '/workflows/new',
-        component: workflowsNew,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/workflows'
-        }
-    },{
         path: '/workflows/:id',
         component: workflowsShow,
         props: {
