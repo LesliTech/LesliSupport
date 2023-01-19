@@ -40,7 +40,7 @@ module CloudHelp
         has_many :assignments, foreign_key: "cloud_help_tickets_id"
         has_many :histories,   foreign_key: "cloud_help_tickets_id"
 
-        before_validation :set_deadline, :set_type, :set_sla, :set_workflow, :set_workspace, on: :create
+        before_validation :set_deadline, :set_sla, :set_workflow, :set_workspace, on: :create
         after_update :after_update_actions
 
         # @return [Boolean] Whether this ticket was successfully saved or not. If it was not saved,
@@ -454,22 +454,6 @@ module CloudHelp
 
             if priority && priority.days_to_deadline
                 update!(deadline: LC::Date.now + priority.days_to_deadline.days)
-            else
-                update!(deadline: LC::Date.now + 2.weeks)
-            end
-        end
-        
-        # @return [void]
-        # @descriptions Sets a default ticket type for the ticket, if it is not set in the initial params
-        # @example
-        #     ticket = current_user.account.help.tickets.new(subject: "Ticket 1", category: "bug", user_creator: current_user)
-        #     ticket.save! # The set_type will trigger here as a before_validation function
-        #     puts ticket.type # This will print the first CloudHelp::Catalog::TicketType created
-        def set_type
-            return unless account 
-
-            if self.type.blank? && !self.account.ticket_types.first.nil?
-                self.type = self.account.ticket_types.first
             end
         end
 
