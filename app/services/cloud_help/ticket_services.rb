@@ -207,7 +207,9 @@ module CloudHelp
                     ", search_string: "%#{ActiveRecord::Base.sanitize_sql_like(search_string, " ")}%")
             end
 
-            tickets = tickets.order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
+            tickets = tickets.order("#{query[:order][:by]} #{query[:order][:dir]}")
+
+            #pp tickets
 
             tickets = tickets.map do |ticket|
                 ticket_attributes = ticket.attributes

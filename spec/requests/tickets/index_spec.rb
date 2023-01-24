@@ -20,9 +20,10 @@ RSpec.describe "GET:/help/tickets.json", type: :request, if: defined?(CloudHelp)
     include_context "request user authentication"
 
     it "is expected to get tickets" do
+
         new_ticket = create_ticket
 
-        get "/help/tickets.json"
+        get "/help/tickets.json?orderBy=id&order=desc&perPage=10000"
         
         # shared examples
         expect_response_with_pagination
@@ -30,16 +31,16 @@ RSpec.describe "GET:/help/tickets.json", type: :request, if: defined?(CloudHelp)
         # specific tests for the response
         expect(response_json).to be_a_kind_of(Hash)
         expect(response_json["records"]).to be_a_kind_of(Array)
-        expect(response_json["records"].last).to have_key("id")
-        expect(response_json["records"].last["id"]).to be > 0
-        expect(response_json["records"].last["id"]).to_not be(nil)
-        expect(response_json["records"].last["id"]).to be_a_kind_of(Integer)
-        expect(response_json["records"].last).to have_key('subject')
-        expect(response_json["records"].last['subject']).to_not be(nil)
-        expect(response_json["records"].last['subject']).to be_a_kind_of(String)
-        expect(response_json["records"].last).to have_key('deadline')
-        expect(response_json["records"].last['deadline']).to_not be(nil)
-        expect(response_json["records"].last['deadline']).to be_a_kind_of(String)
+        expect(response_json["records"].first).to have_key("id")
+        expect(response_json["records"].first["id"]).to be > 0
+        expect(response_json["records"].first["id"]).to_not be(nil)
+        expect(response_json["records"].first["id"]).to be_a_kind_of(Integer)
+        expect(response_json["records"].first).to have_key('subject')
+        expect(response_json["records"].first['subject']).to_not be(nil)
+        expect(response_json["records"].first['subject']).to be_a_kind_of(String)
+        expect(response_json["records"].first).to have_key('deadline')
+        expect(response_json["records"].first['deadline']).to_not be(nil)
+        expect(response_json["records"].first['deadline']).to be_a_kind_of(String)
         
     end
 end
