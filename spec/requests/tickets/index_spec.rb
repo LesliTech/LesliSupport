@@ -23,8 +23,6 @@ RSpec.describe "GET:/help/tickets.json", type: :request, if: defined?(CloudHelp)
         new_ticket = create_ticket
 
         get "/help/tickets.json"
-
-        puts response_json["records"].last
         
         # shared examples
         expect_response_with_pagination
