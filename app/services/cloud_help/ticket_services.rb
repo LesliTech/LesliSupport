@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2023, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -207,7 +207,7 @@ module CloudHelp
                     ", search_string: "%#{ActiveRecord::Base.sanitize_sql_like(search_string, " ")}%")
             end
 
-            tickets = tickets.order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
+            tickets = tickets.order("#{query[:order][:by]} #{query[:order][:dir]}")
 
             tickets = tickets.map do |ticket|
                 ticket_attributes = ticket.attributes
