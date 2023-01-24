@@ -1,5 +1,5 @@
 =begin
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2023, all rights reserved.
 
 All the information provided by this platform is protected by international laws related  to 
 industrial property, intellectual property, copyright and relative international laws. 
@@ -208,8 +208,6 @@ module CloudHelp
             end
 
             tickets = tickets.order("#{query[:order][:by]} #{query[:order][:dir]}")
-
-            #pp tickets
 
             tickets = tickets.map do |ticket|
                 ticket_attributes = ticket.attributes
