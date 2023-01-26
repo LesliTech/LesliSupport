@@ -50,6 +50,9 @@ import workspacesIndex from './apps/catalog/workspaces/index.vue'
 import workspacesShow from './apps/catalog/workspaces/show.vue'
 import workspacesNew from './apps/catalog/workspaces/new.vue'
 
+// · Account settings
+import settingsIndex from './apps/account_settings/index.vue'
+
 
 // ·
 app('CloudHelp', [
@@ -121,5 +124,9 @@ app('CloudHelp', [
         path: '/reports',
         component: reportsIndex
     },
+    {
+        path: '/settings',
+        component: settingsIndex
+    }
 
 ])

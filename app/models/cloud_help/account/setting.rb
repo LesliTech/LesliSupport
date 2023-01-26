@@ -38,21 +38,7 @@ module CloudHelp
         #     This will return the following settings: 
         #         - tickets.assignments_role
         def self.index(current_user, query)
-            tickets_settings = [
-                "tickets_assignments_role"
-            ]
-            
-            query_filters = []
-
-            if query[:filters][:tickets] == "true"
-                selected_settings = tickets_settings
-            end
-
-            selected_settings.map do |setting|
-                query_filters.push("key = '#{setting}'")
-            end
-
-            current_user.account.help.settings.where(query_filters.join(" or ")).order(:id)
+            return current_user.account.help.settings
         end
 
         # @return [Hash] A hash containing the options for all settings selected by the **query** param
@@ -71,14 +57,12 @@ module CloudHelp
         #         ]
         #     }
         def self.options(current_user, query)
-            options = {}
-            roles = current_user.account.roles.map {|role| {value: role.id, text: I18n.t("core.roles.column_enum_role_#{role.name}", default: role.name)} }
 
-            if query[:filters][:tickets] == "true"
-                options["tickets_assignments_role"] = {type: "Enum", values: roles}
-            end
+            role_options = current_user.account.roles.map {|role| {value: role.id, label: I18n.t("core.roles.column_enum_role_#{role.name}", default: role.name)} }
 
-            options
+            return {
+                roles: role_options
+            }
         end
 
         def show(current_user, query)
