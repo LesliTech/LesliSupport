@@ -1,9 +1,9 @@
 =begin
-Copyright (c) 2020, all rights reserved.
+Copyright (c) 2023, all rights reserved.
 
-All the information provided by this platform is protected by international laws related  to 
-industrial property, intellectual property, copyright and relative international laws. 
-All intellectual or industrial property rights of the code, texts, trade mark, design, 
+All the information provided by this platform is protected by international laws related  to
+industrial property, intellectual property, copyright and relative international laws.
+All intellectual or industrial property rights of the code, texts, trade mark, design,
 pictures and any other information belongs to the owner of this platform.
 
 Without the written permission of the owner, any replication, modification,
@@ -12,7 +12,7 @@ transmission, publication is strictly forbidden.
 For more information read the license file including with this software.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 
 =end
 module CloudHelp
@@ -45,8 +45,8 @@ module CloudHelp
 
         # @return [Boolean] Whether this ticket was successfully saved or not. If it was not saved,
         #     an error is added to the *ticket*'s *errors* attribute
-        # @description saves a ticket based on the params allowed by *CloudHelp::TicketsController*. 
-        #     If the ticket is new, creates an entry in the timeline. Also, depending on which 
+        # @description saves a ticket based on the params allowed by *CloudHelp::TicketsController*.
+        #     If the ticket is new, creates an entry in the timeline. Also, depending on which
         #     attributes where updated, notifications are sent and entries are added to the timeline
         # @example
         #     ticket_params = {
@@ -56,9 +56,9 @@ module CloudHelp
         #     }
         #     ticket = CloudHelp::Ticket.new(ticket_params)
         #     if ticket.save
-        #         responseWithSuccessful
+        #         respond_with_successful
         #     else
-        #         responseWithError(ticket.errors.full_messages.to_sentence)
+        #         respond_with_error(ticket.errors.full_messages.to_sentence)
         #     end
         def save
             if new_record?
@@ -180,7 +180,7 @@ module CloudHelp
                         text: "#{I18n.t("core.shared.column_enum_status_#{status.status_name}", default: status.status_name)} - (#{status.workflow_name})"
                     }
                 end
-                
+
                 ticket_options["statuses"] = statuses
             end
 
@@ -213,7 +213,7 @@ module CloudHelp
         # @return [void]
         # @param current_user [::User] The user that created the ticket
         # @param [CloudHelp::Ticket] The ticket that was created
-        # @description Creates an activity for this ticket indicating who created it. And 
+        # @description Creates an activity for this ticket indicating who created it. And
         #   also creates an activity with the initial status of the ticket
         # Example
         #   params = {...}
@@ -224,7 +224,7 @@ module CloudHelp
                 user_creator: current_user,
                 category: "action_create"
             )
-            
+
             ticket.activities.create(
                 user_creator: current_user,
                 category: "action_status",
@@ -281,11 +281,11 @@ module CloudHelp
                     if old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
                         old_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(old_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
                     end
-                    
+
                     if new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]
                         new_value = "CloudHelp::Catalog::#{field}".constantize.with_deleted.find(new_attributes["cloud_help_catalog_#{field.underscore.pluralize}_id"]).name
                     end
-                    
+
                     ticket.activities.create(
                         user_creator: current_user,
                         category: "action_update",
@@ -417,7 +417,7 @@ module CloudHelp
         #     If there is no assigment, returns a hash containing a "none" in the
         #     *assignment_type* attribute
         # @todo Implement support for *team* assigmation type
-        # @example 
+        # @example
         #     puts self.assignments_info
         #     #will print something similar to {
         #     #    assignable_name: "john.doe@email.com",
@@ -464,7 +464,7 @@ module CloudHelp
         #     ticket.save! # The set_sla will trigger here as a before_validation function
         #     puts ticket.sla # This will print either the default sla or the one associated with the ticket type
         def set_sla
-            return unless account 
+            return unless account
 
             slas = account.slas
 
@@ -475,7 +475,7 @@ module CloudHelp
             end
 
             selected_sla = slas.find_by(default: true) unless selected_sla
-            
+
             self.sla = selected_sla
         end
 
@@ -510,17 +510,17 @@ module CloudHelp
             if workflow_change
                 action_register_workflow_change(workflow_change[0], workflow_change[1])
             end
-            
+
             priority_change = saved_changes["cloud_help_catalog_ticket_priorities_id"]
             if priority_change
                 action_register_priority_change(priority_change[0], priority_change[1])
             end
-            
+
             type_change = saved_changes["cloud_help_catalog_ticket_types_id"]
             if type_change
                 action_register_type_change(type_change[0], type_change[1])
             end
-            
+
             category_change = saved_changes["cloud_help_catalog_ticket_categories_id"]
             if category_change
                 action_register_category_change(category_change[0], category_change[1])
@@ -537,7 +537,7 @@ module CloudHelp
         end
 
         # @return [void]
-        # @description If this ticket changes *status*, 
+        # @description If this ticket changes *status*,
         #     a new entry is recorded to the timeline and a notification is sent to
         #     the subscribers. Both the timeline entry and the notification change
         #     if the ticket changed to a *closed* status or not
@@ -555,8 +555,8 @@ module CloudHelp
         end
 
         # @return [void]
-        # @description If the type of this *ticket* is changed, 
-        #     a new entry is recorded to the timeline. Notifications are sent in 
+        # @description If the type of this *ticket* is changed,
+        #     a new entry is recorded to the timeline. Notifications are sent in
         #     the *action_assign_new_workflow* method.
         # @example
         #     ticket = CloudHelp::Ticket.first
@@ -566,7 +566,7 @@ module CloudHelp
             self.set_sla
             self.save!
             new_type = Catalog::TicketType.find(new_type)
-            
+
             # Adding type transfer to timeline
             timelines.create(
                 action: Ticket::Timeline.actions[:type_transferred],
@@ -575,8 +575,8 @@ module CloudHelp
         end
 
         # @return [void]
-        # @description If the category of this *ticket* is changed, 
-        #     a new entry is recorded to the timeline. Notifications are sent in 
+        # @description If the category of this *ticket* is changed,
+        #     a new entry is recorded to the timeline. Notifications are sent in
         #     the *action_assign_new_workflow* method.
         # @example
         #     ticket = CloudHelp::Ticket.first
@@ -584,7 +584,7 @@ module CloudHelp
         #     # the *after_update_actions* method will call this method after the update
         def action_register_category_change(old_category, new_category)
             new_category = Catalog::TicketCategory.find(new_category)
-            
+
             # Adding category transfer to timeline
             timelines.create(
                 action: Ticket::Timeline.actions[:category_transferred],
@@ -612,7 +612,7 @@ module CloudHelp
         end
 
         # @return [void]
-        # @description If this ticket's priority is changed, 
+        # @description If this ticket's priority is changed,
         #     a new entry is recorded to the timeline and a notification is sent to
         #     the subscribers. The messages change depending if the priority weight is
         #     increased or decreased
@@ -630,7 +630,7 @@ module CloudHelp
         end
 
         # @return [void]
-        # @description If this ticket's deadline is changed, 
+        # @description If this ticket's deadline is changed,
         #     a new entry is recorded to the timeline and a notification is sent to
         #     the subscribers. Also, an entry is recorded in the *CloudDriver* module, if it
         #     exists. If there is no user assigned, an error message is added to this
