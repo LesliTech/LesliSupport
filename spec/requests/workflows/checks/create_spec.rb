@@ -98,8 +98,10 @@ RSpec.describe "POST:/help/workflows/:id/checks.json", type: :request do
             name: Faker::Lorem.word,
             user_type: "custom",
             initial_status_id: new_workflow.statuses[0].id,
+            final_status_id: new_workflow.statuses[1].id,
             users_id: @current_user.id,
-            role_id: @current_user.roles.first.id
+            roles_id: @current_user.roles.first.id,
+            active: true
         }
 
         post("/help/workflows/#{new_workflow.id}/checks.json", params: {
