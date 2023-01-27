@@ -53,7 +53,7 @@ For more information read the license file including with this software.
             respond_to do |format|
                 format.html { }
                 format.json do
-                    respond_with_pagination(Ticket.index(current_user, @query, params))
+                    respond_with_pagination(Ticket.index(current_user, @query))
                 end
             end
         end

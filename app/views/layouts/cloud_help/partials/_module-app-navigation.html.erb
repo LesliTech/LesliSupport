@@ -4,7 +4,35 @@
         <i class="fas fa-tachometer-alt"></i>
         <span><%= I18n.t("help.shared.sidebar_nav_dashboard") %>
     <% end %>
-    <% if @tabs_granted["ticket_categories"] || @tabs_granted["ticket_priorities"] || @tabs_granted["ticket_sources"] || @tabs_granted["ticket_types"] || @tabs_granted["ticket_workspaces"] %>
+   
+    <% if @tabs_granted["tickets"]%>
+        <li>
+            <%= navigation_vue_item(cloud_help.tickets_path) do %>
+                <i class="fas fa-ticket-alt"></i>
+                <span><%= I18n.t("help.shared.sidebar_nav_tickets") %></span>
+            <% end %>
+        </li>
+    <% end %>
+    <% if @tabs_granted["slas"]%>
+        <li>
+            <%= navigation_vue_item(cloud_help.slas_path) do %>
+                <i class="fas fa-file-contract"></i>
+                <span><%= I18n.t("help.shared.sidebar_nav_slas") %></span>
+            <% end %>
+        </li>
+    <% end %>
+    <% if @tabs_granted["reports"]%>
+        <li>
+            <%= navigation_vue_item(cloud_help.reports_path) do %>
+                <i class="fas fa-file-excel"></i>
+                <span><%= I18n.t("help.shared.sidebar_nav_reports") %></span>
+            <% end %>
+        </li>
+    <% end %>
+</template>
+    
+<template v-slot:settings>
+ <% if @tabs_granted["ticket_categories"] || @tabs_granted["ticket_priorities"] || @tabs_granted["ticket_sources"] || @tabs_granted["ticket_types"] || @tabs_granted["ticket_workspaces"] %>
         <b-menu-item>
             <template slot="label" slot-scope="props">
                 <i class="fas fa-book-open"></i>
@@ -45,33 +73,6 @@
             <% end %>
         </b-menu-item>
     <% end %>
-    <% if @tabs_granted["tickets"]%>
-        <li>
-            <%= navigation_vue_item(cloud_help.tickets_path) do %>
-                <i class="fas fa-ticket-alt"></i>
-                <span><%= I18n.t("help.shared.sidebar_nav_tickets") %></span>
-            <% end %>
-        </li>
-    <% end %>
-    <% if @tabs_granted["slas"]%>
-        <li>
-            <%= navigation_vue_item(cloud_help.slas_path) do %>
-                <i class="fas fa-file-contract"></i>
-                <span><%= I18n.t("help.shared.sidebar_nav_slas") %></span>
-            <% end %>
-        </li>
-    <% end %>
-    <% if @tabs_granted["reports"]%>
-        <li>
-            <%= navigation_vue_item(cloud_help.reports_path) do %>
-                <i class="fas fa-file-excel"></i>
-                <span><%= I18n.t("help.shared.sidebar_nav_reports") %></span>
-            <% end %>
-        </li>
-    <% end %>
-</template>
-    
-<template v-slot:settings>
     <% if @tabs_granted["settings"]%>
         <li>
             <%= navigation_vue_item(cloud_help.settings_path) do %>
