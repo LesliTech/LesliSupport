@@ -38,6 +38,12 @@ RSpec.describe "PUT:/help/workflows/:workflow_id/checks/:check_id.json", type: :
                     name: "created",
                     status_type: "initial",
                     next_statuses: ""
+                },
+                {
+                    number: 2,
+                    name: "confirmed",
+                    status_type: "normal",
+                    next_statuses: ""
                 }
             ]
         } 
@@ -51,136 +57,59 @@ RSpec.describe "PUT:/help/workflows/:workflow_id/checks/:check_id.json", type: :
 
         check_params =  {
             name: Faker::Lorem.word,
-            user_type: "any",
-            initial_status_id: new_workflow.statuses[0].id
+            active: true,
+            user_type: ["any", "creator", "main"].sample,
+            initial_status_id: new_workflow.statuses[0].id,
+            final_status_id: new_workflow.statuses[1].id
         } 
         
-        check = CloudHelp::Workflow::Check.new(check_params)
+        check = CloudHelp::Workflow.find(new_workflow.id).checks.new(check_params)
         check.save!
         check
     end
 
-    it "is expected to update a the name of the workflow" do
-        new_workflow_params = {
-            name: Faker::Lorem.word
-        }
+    it "is expected to update check info" do
 
-        put("/help/workflows/#{new_workflow.id}/checks/#{new_check_id}.json", params: {
-            workflow: new_workflow_params
-        })
-
-        expect_response_with_successful
-
-        # shared_expects validates the response body with the given arguments
-        shared_expects(response_body, new_workflow_params, [
-            { key: "id", expected_type: "integer" },
-            { key: "name", expected_type: "string", expected_value: new_workflow_params[:name] },
-            { key: "default", expected_type: "boolean" },
-            { key: "created_at", expected_type: "string" },
-            { key: "updated_at", expected_type: "string" }
-        ])
-    end
-
-    it "is expected to update a the name of the workflow and statuses" do
-        new_workflow_params = {
+        new_check_params = {
             name: Faker::Lorem.word,
-            statuses_attributes: [
-                {
-                    number: 1,
-                    name: Faker::Lorem.word,
-                    status_type: "initial",
-                    next_statuses: ""
-                }, {
-                    number: 2,
-                    name: Faker::Lorem.word,
-                    status_type: "normal",
-                    next_statuses: ""
-                }
-            ]
+            active: true,
+            user_type: ["any", "creator", "main"].sample,
+            initial_status_id: new_workflow.statuses[0].id,
+            final_status_id: new_workflow.statuses[1].id
         }
 
-        put("/help/workflows/#{new_workflow.id}.json", params: {
-            workflow: new_workflow_params
+        put("/help/workflows/#{new_workflow.id}/checks/#{new_check.id}.json", params: {
+            workflow_check: new_check_params
         })
 
+        puts response_body
         expect_response_with_successful
 
         # shared_expects validates the response body with the given arguments
-        shared_expects(response_body, new_workflow_params, [
+        shared_expects(response_body, new_check_params, [
             { key: "id", expected_type: "integer" },
-            { key: "name", expected_type: "string", expected_value: new_workflow_params[:name] },
-            { key: "default", expected_type: "boolean" },
+            { key: "active", expected_type: "boolean", expected_value: new_check_params[:active] },
+            { key: "name", expected_type: "string", expected_value: new_check_params[:name] },
+            { key: "initial_status_id", expected_type: "integer", expected_value: new_check_params[:initial_status_id] },
+            { key: "final_status_id", expected_type: "integer", expected_value: new_check_params[:final_status_id] },
+            { key: "user_type", expected_type: "string", expected_value: new_check_params[:user_type] },
             { key: "created_at", expected_type: "string" },
-            { key: "updated_at", expected_type: "string" }
+            { key: "updated_at", expected_type: "string" },
+            { key: "cloud_help_workflows_id", expected_type: "integer", expected_value: new_workflow.id }
         ])
     end
-
-    it "is expected to delete a status" do
-        new_workflow_params = {
-            statuses_attributes: [
-                {
-                    number: 1,
-                    name: "confirmed",
-                    status_type: "initial",
-                    next_statuses: "",
-                    destroy: true
-                }
-            ]
-        }
-
-        put("/help/workflows/#{new_workflow.id}.json", params: {
-            workflow: new_workflow_params
-        })
-
-        expect_response_with_successful
-
-        # shared_expects validates the response body with the given arguments
-        shared_expects(response_body, new_workflow_params, [
-            { key: "id", expected_type: "integer" },
-            { key: "name", expected_type: "string", expected_value: new_workflow_params[:name] },
-            { key: "default", expected_type: "boolean" },
-            { key: "created_at", expected_type: "string" },
-            { key: "updated_at", expected_type: "string" }
-        ])
-    end
-
-    it "is expected to change the type of a status" do
-        new_workflow_params = {
-            statuses_attributes: [
-                {
-                    number: 1,
-                    name: "confirmed",
-                    status_type: "normal",
-                    next_statuses: "",
-                    destroy: true
-                }
-            ]
-        }
-
-        put("/help/workflows/#{new_workflow.id}.json", params: {
-            workflow: new_workflow_params
-        })
-
-        expect_response_with_successful
-
-        # shared_expects validates the response body with the given arguments
-        shared_expects(response_body, new_workflow_params, [
-            { key: "id", expected_type: "integer" },
-            { key: "name", expected_type: "string", expected_value: new_workflow_params[:name] },
-            { key: "default", expected_type: "boolean" },
-            { key: "created_at", expected_type: "string" },
-            { key: "updated_at", expected_type: "string" }
-        ])
-    end
-
 
     it "is expected to respond with not found if id is not valid" do
-        new_workflow_params = {
-            name: Faker::Lorem.word
+        new_check_params = {
+            name: Faker::Lorem.word,
+            active: true,
+            user_type: ["any", "creator", "main"].sample,
+            initial_status_id: new_workflow.statuses[0].id,
+            final_status_id: new_workflow.statuses[1].id
         }
 
-        put("/help/workflows/#{new_workflow.id + 1}.json", params: {
-            workflow: new_workflow_params
+        put("/help/workflows/#{new_workflow.id}/checks/#{new_check.id + 1 }.json", params: {
+            workflow_check: new_check_params
         })
 
         expect_response_with_not_found
@@ -188,10 +117,10 @@ RSpec.describe "PUT:/help/workflows/:workflow_id/checks/:check_id.json", type: :
     end
 
     it "is expected to respond with not error if params are empty" do
-        new_workflow_params = {}
+        new_check_params = {}
 
-        put("/help/workflows/#{new_workflow.id}.json", params: {
-            workflow: new_workflow_params
+        put("/help/workflows/#{new_workflow.id}/checks/#{new_check.id}.json", params: {
+            workflow_check: new_check_params
         })
 
         expect_response_with_error

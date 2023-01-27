@@ -17,11 +17,13 @@ For more information read the license file including with this software.
 
 =end
 
+
 require "lesli_request_helper"
 
-RSpec.describe 'GET:/help/workflows.json', type: :request do
-    include_context "request user authentication"
 
+RSpec.describe "DEL:/help/workflows/:id.json", type: :request do
+    include_context "request user authentication"
+    # test cases
     let!(:new_workflow) do
 
         workflow_params =  {
@@ -67,50 +69,22 @@ RSpec.describe 'GET:/help/workflows.json', type: :request do
         check
     end
 
-    it 'is expected to respond with all the workflows' do
-        get "/help/workflows/#{new_workflow.id}/checks.json"
-        
+    it "is expected that the record has been removed from the database" do
+
+        delete("/help/workflows/#{new_workflow.id}/checks/#{new_check.id}.json")
+
         # shared examples
         expect_response_with_successful
-
-        # shared specs
-        expect(@response_body_data).to be_a(Object)
-        expect(response_body[0]).to be_a(Object)
-
-        expect(response_body[0]).to have_key("id")
-        expect(response_body[0]["id"]).to be_a(Integer)
-
-        expect(response_body[0]).to have_key("name")
-        expect(response_body[0]["name"]).to be_a(String)
-        expect(response_body[0]["name"]).to be_eql(new_check.name)
-
-        expect(response_body[0]).to have_key("user_type")
-        expect(response_body[0]["user_type"]).to be_a(String)
-        expect(response_body[0]["user_type"]).to be_eql(new_check.user_type)
-
-        expect(response_body[0]).to have_key("initial_status_name")
-        expect(response_body[0]["initial_status_name"]).to be_a(String)
-
-        expect(response_body[0]).to have_key("final_status_name")
-        expect(response_body[0]["final_status_name"]).to be_a(String)
-
-        expect(response_body[0]).to have_key("active")
-        expect(response_body[0]["active"]).to be_in([true, false])
-        expect(response_body[0]["active"]).to be_eql(new_check.active)
-
-        expect(response_body[0]).to have_key("role_id")
-        expect(response_body[0]["role_id"]).to be_a(Integer)
-        expect(response_body[0]["role_id"]).to be_eql(new_check.roles_id)
-
-        expect(response_body[0]).to have_key("user_id")
-        expect(response_body[0]["user_id"]).to be_a(Integer)
-        expect(response_body[0]["user_id"]).to be_eql(new_check.users_id)
-
-        expect(response_body[0]).to have_key("role_name")
-        expect(response_body[0]["role_name"]).to be_a(String)
-
-        expect(response_body[0]).to have_key("user_name")
-        expect(response_body[0]["user_name"]).to be_a(String)
-
     end
+
+    it "is expected to respond with not found when an invalid ID is sent" do
+        # this ID does not exist, so should return with not found
+        invalid_id = new_check.id + 1
+
+        delete("/help/workflows/#{new_workflow.id}/checks/#{invalid_id}.json")
+        
+        # shared examples
+        expect_response_with_not_found
+    end
+
 end
