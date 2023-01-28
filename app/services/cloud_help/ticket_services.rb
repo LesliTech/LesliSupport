@@ -105,13 +105,14 @@ module CloudHelp
             return LC::Response.service(true, data)
         end
 
-        def self.index(current_user, query, params)
+        def self.index(current_user, query)
 
             # get search string from query params
             search_string = query[:search].downcase.gsub(" ","%") unless query[:search].blank?
 
+            filters = query[:filters]
+
             # Parsing filters
-            filters = params[:f]
             filters_query = []
 
             unless filters.blank?
@@ -207,7 +208,7 @@ module CloudHelp
                     ", search_string: "%#{ActiveRecord::Base.sanitize_sql_like(search_string, " ")}%")
             end
 
-            tickets = tickets.order("#{query[:order][:by]} #{query[:order][:dir]}")
+            tickets = tickets.order(ActiveRecord::Base.sanitize_sql_for_order("#{query[:order][:by]} #{query[:order][:dir]}"))
 
             tickets = tickets.map do |ticket|
                 ticket_attributes = ticket.attributes
