@@ -45,8 +45,8 @@ module CloudHelp
 
             workspaces = workspaces.page(query[:pagination][:page])
             .per(query[:pagination][:perPage])
-            .order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]} NULLS LAST")
-
+            .order(ActiveRecord::Base.sanitize_sql_for_order("#{query[:order][:by]} #{query[:order][:dir]}"))
+            
             workspaces
         end
 

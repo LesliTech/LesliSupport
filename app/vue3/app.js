@@ -53,6 +53,11 @@ import workspacesNew from './apps/catalog/workspaces/new.vue'
 // · Account settings
 import settingsIndex from './apps/account_settings/index.vue'
 
+// · Workflows
+import workflowsIndex from 'LesliVue/shared/workflows/apps/index.vue'
+import workflowsNew from 'LesliVue/shared/workflows/apps/new.vue'
+import workflowsShow from 'LesliVue/shared/workflows/apps/show.vue'
+
 
 // ·
 app('CloudHelp', [
@@ -127,6 +132,33 @@ app('CloudHelp', [
     {
         path: '/settings',
         component: settingsIndex
-    }
+    },
+    {
+        path: '/workflows',
+        component: workflowsIndex,
+        props: {
+            cloudModule: 'help',
+            cloudObject: 'workflows',
+            appMountPath: 'help/workflows'
+        }
+    },
+    {
+        path: '/workflows/new',
+        component: workflowsNew,
+        props: {
+            cloudModule: 'help',
+            cloudObject: 'workflows',
+            appMountPath: 'help/workflows'
+        }
+    },
+    {
+        path: '/workflows/:id',
+        component: workflowsShow,
+        props: {
+            cloudModule: 'help',
+            cloudObject: 'workflows',
+            appMountPath: 'help/workflows'
+        }
+    },
 
 ])

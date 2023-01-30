@@ -42,8 +42,8 @@ module CloudHelp
             # Adding pagination to ticket_priorities
             ticket_types = ticket_types.page(query[:pagination][:page])
             .per(query[:pagination][:perPage])
-            .order("#{query[:pagination][:orderBy]} #{query[:pagination][:order]}")
-
+            .order(ActiveRecord::Base.sanitize_sql_for_order("#{query[:order][:by]} #{query[:order][:dir]}"))
+            
             # Selecting columns 
             ticket_types = ticket_types.select(
                 :id,
