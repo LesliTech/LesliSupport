@@ -37,7 +37,6 @@ RSpec.describe "PUT:/help/tickets/:id", type: :request, if: defined?(CloudHelp) 
 
         put("/help/tickets/#{new_ticket.id}.json", params: { ticket: ticket_params}  )
 
-        puts response_body
         # shared examples
         expect_response_with_successful
 
