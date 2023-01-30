@@ -20,8 +20,8 @@ FactoryBot.define do
     factory :cloud_help_ticket, class: "CloudHelp::Ticket" do
         subject { Faker::Lorem.word }
         description { Faker::Lorem.sentence }
-        deadline { Faker::Time.forward(days: 1) }
-        tags { "#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word}" }
+        deadline { LC::Date2.new }
+        tags { "#{Faker::Lorem.word}, #{Faker::Lorem.word}, #{Faker::Lorem.word}, #{Faker::Lorem.word}" }
         reference_url { Faker::Internet.url }
         hours_worked { rand(1...12) }
 
