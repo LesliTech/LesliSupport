@@ -22,16 +22,6 @@ module CloudHelp
     class Catalog::TicketCategoriesController < ApplicationLesliController
         before_action :set_ticket_category, only: [:update, :destroy]
 
-        def privileges
-            {
-                new: [],
-                edit: [],
-                show: [],
-                index: [],
-                destroy: []
-            }
-        end
-
 =begin
 @return [HTML|JSON] HTML view for listing all ticket categories or a Json that contains a list of all ticket categories 
     associated to this *account*
