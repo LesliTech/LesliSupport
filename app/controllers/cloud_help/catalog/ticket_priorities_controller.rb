@@ -24,16 +24,6 @@ module CloudHelp
     class Catalog::TicketPrioritiesController < ApplicationLesliController
         before_action :set_ticket_priority, only: [:update, :destroy]
 
-        def privileges
-            {
-                new: [],
-                edit: [],
-                show: [],
-                index: [],
-                destroy: []
-            }
-        end
-
 =begin
 @return [HTML|JSON] HTML view for listing all ticket priorities or a Json that contains a list 
     of all ticket priorities associated to this *account*

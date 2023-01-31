@@ -20,14 +20,5 @@ For more information read the license file including with this software.
 
 =end
     class Ticket::FilesController < CloudObject::FilesController
-
-        def privileges
-            {
-                new: [],
-                destroy: [],
-                index: []
-            }
-        end
-
     end
 end
