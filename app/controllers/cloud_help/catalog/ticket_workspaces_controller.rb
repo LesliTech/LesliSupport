@@ -21,16 +21,6 @@ module CloudHelp
     class Catalog::TicketWorkspacesController < ApplicationController
         before_action :set_workspace, only: [:show, :update, :destroy]
 
-        def privileges
-            {
-                new: [],
-                edit: [],
-                show: [],
-                index: [],
-                destroy: []
-            }
-        end
-
         # GET /catalog/workspaces
         def index
             respond_to do |format|
