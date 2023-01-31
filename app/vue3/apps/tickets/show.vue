@@ -106,7 +106,7 @@ const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.
                     cloud-module="help" 
                     cloud-object="tickets" 
                     :cloud-object-id="storeTickets.ticket.id"
-                    :onlyDiscussions="true"
+                    :onlyDiscussions="false"
                 >
                 </component-discussions>
             </lesli-tab-item>
