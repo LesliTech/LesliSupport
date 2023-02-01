@@ -20,7 +20,7 @@ For more information read the license file including with this software.
 require "lesli_request_helper"
 
 
-RSpec.describe "DEL:/help/tickets/:id", type: :request, if: defined?(CloudHelp) do
+RSpec.describe "DEL:/help/tickets/:id", type: :request do
 
     let(:create_ticket) { FactoryBot.create(:cloud_help_ticket )}
 
