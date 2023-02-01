@@ -43,31 +43,31 @@ For more information read the license file including with this software.
 %>
 
 <% if @tabs_granted["dashboard"] %>
-    <%= navigation_lesli_item("/help", I18n.t("help.shared.sidebar_nav_dashboard"), "ri-dashboard-3-line", reload:true) %>
+    <%= navigation_lesli_item("/help", I18n.t("help.shared.sidebar_nav_dashboard"), "ri-dashboard-3-line") %>
 <% end %>
 
 <% if @tabs_granted["tickets"]%>
-    <%= navigation_lesli_item(cloud_help.tickets_path, I18n.t("help.shared.sidebar_nav_tickets"), "ri-todo-line", reload:true) %>
+    <%= navigation_lesli_item(cloud_help.tickets_path, I18n.t("help.shared.sidebar_nav_tickets"), "ri-todo-line") %>
 <% end %>
 <% if @tabs_granted["slas"]%>
-    <%= navigation_lesli_item(cloud_help.slas_path, I18n.t("help.shared.sidebar_nav_slas"), "ri-file-paper-2-line", reload:true) %>
+    <%= navigation_lesli_item(cloud_help.slas_path, I18n.t("help.shared.sidebar_nav_slas"), "ri-file-paper-2-line") %>
 <% end %>
 <% if @tabs_granted["reports"]%>
-    <%= navigation_lesli_item(cloud_help.reports_path, I18n.t("help.shared.sidebar_nav_reports"), "ri-file-chart-line", reload:true) %>
+    <%= navigation_lesli_item(cloud_help.reports_path, I18n.t("help.shared.sidebar_nav_reports"), "ri-file-chart-line") %>
 <% end %>
 
 <template #settings>
     <% if @tabs_granted["settings"] || @tabs_granted["workflows"] || @tabs_granted["dashboards"] %>
-        <%= navigation_lesli_item(cloud_help.settings_path, I18n.t("help.shared.sidebar_nav_account_settings"), "ri-file-settings-line", reload:true); %>
-        <%= navigation_lesli_item(cloud_help.workflows_path, I18n.t("help.shared.sidebar_nav_workflows"), "ri-node-tree", reload:true); %>
-        <%= navigation_lesli_item(cloud_help.dashboards_path, I18n.t("help.shared.sidebar_nav_dashboards"), "ri-dashboard-line", reload:true); %>
+        <%= navigation_lesli_item(cloud_help.settings_path, I18n.t("help.shared.sidebar_nav_account_settings"), "ri-file-settings-line"); %>
+        <%= navigation_lesli_item(cloud_help.workflows_path, I18n.t("help.shared.sidebar_nav_workflows"), "ri-node-tree"); %>
+        <%= navigation_lesli_item(cloud_help.dashboards_path, I18n.t("help.shared.sidebar_nav_dashboards"), "ri-dashboard-line"); %>
         
         <p class="menu-label">
             <%=I18n.t("help.shared.sidebar_nav_catalog") %>
-            <%= navigation_lesli_item(cloud_help.ticket_priorities_path, I18n.t("help.shared.sidebar_nav_ticket_priorities"), "ri-error-warning-line", reload:true) %>
-            <%= navigation_lesli_item(cloud_help.ticket_types_path, I18n.t("help.shared.sidebar_nav_ticket_types"), "ri-bookmark-fill", reload:true) %>
-            <%= navigation_lesli_item(cloud_help.ticket_workspaces_path, I18n.t("help.shared.sidebar_nav_ticket_workspaces"), "ri-dashboard-line", reload:true) %>
-            <%= navigation_lesli_item(cloud_help.ticket_categories_path, I18n.t("help.shared.sidebar_nav_ticket_categories"), "ri-list-unordered", reload:true) %>
+            <%= navigation_lesli_item(cloud_help.ticket_priorities_path, I18n.t("help.shared.sidebar_nav_ticket_priorities"), "ri-error-warning-line") %>
+            <%= navigation_lesli_item(cloud_help.ticket_types_path, I18n.t("help.shared.sidebar_nav_ticket_types"), "ri-bookmark-fill") %>
+            <%= navigation_lesli_item(cloud_help.ticket_workspaces_path, I18n.t("help.shared.sidebar_nav_ticket_workspaces"), "ri-dashboard-line") %>
+            <%= navigation_lesli_item(cloud_help.ticket_categories_path, I18n.t("help.shared.sidebar_nav_ticket_categories"), "ri-list-unordered") %>
         </p>
 
     <% end %>
