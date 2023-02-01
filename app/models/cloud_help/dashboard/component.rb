@@ -21,9 +21,9 @@ module CloudHelp
         belongs_to :dashboard, inverse_of: :components, class_name: "Dashboard", foreign_key: "cloud_help_dashboards_id"
 
         enum component_ids: {
-            new_tickets: "new_tickets",
-            my_tickets: "my_tickets",
-            unassigned_tickets: "unassigned_tickets",
+            list_new_tickets: "list_new_tickets",
+            list_my_tickets: "list_my_tickets",
+            list_unassigned_tickets: "list_unassigned_tickets",
             tickets_by_type: "tickets_by_type",
             tickets_by_category: "tickets_by_category",
             hours_worked: "hours_worked"
@@ -41,9 +41,9 @@ module CloudHelp
             ]
             
             {
-                new_tickets: list_configuration,
+                list_new_tickets: list_configuration,
                 my_tickets: list_configuration,
-                unassigned_tickets: list_configuration,
+                list_unassigned_tickets: list_configuration,
                 hours_worked: chart_configuration,
                 tickets_by_type: [],
                 tickets_by_category: []
@@ -96,7 +96,8 @@ module CloudHelp
             format_hours_worked_component(datetime_start, datetime_end, data)
         end
 
-        def new_tickets(current_user, query)
+        def list_new_tickets(current_user, query)
+            L2.info "list_new_tickets"
             configuration = parse_configuration()
             unless current_user.has_privileges?(["cloud_help/tickets"], ["index"])
                 return nil
@@ -124,10 +125,11 @@ module CloudHelp
             end
         end
 
-        def my_tickets(current_user, query)
+        def list_my_tickets(current_user, query)
+
             configuration = parse_configuration()
             unless current_user.has_privileges?(["cloud_help/tickets"], ["index"])
-                return nil
+                return []
             end
 
             data = Ticket
@@ -144,16 +146,9 @@ module CloudHelp
                 "cloud_help_workflow_statuses.name as status_name",
                 "CONCAT('/help/tickets/', cloud_help_tickets.id) as url"
             )
-
-            data.map do |ticket|
-                ticket_attributes = ticket.attributes
-                ticket_attributes["deadline_raw"] = ticket.deadline
-                ticket_attributes["deadline"] = LC::Date.to_string(ticket.deadline)
-                ticket_attributes
-            end
         end
 
-        def unassigned_tickets(current_user, query)
+        def list_unassigned_tickets(current_user, query)
             configuration = parse_configuration()
             unless current_user.has_privileges?(["cloud_help/tickets"], ["index"])
                 return nil
