@@ -21,12 +21,6 @@ module CloudHelp
     class ReportsController < ApplicationLesliController
         helper WickedPdf::WickedPdfHelper::Assets
 
-        def privileges
-            {
-                index: []
-            }
-        end
-
         def index
         end
 

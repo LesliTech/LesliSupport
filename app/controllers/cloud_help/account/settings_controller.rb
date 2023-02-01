@@ -20,14 +20,6 @@ module CloudHelp
     class Account::SettingsController < ApplicationLesliController
         before_action :set_account_setting, only: [:destroy]
 
-        def privileges
-            {
-                new: [],
-                index: ["options"],
-                destroy: []
-            }
-        end
-
         # GET /settings
         def index
             respond_to do |format|
