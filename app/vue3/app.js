@@ -19,52 +19,76 @@ For more information read the license file including with this software.
 // · Import main app
 import app from "LesliVue/app"
 
-// · Import apps and components
-// import appDashboard from "LesliVue/cloud-objects/dashboards/apps/show.vue"
 
-// // · Tickets components
+// · Import apps and components
+import appShowDashboard from "LesliVue/shared/dashboards/apps/show.vue"
+
+
+// · Tickets components
 import ticketsIndex from './apps/tickets/index.vue'
 import ticketsNew from './apps/tickets/new.vue'
 import ticketsShow from './apps/tickets/show.vue'
 
-// // SLAs components
+
+// · SLAs components
 import slasIndex from './apps/sla/index.vue'
 import slaNew from './apps/sla/new.vue'
 import slaShow from './apps/sla/show.vue'
 
-// // · Reports components
+
+// · Reports components
 import reportsIndex from './apps/reports/index.vue'
+
 
 // · Ticket priorities components
 import prioritiesIndex from './apps/catalog/priorities/index.vue'
 import prioritiesShow from './apps/catalog/priorities/show.vue'
 import prioritiesNew from './apps/catalog/priorities/new.vue'
 
+
 // · Ticket types components
 import typesIndex from './apps/catalog/types/index.vue'
 import typesShow from './apps/catalog/types/show.vue'
 import typesNew from './apps/catalog/types/new.vue'
+
 
 // · Ticket workspaces components
 import workspacesIndex from './apps/catalog/workspaces/index.vue'
 import workspacesShow from './apps/catalog/workspaces/show.vue'
 import workspacesNew from './apps/catalog/workspaces/new.vue'
 
+
 // · Account settings
 import settingsIndex from './apps/account_settings/index.vue'
+
 
 // · Workflows
 import workflowsIndex from 'LesliVue/shared/workflows/apps/index.vue'
 import workflowsNew from 'LesliVue/shared/workflows/apps/new.vue'
 import workflowsShow from 'LesliVue/shared/workflows/apps/show.vue'
 
+// · 
+import componentListMyTickets from "CloudHelp/apps/dashboards/components/list-my-tickets.vue"
+import componentListNewTickets from "CloudHelp/apps/dashboards/components/list-new-tickets.vue"
+import componentListUnassignedTickets from "CloudHelp/apps/dashboards/components/list-unassigned-tickets.vue"
+
 
 // ·
 app('CloudHelp', [
-    // {
-    //     path: '/',
-    //     component: appDashboard
-    // },
+    {
+        path: '/',
+        component: appShowDashboard,
+        props: {
+            cloudModule: "help",
+            renderComponents: {
+                "chart-tickets-by-type": componentListMyTickets,
+                "chart-tickets-by-category": componentListMyTickets,
+                "list-my-tickets": componentListMyTickets,
+                "list-new-tickets": componentListNewTickets,
+                "list-unassigned-tickets": componentListUnassignedTickets
+            }
+        }
+    },
     {
         path: '/catalog/ticket_priorities',
         component: prioritiesIndex

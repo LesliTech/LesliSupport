@@ -21,7 +21,7 @@ FactoryBot.define do
         subject { Faker::Lorem.word }
         description { Faker::Lorem.sentence }
         deadline { Faker::Time.forward(days: 1) }
-        tags { "#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word}" }
+        tags { "#{Faker::Lorem.word}, #{Faker::Lorem.word}, #{Faker::Lorem.word}, #{Faker::Lorem.word}" }
         reference_url { Faker::Internet.url }
         hours_worked { rand(1...12) }
 
