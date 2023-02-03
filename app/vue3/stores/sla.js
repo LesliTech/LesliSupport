@@ -46,7 +46,8 @@ export const useSlas = defineStore("help.sla", {
             this.loading = true
             this.http.get(this.url.help('slas').paginate(this.pagination.page)).then(result => {
                 this.loading = false
-                this.slas = result
+                this.index = result
+                this.slas = result.records
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })

@@ -37,7 +37,8 @@ module CloudHelp
                 format.html { }
                 format.json do
                     slas = Sla.index(current_user, @query)
-                    respond_with_successful(slas) 
+                    respond_with_pagination(Sla.index(current_user, @query))
+                    # respond_with_successful(slas) 
                 end
             end
         end
