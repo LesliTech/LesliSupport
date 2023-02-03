@@ -169,13 +169,9 @@ For more information read the license file including with this software.
 
             # Adding pagination to slas
             pagination = query[:pagination]
-            slas = slas.page(
-                pagination[:page]
-            ).per(
-                pagination[:perPage]
-            ).order(
-                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
-            )
+            slas = slas.page(pagination[:page])
+            .per(pagination[:perPage])
+            .order(ActiveRecord::Base.sanitize_sql_for_order("#{query[:order][:by]} #{query[:order][:dir]}"))
 
             # We format the response
             response = slas.map do |sla|

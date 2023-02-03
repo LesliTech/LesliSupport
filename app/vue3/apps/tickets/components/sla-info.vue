@@ -39,14 +39,11 @@ const translations = {
     sla: I18n.t('help.slas')
 }
 
-onMounted(() => {
-    storeTickets.fetchTicket(route.params.id)
-})
 
 </script>
 <template>
     <h2>SLA</h2>
-    <div class="box">
+    <div class="box" v-if="!storeTickets.loading">
         <div class="columns">
             <div class="column">
                 <label>{{translations.sla.column_name}}</label>

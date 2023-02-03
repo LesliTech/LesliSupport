@@ -23,7 +23,7 @@ import { useRouter, useRoute } from 'vue-router'
 
 // . import components
 import slaForm from './components/sla-form.vue'
-// import internalComments from './components/internal-comments.vue'
+import associations from './components/associations.vue'
 
 import ComponentDiscussions from "LesliVue/cloud-objects/discussion.vue"
 import ComponentFiles from "LesliVue/cloud-objects/file.vue"
@@ -52,6 +52,11 @@ const translations = {
 const onUpdatedStatus = () => {
     storeSla.fetchSla(route.params.id)
 }
+
+// · initializing
+onMounted(() => {
+    storeSla.getAssociationsOptions()
+})
 
 </script>
 <template>
@@ -89,6 +94,9 @@ const onUpdatedStatus = () => {
                     :accepted-files="['images', 'documents', 'plaintext']"
                 ></component-files>
 
+            </lesli-tab-item>
+            <lesli-tab-item :title="translations.main.view_tab_title_associations" icon="settings">
+                <associations></associations>
             </lesli-tab-item>
 
         </lesli-tabs>

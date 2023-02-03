@@ -17,16 +17,19 @@ For more information read the license file including with this software.
 
 =end
 
-ticket = CloudHelp::Ticket.new({
-    subject: Faker::Lorem.word,
-    description: Faker::Lorem.paragraph,
-    deadline: Time.now,
-    tags: "#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word}",
-    reference_url: Faker::Internet.url
-})
+10.times do 
+    ticket = ::User.first.account.help.tickets.new({
+        subject: Faker::Lorem.word,
+        description: Faker::Lorem.paragraph,
+        deadline: 10.days.from_now,
+        tags: "#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word},#{Faker::Lorem.word}",
+        reference_url: Faker::Internet.url
+    })
+    
+    ticket.user_creator = ::User.first
+    
+    ticket.save!
+end
 
-ticket.source = Catalog::TicketSource.cloud_help_source(::User.first.account.help)
-ticket.user_creator = ::User.first
-
-
+LC::Debug.msg("Help tickets seeders created")
 
