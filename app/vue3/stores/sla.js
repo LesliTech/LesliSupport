@@ -126,6 +126,7 @@ export const useSlas = defineStore("help.sla", {
             }
             this.http.post(url, data).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
+                this.associations.push(result)
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
@@ -135,10 +136,17 @@ export const useSlas = defineStore("help.sla", {
         * @description This action is used to delete an association
         * @param {String} association_id The id of the association that is being deleted
         */
-        deleteAssociation(association_id){
-            let url = this.url.help(`slas/:sla_id/associations/:id`, {sla_id: this.sla.id, id: association_id})
+        deleteAssociation(type_id){
+            let association_deleted = this.associations.find( type =>
+                type_id == type.cloud_help_catalog_ticket_types_id
+            )
+
+            let url = this.url.help(`slas/:sla_id/associations/:id`, {sla_id: this.sla.id, id: association_deleted.id})
             this.http.delete(url).then(result => {
                 this.msg.success(I18n.t("core.users.messages_success_operation"))
+                this.associations = this.associations.filter((association) =>{
+                    return association.id !== association_deleted.id
+                })
             }).catch(error => {
                 this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
             })
