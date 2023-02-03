@@ -63,8 +63,9 @@ const onUpdate = () => {
  * @description This function is used to create a new sla
  */
 const onCreate = () => {
-    storeSla.postSla()
-    router.push(url.help('slas').toString())
+    storeSla.postSla().then(()=>{
+        router.push(url.help('slas').s)
+    })
 }
 
 /**

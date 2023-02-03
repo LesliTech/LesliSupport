@@ -220,7 +220,7 @@ export const useTickets = defineStore("help.tickets", {
         /**
          * @description This action is used to delete a ticket
          */
-        deleteTicket(){
+        async deleteTicket(){
             this.dialog
                 .confirmation({
                     title: "Delete ticket",
@@ -230,7 +230,7 @@ export const useTickets = defineStore("help.tickets", {
                 })
                 .then(({ isConfirmed }) => {
                     if (isConfirmed) {
-                        this.http.delete(this.url.help('tickets/:id', this.ticket.id)).then(result => {
+                        return this.http.delete(this.url.help('tickets/:id', this.ticket.id)).then(result => {
                             this.msg.success(I18n.t("core.users.messages_success_operation"))
                         }).catch(error => {
                             this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))

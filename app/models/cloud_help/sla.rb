@@ -155,27 +155,14 @@ For more information read the license file including with this software.
                 "cloud_help_slas.default",                      "chws.id as cloud_help_workflow_statuses_id",
                 "chws.name as status",                          "cloud_help_slas.users_id",
                 "cloud_help_slas.user_main_id"
-            )
+            ).order(ActiveRecord::Base.sanitize_sql_for_order("#{query[:order][:by]} #{query[:order][:dir]}"))
 
             # We apply the previous filters in the main query
             unless filters_query.empty?
                 slas = slas.where(filters_query.join(" AND "))
             end
 
-
             response = {}
-            # total count
-            response[:total_count] = slas.length if filters["get_total_count"]
-
-            # Adding pagination to slas
-            pagination = query[:pagination]
-            slas = slas.page(
-                pagination[:page]
-            ).per(
-                pagination[:perPage]
-            ).order(
-                "#{pagination[:orderColumn]} #{pagination[:order]} NULLS LAST"
-            )
 
             # We format the response
             response = slas.map do |sla|
@@ -186,7 +173,7 @@ For more information read the license file including with this software.
                 sla_attributes
             end
             
-            response
+            Kaminari.paginate_array(response).page(query[:pagination][:page]).per(query[:pagination][:perPage])
         end
 
         def self.options(current_user, query)
