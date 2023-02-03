@@ -37,6 +37,7 @@ import { useTickets } from "CloudHelp/stores/tickets/tickets"
 
 // · initialize/inject plugins
 const route = useRoute()
+const router = useRouter()
 
 // · implement stores
 const storeTickets = useTickets()
@@ -66,6 +67,12 @@ const onUpdatedStatus = () => {
     storeTickets.fetchTicket(route.params.id)
 }
 
+const onDelete = () => {
+    storeTickets.deleteTicket().then(()=>{
+        router.push(url.root(`${props.appMountPath}`).s)
+    })
+}
+
 const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.subject} - ${storeTickets.ticket.status}`)
 
 
@@ -84,7 +91,7 @@ const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.
                     :cloudObjectId="storeTickets.ticket.id"
             >
             </component-workflow-status-dropdown>
-            <button class="button is-fullwidth has-text-centered is-danger" @click="storeTickets.deleteTicket">
+            <button class="button is-fullwidth has-text-centered is-danger" @click="onDelete">
                 {{translations.shared.view_tab_title_delete_section}}
             </button>
             <lesli-button :to="url.root(props.appMountPath)" icon="list">
