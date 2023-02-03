@@ -28,8 +28,8 @@ RSpec.describe "POST:/help/slas.json", type: :request do
     it "should be able to create a sla" do
         sla_params = {
             name: Faker::Lorem.word,
-            expected_response_time: Faker::Number.number,
-            expected_resolution_time: Faker::Number.number,
+            expected_response_time: Faker::Number.number(digits: 4),
+            expected_resolution_time: Faker::Number.number(digits: 4),
             price_per_hour:  Faker::Number.decimal(l_digits: 3, r_digits: 2),
             body: Faker::Lorem.paragraph,
             provider_repercussions: Faker::Lorem.paragraph,
