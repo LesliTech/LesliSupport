@@ -22,6 +22,9 @@ import app from "LesliVue/app"
 
 // · Import apps and components
 import appShowDashboard from "LesliVue/shared/dashboards/apps/show.vue"
+import dashboardIndex from "LesliVue/shared/dashboards/apps/index.vue"
+import dashboardNew from "LesliVue/shared/dashboards/apps/new.vue"
+import dashboardEdit from "LesliVue/shared/dashboards/apps/edit.vue"
 
 
 // · Tickets components
@@ -87,6 +90,30 @@ app('CloudHelp', [
                 "list-new-tickets": componentListNewTickets,
                 "list-unassigned-tickets": componentListUnassignedTickets
             }
+        }
+    },
+    {
+        path: '/dashboards',
+        component: dashboardIndex,
+        props: {
+            cloudModule: "help",
+            appMountPath: 'help/dashboards'
+        }
+    },
+    {
+        path: '/dashboards/new',
+        component: dashboardNew,
+        props: {
+            cloudModule: "help",
+            appMountPath: 'help/dashboards'
+        }
+    },
+    {
+        path: '/dashboards/:id',
+        component: dashboardEdit,
+        props: {
+            cloudModule: "help",
+            appMountPath: 'help/dashboards'
         }
     },
     {
