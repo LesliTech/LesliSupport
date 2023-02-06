@@ -70,7 +70,7 @@ import workflowsIndex from 'LesliVue/shared/workflows/apps/index.vue'
 import workflowsNew from 'LesliVue/shared/workflows/apps/new.vue'
 import workflowsShow from 'LesliVue/shared/workflows/apps/show.vue'
 
-// · 
+// ·  Dashboard components
 import componentListMyTickets from "CloudHelp/apps/dashboards/components/list-my-tickets.vue"
 import componentListNewTickets from "CloudHelp/apps/dashboards/components/list-new-tickets.vue"
 import componentListUnassignedTickets from "CloudHelp/apps/dashboards/components/list-unassigned-tickets.vue"
@@ -113,7 +113,14 @@ app('CloudHelp', [
         component: dashboardEdit,
         props: {
             cloudModule: "help",
-            appMountPath: 'help/dashboards'
+            appMountPath: 'help/dashboards',
+            renderComponents: {
+                "chart-tickets-by-type": componentListMyTickets,
+                "chart-tickets-by-category": componentListMyTickets,
+                "list-my-tickets": componentListMyTickets,
+                "list-new-tickets": componentListNewTickets,
+                "list-unassigned-tickets": componentListUnassignedTickets
+            }
         }
     },
     {
