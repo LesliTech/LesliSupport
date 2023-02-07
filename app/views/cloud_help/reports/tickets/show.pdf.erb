@@ -32,7 +32,12 @@ For more information read the license file including with this software.
                                 <b><%= I18n.t("help.reports.view_title_report_generated_at") %>:</b>
                                 <%= LC::Date.to_string_datetime(LC::Date.datetime) %>
                             </small>
-                            
+                        </p>
+                        <p>
+                            <small>
+                                <b><%= I18n.t("help.reports.view_title_report_generated_by") %>:</b>
+                                <%= @current_user.name %>
+                            </small>
                         </p>
                         <% if @workspace %>
                             <p>
@@ -60,35 +65,34 @@ For more information read the license file including with this software.
                 <table class="tickets-report-table table is-fullwidth is-bordered is-narrow quotation-entries">
                     <thead>
                         <tr>
-                            <th><small><%= I18n.t("help.tickets.column_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_creation_date") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_creation_time") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_users_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_subject") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_deadline") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_types_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_categories_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_priorities_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_user_main_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_cloud_help_workflow_statuses_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_hours_worked") %></small></th>
+                            <th><small><%= I18n.t("help.tickets.column_description")%></small></th>
+
                         </tr>
                     </thead>
                     <tbody>
                         <% @data.each do |row| %>
                             <tr>
-                                <td><small><%= row[:id] %></small></td>
                                 <td><small><%= row[:created_at] %></small></td>
                                 <td><small><%= row[:creation_time] %></small></td>
                                 <td><small><%= row[:user_creator] %></small></td>
                                 <td><small><%= row[:subject] %></small></td>
-                                <td><small><%= row[:deadline] %></small></td>
                                 <td><small><%= row[:ticket_type_name] %></small></td>
                                 <td><small><%= row[:ticket_category_name] %></small></td>
                                 <td><small><%= row[:ticket_priority_name] %></small></td>
                                 <td><small><%= row[:user_assigned] %></small></td>
                                 <td><small><%= row[:status_name] %></small></td>
                                 <td><small><%= row[:hours_worked] %></small></td>
+                                <td><small><%= row[:description] %></small></td>
                             </tr>
                         <% end %>
                     </tbody>

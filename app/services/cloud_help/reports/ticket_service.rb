@@ -89,11 +89,11 @@ module CloudHelp
             def self.get_data(current_user, query, translate_headers: true)
 
                 file_headers = {
-                    id: I18n.t("help.tickets.column_id"),
                     created_at: I18n.t("help.tickets.column_created_at"),
                     creation_time: I18n.t("help.tickets.column_creation_time"),
                     user_creator: I18n.t("help.tickets.column_users_id"),
                     subject: I18n.t("help.tickets.column_subject"),
+                    description: I18n.t("help.tickets.column_description"),
                     deadline: I18n.t("help.tickets.column_deadline"),
                     ticket_type_name: I18n.t("help.tickets.column_cloud_help_catalog_ticket_types_id"),
                     ticket_priority_name: I18n.t("help.tickets.column_cloud_help_catalog_ticket_priorities_id"),
@@ -122,9 +122,9 @@ module CloudHelp
                     "cloud_help_workflow_statuses.name as status_name",
                     "cloud_help_workflow_statuses.status_type as status_type",
                     "cloud_help_workflow_statuses.number as status_number",
-                    "cloud_help_tickets.id",
                     "cloud_help_tickets.created_at",
                     "cloud_help_tickets.users_id",
+                    "cloud_help_tickets.description",
                     :subject,
                     :deadline,
                     :hours_worked
@@ -172,7 +172,6 @@ module CloudHelp
 
                     if translate_headers
                         row = {
-                            file_headers[:id] => ticket.id,
                             file_headers[:created_at] => LC::Date.to_string(ticket.created_at),
                             file_headers[:creation_time] => LC::Date.to_string_time(ticket.created_at),
                             file_headers[:user_creator] => ticket.user_creator_name,
@@ -183,7 +182,9 @@ module CloudHelp
                             file_headers[:ticket_priority_name] => ticket.ticket_priority_name,
                             file_headers[:user_assigned] => ticket.user_assigned_name,
                             file_headers[:status_name] => translate_status(ticket.status_name),
-                            file_headers[:hours_worked] => ticket.hours_worked
+                            file_headers[:hours_worked] => ticket.hours_worked,
+                            file_headers[:description] => ticket.description
+
                             
                         }
                         if query[:filters][:simplified]
@@ -193,7 +194,6 @@ module CloudHelp
                         end
                     else
                         row = {
-                            id: ticket.id,
                             created_at: LC::Date.to_string(ticket.created_at),
                             creation_time: LC::Date.to_string_time(ticket.created_at),
                             user_creator: ticket.user_creator_name,
@@ -204,7 +204,8 @@ module CloudHelp
                             ticket_priority_name: ticket.ticket_priority_name,
                             user_assigned: ticket.user_assigned_name,
                             status_name: translate_status(ticket.status_name),
-                            hours_worked: ticket.hours_worked
+                            hours_worked: ticket.hours_worked,
+                            description: ticket.description
                         }
                     end
 

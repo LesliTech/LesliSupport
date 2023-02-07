@@ -51,12 +51,6 @@ onMounted(() => {
 const columns = [{
     field: "name",
     label: "name"
-}, {
-    field: "excel",
-    label: "Excel",
-}, {
-    field: "pdf",
-    label: "pdf"
 }]
 
 const ticket_reports = [
@@ -196,17 +190,18 @@ watch(() => storeReports.date_select_shortcut, () => {
             :records="ticket_reports"
             :columns="columns"
         >
-            <template #excel="{ record }">
-                <a :href="reportLink(record, 'xlsx')" class="button is-outlined is-small">
+
+            <template #buttons="{ record }">
+                <a :href="reportLink(record, 'xlsx')" class="button is-outlined is-success">
+                    <i class="ri-file-excel-2-line"></i>
+                    <span>{{translations.main.view_btn_download}}</span>
+                </a>
+                <a :href="reportLink(record, 'pdf')" class="button is-outlined is-danger">
+                    <i class="ri-file-pdf-line"></i>
                     <span>{{translations.main.view_btn_download}}</span>
                 </a>
             </template>
 
-            <template #pdf="{ record }">
-                <a :href="reportLink(record, 'pdf')" class="button is-outlined is-small">
-                    <span>{{translations.main.view_btn_download}}</span>
-                </a>
-            </template>
         </lesli-table>
 
     </section>
