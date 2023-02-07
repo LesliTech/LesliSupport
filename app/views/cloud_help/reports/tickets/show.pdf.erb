@@ -65,34 +65,27 @@ For more information read the license file including with this software.
                 <table class="tickets-report-table table is-fullwidth is-bordered is-narrow quotation-entries">
                     <thead>
                         <tr>
-                            <th><small><%= I18n.t("help.tickets.column_creation_date") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_creation_time") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_users_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_subject") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_types_id") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_categories_id") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_priorities_id") %></small></th>
+                            <th><small><%= I18n.t("help.tickets.column_description")%></small></th>
                             <th><small><%= I18n.t("help.tickets.column_user_main_id") %></small></th>
+                            <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_types_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_cloud_help_workflow_statuses_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_hours_worked") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_description")%></small></th>
-
+                            <th><small><%= I18n.t("help.tickets.column_start_date") %></small></th>
+                            <th><small><%= I18n.t("help.tickets.column_end_date") %></small></th>
                         </tr>
                     </thead>
                     <tbody>
                         <% @data.each do |row| %>
                             <tr>
-                                <td><small><%= row[:created_at] %></small></td>
-                                <td><small><%= row[:creation_time] %></small></td>
-                                <td><small><%= row[:user_creator] %></small></td>
                                 <td><small><%= row[:subject] %></small></td>
-                                <td><small><%= row[:ticket_type_name] %></small></td>
-                                <td><small><%= row[:ticket_category_name] %></small></td>
-                                <td><small><%= row[:ticket_priority_name] %></small></td>
+                                <td><small><%= row[:description] %></small></td>
                                 <td><small><%= row[:user_assigned] %></small></td>
+                                <td><small><%= row[:ticket_type_name] %></small></td>
                                 <td><small><%= row[:status_name] %></small></td>
                                 <td><small><%= row[:hours_worked] %></small></td>
-                                <td><small><%= row[:description] %></small></td>
+                                <td><small><%= row[:start_date] %></small></td>
+                                <td><small><%= row[:end_date] %></small></td>
                             </tr>
                         <% end %>
                     </tbody>
