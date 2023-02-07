@@ -94,6 +94,7 @@ module CloudHelp
                     creation_time: I18n.t("help.tickets.column_creation_time"),
                     user_creator: I18n.t("help.tickets.column_users_id"),
                     subject: I18n.t("help.tickets.column_subject"),
+                    description: I18n.t("help.tickets.column_description"),
                     deadline: I18n.t("help.tickets.column_deadline"),
                     ticket_type_name: I18n.t("help.tickets.column_cloud_help_catalog_ticket_types_id"),
                     ticket_priority_name: I18n.t("help.tickets.column_cloud_help_catalog_ticket_priorities_id"),
@@ -102,6 +103,11 @@ module CloudHelp
                     status_name: I18n.t("help.tickets.column_cloud_help_workflow_statuses_id"),
                     hours_worked: I18n.t("help.tickets.column_hours_worked")
                 }
+
+                # Get the names of the initial and final status 
+                initial_status = CloudHelp::Workflow::Status.find_by(status_type:'initial').name
+                final_status = CloudHelp::Workflow::Status.find_by(status_type:'completed_successfully').name
+
 
                 data = current_user.account.help.tickets
                 .joins("left join cloud_help_ticket_assignments chta on chta.cloud_help_tickets_id = cloud_help_tickets.id and chta.deleted_at is null")
@@ -122,12 +128,13 @@ module CloudHelp
                     "cloud_help_workflow_statuses.name as status_name",
                     "cloud_help_workflow_statuses.status_type as status_type",
                     "cloud_help_workflow_statuses.number as status_number",
-                    "cloud_help_tickets.id",
                     "cloud_help_tickets.created_at",
                     "cloud_help_tickets.users_id",
+                    "cloud_help_tickets.description",
                     :subject,
                     :deadline,
-                    :hours_worked
+                    :hours_worked,
+                    :id
                 )
 
                 if query[:filters][:workspace_id]
@@ -170,6 +177,24 @@ module CloudHelp
                 data = data.map do |ticket|
                     total_hours = total_hours + (ticket.hours_worked || 0)
 
+                    # Get initial date and end date by searching for the change in the initial status and completed status
+                    initial_status_activity = ticket.activities.where("cloud_help_ticket_activities.field_name = 'cloud_help_workflow_statuses_id'").find_by("description = ?", initial_status)
+                    completed_status_activity = ticket.activities.where("cloud_help_ticket_activities.field_name = 'cloud_help_workflow_statuses_id'").find_by("description = ?", final_status)
+
+                    initial_status_date = ticket.created_at
+                    completed_status_date = ""
+
+                    unless initial_status_activity.nil?
+                        initial_status_date = initial_status_activity.created_at
+                    end
+
+                    unless completed_status_activity.nil?
+                        completed_status_date = completed_status_activity.created_at
+                    end
+
+                    # Parse description from tickets to get only the text without HTML tags
+                    ticket.description = Nokogiri::HTML(ticket.description).text
+
                     if translate_headers
                         row = {
                             file_headers[:id] => ticket.id,
@@ -183,7 +208,10 @@ module CloudHelp
                             file_headers[:ticket_priority_name] => ticket.ticket_priority_name,
                             file_headers[:user_assigned] => ticket.user_assigned_name,
                             file_headers[:status_name] => translate_status(ticket.status_name),
-                            file_headers[:hours_worked] => ticket.hours_worked
+                            file_headers[:hours_worked] => ticket.hours_worked,
+                            file_headers[:description] => ticket.description,
+                            file_headers[:start_date] => LC::Date.to_string_datetime(initial_status_date),
+                            file_headers[:end_date] => completed_status_date.respond_to?(:strftime) ? LC::Date.to_string_datetime(completed_status_date) : completed_status_date
                             
                         }
                         if query[:filters][:simplified]
@@ -204,7 +232,10 @@ module CloudHelp
                             ticket_priority_name: ticket.ticket_priority_name,
                             user_assigned: ticket.user_assigned_name,
                             status_name: translate_status(ticket.status_name),
-                            hours_worked: ticket.hours_worked
+                            hours_worked: ticket.hours_worked,
+                            description: ticket.description,
+                            start_date: LC::Date.to_string_datetime(initial_status_date),
+                            end_date: completed_status_date.respond_to?(:strftime) ? LC::Date.to_string_datetime(completed_status_date) : completed_status_date
                         }
                     end
 

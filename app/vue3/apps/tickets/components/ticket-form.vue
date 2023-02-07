@@ -343,7 +343,7 @@ if (props.isEditable){
                         <div class="control">
                             <div v-for="assignment in storeTickets.ticket.assignment_attributes" :key="assignment">
                                 <span class="tag is-success">{{assignment.assignable_name}}
-                                    <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)"></button>
+                                    <button class="delete is-small" @click="storeAssignments.deleteAssignment(assignment.id)" type="button"></button>
                                 </span>
                             </div>
                         </div>
