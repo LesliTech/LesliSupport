@@ -70,9 +70,9 @@ For more information read the license file including with this software.
                             <th><small><%= I18n.t("help.tickets.column_user_main_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_types_id") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_cloud_help_workflow_statuses_id") %></small></th>
-                            <th><small><%= I18n.t("help.tickets.column_hours_worked") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_start_date") %></small></th>
                             <th><small><%= I18n.t("help.tickets.column_end_date") %></small></th>
+                            <th><small><%= I18n.t("help.tickets.column_hours_worked") %></small></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,9 +83,9 @@ For more information read the license file including with this software.
                                 <td><small><%= row[:user_assigned] %></small></td>
                                 <td><small><%= row[:ticket_type_name] %></small></td>
                                 <td><small><%= row[:status_name] %></small></td>
-                                <td><small><%= row[:hours_worked] %></small></td>
                                 <td><small><%= row[:start_date] %></small></td>
                                 <td><small><%= row[:end_date] %></small></td>
+                                <td><small><%= row[:hours_worked] %></small></td>
                             </tr>
                         <% end %>
                     </tbody>
