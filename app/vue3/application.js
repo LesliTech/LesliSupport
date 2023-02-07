@@ -99,20 +99,18 @@ app('CloudHelp', [
         path: '/dashboards',
         component: dashboardIndex,
         props: {
-            cloudModule: "help",
-            appMountPath: 'help/dashboards'
+            cloudModule: "help"
         }
     },
     {
         path: '/dashboards/new',
         component: dashboardNew,
         props: {
-            cloudModule: "help",
-            appMountPath: 'help/dashboards'
+            cloudModule: "help"
         }
     },
     {
-        path: '/dashboards/:id',
+        path: '/dashboards/:id/:edit',
         component: dashboardEdit,
         props: propsDashboard
     },
