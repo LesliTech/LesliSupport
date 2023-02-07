@@ -24,8 +24,8 @@ module CloudHelp
             list_new_tickets: "list_new_tickets",
             list_my_tickets: "list_my_tickets",
             list_unassigned_tickets: "list_unassigned_tickets",
-            tickets_by_type: "tickets_by_type",
-            tickets_by_category: "tickets_by_category",
+            chart_tickets_by_type: "chart_tickets_by_type",
+            chart_tickets_by_category: "chart_tickets_by_category",
             hours_worked: "hours_worked"
         }
 
@@ -42,11 +42,11 @@ module CloudHelp
             
             {
                 list_new_tickets: list_configuration,
-                my_tickets: list_configuration,
+                list_my_tickets: list_configuration,
                 list_unassigned_tickets: list_configuration,
                 hours_worked: chart_configuration,
-                tickets_by_type: [],
-                tickets_by_category: []
+                chart_tickets_by_type: [],
+                chart_tickets_by_category: []
             }
         end
 
@@ -97,7 +97,7 @@ module CloudHelp
         end
 
         def list_new_tickets(current_user, query)
-            L2.info "list_new_tickets"
+
             configuration = parse_configuration()
             unless current_user.has_privileges?(["cloud_help/tickets"], ["index"])
                 return nil
@@ -177,37 +177,44 @@ module CloudHelp
             end
         end
 
-        def tickets_by_type(current_user, query)
+        def chart_tickets_by_type(current_user, query)
+            
             configuration = parse_configuration()
             unless current_user.has_privileges?(["cloud_help/tickets"], ["index"])
                 return nil
             end
 
-            Catalog::TicketType.joins(
-                "LEFT JOIN cloud_help_tickets CHT on CHT.cloud_help_catalog_ticket_types_id = cloud_help_catalog_ticket_types.id AND CHT.deleted_at IS NULL"
-            ).where(
-                "CHT.created_at >= ?", LC::Date.beginning_of_month()
-            ).group(:type_name)
+            # join to tickets table to count the amount of tickets with a type assigned
+            sql_join_tickets = "FULL JOIN cloud_help_tickets CHT 
+                on CHT.cloud_help_catalog_ticket_types_id = cloud_help_catalog_ticket_types.id 
+                AND CHT.deleted_at IS NULL
+                AND CHT.created_at >= '#{ LC::Date.beginning_of_month() }'"
+
+            # count the amount of tickets by grouped by type
+            Catalog::TicketType.joins(sql_join_tickets)
+            .group(:type_name)
             .select(
                 "COUNT(CHT.id) as tickets_count",
-                "cloud_help_catalog_ticket_types.name as type_name"
+                "coalesce(cloud_help_catalog_ticket_types.name, 'undefined') as type_name"
             )
         end
 
-        def tickets_by_category(current_user, query)
+        def chart_tickets_by_category(current_user, query)
             configuration = parse_configuration()
             unless current_user.has_privileges?(["cloud_help/tickets"], ["index"])
                 return nil
             end
 
-            Catalog::TicketCategory.joins(
-                "LEFT JOIN cloud_help_tickets CHT on CHT.cloud_help_catalog_ticket_categories_id = cloud_help_catalog_ticket_categories.id AND CHT.deleted_at IS NULL"
-            ).where(
-                "CHT.created_at >= ?", LC::Date.beginning_of_month()
-            ).group(:category_name)
+            sql_join_tickets = "FULL JOIN cloud_help_tickets CHT 
+                on CHT.cloud_help_catalog_ticket_categories_id = cloud_help_catalog_ticket_categories.id 
+                AND CHT.deleted_at IS NULL
+                AND CHT.created_at >= '#{ LC::Date.beginning_of_month() }'"
+
+            Catalog::TicketCategory.joins(sql_join_tickets)
+            .group(:category_name)
             .select(
                 "COUNT(CHT.id) as tickets_count",
-                "cloud_help_catalog_ticket_categories.name as category_name"
+                "coalesce(cloud_help_catalog_ticket_categories.name, 'undefined') as category_name"
             )
         end
 
