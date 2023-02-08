@@ -30,6 +30,7 @@ import assignments from './components/assignments.vue'
 import ComponentDiscussions from "LesliVue/cloud-objects/discussion.vue"
 import ComponentFiles from "LesliVue/cloud-objects/file.vue"
 import ComponentWorkflowStatusDropdown from "LesliVue/shared/workflows/components/workflow-status-dropdown.vue"
+import ComponentActions from "LesliVue/cloud-objects/action.vue"
 
 
 // · import lesli stores
@@ -131,9 +132,14 @@ const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.
                 <internal-comments></internal-comments>
             </lesli-tab-item>
 
+            <lesli-tab-item title="actions" icon="article">
+                <component-actions></component-actions>
+            </lesli-tab-item>
+
             <lesli-tab-item :title="translations.main.view_tab_title_sla" icon="article" v-if="storeTickets.ticket.sla">
                 <sla-info></sla-info>
             </lesli-tab-item>
+
         </lesli-tabs>
     </section>
 
