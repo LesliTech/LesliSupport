@@ -22,20 +22,6 @@ module CloudHelp
 
         before_action :set_sla, only: [:update, :destroy, :images]
 
-        def privileges
-            {
-                index: [],
-                show: [
-                    "CloudHelp::Sla::Discussions#index",
-                    "CloudHelp::Sla::Files#index",
-                    "CloudHelp::Sla::Files#options",
-                    "CloudHelp::Sla::Activities#index"
-                ],
-                new: [],
-                destroy: []
-            }
-        end
-
 =begin
 @return [HTML|JSON] HTML view for listing all slas or a Json that contains a list 
     of all slas associated to this *account*
@@ -51,7 +37,8 @@ module CloudHelp
                 format.html { }
                 format.json do
                     slas = Sla.index(current_user, @query)
-                    respond_with_successful(slas) 
+                    respond_with_pagination(Sla.index(current_user, @query))
+                    # respond_with_successful(slas) 
                 end
             end
         end

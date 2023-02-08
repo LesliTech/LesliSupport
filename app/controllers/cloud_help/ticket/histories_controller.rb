@@ -22,14 +22,6 @@ module CloudHelp
         before_action :set_ticket, only: [:index, :create]
         before_action :set_ticket_history, only: [:show, :update, :destroy]
 
-        def privileges
-            {
-                new: [],
-                edit: [],
-                destroy: []
-            }
-        end
-
         # GET /ticket/histories.json
         def index
             return respond_with_not_found unless @ticket

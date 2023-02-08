@@ -21,16 +21,6 @@ require_dependency "cloud_help/application_controller"
 module CloudHelp
     class Catalog::TicketTypesController < ApplicationLesliController
         before_action :set_ticket_type, only: [:update, :destroy]
-        
-        def privileges
-            {
-                new: [],
-                edit: [],
-                show: [],
-                index: [],
-                destroy: []
-            }
-        end
 
 =begin
 @return [HTML|JSON] HTML view for listing all ticket types or a Json that contains a list of all ticket types 

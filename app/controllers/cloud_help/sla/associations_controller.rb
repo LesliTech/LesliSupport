@@ -39,7 +39,7 @@ module CloudHelp
                     set_sla
                     return respond_with_not_found unless @sla
 
-                    respond_with_successful(@sla.associations_list) 
+                    respond_with_successful(@sla.associations) 
                 end
             end
         end

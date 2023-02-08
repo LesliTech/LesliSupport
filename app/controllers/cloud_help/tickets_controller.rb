@@ -21,24 +21,6 @@ For more information read the license file including with this software.
     class TicketsController < ApplicationController
         before_action :set_ticket, only: [:update, :destroy, :images]
 
-        def privileges
-            {
-                new: ["options"],
-                edit: [],
-                show: [
-                    "CloudHelp::Workflows#transition_options",
-                    "CloudHelp::Ticket::Assignments#options",
-                    "CloudHelp::Ticket::Discussions#index",
-                    "CloudHelp::Ticket::Files#index",
-                    "CloudHelp::Ticket::Files#options",
-                    "CloudHelp::Ticket::Histories#index",
-                    "CloudHelp::Ticket::Activities#index"
-                ],
-                index: ['options'],
-                destroy: []
-            }
-        end
-
 =begin
 @return [HTML|JSON] HTML view for listing all tickets or a Json that contains a list 
     of all tickets associated to this *account*
@@ -53,7 +35,7 @@ For more information read the license file including with this software.
             respond_to do |format|
                 format.html { }
                 format.json do
-                    respond_with_pagination(Ticket.index(current_user, @query, params))
+                    respond_with_pagination(Ticket.index(current_user, @query))
                 end
             end
         end

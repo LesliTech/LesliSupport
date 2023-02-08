@@ -32,7 +32,7 @@ module CloudHelp
                 components_attributes: [
                     {
                         name: "Latest Tickets",
-                        component_id: "new_tickets",
+                        component_id: "list-new-tickets",
                         layout: 4,
                         index: 2,
                         query_configuration: {
@@ -44,7 +44,7 @@ module CloudHelp
                         }
                     },{
                         name: "My Tickets",
-                        component_id: "my_tickets",
+                        component_id: "list-my-tickets",
                         layout: 4,
                         index: 3,
                         query_configuration: {
@@ -56,7 +56,7 @@ module CloudHelp
                         }
                     },{
                         name: "Unassigned Tickets",
-                        component_id: "unassigned_tickets",
+                        component_id: "list-unassigned-tickets",
                         layout: 4,
                         index: 4,
                         query_configuration: {
@@ -68,7 +68,7 @@ module CloudHelp
                         }
                     },{
                         name: "Tickets by Type",
-                        component_id: "tickets_by_type",
+                        component_id: "chart-tickets-by-type",
                         layout: 6,
                         index: 0,
                         query_configuration: {
@@ -80,7 +80,7 @@ module CloudHelp
                         }
                     },{
                         name: "Tickets by Category",
-                        component_id: "tickets_by_category",
+                        component_id: "chart-tickets-by-category",
                         layout: 6,
                         index: 0,
                         query_configuration: {

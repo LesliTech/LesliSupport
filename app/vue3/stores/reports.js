@@ -62,9 +62,9 @@ export const useReports = defineStore("help.report", {
             for(let key in this.filters){
                 if(this.filters[key]){
                     if(this.filters[key] instanceof Date){
-                        query_filters.push(`filters[${key}]=${this.filters[key].toISOString()}`)
+                        query_filters.push(`f[${key}]=${this.filters[key].toISOString()}`)
                     }else{
-                        query_filters.push(`filters[${key}]=${this.filters[key]}`)
+                        query_filters.push(`f[${key}]=${this.filters[key]}`)
                     }
                 }
             }
@@ -81,7 +81,7 @@ export const useReports = defineStore("help.report", {
         */
         openQueryFilters(){
             const query_filters = this.updateFilters()
-            query_filters.push('filters[open]=true')
+            query_filters.push('f[open]=true')
 
             return query_filters.join('&')
         },
@@ -90,7 +90,7 @@ export const useReports = defineStore("help.report", {
         */
         overdueQueryFilters(){
             const query_filters = this.updateFilters()
-            query_filters.push('filters[overdue]=true')
+            query_filters.push('f[overdue]=true')
 
             return query_filters.join('&')
         }

@@ -26,9 +26,9 @@ import app from 'LesliVue/app2'
 // import settingsList from './account_settings/apps/list.vue'
 
 // · Dashboard components
-import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
-import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
-import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
+// import dashboardsList  from 'LesliVue/shared/dashboards/apps/list.vue'
+// import dashboardsShow  from 'LesliVue/shared/dashboards/apps/show.vue'
+// import dashboardsNew   from 'LesliVue/shared/dashboards/apps/new.vue'
 
 // · Ticket workspaces components
 // import ticketWorkspacesList  from './catalog_ticket_workspaces/apps/list.vue'
@@ -67,18 +67,18 @@ import ticketCategoriesNew   from './catalog_ticket_categories/apps/new.vue'
 // import ticketsShow from './tickets/apps/show.vue'
 
 // · Import a list of all dashboard components
-import componentNewTickets from './dashboards/components/list-new-tickets.vue'
-import componentMyTickets from './dashboards/components/list-my-tickets.vue'
-import componentUnassignedTickets from './dashboards/components/list-unassigned-tickets.vue'
-import componentTicketsByType from './dashboards/components/chart-tickets-by-type.vue'
-import componentTicketsByCategory from './dashboards/components/chart-tickets-by-category.vue'
-import componentHoursWorked from './dashboards/components/chart-hours-worked.vue'
+// import componentNewTickets from './dashboards/components/list-new-tickets.vue'
+// import componentMyTickets from './dashboards/components/list-my-tickets.vue'
+// import componentUnassignedTickets from './dashboards/components/list-unassigned-tickets.vue'
+// import componentTicketsByType from './dashboards/components/chart-tickets-by-type.vue'
+// import componentTicketsByCategory from './dashboards/components/chart-tickets-by-category.vue'
+// import componentHoursWorked from './dashboards/components/chart-hours-worked.vue'
 
 // · Import a list of all workflow components
-import workflowsList  from 'LesliVue/shared/workflows/apps/list.vue'
-import workflowsEdit  from 'LesliVue/shared/workflows/apps/edit.vue'
-import workflowsShow  from 'LesliVue/shared/workflows/apps/show.vue'
-import workflowsNew   from 'LesliVue/shared/workflows/apps/new.vue'
+// import workflowsList  from 'LesliVue/shared/workflows/apps/list.vue'
+// import workflowsEdit  from 'LesliVue/shared/workflows/apps/edit.vue'
+// import workflowsShow  from 'LesliVue/shared/workflows/apps/show.vue'
+// import workflowsNew   from 'LesliVue/shared/workflows/apps/new.vue'
 
 // ·
 app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket_types|ticket_priorities|ticket_categories|tickets|slas]', [
@@ -86,98 +86,101 @@ app('CloudHelp', '/help', '[account_settings|dashboards|ticket_workspaces|ticket
     //     path: '/settings',
     //     component: settingsList
     // },
-    {
-        path: '/',
-        component: dashboardsShow,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            newResourceAnchorPath: '/help/tickets/new',
-            newResourceAnchorText: ()=>{
-                return I18n.t('help.tickets.view_btn_create')
-            },
-            appMountPath: '/help',
-            renderComponents: {
-                'component-new-tickets': componentNewTickets,
-                'component-my-tickets': componentMyTickets,
-                'component-unassigned-tickets': componentUnassignedTickets,
-                'component-tickets-by-type': componentTicketsByType,
-                'component-tickets-by-category': componentTicketsByCategory,
-                'component-hours-worked': componentHoursWorked
-            }
-        }
-    },
-    {
-        path: '/dashboards',
-        component: dashboardsList,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/dashboards'
-        }
-    },{
-        path: '/dashboards/new',
-        component: dashboardsNew,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/dashboards'
-        }
-    },
-    {
-        path: '/dashboards/:id',
-        component: dashboardsShow,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            newResourceAnchorPath: '/help/tickets/new',
-            newResourceAnchorText: ()=>{
-                return I18n.t('help.tickets.view_btn_create')
-            },
-            appMountPath: '/help/dashboards',
-            renderComponents: {
-                'component-new-tickets': componentNewTickets,
-                'component-my-tickets': componentMyTickets,
-                'component-unassigned-tickets': componentUnassignedTickets,
-                'component-tickets-by-type': componentTicketsByType,
-                'component-tickets-by-category': componentTicketsByCategory,
-                'component-hours-worked': componentHoursWorked
-            }
-        }
-    },
-    {
-        path: '/workflows',
-        component: workflowsList,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/workflows'
-        }
-    },{
-        path: '/workflows/new',
-        component: workflowsNew,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/workflows'
-        }
-    },{
-        path: '/workflows/:id',
-        component: workflowsShow,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/workflows'
-        }
-    },{
-        path: '/workflows/:id/edit',
-        component: workflowsEdit,
-        props: {
-            cloudEngine: 'CloudHelp',
-            engineNamespace: 'help',
-            appMountPath: '/help/workflows'
-        }
-    },
+    // {
+    //     path: '/',
+    //     component: dashboardsShow,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         newResourceAnchorPath: '/help/tickets/new',
+    //         newResourceAnchorText: ()=>{
+    //             return I18n.t('help.tickets.view_btn_create')
+    //         },
+    //         appMountPath: '/help',
+    //         renderComponents: {
+    //             'component-new-tickets': componentNewTickets,
+    //             'component-my-tickets': componentMyTickets,
+    //             'component-unassigned-tickets': componentUnassignedTickets,
+    //             'component-tickets-by-type': componentTicketsByType,
+    //             'component-tickets-by-category': componentTicketsByCategory,
+    //             'component-hours-worked': componentHoursWorked
+    //         }
+    //     }
+    // },
+    // {
+    //     path: '/dashboards',
+    //     component: dashboardsList,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/dashboards'
+    //     }
+    // },{
+    //     path: '/dashboards/new',
+    //     component: dashboardsNew,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/dashboards'
+    //     }
+    // },
+    // {
+    //     path: '/dashboards/:id',
+    //     component: dashboardsShow,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         newResourceAnchorPath: '/help/tickets/new',
+    //         newResourceAnchorText: ()=>{
+    //             return I18n.t('help.tickets.view_btn_create')
+    //         },
+    //         appMountPath: '/help/dashboards',
+    //         renderComponents: {
+    //             'component-new-tickets': componentNewTickets,
+    //             'component-my-tickets': componentMyTickets,
+    //             'component-unassigned-tickets': componentUnassignedTickets,
+    //             'component-tickets-by-type': componentTicketsByType,
+    //             'component-tickets-by-category': componentTicketsByCategory,
+    //             'component-hours-worked': componentHoursWorked
+    //         }
+    //     }
+    // },
+    // {
+    //     path: '/workflows',
+    //     component: workflowsList,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/workflows'
+    //     }
+    // },
+    // {
+    //     path: '/workflows/new',
+    //     component: workflowsNew,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/workflows'
+    //     }
+    // },
+    // {
+    //     path: '/workflows/:id',
+    //     component: workflowsShow,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/workflows'
+    //     }
+    // },
+    // {
+    //     path: '/workflows/:id/edit',
+    //     component: workflowsEdit,
+    //     props: {
+    //         cloudEngine: 'CloudHelp',
+    //         engineNamespace: 'help',
+    //         appMountPath: '/help/workflows'
+    //     }
+    // },
     // {
     //     path: '/catalog/ticket_workspaces',
     //     component: ticketWorkspacesList,
