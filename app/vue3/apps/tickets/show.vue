@@ -132,8 +132,12 @@ const title = computed(() => `${storeTickets.ticket.id} - ${storeTickets.ticket.
                 <internal-comments></internal-comments>
             </lesli-tab-item>
 
-            <lesli-tab-item title="actions" icon="article">
-                <component-actions></component-actions>
+            <lesli-tab-item title="actions" icon="playlist_add_check">
+                <component-actions
+                    cloud-module="help" 
+                    cloud-object="tickets"
+                    :cloud-object-id="storeTickets.ticket.id"
+                ></component-actions>
             </lesli-tab-item>
 
             <lesli-tab-item :title="translations.main.view_tab_title_sla" icon="article" v-if="storeTickets.ticket.sla">
