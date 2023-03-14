@@ -25,15 +25,19 @@ module CloudHelp
             ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
             ticket.user_creator = current_user
 
+            unless ticket_params.dig(:started_at)
+                ticket.started_at = LC::Date2.new(Time.current).date.get
+            end
+
             if ticket.save
                 Ticket.log_activity_create(current_user, ticket)
                 Ticket::Subscriber.add_subscriber(ticket, current_user, "discussion_created", "email")
                 Workflow::Action.execute_actions(current_user, ticket, {}, ticket.attributes)
-
                 return LC::Response.service(true, ticket)
             else
                 return LC::Response.service(false, ticket.errors)
             end
+
         end
 
         def self.update(current_user, ticket, ticket_params)

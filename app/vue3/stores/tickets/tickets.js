@@ -39,7 +39,9 @@ export const useTickets = defineStore("help.tickets", {
                 subject: null,
                 description: '',
                 deadline: new Date(),
-                hours_worked: 0
+                hours_worked: 0,
+                started_at: new Date(),
+                finished_at: new Date()
             },
             pagination: {
                 page: 1

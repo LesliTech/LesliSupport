@@ -78,9 +78,12 @@ const columns = [{
 }, {
     field: "category",
     label: translations.main.column_cloud_help_catalog_ticket_categories_id
-}, {
+},{
     field: "priority",
     label: translations.main.column_cloud_help_catalog_ticket_priorities_id
+},  {
+    field: "workspace",
+    label: translations.main.column_cloud_help_catalog_ticket_workspaces_id
 }, {
     field: "user_creator",
     label: translations.main.column_users_id,
