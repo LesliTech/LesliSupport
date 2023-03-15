@@ -32,32 +32,82 @@ RSpec.describe "PUT:/help/workflows/:id.json", type: :request do
             name: Faker::Lorem.word,
             deletion_protection: true,
             default: false,
-            statuses_attributes: [
-                {
-                    number: 1,
-                    name: "created",
-                    status_type: "initial",
-                    next_statuses: ""
-                },
-                {
-                    number: 2,
-                    name: "confirmed",
-                    status_type: "normal",
-                    next_statuses: ""
-                },
-                {
-                    number: 3,
-                    name: "finished",
-                    status_type: "completed_successfully",
-                    next_statuses: ""
-                }
-            ]
+
+            statuses_attributes: [{
+                number: 1,
+                name: "created",
+                status_type: "initial",
+                next_statuses: ""
+            }, {
+                number: 2,
+                name: "confirmed",
+                status_type: "normal",
+                next_statuses: ""
+            }, {
+                number: 3,
+                name: "finished",
+                status_type: "completed_successfully",
+                next_statuses: ""
+            }]
         } 
         
 
         workflow = CloudHelp::Workflow.new(workflow_params)
         workflow.save!
         workflow
+    end
+
+
+    it "is expected to update workflow with single next status" do
+
+        workflow = new_workflow
+
+        statuses_attributes = [
+            {
+                id: workflow.statuses.first.id,
+                number: 3,
+                name: "finished",
+                status_type: "completed_successfully",
+                next_statuses: [workflow.statuses.first.id]
+            }
+        ]
+
+        put("/help/workflows/#{new_workflow.id}.json", params: {
+            workflow: {
+                statuses_attributes: statuses_attributes
+            }
+        })
+
+        expect_response_with_successful
+
+        expect(new_workflow.statuses.find_by(:id => workflow.statuses.first.id).next_statuses).to eql(workflow.statuses.first.id.to_s)
+
+    end
+
+    it "is expected to update workflow with two next statuses" do
+
+        workflow = new_workflow
+
+        statuses_attributes = [
+            {
+                id: workflow.statuses.first.id,
+                number: 3,
+                name: "finished",
+                status_type: "completed_successfully",
+                next_statuses: [1, 2]
+            }
+        ]
+
+        put("/help/workflows/#{new_workflow.id}.json", params: {
+            workflow: {
+                statuses_attributes: statuses_attributes
+            }
+        })
+
+        expect_response_with_successful
+
+        expect(new_workflow.statuses.find_by(:id => workflow.statuses.first.id).next_statuses).to eql("1|2")
+
     end
 
     it "is expected to update a the name of the workflow" do
@@ -197,7 +247,4 @@ RSpec.describe "PUT:/help/workflows/:id.json", type: :request do
         expect_response_with_error
 
     end
-
-  
-
 end
