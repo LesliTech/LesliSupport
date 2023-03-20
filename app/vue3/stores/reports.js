@@ -40,10 +40,32 @@ export const useReports = defineStore("help.report", {
                 user_assigned_id: null,
                 end_date: null,
                 start_date: null,
-            }
+                workspace_id: null
+            },
+            options: {}
         }
     },
     actions: {
+        /**
+        * @description This action is used to get options for workspaces
+        */
+        getOptions(){
+            this.loading = true
+            this.options = {}
+            this.http.get(this.url.help('tickets/options')).then(result => {
+                this.options.workspaces = result.workspaces.map((workspace)=> {
+                    return {
+                        label: workspace.name,
+                        value: workspace.id
+                    }
+                })
+            }).catch(error => {
+                this.msg.danger(I18n.t("core.shared.messages_danger_internal_error"))
+            }).finally(() => {
+                this.loading = false
+            })
+            
+        },
         /**
          * @description This action is used to get users for autocomplete selection
         */

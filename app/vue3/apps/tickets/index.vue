@@ -83,7 +83,8 @@ const columns = [{
     label: translations.main.column_cloud_help_catalog_ticket_priorities_id
 },  {
     field: "workspace",
-    label: translations.main.column_cloud_help_catalog_ticket_workspaces_id
+    label: translations.main.column_cloud_help_catalog_ticket_workspaces_id,
+    sort: true
 }, {
     field: "user_creator",
     label: translations.main.column_users_id,
