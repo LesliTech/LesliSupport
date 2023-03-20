@@ -95,7 +95,9 @@ module CloudHelp
                 "tags",                                             "hours_worked",
                 "reference_url",                                    "chctw.name as workspace",
                 "chctw.id as cloud_help_catalog_ticket_workspaces_id",
-                " coalesce(nullif(concat(ud.first_name, ' ', ud.last_name), ''), u.email) as user_creator_name"
+                " coalesce(nullif(concat(ud.first_name, ' ', ud.last_name), ''), u.email) as user_creator_name",
+                :started_at,
+                :finished_at
             )
             .where("cloud_help_tickets.id = #{ticket.id}").first.attributes
 
