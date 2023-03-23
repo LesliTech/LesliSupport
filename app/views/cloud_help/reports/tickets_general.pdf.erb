@@ -1,0 +1,103 @@
+<%#
+
+Copyright (c) 2023, all rights reserved.
+
+All the information provided by this platform is protected by international laws related  to 
+industrial property, intellectual property, copyright and relative international laws. 
+All intellectual or industrial property rights of the code, texts, trade mark, design, 
+pictures and any other information belongs to the owner of this platform.
+
+Without the written permission of the owner, any replication, modification,
+transmission, publication is strictly forbidden.
+
+For more information read the license file including with this software.
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+%>
+
+<%= wicked_pdf_stylesheet_link_tag("templates/pdf") %>
+
+<br>
+
+<%= customization_instance_logo(logo: "app_logo_reports", mode: "pdf", options: { alt: "#{@company.company_name}", width: "200" })%>
+
+<br><br>
+
+<h4 class="title is-4"><%= @title %></h4>
+<p>
+    <b><%= I18n.t("help.reports.view_title_report_generated_at") %>:</b>
+    <%= LC::Date.to_string_datetime(LC::Date.datetime) %>
+</p>
+
+<p>
+    <b><%= I18n.t("help.reports.view_title_report_generated_by") %>:</b>
+    <%= @current_user.name %>
+</p>
+
+<% if @workspace %>
+    <p>
+        <b><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_workspaces_id") %>:</b>
+        <%= @workspace.name %>
+    </p>
+<% end %>
+
+<br>
+
+<p style="font-size: 18px;">
+    <b><%= I18n.t("help.tickets.view_text_total_hours_worked") %>:</b>
+    <%= @total_hours %>
+</p>
+
+<hr>
+
+<table class="table is-fullwidth">
+    <thead>
+        <tr>
+            <th><small><%= I18n.t("help.tickets.column_subject") %></small></th>
+            <th><small><%= I18n.t("help.tickets.column_description")%></small></th>
+            <th  class="has-text-centered"><small><%= I18n.t("help.tickets.column_user_main_id") %></small></th>
+            <th><small><%= I18n.t("help.tickets.column_cloud_help_catalog_ticket_types_id") %></small></th>
+            <th><small><%= I18n.t("help.tickets.column_cloud_help_workflow_statuses_id") %></small></th>
+            <th class="has-text-centered"><small><%= I18n.t("help.tickets.column_start_date") %></small></th>
+            <th class="has-text-centered"><small><%= I18n.t("help.tickets.column_end_date") %></small></th>
+            <th><small><%= I18n.t("help.tickets.column_hours_worked") %></small></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @data.each do |row| %>
+            <tr>
+                <td><small><%= row[:subject] %></small></td>
+                <td><small><%= row[:description] %></small></td>
+                <td class="has-text-centered"><small><%= row[:user_assigned] %></small></td>
+                <td><small><%= row[:ticket_type_name] %></small></td>
+                <td><small><%= row[:status_name] %></small></td>
+                <td class="has-text-centered"><small><%= row[:start_date] %></small></td>
+                <td class="has-text-centered"><small><%= row[:end_date] %></small></td>
+                <td class="has-text-centered"><small><%= row[:hours_worked] %></small></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<div class="has-background-white">
+    <div class="w-75 inline-block">
+        <hr>
+        <p class="has-text-grey-light quotation-footer has-background-white has-text-justified">
+            <small>
+                <b><%= @company.company_name %> </b>,
+                <b><%= I18n.t("core.accounts.column_address") %>:</b>  <%= @company.address %> 
+                <br>
+                <b><%= I18n.t("core.accounts.column_public_email") %>:</b>  <span class="has-text-info"><%= @company.public_email %> </span>,
+                <b><%= I18n.t("core.accounts.column_website") %>:</b>  <span class="has-text-info"><%= @company.website %> </span> ,
+                <b><%= I18n.t("core.accounts.column_phone_number_1") %>:</b>  <%= @company.phone_number_1 %> 
+            </small>
+        </p>
+    </div>
+</div>
+
+<%#
+<p>info@lomax.com.gt</p>
+<p>(+502) 2429-6353</p>
+<p>www.lomax.com.gt</p>
+%>
