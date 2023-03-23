@@ -36,10 +36,6 @@ Gem::Specification.new do |spec|
 
     spec.add_dependency "rails", "~> 7.0"
 
-    # PDF Generation for Reports
-    spec.add_dependency "wkhtmltopdf-binary", "~> 0.12.6"
-    spec.add_dependency "wicked_pdf", "~> 2.1.0"
-
     # Allows management of subcategories for the catalog
     # It exposes the standard relations (ancestors, parent, root, children, siblings, descendants)
     # and allows them to be fetched in a single query.
