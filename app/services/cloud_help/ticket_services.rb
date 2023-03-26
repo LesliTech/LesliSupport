@@ -25,15 +25,19 @@ module CloudHelp
             ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
             ticket.user_creator = current_user
 
+            unless ticket_params.dig(:started_at)
+                ticket.started_at = LC::Date2.new(Time.current).date.get
+            end
+
             if ticket.save
                 Ticket.log_activity_create(current_user, ticket)
                 Ticket::Subscriber.add_subscriber(ticket, current_user, "discussion_created", "email")
                 Workflow::Action.execute_actions(current_user, ticket, {}, ticket.attributes)
-
                 return LC::Response.service(true, ticket)
             else
                 return LC::Response.service(false, ticket.errors)
             end
+
         end
 
         def self.update(current_user, ticket, ticket_params)
@@ -91,7 +95,9 @@ module CloudHelp
                 "tags",                                             "hours_worked",
                 "reference_url",                                    "chctw.name as workspace",
                 "chctw.id as cloud_help_catalog_ticket_workspaces_id",
-                " coalesce(nullif(concat(ud.first_name, ' ', ud.last_name), ''), u.email) as user_creator_name"
+                " coalesce(nullif(concat(ud.first_name, ' ', ud.last_name), ''), u.email) as user_creator_name",
+                :started_at,
+                :finished_at
             )
             .where("cloud_help_tickets.id = #{ticket.id}").first.attributes
 

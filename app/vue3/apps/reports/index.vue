@@ -44,6 +44,7 @@ const translations = {
 // · initializing
 onMounted(() => {
     storeReports.getUsers()
+    storeReports.getOptions()
 
 })
 
@@ -126,7 +127,7 @@ watch(() => storeReports.date_select_shortcut, () => {
 
         <div class="columns">
 
-            <div class="column is-3">
+            <div class="column">
                 <label class="label">
                     {{translations.tickets.column_user_main_id}}
                 </label>
@@ -142,7 +143,7 @@ watch(() => storeReports.date_select_shortcut, () => {
                 </div>
             </div>
 
-            <div class="column is-3">
+            <div class="column">
                 <label class="label">
                     {{translations.main.view_input_date_range}} 
                 </label>
@@ -167,7 +168,7 @@ watch(() => storeReports.date_select_shortcut, () => {
                 </div>
             </div>
 
-            <div class="column is-3">
+            <div class="column">
                 <label class="label">
                     {{translations.main.view_input_start_date}}
                 </label>
@@ -176,12 +177,24 @@ watch(() => storeReports.date_select_shortcut, () => {
                 </div>
             </div>
 
-            <div class="column is-3">
+            <div class="column">
                 <label class="label">
                     {{translations.main.view_input_end_date}}
                 </label>
                 <div class="control">
                     <input class="input" type="date" v-model="storeReports.filters.end_date">
+                </div>
+            </div>
+
+            <div class="column">
+                <label class="label">
+                    {{translations.tickets.column_cloud_help_catalog_ticket_workspaces_id}}
+                </label>
+                <div class="control">
+                    <lesli-select
+                        v-model="storeReports.filters.workspace_id"
+                        :options="storeReports.options.workspaces"  
+                    ></lesli-select>
                 </div>
             </div>
         </div>

@@ -237,6 +237,24 @@ if (props.isEditable){
                 </div>
             </div>
 
+            <!-- Ticket workspace -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_workspaces_id}} </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <lesli-select
+                                v-if="storeTickets.options.workspaces"
+                                :options="storeTickets.options.workspaces"
+                                v-model="storeTickets.ticket.cloud_help_catalog_ticket_workspaces_id"
+                            ></lesli-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Ticket tags -->
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -440,6 +458,24 @@ if (props.isEditable){
                 </div>
             </div>
 
+            <!-- Ticket workspace -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label"> {{translations.main.column_cloud_help_catalog_ticket_workspaces_id}} </label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <lesli-select
+                                v-if="storeTickets.options.workspaces"
+                                :options="storeTickets.options.workspaces"
+                                v-model="storeTickets.ticket.cloud_help_catalog_ticket_workspaces_id"
+                            ></lesli-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Ticket tags -->
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -465,6 +501,35 @@ if (props.isEditable){
                                 :filterFields="['name']"
                                 showField="name"
                             />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Ticket started at date -->
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">{{ translations.main.column_started_at }}</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <lesli-calendar mode="dateTime" v-model="storeTickets.ticket.started_at"></lesli-calendar>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticket finished at date -->
+            <div class="field is-horizontal" v-if="isEditable">
+                <div class="field-label is-normal">
+                    <label class="label"> {{ translations.column_finished_at }}</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <lesli-calendar mode="dateTime" v-model="storeTickets.ticket.finished_at"></lesli-calendar>
                         </div>
                     </div>
                 </div>
