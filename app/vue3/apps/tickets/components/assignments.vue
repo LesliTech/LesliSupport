@@ -74,27 +74,20 @@ function submitAssignment(user){
 
 </script>
 <template>
-    <h2>{{translations.main.view_tab_title_assignments}}</h2>
-    <div class="box">
-        <lesli-table 
-            :records="storeAssignments.users"
-            :columns="columns"
-        >
-            <template #roles="{ column, value }">
-                <span
-                    v-for="role in value"
-                    :key="role.id"
-                    class="tag is-success is-small is-rounded mr-1"
-                >
-                    {{ role.name }}
-                </span>
-            </template>
-
-            <template #assigned="{ record, value }">
-                <input type="checkbox" v-model="record.checked" @input="submitAssignment(record)">
-            </template>
-
-        </lesli-table>
-    </div>
-
+    <h5 class="title is-5">{{translations.main.view_tab_title_assignments}}</h5>
+    <lesli-table 
+        :records="storeAssignments.users"
+        :columns="columns">
+        <template #roles="{ column, value }">
+            <span
+                v-for="role in value"
+                :key="role.id"
+                class="tag is-success is-small is-rounded mr-1">
+                {{ role.name }}
+            </span>
+        </template>
+        <template #assigned="{ record, value }">
+            <input type="checkbox" v-model="record.checked" @input="submitAssignment(record)">
+        </template>
+    </lesli-table>
 </template>
