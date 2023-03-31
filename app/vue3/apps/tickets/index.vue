@@ -67,20 +67,18 @@ const columns = [{
 }, {
     field: "deadline",
     label: translations.main.column_deadline,
+    align: "center",
     sort: true
 }, {
     field: "status_name",
     label: translations.main.column_cloud_help_workflow_statuses_id,
+    align: "center",
     sort: true
-}, {
-    field: "type",
-    label: translations.main.column_cloud_help_catalog_ticket_types_id
-}, {
-    field: "category",
-    label: translations.main.column_cloud_help_catalog_ticket_categories_id
 },{
     field: "priority",
-    label: translations.main.column_cloud_help_catalog_ticket_priorities_id
+    label: translations.main.column_cloud_help_catalog_ticket_priorities_id,
+    align: "center",
+    sort: true
 },  {
     field: "workspace",
     label: translations.main.column_cloud_help_catalog_ticket_workspaces_id,
@@ -91,7 +89,8 @@ const columns = [{
     sort: true
 }, {
     field: "assignables",
-    label: translations.main.column_user_main_id
+    label: translations.main.column_user_main_id,
+    align: "center"
 }]
 
 /**
@@ -184,14 +183,12 @@ function extractInitials(name){
             :pagination="storeTickets.index.pagination"
             @paginate="storeTickets.paginateIndex"
             @sort="storeTickets.sort"
-            :link="(ticket) => url.root(`${props.appMountPath}/${ticket.id}`).s"
-        >
+            :link="(ticket) => url.root(`${props.appMountPath}/${ticket.id}`)">
             <template #assignables="{ value }">
-                <span
-                    v-for="user in value"
-                    :key="user"
+                <span 
                     class="tag is-info is-small is-rounded mr-1"
-                >
+                    v-for="user in value" :key="user"
+                    :data-tooltip="user">
                     {{ extractInitials(user) }}
                 </span>
             </template>
@@ -199,33 +196,32 @@ function extractInitials(name){
             <template #priority="{ value }">
                 <span
                     v-if="value =='High' || value =='Highest' || value =='Very High'"
-                    class="tag is-danger"
-                >
+                    class="tag is-danger">
                     {{ value }}
                 </span>
 
                 <span
                     v-if="value =='Medium'"
-                    class="tag is-warning"
-                >
+                    class="tag is-warning">
                     {{ value }}
                 </span>
 
                 <span
                     v-if="value =='Low' || value=='Lowest'"
-                    class="tag is-success"
-                >
+                    class="tag is-success">
                     {{ value }}
                 </span>
             </template>
 
             <template #deadline="{ value, record }">
                 <div v-if="value?.getTime() <= new Date().getTime()">                    
-                    <div class="icon-text">
-                        <span class="icon has-text-danger">
-                            <i class="fas fa-exclamation-triangle"></i>
-                            <span>{{date.date(value)}}</span>
+                    <div class="icon-text has-text-danger">
+                        <span class="icon">
+                            <span class="material-icons">
+                                warning
+                            </span>
                         </span>
+                        <span>{{date.date(value)}}</span>
                     </div>
                 </div>
 
@@ -233,9 +229,6 @@ function extractInitials(name){
 
                 <div v-else>{{ date.date(value)}}</div>
             </template>
-
         </lesli-table>
-
     </section>
-
 </template>
