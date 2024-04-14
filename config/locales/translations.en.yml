@@ -1,0 +1,43 @@
+---
+:en:
+  lesli_support:
+    tickets:
+      column_deadline: Deadline
+      column_workspace: Workspace
+      column_started_at: Started At
+      column_completed_at: Completed At
+      column_tags: Tags
+      column_reference_url: Reference URL
+      column_type: Type
+      column_id: ID
+      column_subject: Subject
+      column_hours_worked: Hours Worked
+      column_category: Category
+      column_priority: Priority
+      column_creator: Creator
+      column_status: Status
+      view_all_tickets: All tickets
+      view_own_tickets: Own tickets
+      view_active_tickets: Active tickets
+      view_inactive_tickets: Inactive tickets
+      tab_information: Information
+      column_description: Description
+  lesli:
+    shared:
+      view_discussions: Discussions
+      button_add_new: Add new
+      button_reload: Reload
+      view_files: Files
+      view_quick_actions: Quick actions
+      button_list: List
+      button_save: Save
+      button_delete: Delete
+      button_edit: Edit
+      view_status_active: Active
+      view_status_inactive: Inactive
+      button_settings: Settings
+      button_show: Show
+      toolbar_search: Search...
+    application:
+      navigation_logout: Logout
+      navigation_my_profile: My profile

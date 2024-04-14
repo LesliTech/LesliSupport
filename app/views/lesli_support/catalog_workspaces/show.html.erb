@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @catalog_workspace %>
+
+<div>
+  <%= link_to "Edit this catalog workspace", edit_catalog_workspace_path(@catalog_workspace) %> |
+  <%= link_to "Back to catalog workspaces", catalog_workspaces_path %>
+
+  <%= button_to "Destroy this catalog workspace", @catalog_workspace, method: :delete %>
+</div>

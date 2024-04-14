@@ -1,0 +1,43 @@
+---
+:es:
+  lesli_support:
+    tickets:
+      column_deadline: Fecha limite
+      column_workspace: Workspace
+      column_started_at: Fecha inicio
+      column_completed_at: Fecha completado
+      column_tags: Etiquetas
+      column_reference_url: URL de referencia
+      column_type: Tipo
+      column_id: ID
+      column_subject: Asunto
+      column_hours_worked: Horas trabajadas
+      column_category: Categoria
+      column_priority: Prioridad
+      column_creator: Creador
+      column_status: Estado
+      view_all_tickets: Todos los tickets
+      view_own_tickets: Mis tickets
+      view_active_tickets: Tickets activos
+      view_inactive_tickets: Tickets inactivos
+      tab_information: Información
+      column_description: Descripción
+  lesli:
+    shared:
+      view_discussions: Discusiones
+      button_add_new: Agregar nuevo
+      button_reload: Recargar
+      view_files: Archivos
+      view_quick_actions: Acciones rapidas
+      button_list: Lista
+      button_save: Guardar
+      button_delete: Eliminar
+      button_edit: Editar
+      view_status_active: Activo
+      view_status_inactive: Inactivo
+      button_settings: Configuración
+      button_show: Ver
+      toolbar_search: Buscar...
+    application:
+      navigation_logout: Cerrar sesión
+      navigation_my_profile: Mi perfil

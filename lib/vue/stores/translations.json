@@ -1,0 +1,242 @@
+{
+  "en": {
+    "lesli": {
+      "application": {
+        "navigation_logout": "Logout",
+        "navigation_my_profile": "My profile"
+      },
+      "shared": {
+        "button_add_new": "Add new",
+        "button_delete": "Delete",
+        "button_edit": "Edit",
+        "button_list": "List",
+        "button_reload": "Reload",
+        "button_save": "Save",
+        "button_settings": "Settings",
+        "button_show": "Show",
+        "toolbar_search": "Search...",
+        "view_discussions": "Discussions",
+        "view_files": "Files",
+        "view_quick_actions": "Quick actions",
+        "view_status_active": "Active",
+        "view_status_inactive": "Inactive"
+      }
+    },
+    "lesli_support": {
+      "tickets": {
+        "column_category": "Category",
+        "column_completed_at": "Completed At",
+        "column_creator": "Creator",
+        "column_deadline": "Deadline",
+        "column_description": "Description",
+        "column_hours_worked": "Hours Worked",
+        "column_id": "ID",
+        "column_priority": "Priority",
+        "column_reference_url": "Reference URL",
+        "column_started_at": "Started At",
+        "column_status": "Status",
+        "column_subject": "Subject",
+        "column_tags": "Tags",
+        "column_type": "Type",
+        "column_workspace": "Workspace",
+        "tab_information": "Information",
+        "view_active_tickets": "Active tickets",
+        "view_all_tickets": "All tickets",
+        "view_inactive_tickets": "Inactive tickets",
+        "view_own_tickets": "Own tickets"
+      }
+    }
+  },
+  "es": {
+    "lesli": {
+      "application": {
+        "navigation_logout": "Cerrar sesión",
+        "navigation_my_profile": "Mi perfil"
+      },
+      "shared": {
+        "button_add_new": "Agregar nuevo",
+        "button_delete": "Eliminar",
+        "button_edit": "Editar",
+        "button_list": "Lista",
+        "button_reload": "Recargar",
+        "button_save": "Guardar",
+        "button_settings": "Configuración",
+        "button_show": "Ver",
+        "toolbar_search": "Buscar...",
+        "view_discussions": "Discusiones",
+        "view_files": "Archivos",
+        "view_quick_actions": "Acciones rapidas",
+        "view_status_active": "Activo",
+        "view_status_inactive": "Inactivo"
+      }
+    },
+    "lesli_support": {
+      "tickets": {
+        "column_category": "Categoria",
+        "column_completed_at": "Fecha completado",
+        "column_creator": "Creador",
+        "column_deadline": "Fecha limite",
+        "column_description": "Descripción",
+        "column_hours_worked": "Horas trabajadas",
+        "column_id": "ID",
+        "column_priority": "Prioridad",
+        "column_reference_url": "URL de referencia",
+        "column_started_at": "Fecha inicio",
+        "column_status": "Estado",
+        "column_subject": "Asunto",
+        "column_tags": "Etiquetas",
+        "column_type": "Tipo",
+        "column_workspace": "Workspace",
+        "tab_information": "Información",
+        "view_active_tickets": "Tickets activos",
+        "view_all_tickets": "Todos los tickets",
+        "view_inactive_tickets": "Tickets inactivos",
+        "view_own_tickets": "Mis tickets"
+      }
+    }
+  },
+  "fr": {
+    "lesli": {
+      "application": {
+        "navigation_logout": ":lesli.application.navigation_logout:",
+        "navigation_my_profile": ":lesli.application.navigation_my_profile:"
+      },
+      "shared": {
+        "button_add_new": ":lesli.shared.button_add_new:",
+        "button_delete": ":lesli.shared.button_delete:",
+        "button_edit": ":lesli.shared.button_edit:",
+        "button_list": ":lesli.shared.button_list:",
+        "button_reload": ":lesli.shared.button_reload:",
+        "button_save": ":lesli.shared.button_save:",
+        "button_settings": ":lesli.shared.button_settings:",
+        "button_show": ":lesli.shared.button_show:",
+        "toolbar_search": ":lesli.shared.toolbar_search:",
+        "view_discussions": ":lesli.shared.view_discussions:",
+        "view_files": ":lesli.shared.view_files:",
+        "view_quick_actions": ":lesli.shared.view_quick_actions:",
+        "view_status_active": ":lesli.shared.view_status_active:",
+        "view_status_inactive": ":lesli.shared.view_status_inactive:"
+      }
+    },
+    "lesli_support": {
+      "tickets": {
+        "column_category": ":lesli_support.tickets.column_category:",
+        "column_completed_at": ":lesli_support.tickets.column_completed_at:",
+        "column_creator": ":lesli_support.tickets.column_creator:",
+        "column_deadline": ":lesli_support.tickets.column_deadline:",
+        "column_description": ":lesli_support.tickets.column_description:",
+        "column_hours_worked": ":lesli_support.tickets.column_hours_worked:",
+        "column_id": ":lesli_support.tickets.column_id:",
+        "column_priority": ":lesli_support.tickets.column_priority:",
+        "column_reference_url": ":lesli_support.tickets.column_reference_url:",
+        "column_started_at": ":lesli_support.tickets.column_started_at:",
+        "column_status": ":lesli_support.tickets.column_status:",
+        "column_subject": ":lesli_support.tickets.column_subject:",
+        "column_tags": ":lesli_support.tickets.column_tags:",
+        "column_type": ":lesli_support.tickets.column_type:",
+        "column_workspace": ":lesli_support.tickets.column_workspace:",
+        "tab_information": ":lesli_support.tickets.tab_information:",
+        "view_active_tickets": ":lesli_support.tickets.view_active_tickets:",
+        "view_all_tickets": ":lesli_support.tickets.view_all_tickets:",
+        "view_inactive_tickets": ":lesli_support.tickets.view_inactive_tickets:",
+        "view_own_tickets": ":lesli_support.tickets.view_own_tickets:"
+      }
+    }
+  },
+  "it": {
+    "lesli": {
+      "application": {
+        "navigation_logout": ":lesli.application.navigation_logout:",
+        "navigation_my_profile": ":lesli.application.navigation_my_profile:"
+      },
+      "shared": {
+        "button_add_new": ":lesli.shared.button_add_new:",
+        "button_delete": ":lesli.shared.button_delete:",
+        "button_edit": ":lesli.shared.button_edit:",
+        "button_list": ":lesli.shared.button_list:",
+        "button_reload": ":lesli.shared.button_reload:",
+        "button_save": ":lesli.shared.button_save:",
+        "button_settings": ":lesli.shared.button_settings:",
+        "button_show": ":lesli.shared.button_show:",
+        "toolbar_search": ":lesli.shared.toolbar_search:",
+        "view_discussions": ":lesli.shared.view_discussions:",
+        "view_files": ":lesli.shared.view_files:",
+        "view_quick_actions": ":lesli.shared.view_quick_actions:",
+        "view_status_active": ":lesli.shared.view_status_active:",
+        "view_status_inactive": ":lesli.shared.view_status_inactive:"
+      }
+    },
+    "lesli_support": {
+      "tickets": {
+        "column_category": ":lesli_support.tickets.column_category:",
+        "column_completed_at": ":lesli_support.tickets.column_completed_at:",
+        "column_creator": ":lesli_support.tickets.column_creator:",
+        "column_deadline": ":lesli_support.tickets.column_deadline:",
+        "column_description": ":lesli_support.tickets.column_description:",
+        "column_hours_worked": ":lesli_support.tickets.column_hours_worked:",
+        "column_id": ":lesli_support.tickets.column_id:",
+        "column_priority": ":lesli_support.tickets.column_priority:",
+        "column_reference_url": ":lesli_support.tickets.column_reference_url:",
+        "column_started_at": ":lesli_support.tickets.column_started_at:",
+        "column_status": ":lesli_support.tickets.column_status:",
+        "column_subject": ":lesli_support.tickets.column_subject:",
+        "column_tags": ":lesli_support.tickets.column_tags:",
+        "column_type": ":lesli_support.tickets.column_type:",
+        "column_workspace": ":lesli_support.tickets.column_workspace:",
+        "tab_information": ":lesli_support.tickets.tab_information:",
+        "view_active_tickets": ":lesli_support.tickets.view_active_tickets:",
+        "view_all_tickets": ":lesli_support.tickets.view_all_tickets:",
+        "view_inactive_tickets": ":lesli_support.tickets.view_inactive_tickets:",
+        "view_own_tickets": ":lesli_support.tickets.view_own_tickets:"
+      }
+    }
+  },
+  "pt": {
+    "lesli": {
+      "application": {
+        "navigation_logout": ":lesli.application.navigation_logout:",
+        "navigation_my_profile": ":lesli.application.navigation_my_profile:"
+      },
+      "shared": {
+        "button_add_new": ":lesli.shared.button_add_new:",
+        "button_delete": ":lesli.shared.button_delete:",
+        "button_edit": ":lesli.shared.button_edit:",
+        "button_list": ":lesli.shared.button_list:",
+        "button_reload": ":lesli.shared.button_reload:",
+        "button_save": ":lesli.shared.button_save:",
+        "button_settings": ":lesli.shared.button_settings:",
+        "button_show": ":lesli.shared.button_show:",
+        "toolbar_search": ":lesli.shared.toolbar_search:",
+        "view_discussions": ":lesli.shared.view_discussions:",
+        "view_files": ":lesli.shared.view_files:",
+        "view_quick_actions": ":lesli.shared.view_quick_actions:",
+        "view_status_active": ":lesli.shared.view_status_active:",
+        "view_status_inactive": ":lesli.shared.view_status_inactive:"
+      }
+    },
+    "lesli_support": {
+      "tickets": {
+        "column_category": ":lesli_support.tickets.column_category:",
+        "column_completed_at": ":lesli_support.tickets.column_completed_at:",
+        "column_creator": ":lesli_support.tickets.column_creator:",
+        "column_deadline": ":lesli_support.tickets.column_deadline:",
+        "column_description": ":lesli_support.tickets.column_description:",
+        "column_hours_worked": ":lesli_support.tickets.column_hours_worked:",
+        "column_id": ":lesli_support.tickets.column_id:",
+        "column_priority": ":lesli_support.tickets.column_priority:",
+        "column_reference_url": ":lesli_support.tickets.column_reference_url:",
+        "column_started_at": ":lesli_support.tickets.column_started_at:",
+        "column_status": ":lesli_support.tickets.column_status:",
+        "column_subject": ":lesli_support.tickets.column_subject:",
+        "column_tags": ":lesli_support.tickets.column_tags:",
+        "column_type": ":lesli_support.tickets.column_type:",
+        "column_workspace": ":lesli_support.tickets.column_workspace:",
+        "tab_information": ":lesli_support.tickets.tab_information:",
+        "view_active_tickets": ":lesli_support.tickets.view_active_tickets:",
+        "view_all_tickets": ":lesli_support.tickets.view_all_tickets:",
+        "view_inactive_tickets": ":lesli_support.tickets.view_inactive_tickets:",
+        "view_own_tickets": ":lesli_support.tickets.view_own_tickets:"
+      }
+    }
+  }
+}

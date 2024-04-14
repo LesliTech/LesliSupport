@@ -1,66 +1,39 @@
 =begin
 
-Copyright (c) 2020, all rights reserved.
+Lesli
 
-All the information provided by this platform is protected by international laws related  to 
-industrial property, intellectual property, copyright and relative international laws. 
-All intellectual or industrial property rights of the code, texts, trade mark, design, 
-pictures and any other information belongs to the owner of this platform.
+Copyright (c) 2023, Lesli Technologies, S. A.
 
-Without the written permission of the owner, any replication, modification,
-transmission, publication is strictly forbidden.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-For more information read the license file including with this software.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+You should have received a copy of the GNU General Public License
+along with this program. If not, see http://www.gnu.org/licenses/.
+
+Lesli · Ruby on Rails SaaS Development Framework.
+
+Made with ♥ by https://www.lesli.tech
+Building a better future, one line of code at a time.
+
+@contact  hello@lesli.tech
+@website  https://www.lesli.tech
+@license  GPLv3 http://www.gnu.org/licenses/gpl-3.0.en.html
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
-
 =end
-CloudHelp::Engine.routes.draw do
+
+LesliSupport::Engine.routes.draw do
+
     root to: "dashboards#show"
-
-    scope module: :account do
-        resources :settings, only: [:index, :create, :destroy] do
-            collection do
-                get :options
-            end
-        end
-    end
-
-    resources :custom_validations do
-        scope module: :custom_validation do
-            resource  :rule 
-            resources :fields 
-        end
-        collection do
-            get :options
-        end
-    end
-
-    resources :workflows do
-        member do
-            get "actions/options",                                                  to: "workflow/actions#options"
-            get "/checks/options",                                                  to: "workflow/checks#options"
-        end
-        collection do
-            get  "associations/options",                                            to: "workflow/associations#options"
-            get "/resources/transition-options/:cloud_object_name/:cloud_object_id",to: "workflows#transition_options"
-        end
-        scope module: :workflow do
-            resources :associations
-            resources :checks
-            resources :statuses
-            resources :actions do
-                collection do
-                    scope :resources do
-                        get :options_cloud_object_clone
-                        get :options_create_cloud_object_file
-                    end
-                end
-            end
-        end
-    end
-
+    resource :dashboard, only: [:show]
     resources :dashboards do
         collection do
             post "list" => :index
@@ -70,71 +43,13 @@ CloudHelp::Engine.routes.draw do
             resources :components
         end
     end
-  
-    scope :catalog, module: :catalog do
-        resources :ticket_categories
-        resources :ticket_priorities
-        resources :ticket_sources
-        resources :ticket_types
-        resources :ticket_workspaces
-    end
 
-    resources :tickets do
-        member do
-            scope :resources do
-                get :images
-                get "/files-zip-download",      to: "ticket/files#zip_download"
-            end
-        end
-        collection do
-            get "search/:text_to_search" => :search
+    resources :options, only: [:index]
+    resources :catalog_workspaces
 
+    resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
+        collection do 
             get :options
-            get "/files/options",               to: "ticket/files#options"
-            get "/assignments/options",         to: "ticket/assignments#options"
-        end
-        scope module: :ticket do
-            resources :actions
-            resources :activities
-            resources :discussions
-            resources :files
-            resources :subscribers
-            resources :custom_fields
-
-            resources :assignments
-            resources :histories, only: [:index, :create, :show, :update, :destroy]
-            resources :timelines do
-                collection do
-                    get :options
-                end
-            end
-        end
-    end
-
-    resources :slas do
-        collection do
-            get "search/:text_to_search" => :search
-            post "list" => :index
-
-            get :options
-            get "/files/options",               to: "sla/files#options"
-            get "/associations/options",        to: "sla/associations#options"
-        end
-        scope module: :sla do
-            resources :actions
-            resources :activities
-            resources :discussions
-            resources :files
-            resources :subscribers
-            resources :custom_fields
-            
-            resources :associations
-        end
-    end
-
-    resources :reports, only: :index do
-        collection do
-            get :tickets_general
         end
     end
 end
