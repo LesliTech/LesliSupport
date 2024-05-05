@@ -1,5 +1,5 @@
-=begin
-
+<script setup>
+/*
 Lesli
 
 Copyright (c) 2023, Lesli Technologies, S. A.
@@ -17,7 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 
-Lesli · Ruby on Rails SaaS development platform.
+Lesli · Ruby on Rails SaaS Development Framework.
 
 Made with ♥ by https://www.lesli.tech
 Building a better future, one line of code at a time.
@@ -28,17 +28,50 @@ Building a better future, one line of code at a time.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
-=end
+*/
 
-class CreateCloudHelpCatalogTicketTypes < ActiveRecord::Migration[6.0]
-    def change
-        create_table :cloud_help_catalog_ticket_types do |t|
-            t.string :name
 
-            # acts_as_paranoid
-            t.datetime :deleted_at, index: true
-            t.timestamps
-        end
-        add_reference(:cloud_help_catalog_ticket_types, :account, foreign_key: { to_table: :cloud_help_accounts })
-    end
-end
+// · 
+import { onMounted, inject, ref } from "vue"
+
+
+// · 
+import { lesliChartBar } from "lesli-vue/components"
+
+
+// · 
+const url = inject("url")
+const http = inject("http")
+
+
+// · 
+const lesliVersion = ref({
+    name: "",
+    code: "",
+    path: "",
+    version: "",
+    build: ""
+})
+
+
+// · 
+onMounted(() => {
+    console.log("component works")
+    // http.get(url.lesli("about")).then(result => {
+    //     lesliVersion.value = result.find(engine => engine.name == "Lesli")
+    // }).catch(error => {
+    //     console.log(error)
+    // })
+})
+</script>
+<template>
+    <lesli-card>
+        <h6 class="title is-6 mb-2">
+            hola
+        </h6>
+        <lesli-chart-bar 
+            :labels="['hola1', 'hola2', 'hola3', 'hola4', 'hola5']"
+            :series="[{ data:[4, 1, 4, 2, 5] }]">
+        </lesli-chart-bar>
+    </lesli-card>
+</template>

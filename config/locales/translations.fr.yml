@@ -2,8 +2,6 @@
 :fr:
   lesli_support:
     tickets:
-      column_deadline: ":lesli_support.tickets.column_deadline:"
-      column_workspace: ":lesli_support.tickets.column_workspace:"
       column_started_at: ":lesli_support.tickets.column_started_at:"
       column_completed_at: ":lesli_support.tickets.column_completed_at:"
       column_tags: ":lesli_support.tickets.column_tags:"
@@ -11,17 +9,19 @@
       column_type: ":lesli_support.tickets.column_type:"
       column_id: ":lesli_support.tickets.column_id:"
       column_subject: ":lesli_support.tickets.column_subject:"
+      column_workspace: ":lesli_support.tickets.column_workspace:"
       column_hours_worked: ":lesli_support.tickets.column_hours_worked:"
       column_category: ":lesli_support.tickets.column_category:"
       column_priority: ":lesli_support.tickets.column_priority:"
       column_creator: ":lesli_support.tickets.column_creator:"
       column_status: ":lesli_support.tickets.column_status:"
       view_all_tickets: ":lesli_support.tickets.view_all_tickets:"
-      view_own_tickets: ":lesli_support.tickets.view_own_tickets:"
       view_active_tickets: ":lesli_support.tickets.view_active_tickets:"
       view_inactive_tickets: ":lesli_support.tickets.view_inactive_tickets:"
       tab_information: ":lesli_support.tickets.tab_information:"
       column_description: ":lesli_support.tickets.column_description:"
+      column_deadline: ":lesli_support.tickets.column_deadline:"
+      view_own_tickets: ":lesli_support.tickets.view_own_tickets:"
   lesli:
     shared:
       view_discussions: ":lesli.shared.view_discussions:"

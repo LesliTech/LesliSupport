@@ -43,7 +43,7 @@ import formTicket from "./components/form.vue"
 // import assignments from './components/assignments.vue'
 
 
-//import ComponentDiscussions from "Lesli/cloudobjects/components/discussion.vue"
+import ComponentDiscussions from "Lesli/vue/cloudobjects/discussion.vue"
 //import ComponentFiles from "Lesli/cloudobjects/components/file.vue"
 //import ComponentWorkflowStatusDropdown from "Lesli/shared/workflows/components/workflow-status-dropdown.vue"
 //import ComponentActions from "Lesli/cloudobjects/components/action.vue"
@@ -97,13 +97,15 @@ const props = defineProps({
 
 //· 
 onMounted(() => {
-    storeTickets.fetchTicket(route.params.id)
+    if (route.params.id) {
+        storeTickets.fetchTicket(route.params.id)
+    }
 })
 
 
 //· 
 const onUpdatedStatus = () => {
-    storeTickets.getTicket(route.params.id)
+    //storeTickets.getTicket(route.params.id)
 }
 
 
@@ -137,8 +139,8 @@ const onDelete = () => {
                 <form-ticket :path="props.appMountPath" :editable="props.editable"></form-ticket>
             </lesli-tab-item>
             <lesli-tab-item title="Discussions" icon="forum">
-                <component-discussions 
-                    cloud-module="help" 
+                <component-discussions
+                    cloud-module="support" 
                     cloud-object="tickets" 
                     :cloud-object-id="storeTickets.ticket.id"
                     :onlyDiscussions="false">
@@ -146,6 +148,9 @@ const onDelete = () => {
             </lesli-tab-item>
         </lesli-tabs>
         <!-- 
+        <lesli-tab-item title="Information" icon="info" paddingless>
+                <form-ticket :path="props.appMountPath" :editable="props.editable"></form-ticket>
+            </lesli-tab-item>
         <lesli-tab-item :title="translations.tickets.tab_assignments" icon="group">
             <assignments></assignments>
         </lesli-tab-item>

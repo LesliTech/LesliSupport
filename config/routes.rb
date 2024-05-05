@@ -31,6 +31,9 @@ Building a better future, one line of code at a time.
 =end
 
 LesliSupport::Engine.routes.draw do
+  namespace :ticket do
+    resources :discussions
+  end
 
     root to: "dashboards#show"
     resource :dashboard, only: [:show]
@@ -50,6 +53,9 @@ LesliSupport::Engine.routes.draw do
     resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
         collection do 
             get :options
+        end
+        scope module: :ticket do
+            resources :discussions, only: [:index, :create]
         end
     end
 end

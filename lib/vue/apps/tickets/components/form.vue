@@ -107,11 +107,6 @@ const onCreate = () => {
 
 // · 
 onMounted(() => {
-
-    if (route.params.id) {
-        storeTickets.fetchTicket(route.params.id)
-    }
-
     storeTickets.getOptions()
     // storeTickets.ticket = {}
     // storeTickets.tags = []

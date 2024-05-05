@@ -4,7 +4,7 @@ module LesliSupport
         belongs_to :dashboard, inverse_of: :components
 
         def self.component_ids
-            ["version", "users", "active_roles"]
+            ["version", "my-tasks"]
         end
         # components_ids: {
         #     list_new_tickets: "list_new_tickets",

@@ -17,9 +17,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 
-Lesli · Ruby on Rails SaaS development platform.
+Lesli · Ruby on Rails SaaS Development Framework.
 
-Made with ♥ by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
 @contact  hello@lesli.tech
@@ -30,17 +30,23 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
-class CreateCloudHelpCatalogTicketPriorities < ActiveRecord::Migration[6.0]
+class CreateLesliSupportTicketDiscussions < ActiveRecord::Migration[6.0]
     def change
-        create_table :cloud_help_catalog_ticket_priorities do |t|
-            t.string :name
-            t.integer :weight
-            t.integer :days_to_deadline
+        gem_path = Lesli::System.engine("Lesli", "dir")
+        table_base_structure = JSON.parse(File.read(File.join(gem_path, "db", "structure", "00000005_discussions.json")))
 
-            # acts_as_paranoid
-            t.datetime :deleted_at, index: true
+        create_table :lesli_support_ticket_discussions do |t|
+            table_base_structure.each do |column|
+                t.send(
+                    column["type"].parameterize.underscore.to_sym,
+                    column["name"].parameterize.underscore.to_sym
+                )
+            end
             t.timestamps
         end
-        add_reference(:cloud_help_catalog_ticket_priorities, :account, foreign_key: { to_table: :cloud_help_accounts })
+
+        add_reference(:lesli_support_ticket_discussions, :discussion, foreign_key: { to_table: :lesli_support_ticket_discussions })
+        add_reference(:lesli_support_ticket_discussions, :ticket, foreign_key: { to_table: :lesli_support_tickets })
+        add_reference(:lesli_support_ticket_discussions, :user, foreign_key: { to_table: :lesli_users })
     end
 end
