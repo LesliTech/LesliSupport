@@ -136,7 +136,7 @@ onMounted(() => {
 
         <lesli-table 
             :columns="columns"
-            :records="storeTickets.index.records"            
+            :records="storeTickets.index.records" 
             :loading="storeTickets.index.loading"
             :pagination="storeTickets.index.pagination"
             :link="(ticket) => url.support('tickets/:id', ticket.id)">

@@ -1,0 +1,64 @@
+{
+    "tickets": [{
+        "subject": "My printer is not working",
+        "description": "I am trying to print a couple of documents, but every time I try, I receive an error message that says 'no magenta.'"
+    }, {
+        "subject": "Unable to access email",
+        "description": "I cannot log into my email account. I keep getting an 'invalid credentials' error even though my password is correct."
+    }, {
+        "subject": "Wi-Fi connectivity issues",
+        "description": "The Wi-Fi in our office keeps disconnecting intermittently. It affects our work as we lose connection to the internet frequently."
+    }, {
+        "subject": "Software installation request",
+        "description": "I need the latest version of Photoshop installed on my computer for a project. Could you please assist with the installation?"
+    }, {
+        "subject": "Laptop overheating",
+        "description": "My laptop has been overheating a lot lately and shutting down unexpectedly. This is affecting my productivity. Please help."
+    }, {
+        "subject": "Monitor not displaying",
+        "description": "My external monitor is not displaying anything. I've checked the connections, but it's still not working."
+    }, {
+        "subject": "Keyboard not responding",
+        "description": "My keyboard has stopped responding. I have tried reconnecting it, but there is no change."
+    }, {
+        "subject": "VPN connection issues",
+        "description": "I am unable to connect to the VPN from home. I receive a 'connection timed out' error every time I try to connect."
+    }, {
+        "subject": "Mouse malfunctioning",
+        "description": "The left button on my mouse is not working. I have tried using a different USB port, but the issue persists."
+    }, {
+        "subject": "Request for new headset",
+        "description": "My current headset is broken and I need a new one for conference calls. Could you please provide a replacement?"
+    }, {
+        "subject": "Document recovery",
+        "description": "I accidentally deleted an important document from my desktop. Is there a way to recover it?"
+    }, {
+        "subject": "Email spam issue",
+        "description": "I am receiving a large number of spam emails in my inbox. Can you help set up filters to reduce this?"
+    }, {
+        "subject": "Software update required",
+        "description": "The accounting software on my system needs an update. Please assist with the update process."
+    }, {
+        "subject": "Printer jammed",
+        "description": "The office printer is jammed and we are unable to print any documents. Please assist in resolving this issue."
+    }, {
+        "subject": "Slow computer performance",
+        "description": "My computer has been running very slowly lately, making it difficult to complete tasks. Can you check it out?"
+    }, {
+        "subject": "Phone not working",
+        "description": "My office phone is not working. It has no dial tone and I am unable to make or receive calls."
+    }, {
+        "subject": "Network drive not accessible",
+        "description": "I cannot access the network drive from my computer. It says 'network path not found.'"
+    }, {
+        "subject": "Password reset request",
+        "description": "I forgot my password and am unable to log into my account. Could you please assist with a password reset?"
+    }, {
+        "subject": "Scanner not functioning",
+        "description": "The scanner connected to my computer is not working. It doesn't recognize any documents I try to scan."
+    }, {
+        "subject": "Application crashing",
+        "description": "The CRM application keeps crashing every time I try to open it. This is disrupting my work. Please help."
+    }]
+}
+

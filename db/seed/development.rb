@@ -30,6 +30,14 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
+# · 
+require "json"
+
+# · 
+file = File.open(LesliSupport::Engine.root.join("db", "seed", "seeds.json")).read
+seeds = JSON.parse(file)
+
+
 current_user = Lesli::User.first
 
 current_user.account.support.catalog_workspaces.find_or_create_by!(:name => "Default", :default => true)
@@ -47,11 +55,16 @@ current_user.account.support.catalog_priorities.find_or_create_by!(:name => "med
 current_user.account.support.catalog_priorities.find_or_create_by!(:name => "high", :weight => 3)
 
 
-10.times do |index| 
+seeds["tickets"].each_with_index do |ticket, index|
+
+    # Start tickets from 10 days ago
+    ticket_date = (index - 10).days.from_now 
+
+    #
     current_user.account.support.tickets.create!({
-        :subject => "Demo ticket ##{index}",
-        :description => "My printer number #{index} is not working",
-        :deadline => index.day.from_now,
+        :subject => ticket["subject"],
+        :description => ticket["description"],
+        :deadline => ticket_date,
         :user => current_user,
         :creator => current_user,
         :catalog_workspace => current_user.account.support.catalog_workspaces.first,

@@ -37,6 +37,17 @@ module LesliSupport
             super(current_user.account.support.tickets.find_by(id: ticket_id))
         end
 
+        def index_with_deadline 
+            return current_user.account.support.tickets
+            .where.not(:deadline => nil )
+            .select(
+                :id,
+                :subject,
+                :deadline,
+                :description
+            ).order(id: :asc)
+        end
+
         def index
 
             return current_user.account.support.tickets.left_joins(
@@ -58,26 +69,26 @@ module LesliSupport
             .page(query[:pagination][:page])
             .per(query[:pagination][:perPage])
 
-            current_user.account.help.tickets.left_joins(
-                :priority, 
-                :type, 
-                :workspace, 
-                :category, 
-                :status, 
-                :assignments,
-                :assigned,
-                :user
-            ).select(
-                :id,
-                :subject,
-                :deadline,
-                :assigned_id,
-                :user_id,
-                "CONCAT_WS(' ', users.first_name, users.last_name) as assigned_name",
-                "CONCAT_WS(' ', users_cloud_help_tickets.first_name, users_cloud_help_tickets.last_name) as user_name",
-                "cloud_help_tickets.updated_at",
-                "cloud_help_tickets.created_at"
-            )
+            # current_user.account.help.tickets.left_joins(
+            #     :priority, 
+            #     :type, 
+            #     :workspace, 
+            #     :category, 
+            #     :status, 
+            #     :assignments,
+            #     :assigned,
+            #     :user
+            # ).select(
+            #     :id,
+            #     :subject,
+            #     :deadline,
+            #     :assigned_id,
+            #     :user_id,
+            #     "CONCAT_WS(' ', users.first_name, users.last_name) as assigned_name",
+            #     "CONCAT_WS(' ', users_cloud_help_tickets.first_name, users_cloud_help_tickets.last_name) as user_name",
+            #     "cloud_help_tickets.updated_at",
+            #     "cloud_help_tickets.created_at"
+            # )
         end
 
         def create(ticket_params)
