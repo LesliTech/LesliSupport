@@ -34,3 +34,6 @@
 # Development dependencies, packages, gems and tools
 .DS_Store
 app2
+
+# Ignore Lesli gems
+lesli*.gem
