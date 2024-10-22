@@ -29,3 +29,8 @@ Building a better future, one line of code at a time.
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 =end
+
+
+if Lesli.config.demo 
+    load LesliSupport::Engine.root.join("db", "seed", "development.rb")
+end 
