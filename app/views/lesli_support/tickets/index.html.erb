@@ -31,4 +31,28 @@ Building a better future, one line of code at a time.
 // · 
 =end
 %>
-<router-view></router-view>
+
+<%
+columns = [{
+    label: "id",
+    field: "id"
+}, {
+    label: "subject",
+    field: "subject"
+}, {
+    label: "deadline",
+    field: "deadline"
+}]
+%>
+
+<%= render(LesliView::Layout::Container.new("support-tickets")) do %>
+
+    <%= render(LesliView::Components::Header.new("Tickets")) %>
+    <%= render(LesliView::Components::Toolbar.new()) %>
+
+    <%= render(LesliView::Elements::Table.new(
+        :columns => columns,
+        :records => @tickets.dig(:records),
+        link: -> (ticket) { ticket_path(ticket.id) }
+    )) %>s
+<% end %>

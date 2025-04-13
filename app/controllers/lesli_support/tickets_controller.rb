@@ -35,22 +35,11 @@ module LesliSupport
         before_action :set_ticket, only: [:show, :update, :destroy, :images]
 
         def index
-            respond_to do |format|
-                format.html { }
-                format.json do
-                    #respond_with_successful(TicketService.new(current_user, query).index)
-                    respond_with_pagination(TicketService.new(current_user, query).index)
-                end
-            end
+            @tickets = respond_as_pagination(TicketService.new(current_user, query).index)
         end
 
         def show
-            respond_to do |format|
-                format.html { }
-                format.json do
-                    respond_with_successful(@ticket.show)
-                end
-            end
+            @ticket = @ticket.show
         end
 
         def new

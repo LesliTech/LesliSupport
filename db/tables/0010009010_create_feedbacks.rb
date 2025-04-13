@@ -17,7 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program. If not, see http://www.gnu.org/licenses/.
 
-Lesli · Ruby on Rails SaaS Development Framework.
+Lesli · Ruby on Rails SaaS development platform.
 
 Made with ♥ by https://www.lesli.tech
 Building a better future, one line of code at a time.
@@ -27,24 +27,30 @@ Building a better future, one line of code at a time.
 @license  GPLv3 http://www.gnu.org/licenses/gpl-3.0.en.html
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+// ·
 =end
 
-class CreateLesliSupportDashboardComponents < ActiveRecord::Migration[6.0]
+class CreateFeedbacks < ActiveRecord::Migration[6.1]
     def change
-        gem_path = Lesli::System.engine("Lesli", "dir")
-        table_base_structure = JSON.parse(File.read(File.join(gem_path, "db", "structure", "00000502_dashboard_components.json")))
-        create_table :lesli_support_dashboard_components do |t|
-            table_base_structure.each do |column|
-                t.send(
-                    column["type"].parameterize.underscore.to_sym,
-                    column["name"].parameterize.underscore.to_sym
-                )
-            end
+        create_table :feedbacks do |t|
+            # Contact info
+            t.string    :email
+            t.string    :telephone
+            t.string    :company_name
+            t.string    :first_name
+            t.string    :last_name
+
+            # Relevant data
+            t.text      :message
+            t.boolean   :subscribed
+            t.string    :category   # contact_us, feedback, report_error, report_abuse, block_object, etc.
+            t.string    :status     # created, reviewed, solved, closed
+            t.string    :source     # where the issue was reported:  web_page, email, call_center, etc.
+            t.string    :reference  # url of the website where the feedback were sent
+
+            t.datetime  :deleted_at, index: true
             t.timestamps
         end
-        add_reference(:lesli_support_dashboard_components, :dashboard, 
-            foreign_key: { to_table: :lesli_support_dashboards }, 
-            index: { name: "help_dashboard_components_dashboards" })
+        add_reference(:feedbacks, :account, foreign_key: { to_table: :accounts })
     end
 end

@@ -32,15 +32,6 @@ Building a better future, one line of code at a time.
 
 class CreateLesliSupportAccountSettings < ActiveRecord::Migration[6.1]
     def change
-        create_table :lesli_support_account_settings do |t|
-            t.string :key
-            t.string :value
-
-            t.datetime :deleted_at, index: true
-            t.timestamps
-        end
-
-        add_reference(:lesli_support_account_settings, :account, foreign_key: { to_table: :lesli_support_accounts })
-        add_reference(:lesli_support_account_settings, :user, foreign_key: { to_table: :lesli_users })
+        create_lesli_settings_table_for_engine(:lesli_admin)
     end
 end

@@ -1,20 +1,18 @@
-<%
-=begin
-Copyright (c) 2020, all rights reserved.
+<%= render(LesliView::Layout::Container.new("support-ticket")) do %>
 
-All the information provided by this platform is protected by international laws related  to 
-industrial property, intellectual property, copyright and relative international laws. 
-All intellectual or industrial property rights of the code, texts, trade mark, design, 
-pictures and any other information belongs to the owner of this platform.
+    <%= render(LesliView::Components::Header.new(@ticket.subject)) %>
 
-Without the written permission of the owner, any replication, modification,
-transmission, publication is strictly forbidden.
+    <%= render LesliView::Elements::Tabs.new() do |tabs| %>
 
-For more information read the license file including with this software.
+        <% tabs.with_tab(id:"information", title:"information", icon:"info_outline") do %>
+            <%= render "form" %>
+        <% end %>
 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
-// · 
+        <% tabs.with_tab(id:"discussions", title:"Discussions", icon:"forum") do %>
+            <%= render "form" %>
+        <% end %>
+    <% end %>
 
-=end
-%>
-<router-view></router-view>
+    <%#= dd(@ticket) %>
+
+<% end %>

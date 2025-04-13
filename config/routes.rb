@@ -31,24 +31,8 @@ Building a better future, one line of code at a time.
 =end
 
 LesliSupport::Engine.routes.draw do
-  namespace :ticket do
-    resources :discussions
-  end
 
-    root to: "dashboards#show"
-    resource :dashboard, only: [:show]
-    resources :dashboards do
-        collection do
-            post "list" => :index
-            get :options
-        end
-        scope module: :dashboard do
-            resources :components
-        end
-    end
-
-    resources :options, only: [:index]
-    resources :catalog_workspaces
+    Lesli::Routing.mount_dashboard_for(LesliSupport)
 
     resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
         collection do 

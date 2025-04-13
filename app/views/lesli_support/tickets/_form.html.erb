@@ -1,0 +1,12 @@
+<%= form_with(model: @ticket, builder: LesliView::Forms::Builder) do |form| %>
+    <%= form.fieldset do %>
+        <%= form.field_control(:subject) %>
+        <%= form.field_control(:description) %>
+        <%#= form.field_control(:email) %>
+        <%#= form.field_control(:first_name) %>
+        <%#= form.field_control(:last_name) %>
+        <%#= form.field_control(:telephone) %>
+        <hr/>
+        <%= form.field_control_submit %>
+    <% end %>        
+<% end %>

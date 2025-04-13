@@ -32,19 +32,6 @@ Building a better future, one line of code at a time.
 
 class CreateLesliSupportDashboards < ActiveRecord::Migration[6.0]
     def change
-        gem_path = Lesli::System.engine("Lesli", "dir")
-        table_base_structure = JSON.parse(File.read(File.join(gem_path, "db", "structure", "00000501_dashboards.json")))
-        create_table :lesli_support_dashboards do |t|
-            table_base_structure.each do |column|
-                t.send(
-                    column["type"].parameterize.underscore.to_sym,
-                    column["name"].parameterize.underscore.to_sym
-                )
-            end
-            t.timestamps
-        end
-        add_reference(:lesli_support_dashboards, :account, foreign_key: { to_table: :lesli_support_accounts })
-        add_reference(:lesli_support_dashboards, :user, foreign_key: { to_table: :lesli_users })
-        add_reference(:lesli_support_dashboards, :role, foreign_key: { to_table: :lesli_roles })
+        create_lesli_dashboards_table_for_engine(:lesli_support)
     end
 end

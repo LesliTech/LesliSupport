@@ -1,1 +1,9 @@
-.lesli-support-tickets .lesli-form>fieldset{padding:3rem 6rem}.lesli-support-tickets .lesli-form>fieldset fieldset{margin-bottom:1.5rem}
+/*!**************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[0].use[1]!./node_modules/sass-loader/dist/cjs.js!../LesliSupport/lib/scss/application.scss ***!
+  \**************************************************************************************************************************************************************/
+.lesli-support-tickets .lesli-form > fieldset {
+  padding: 3rem 6rem;
+}
+.lesli-support-tickets .lesli-form > fieldset fieldset {
+  margin-bottom: 1.5rem;
+}

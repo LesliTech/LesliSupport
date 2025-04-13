@@ -1,0 +1,68 @@
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      cursor: crosshair;
+    }
+    .marker {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+
+
+<script>
+document.addEventListener("click", (event) => {
+      const { pageX, pageY } = event;
+
+      // Get viewport dimensions
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Get physical screen dimensions
+      const screenWidth = screen.width;
+      const screenHeight = screen.height;
+
+      // Calculate position as percentages
+      const xPercent = (pageX / viewportWidth) * 100;
+      const yPercent = (pageY / viewportHeight) * 100;
+
+      console.log("Click Details:");
+      console.log(`Page X: ${pageX}, Page Y: ${pageY}`);
+      console.log(`Viewport: ${viewportWidth}x${viewportHeight}`);
+      console.log(`Screen: ${screenWidth}x${screenHeight}`);
+      console.log(`Click Position (%): X: ${xPercent.toFixed(2)}%, Y: ${yPercent.toFixed(2)}%`);
+
+      // Create a marker at the click position
+      const marker = document.createElement("div");
+      marker.classList.add("marker");
+      marker.style.left = `${pageX}px`;
+      marker.style.top = `${pageY}px`;
+      document.body.appendChild(marker);
+
+      // Remove the marker after a short delay
+      //setTimeout(() => marker.remove(), 1000);
+
+      // (Optional) Send data to a server
+      // fetch("https://your-server.com/capture", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     pageX,
+      //     pageY,
+      //     xPercent,
+      //     yPercent,
+      //     viewportWidth,
+      //     viewportHeight,
+      //     screenWidth,
+      //     screenHeight
+      //   }),
+      // });
+    });
+  </script>
