@@ -34,11 +34,13 @@ module LesliSupport
     class Ticket < Lesli::ApplicationLesliRecord
         belongs_to :account
         belongs_to :user, class_name: "Lesli::User"
-        belongs_to :creator, class_name: "Lesli::User"
+        belongs_to :agent, class_name: "Lesli::User"
 
-        belongs_to :catalog_workspace, optional: true
-        belongs_to :catalog_type, optional: true
-        belongs_to :catalog_category, optional: true
-        belongs_to :catalog_priority, optional: true
+        belongs_to :type, optional: true, class_name: "Catalog::Item"
+        belongs_to :category, optional: true, class_name: "Catalog::Item"
+        belongs_to :priority, optional: true, class_name: "Catalog::Item"
+
+        include Lesli::HasActivities
+        has_activities_with :lesli_support_ticket_activities
     end
 end

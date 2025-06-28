@@ -30,13 +30,8 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
-class CreateLesliSupportCatalogTypes < ActiveRecord::Migration[6.0]
+class CreateLesliSupportSettings < ActiveRecord::Migration[6.1]
     def change
-        create_table :lesli_support_catalog_types do |t|
-            t.string :name
-            t.datetime :deleted_at, index: true    
-            t.timestamps
-        end
-        add_reference(:lesli_support_catalog_types, :account, foreign_key: { to_table: :lesli_support_accounts })
+        create_table_lesli_shared_settings_10(:lesli_support)
     end
 end

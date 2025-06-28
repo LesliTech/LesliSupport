@@ -32,6 +32,6 @@ Building a better future, one line of code at a time.
 
 class CreateLesliSupportAccounts < ActiveRecord::Migration[7.0]
     def change
-        create_lesli_accounts_table_for_engine(:lesli_support)
+        create_table_lesli_shared_account_10(:lesli_support)
     end
 end

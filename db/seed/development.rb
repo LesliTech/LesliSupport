@@ -2,7 +2,7 @@
 
 Lesli
 
-Copyright (c) 2023, Lesli Technologies, S. A.
+Copyright (c) 2025, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 Lesli · Ruby on Rails SaaS Development Framework.
 
-Made with ♥ by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
 @contact  hello@lesli.tech
@@ -30,6 +30,7 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
+
 # · 
 require "json"
 
@@ -37,22 +38,24 @@ require "json"
 file = File.open(LesliSupport::Engine.root.join("db", "seed", "seeds.json")).read
 seeds = JSON.parse(file)
 
-
 current_user = Lesli::User.first
 
-current_user.account.support.catalog_workspaces.find_or_create_by!(:name => "Default", :default => true)
+catalog_types = current_user.account.support.catalogs.find_or_create_by!(:name => "Ticket Types")
+catalog_types.items.find_or_create_by!(:name => "Development")
+catalog_types.items.find_or_create_by!(:name => "Question")
+catalog_types.items.find_or_create_by!(:name => "Bug")
 
-current_user.account.support.catalog_types.find_or_create_by!(:name => "development")
-current_user.account.support.catalog_types.find_or_create_by!(:name => "question")
-current_user.account.support.catalog_types.find_or_create_by!(:name => "bug")
 
-current_user.account.support.catalog_categories.find_or_create_by!(:name => "user_namagement")
-current_user.account.support.catalog_categories.find_or_create_by!(:name => "role_namagement")
-current_user.account.support.catalog_categories.find_or_create_by!(:name => "account_namagement")
+catalog_categories = current_user.account.support.catalogs.find_or_create_by!(:name => "Ticket Categories")
+catalog_categories.items.find_or_create_by!(:name => "User Management")
+catalog_categories.items.find_or_create_by!(:name => "Role Management")
+catalog_categories.items.find_or_create_by!(:name => "Account Management")
 
-current_user.account.support.catalog_priorities.find_or_create_by!(:name => "low", :weight => 1)
-current_user.account.support.catalog_priorities.find_or_create_by!(:name => "medium", :weight => 2)
-current_user.account.support.catalog_priorities.find_or_create_by!(:name => "high", :weight => 3)
+catalog_priorities = current_user.account.support.catalogs.find_or_create_by!(:name => "Ticket Priorities")
+catalog_priorities.items.find_or_create_by!(:name => "Low", :order => 1)
+catalog_priorities.items.find_or_create_by!(:name => "Medium", :order => 2)
+catalog_priorities.items.find_or_create_by!(:name => "High", :order => 3)
+
 
 
 seeds["tickets"].each_with_index do |ticket, index|
@@ -65,11 +68,12 @@ seeds["tickets"].each_with_index do |ticket, index|
         :subject => ticket["subject"],
         :description => ticket["description"],
         :deadline => ticket_date,
-        :user => current_user,
-        :creator => current_user,
-        :catalog_workspace => current_user.account.support.catalog_workspaces.first,
-        :catalog_type => current_user.account.support.catalog_types.first,
-        :catalog_category => current_user.account.support.catalog_categories.first,
-        :catalog_priority => current_user.account.support.catalog_priorities.first
+        :agent => Lesli::User.first.account.users.sample,
+        :user => Lesli::User.first.account.users.sample,
+        
+        #:catalog_workspace => current_user.account.support.catalog_workspaces.first,
+        :type => catalog_types.items.sample,
+        :category => catalog_categories.items.sample,
+        :priority => catalog_priorities.items.sample
     })
 end 

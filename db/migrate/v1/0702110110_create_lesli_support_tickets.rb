@@ -2,7 +2,7 @@
 
 Lesli
 
-Copyright (c) 2023, Lesli Technologies, S. A.
+Copyright (c) 2025, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 Lesli · Ruby on Rails SaaS Development Framework.
 
-Made with ♥ by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
 @contact  hello@lesli.tech
@@ -48,52 +48,21 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
             t.timestamps
         end
 
-        add_reference(
-            :lesli_support_tickets, 
-            :catalog_workspace, 
-            foreign_key: { to_table: :lesli_support_catalog_workspaces }, 
-            index: { name: "support_tickets_catalog_workspaces" }
-        )
-
-        add_reference(
-            :lesli_support_tickets, 
-            :catalog_type, 
-            foreign_key: { to_table: :lesli_support_catalog_types}, 
-            index: { name: "support_tickets_catalog_types" }
-        )
-
-        add_reference(
-            :lesli_support_tickets, 
-            :catalog_category, 
-            foreign_key: { to_table: :lesli_support_catalog_categories }, 
-            index: { name: "support_tickets_catalog_categories" }
-        )
-
-        add_reference(
-            :lesli_support_tickets, 
-            :catalog_priority, 
-            foreign_key: { to_table: :lesli_support_catalog_priorities }, 
-            index: { name: "support_tickets_catalog_priorities" }
-        )
-
-=begin
-        add_reference(
-            :cloud_lesli_tickets, 
-            :status, 
-            foreign_key: { to_table: :cloud_help_workflow_statuses }, 
-            index: { name: "help_tickets_workflow_statuses" }
-        )
-        add_reference(
-            :cloud_lesli_tickets, 
-            :source, 
-            foreign_key: { to_table: :cloud_help_catalog_ticket_sources }, 
-            index: { name: "help_tickets_catalog_ticket_sources" }
-        )
-=end
+        add_reference(:lesli_support_tickets, :workspace, foreign_key: { to_table: :lesli_support_catalogs })
+        add_reference(:lesli_support_tickets, :type, foreign_key: { to_table: :lesli_support_catalog_items })
+        add_reference(:lesli_support_tickets, :category, foreign_key: { to_table: :lesli_support_catalog_items })
+        add_reference(:lesli_support_tickets, :priority, foreign_key: { to_table: :lesli_support_catalog_items })
         
-        add_reference(:lesli_support_tickets, :slas,    foreign_key: { to_table: :lesli_support_slas })
-        add_reference(:lesli_support_tickets, :user,    foreign_key: { to_table: :lesli_users }) # Assigned user
-        add_reference(:lesli_support_tickets, :creator, foreign_key: { to_table: :lesli_users }) # Creator user
+        #add_reference(:lesli_support_tickets, :slas,    foreign_key: { to_table: :lesli_support_slas })
+        add_reference(:lesli_support_tickets, :user,    foreign_key: { to_table: :lesli_users })
+        add_reference(:lesli_support_tickets, :agent,   foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :account, foreign_key: { to_table: :lesli_support_accounts })
+
+        create_table_lesli_item_actions_10(:lesli_support_tickets)
+        create_table_lesli_item_activities_10(:lesli_support_tickets)
+        create_table_lesli_item_discussions_10(:lesli_support_tickets)
+        create_table_lesli_item_subscribers_10(:lesli_support_tickets)
+        create_table_lesli_item_attachments_10(:lesli_support_tickets)
+        create_table_lesli_item_versions_10(:lesli_support_tickets)
     end
 end

@@ -30,14 +30,8 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
-class CreateLesliSupportCatalogPriorities < ActiveRecord::Migration[6.0]
+class CreateLesliSupportDashboards < ActiveRecord::Migration[6.0]
     def change
-        create_table :lesli_support_catalog_priorities do |t|
-            t.string :name
-            t.integer :weight
-            t.datetime :deleted_at, index: true    
-            t.timestamps
-        end
-        add_reference(:lesli_support_catalog_priorities, :account, foreign_key: { to_table: :lesli_support_accounts })
+        create_table_lesli_shared_dashboards_10(:lesli_support)
     end
 end

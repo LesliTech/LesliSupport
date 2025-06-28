@@ -40,6 +40,14 @@ module LesliSupport
 
         def show
             @ticket = @ticket.show
+            pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
+            pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
+            pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
+            pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
+            pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
+            pp d = current_user.account.support.tickets.first.activities.new({ title: "session_create", description:"atempt" })
+            d.save
+            pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
         end
 
         def new

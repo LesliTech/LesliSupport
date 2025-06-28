@@ -2,7 +2,7 @@
 
 Lesli
 
-Copyright (c) 2023, Lesli Technologies, S. A.
+Copyright (c) 2025, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 Lesli · Ruby on Rails SaaS Development Framework.
 
-Made with ♥ by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
 @contact  hello@lesli.tech
@@ -52,43 +52,19 @@ module LesliSupport
 
             return current_user.account.support.tickets.left_joins(
                 :user, 
-                :creator, 
-                :catalog_priority
+                :agent, 
+                :priority
             ).select(
                 :id,
                 :subject,
                 :deadline,
-                :creator_id,
-                :user_id,
+                Date2.new.db_column(:deadline),
                 "CONCAT_WS(' ', lesli_users.first_name, lesli_users.last_name) as user_name",
-                "CONCAT_WS(' ', creators_lesli_support_tickets.first_name, creators_lesli_support_tickets.last_name) as creator_name",
-                "lesli_support_tickets.updated_at",
-                "lesli_support_tickets.created_at",
-                "lesli_support_catalog_priorities.name as priority_name"
+                "CONCAT_WS(' ', agents_lesli_support_tickets.first_name, agents_lesli_support_tickets.last_name) as agent_name",
+                "lesli_support_catalog_items.name as priority_name"
             ).order(id: :desc)
             .page(query[:pagination][:page])
             .per(query[:pagination][:perPage])
-
-            # current_user.account.help.tickets.left_joins(
-            #     :priority, 
-            #     :type, 
-            #     :workspace, 
-            #     :category, 
-            #     :status, 
-            #     :assignments,
-            #     :assigned,
-            #     :user
-            # ).select(
-            #     :id,
-            #     :subject,
-            #     :deadline,
-            #     :assigned_id,
-            #     :user_id,
-            #     "CONCAT_WS(' ', users.first_name, users.last_name) as assigned_name",
-            #     "CONCAT_WS(' ', users_cloud_help_tickets.first_name, users_cloud_help_tickets.last_name) as user_name",
-            #     "cloud_help_tickets.updated_at",
-            #     "cloud_help_tickets.created_at"
-            # )
         end
 
         def create(ticket_params)

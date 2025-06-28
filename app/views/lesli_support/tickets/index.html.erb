@@ -1,5 +1,4 @@
-<%
-=begin
+<%#
 
 Lesli
 
@@ -29,19 +28,27 @@ Building a better future, one line of code at a time.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
-=end
 %>
 
 <%
 columns = [{
-    label: "id",
+    label: "ID",
     field: "id"
 }, {
-    label: "subject",
+    label: "Subject",
     field: "subject"
 }, {
-    label: "deadline",
-    field: "deadline"
+    label: "User",
+    field: "user_name"
+}, {
+    label: "Agent",
+    field: "agent_name"
+}, {
+    label: "Priority",
+    field: "priority_name"
+}, {
+    label: "Deadline",
+    field: "deadline_string"
 }]
 %>
 
@@ -54,5 +61,5 @@ columns = [{
         :columns => columns,
         :records => @tickets.dig(:records),
         link: -> (ticket) { ticket_path(ticket.id) }
-    )) %>s
+    )) %>
 <% end %>

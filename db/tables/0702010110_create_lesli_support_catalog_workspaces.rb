@@ -30,8 +30,14 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
-class CreateLesliSupportDashboards < ActiveRecord::Migration[6.0]
+class CreateLesliSupportCatalogWorkspaces < ActiveRecord::Migration[6.0]
     def change
-        create_lesli_dashboards_table_for_engine(:lesli_support)
+        # create_table :lesli_support_catalog_workspaces do |t|
+        #     t.string :name
+        #     t.boolean :default, default: false
+        #     t.datetime :deleted_at, index: true    
+        #     t.timestamps
+        # end
+        # add_reference(:lesli_support_catalog_workspaces, :account, foreign_key: { to_table: :lesli_support_accounts })
     end
 end
