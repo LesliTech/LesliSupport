@@ -33,7 +33,7 @@ Building a better future, one line of code at a time.
 module LesliSupport
     class Account < ApplicationRecord
         belongs_to :account, class_name: "Lesli::Account"
-        has_many :catalogs
+        has_many :catalogs, class_name: "Catalog"
         has_many :tickets
 
         after_create :initialize_account

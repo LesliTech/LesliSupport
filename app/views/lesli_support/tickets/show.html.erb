@@ -2,17 +2,16 @@
 
     <%= render(LesliView::Components::Header.new(@ticket.subject)) %>
 
-    <%= render LesliView::Elements::Tabs.new() do |tabs| %>
+    <%= render LesliView::Components::Tabs.new() do |tabs| %>
 
         <% tabs.with_tab(id:"information", title:"information", icon:"info_outline") do %>
             <%= render "form" %>
         <% end %>
 
         <% tabs.with_tab(id:"discussions", title:"Discussions", icon:"forum") do %>
-            <%= render "form" %>
+            <%#= render "form" %>
         <% end %>
     <% end %>
 
     <%#= dd(@ticket) %>
-
 <% end %>

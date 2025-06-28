@@ -93,26 +93,26 @@ module LesliSupport
 
         def show()
             return current_user.account.support.tickets.left_joins(
-                :user, :creator
-            ).select(
-                :id,
-                :subject,
-                :description,
-                :reference_url,
-                :deadline,
-                :started_at,
-                :completed_at,
-                :hours_worked,
-                :creator_id,
-                :user_id,
-                :catalog_workspace_id, 
-                :catalog_type_id,
-                :catalog_category_id,
-                :catalog_priority_id,
-                "CONCAT_WS(' ', lesli_users.first_name, lesli_users.last_name) as user_name",
-                "CONCAT_WS(' ', creators_lesli_support_tickets.first_name, creators_lesli_support_tickets.last_name) as creator_name",
-                "lesli_support_tickets.updated_at",
-                "lesli_support_tickets.created_at"
+                :user, :agent
+            # ).select(
+            #     :id,
+            #     :subject,
+            #     :description,
+                # :reference_url,
+                # :deadline,
+                # :started_at,
+                # :completed_at,
+                # :hours_worked,
+                # :creator_id,
+                # :user_id,
+                # :catalog_workspace_id, 
+                # :catalog_type_id,
+                # :catalog_category_id,
+                # :catalog_priority_id,
+                # "CONCAT_WS(' ', lesli_users.first_name, lesli_users.last_name) as user_name",
+                # "CONCAT_WS(' ', creators_lesli_support_tickets.first_name, creators_lesli_support_tickets.last_name) as creator_name",
+                # "lesli_support_tickets.updated_at",
+                # "lesli_support_tickets.created_at"
             ).where("lesli_support_tickets.id = ?", self.resource.id).first
         end
 

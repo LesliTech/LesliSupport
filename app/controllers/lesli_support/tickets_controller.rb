@@ -2,7 +2,7 @@
 
 Lesli
 
-Copyright (c) 2023, Lesli Technologies, S. A.
+Copyright (c) 2025, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 Lesli · Ruby on Rails SaaS Development Framework.
 
-Made with ♥ by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
 @contact  hello@lesli.tech
@@ -45,8 +45,8 @@ module LesliSupport
             pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
             pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
             pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
-            pp d = current_user.account.support.tickets.first.activities.new({ title: "session_create", description:"atempt" })
-            d.save
+            #pp d = current_user.account.support.tickets.first.activities.new({ title: "session_create", description:"atempt" })
+            #d.save
             pp "---   ---   ---   ---   ---   ---   ---   ---   ---"
         end
 
@@ -68,7 +68,15 @@ module LesliSupport
 
         def update
 
-            respond_with_successful(@ticket.update(ticket_params))
+            if @ticket.update(ticket_params)
+                success("Ticket updated successfully!")
+            else 
+                #respond_with_error(@account.errors)
+            end
+
+
+            #respond_with_successful(@ticket.update(ticket_params))
+
 
             # return respond_with_not_found unless @ticket
             # return respond_with_unauthorized unless @ticket.is_editable_by?(current_user, bypass_status: true)

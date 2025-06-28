@@ -1,6 +1,19 @@
+
+
 <%= form_with(model: @ticket, builder: LesliView::Forms::Builder) do |form| %>
     <%= form.fieldset do %>
         <%= form.field_control(:subject) %>
+        <div class="columns">
+            <div class="column">
+                <%= form.field_control_select(:type_id, current_user.account.support.catalogs.items_for("Ticket Types").pluck(:name, :id)) %>
+            </div>
+            <div class="column">
+                <%= form.field_control_select(:category_id, current_user.account.support.catalogs.items_for("Ticket Categories").pluck(:name, :id)) %>
+            </div>
+            <div class="column">
+                <%= form.field_control_select(:priority_id, current_user.account.support.catalogs.items_for("Ticket Priorities").pluck(:name, :id)) %>
+            </div>
+        </div>
         <%= form.field_control(:description) %>
         <%#= form.field_control(:email) %>
         <%#= form.field_control(:first_name) %>
