@@ -148,11 +148,11 @@ module LesliSupport
 
         def ticket_params
             params.require(:ticket).permit(
-                :catalog_type_id,
-                #:catalog_source_id,
-                :catalog_category_id,
-                :catalog_priority_id,
-                :catalog_workspace_id,
+                :type_id,
+                #:source_id,
+                :category_id,
+                :priority_id,
+                :workspace_id,
 
                 :subject,
                 :description,
@@ -162,12 +162,6 @@ module LesliSupport
                 :started_at,
                 :completed_at,
                 :hours_worked
-            )
-        end
-
-        def completed_ticket_params
-            params.require(:ticket).permit(
-                :cloud_help_workflow_statuses_id
             )
         end
     end

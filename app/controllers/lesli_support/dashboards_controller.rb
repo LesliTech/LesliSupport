@@ -32,5 +32,12 @@ Building a better future, one line of code at a time.
 
 module LesliSupport
     class DashboardsController < Lesli::Shared::DashboardsController
+        def show 
+            @dashboard = { 
+                :id => 1, 
+                :name => "Test",
+                :components => ["ticket-count","ticket-priority","ticket-category","ticket-count"]
+            }
+        end
     end
 end

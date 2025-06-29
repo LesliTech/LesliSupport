@@ -1,0 +1,13 @@
+<style>
+.dashboard-component-ticket-count p {
+    font-size: 4rem;
+    font-weight: 600;
+}
+</style>
+<div class="column dashboard-component-ticket-count">
+    <div class="box">
+        <p class="has-text-centered py-6">
+            <%= current_user.account.support.tickets.count %>
+        </p>
+    </div>
+</div>
