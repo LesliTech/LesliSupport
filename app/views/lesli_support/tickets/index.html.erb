@@ -54,7 +54,7 @@ columns = [{
 
 <%= render(LesliView::Layout::Container.new("support-tickets")) do %>
 
-    <%= render(LesliView::Components::Header.new("Tickets")) %>
+    <%= render(LesliView::Components::Header.new("Tickets", new_path:new_ticket_path)) %>
     <%= render(LesliView::Components::Toolbar.new()) %>
 
     <%= render(LesliView::Elements::Table.new(

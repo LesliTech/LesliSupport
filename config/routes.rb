@@ -31,9 +31,6 @@ Building a better future, one line of code at a time.
 =end
 
 LesliSupport::Engine.routes.draw do
-  namespace :catalog do
-    resources :items
-  end
 
     Lesli::Routing.mount_dashboard_for(LesliSupport)
 

@@ -6,6 +6,7 @@
 
 07.02.00.10. support/settings 
 07.02.00.20. support/catalogs 
+07.02.00.21. support/catalog/items
 07.02.00.30. support/dashboards 
 
 07.02.00.50. support/workflows
