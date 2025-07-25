@@ -54,9 +54,9 @@ end
 
 ### Get in touch with Lesli
 
+* [X: @LesliTech](https://x.com/LesliTech)
 * [Email: hello@lesli.tech](hello@lesli.tech)
 * [Website: https://www.lesli.tech](https://www.lesli.tech)
-* [Twitter: @LesliTech](https://twitter.com/LesliTech)
 
 
 ### License
@@ -78,8 +78,12 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 <hr />
 <br />
+<br />
 
 <div align="center" class="has-text-centered">
     <img width="200" alt="Lesli logo" src="https://cdn.lesli.tech/lesli/brand/app-logo.svg" />
     <h4 align="center" class="mt-0">Ruby on Rails SaaS Development Framework.</h4>
 </div>
+
+<br />
+<br />

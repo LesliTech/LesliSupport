@@ -1,5 +1,5 @@
 
-# 07.02 LesliSupport Database
+# 07.02 Lesli Support Database
 
 ```plaintext
 07.02.00.01. support/account  

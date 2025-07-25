@@ -1,1 +1,2 @@
 <%= navigation_for("engines", "support", "about") %>
+<%= navigation_for("engines", "support", "tickets", order: ["list", "view", "create"]) %>

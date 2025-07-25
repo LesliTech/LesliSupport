@@ -11,7 +11,7 @@ tickets = current_user.account.support.tickets
     .group('lesli_support_catalog_items.name')
     .count
 %>
-<div class="column dashboard-component-ticket-count">
+<div class="dashboard-component-ticket-count">
     <%= render(LesliView::Charts::Line.new(
         title:"Categories",
         labels: tickets.map{ |i| i[0] },

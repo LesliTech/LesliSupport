@@ -16,3 +16,5 @@ Rails.application.routes.draw do
     mount LesliBabel::Engine => "/babel"
 end
 ```
+
+<%= partial("installation") %>
