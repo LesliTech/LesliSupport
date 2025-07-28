@@ -2,7 +2,7 @@
 
 Lesli
 
-Copyright (c) 2023, Lesli Technologies, S. A.
+Copyright (c) 2025, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 Lesli · Ruby on Rails SaaS Development Framework.
 
-Made with ♥ by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
 @contact  hello@lesli.tech
@@ -32,28 +32,24 @@ Building a better future, one line of code at a time.
 
 class CreateLesliSupportSlas < ActiveRecord::Migration[6.0]
     def change
-        # create_table :lesli_support_slas do |t|
-        #     t.string    :name
-        #     t.integer   :expected_response_time
-        #     t.integer   :expected_resolution_time
-        #     t.float     :price_per_hour
-        #     t.text      :body
-        #     t.text      :provider_repercussions
-        #     t.text      :client_repercussions
-        #     t.text      :exceptions
-        #     t.boolean   :default, default: false
+        create_table :lesli_support_slas do |t|
+            t.string    :name
+            t.integer   :expected_response_time
+            t.integer   :expected_resolution_time
+            t.float     :price_per_hour
+            t.text      :body
+            t.text      :provider_repercussions
+            t.text      :client_repercussions
+            t.text      :exceptions
+            t.boolean   :default, default: false
 
-        #     # Main user
-        #     t.bigint    :user_main_id
+            # acts_as_paranoid
+            t.datetime :deleted_at, index: true
+            t.timestamps
+        end
 
-        #     # acts_as_paranoid
-        #     t.datetime :deleted_at, index: true
-
-        #     t.timestamps
-        # end
-
-        # add_reference(:lesli_support_slas, :accounts, foreign_key: { to_table: :lesli_support_accounts })
-        # add_reference(:lesli_support_slas, :users, foreign_key: { to_table: :lesli_users })
-        # #add_reference(:lesli_support_slas, :statuses,  foreign_key: true, index: { name: "help_slas_workflow_statuses" })
+        add_reference(:lesli_support_slas, :accounts, foreign_key: { to_table: :lesli_support_accounts })
+        add_reference(:lesli_support_slas, :users, foreign_key: { to_table: :lesli_users })
+        #add_reference(:lesli_support_slas, :statuses,  foreign_key: true, index: { name: "help_slas_workflow_statuses" })
     end
 end

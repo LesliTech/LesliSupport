@@ -48,12 +48,12 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
             t.timestamps
         end
 
-        add_reference(:lesli_support_tickets, :workspace, foreign_key: { to_table: :lesli_support_catalogs })
-        add_reference(:lesli_support_tickets, :type, foreign_key: { to_table: :lesli_support_catalog_items })
+        add_reference(:lesli_support_tickets, :sla,      foreign_key: { to_table: :lesli_support_slas })
+        add_reference(:lesli_support_tickets, :workspace,foreign_key: { to_table: :lesli_support_catalogs })
+        add_reference(:lesli_support_tickets, :type,     foreign_key: { to_table: :lesli_support_catalog_items })
         add_reference(:lesli_support_tickets, :category, foreign_key: { to_table: :lesli_support_catalog_items })
         add_reference(:lesli_support_tickets, :priority, foreign_key: { to_table: :lesli_support_catalog_items })
-        
-        #add_reference(:lesli_support_tickets, :slas,    foreign_key: { to_table: :lesli_support_slas })
+
         add_reference(:lesli_support_tickets, :user,    foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :agent,   foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :account, foreign_key: { to_table: :lesli_support_accounts })
