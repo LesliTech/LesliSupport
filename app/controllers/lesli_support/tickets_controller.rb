@@ -43,6 +43,7 @@ module LesliSupport
         end
 
         def new
+            @ticket = Ticket.new
         end
 
         def edit
@@ -51,9 +52,17 @@ module LesliSupport
         def create
             ticket = TicketService.new(current_user, query).create(ticket_params)
 
+            @ticket = ticket.result
             if ticket.successful?
-                respond_with_successful(ticket.result)
-            else 
+                respond_to do |format|
+                    format.html { redirect_to ticket_path(@ticket.id) } 
+                    format.turbo_stream { 
+                        success("ticket created")
+                        respond_with_redirection(ticket_path(@ticket.id)) 
+                        
+                    }
+                end
+            else
                 respond_with_error(ticket.errors)
             end
         end
@@ -61,7 +70,12 @@ module LesliSupport
         def update
 
             if @ticket.update(ticket_params)
-                success("Ticket updated successfully!")
+                respond_to do |format|
+                    format.html { redirect_to ticket_path(@ticket.id) } 
+                    format.turbo_stream {
+                        respond_with_notification_success("Ticket updated successfully!")   
+                    }
+                end
             else 
                 #respond_with_error(@account.errors)
             end

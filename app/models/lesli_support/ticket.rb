@@ -40,7 +40,7 @@ module LesliSupport
         belongs_to :category, optional: true, class_name: "Catalog::Item"
         belongs_to :priority, optional: true, class_name: "Catalog::Item"
 
-        include Lesli::HasActivities
-        has_activities_with :lesli_support_ticket_activities
+        has_many :activities
+        has_many :discussions
     end
 end

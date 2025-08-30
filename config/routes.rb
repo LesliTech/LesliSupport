@@ -35,11 +35,10 @@ LesliSupport::Engine.routes.draw do
     Lesli::Routing.mount_dashboard_for(LesliSupport)
 
     resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
-        collection do 
-            get :options
-        end
-        scope module: :ticket do
-            resources :discussions, only: [:index, :create]
-        end
+        #resources :discussions
+        # scope module: :ticket do
+        #     resources :discussions #, only: [:index, :create]
+        # end
+        resources :discussions, module: :ticket
     end
 end

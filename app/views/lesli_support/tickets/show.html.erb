@@ -1,17 +1,15 @@
-<%= render(LesliView::Layout::Container.new("support-ticket")) do %>
+<%= render(LesliView::Layout::Container.new("support-tickets-#{@ticket.id}")) do %>
 
     <%= render(LesliView::Components::Header.new(@ticket.subject)) %>
 
-    <%= render LesliView::Components::Tabs.new() do |tabs| %>
+    <%= render LesliView::Components::Tabs.new(active_tab: "information") do |tabs| %>
 
         <% tabs.with_tab(id:"information", title:"information", icon:"info") do %>
             <%= render "form" %>
         <% end %>
 
         <% tabs.with_tab(id:"discussions", title:"Discussions", icon:"forum") do %>
-            <%#= render "form" %>
+            <%= render LesliView::Items::Discussions.new(@ticket, ticket_discussions_path(@ticket)) %>
         <% end %>
     <% end %>
-
-    <%#= dd(@ticket) %>
 <% end %>

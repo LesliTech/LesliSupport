@@ -1,5 +1,6 @@
 
 
+<%#= form_with(model: @ticket, builder: LesliView::Forms::Builder, data: { turbo: @ticket.id.present? }) do |form| %>
 <%= form_with(model: @ticket, builder: LesliView::Forms::Builder) do |form| %>
     <%= form.fieldset do %>
         <%= form.field_control(:subject) %>

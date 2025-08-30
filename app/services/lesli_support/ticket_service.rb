@@ -71,7 +71,7 @@ module LesliSupport
 
             ticket = current_user.account.support.tickets.new(ticket_params)
             #ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
-            ticket.creator = current_user
+            ticket.agent = current_user
             ticket.user = current_user
 
             unless ticket_params.dig(:started_at)
