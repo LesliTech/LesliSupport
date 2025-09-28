@@ -33,6 +33,7 @@
 
 # Development dependencies, packages, gems and tools
 .DS_Store
+test/dummy/log
 app2
 
 # Ignore Lesli gems
