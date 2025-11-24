@@ -1,22 +1,8 @@
-<style>
-.dashboard-component-ticket-count p {
-    font-size: 4rem;
-    font-weight: 600;
-}
-</style>
-
 <%
 tickets = current_user.account.support.tickets
     .joins(:category)
     .group('lesli_support_catalog_items.name')
     .count
 %>
-<div class="dashboard-component-ticket-count">
-    <%= render(LesliView::Charts::Line.new(
-        title:"Categories",
-        labels: tickets.map{ |i| i[0] },
-        serie: tickets.map{ |i| i[1] },
-        height: "132px",
-        compact: true
-    ))%>
-</div>
+
+<%= render(LesliView::Widgets::Chart.new('Priorities', tickets, type: :line))%>

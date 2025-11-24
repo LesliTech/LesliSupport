@@ -32,13 +32,9 @@ Building a better future, one line of code at a time.
 
 LesliSupport::Engine.routes.draw do
 
-    Lesli::Routing.mount_dashboard_for(LesliSupport)
+    Lesli::Router.mount_dashboard_for(LesliSupport)
 
     resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
-        #resources :discussions
-        # scope module: :ticket do
-        #     resources :discussions #, only: [:index, :create]
-        # end
         resources :discussions, module: :ticket
     end
 end

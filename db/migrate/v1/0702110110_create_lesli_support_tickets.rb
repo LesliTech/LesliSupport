@@ -54,7 +54,7 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
         add_reference(:lesli_support_tickets, :priority,  foreign_key: { to_table: :lesli_support_catalog_items })
         add_reference(:lesli_support_tickets, :workspace, foreign_key: { to_table: :lesli_support_catalog_items })
 
-        add_reference(:lesli_support_tickets, :status, foreign_key: { to_table: :lesli_support_workflow_statuses })
+        #add_reference(:lesli_support_tickets, :status, foreign_key: { to_table: :lesli_support_workflow_statuses })
 
         add_reference(:lesli_support_tickets, :user,    foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :agent,   foreign_key: { to_table: :lesli_users })
