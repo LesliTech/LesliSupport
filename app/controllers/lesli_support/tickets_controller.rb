@@ -54,15 +54,21 @@ module LesliSupport
 
             @ticket = ticket.result
             if ticket.successful?
-                respond_to do |format|
-                    format.html { redirect_to ticket_path(@ticket.id) } 
-                    format.turbo_stream do
-                        respond_with_stream(
-                            success('ticket creado de forma exitosass'),
-                            stream_redirection(ticket_path(@ticket.id))
-                        )
-                    end 
-                end
+                respond_with_successful(
+                    turbo_stream: (
+                        success('ticket creado de forma exitosass'),
+                        stream_redirection(ticket_path(@ticket.id))
+                    )
+                )
+                # respond_to do |format|
+                #     format.html { redirect_to ticket_path(@ticket.id) } 
+                #     format.turbo_stream do
+                #         respond_with_stream(
+                #             success('ticket creado de forma exitosass'),
+                #             stream_redirection(ticket_path(@ticket.id))
+                #         )
+                #     end 
+                # end
             else
                 respond_with_error(ticket.errors)
             end
