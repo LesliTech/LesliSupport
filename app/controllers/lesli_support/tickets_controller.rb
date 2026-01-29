@@ -35,7 +35,7 @@ module LesliSupport
         before_action :set_ticket, only: [:show, :update, :destroy, :images]
 
         def index
-            @tickets = respond_as_pagination(TicketService.new(current_user, query).index)
+            @tickets = respond_with_pagination(TicketService.new(current_user, query).index)
         end
 
         def show
@@ -54,23 +54,15 @@ module LesliSupport
 
             @ticket = ticket.result
             if ticket.successful?
-                respond_with_successful(
-                    turbo_stream: (
-                        success('ticket creado de forma exitosass'),
-                        stream_redirection(ticket_path(@ticket.id))
-                    )
+                success('ticket creado de forma exitosass')
+                respond_with_lesli(
+                    :html => redirect_to(ticket_path(@ticket.id)),
+                    :turbo => stream_redirection(ticket_path(@ticket.id))
                 )
-                # respond_to do |format|
-                #     format.html { redirect_to ticket_path(@ticket.id) } 
-                #     format.turbo_stream do
-                #         respond_with_stream(
-                #             success('ticket creado de forma exitosass'),
-                #             stream_redirection(ticket_path(@ticket.id))
-                #         )
-                #     end 
-                # end
             else
-                respond_with_error(ticket.errors)
+                respond_with_lesli(
+                    :turbo => ticket.errors_as_sentence
+                )
             end
         end
 
