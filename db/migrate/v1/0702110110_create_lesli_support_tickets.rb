@@ -33,6 +33,7 @@ Building a better future, one line of code at a time.
 class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
     def change
         create_table :lesli_support_tickets do |t|
+            t.string  :number 
             t.string  :subject 
             t.text    :description
             
@@ -40,9 +41,12 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
             t.decimal :hours_worked
             t.string  :reference_url
 
-            t.datetime :deadline
-            t.datetime :started_at
-            t.datetime :completed_at
+            t.string   :channel
+            t.datetime :opened_at, index: true
+            t.datetime :solved_at, index: true
+            t.datetime :closed_at, index: true
+            t.datetime :deadline_at, index: true
+            t.datetime :last_response_at, index: true
 
             t.datetime :deleted_at, index: true
             t.timestamps
@@ -50,15 +54,16 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
 
         add_reference(:lesli_support_tickets, :sla,       foreign_key: { to_table: :lesli_support_slas })
         add_reference(:lesli_support_tickets, :type,      foreign_key: { to_table: :lesli_support_catalog_items })
+        #add_reference(:lesli_support_tickets, :status,    foreign_key: { to_table: :lesli_support_workflow_statuses })
         add_reference(:lesli_support_tickets, :category,  foreign_key: { to_table: :lesli_support_catalog_items })
         add_reference(:lesli_support_tickets, :priority,  foreign_key: { to_table: :lesli_support_catalog_items })
         add_reference(:lesli_support_tickets, :workspace, foreign_key: { to_table: :lesli_support_catalog_items })
 
-        #add_reference(:lesli_support_tickets, :status, foreign_key: { to_table: :lesli_support_workflow_statuses })
-
         add_reference(:lesli_support_tickets, :user,    foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :agent,   foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :account, foreign_key: { to_table: :lesli_support_accounts })
+
+        add_index(:lesli_support_tickets, :number, unique: true)
 
         create_table_lesli_item_actions_10(:lesli_support_tickets)
         create_table_lesli_item_activities_10(:lesli_support_tickets)

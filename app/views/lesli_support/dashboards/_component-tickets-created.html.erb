@@ -1,0 +1,10 @@
+<%
+group = Date2.new.date.db_column(:created_at)
+tickets = current_user.account.support.tickets
+    .group(group.sub('as created_at_string',''))
+    .order(created_at: :desc)
+    .limit(10)
+    .count
+%>
+
+<%= render(LesliView::Widgets::Chart.new('Priorities', tickets, type: :line)) %>

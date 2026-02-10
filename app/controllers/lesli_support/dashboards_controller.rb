@@ -32,8 +32,5 @@ Building a better future, one line of code at a time.
 
 module LesliSupport
     class DashboardsController < Lesli::Shared::DashboardsController
-        def show 
-            @dashboard = Dashboard.first
-        end
     end
 end

@@ -1,0 +1,5 @@
+
+<%= render(LesliView::Widgets::Count.new(
+    'Total tickets', 
+    current_user.account.support.tickets.where(:closed_at => nil).count)
+) %>

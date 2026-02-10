@@ -56,7 +56,7 @@ module LesliSupport
             if ticket.successful?
                 success('ticket creado de forma exitosass')
                 respond_with_lesli(
-                    :html => redirect_to(ticket_path(@ticket.id)),
+                    #:html => redirect_to(ticket_path(@ticket.id)),
                     :turbo => stream_redirection(ticket_path(@ticket.id))
                 )
             else
@@ -69,41 +69,18 @@ module LesliSupport
         def update
 
             if @ticket.update(ticket_params)
-                respond_to do |format|
-                    format.html { redirect_to ticket_path(@ticket.id) } 
-                    format.turbo_stream {
-                        respond_with_notification_success("Ticket updated successfully!")   
-                    }
-                end
+                log(
+                    subject: @invite,
+                    description: "Ticket updated successfully"
+                )
+                respond_with_lesli(
+                    :turbo => stream_notification_success("Ticket updated successfully")
+                ) 
             else 
-                #respond_with_error(@account.errors)
+                respond_with_lesli(
+                    :turbo => stream_notification_danger(@invite.errors.full_messages.to_sentence)
+                ) 
             end
-
-
-            #respond_with_successful(@ticket.update(ticket_params))
-
-
-            # return respond_with_not_found unless @ticket
-            # return respond_with_unauthorized unless @ticket.is_editable_by?(current_user, bypass_status: true)
-
-            # # When the ticket is closed, the only available field for update is the status
-            # update_params = ticket_params
-            # if ["completed_successfully", "completed_unsuccessfully"].include? @ticket.status&.status_type
-            #     update_params = completed_ticket_params
-            # end
-
-            # if @ticket.check_workflow_transitions(current_user, update_params)
-            #     ticket_update_response = TicketServices.update(current_user, @ticket, update_params)
-
-            #     @ticket = ticket_update_response.payload
-            #     if ticket_update_response.successful?
-            #         respond_with_successful(@ticket.show(current_user, @query))
-            #     else
-            #         respond_with_error(@ticket.errors.full_messages.to_sentence)
-            #     end
-            # else
-            #     respond_with_error(@ticket.errors.full_messages.to_sentence)
-            # end
         end
 
         def destroy

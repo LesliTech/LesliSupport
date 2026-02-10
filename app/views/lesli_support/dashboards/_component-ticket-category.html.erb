@@ -1,8 +1,0 @@
-<%
-tickets = current_user.account.support.tickets
-    .joins(:category)
-    .group('lesli_support_catalog_items.name')
-    .count
-%>
-
-<%= render(LesliView::Widgets::Chart.new('Priorities', tickets, type: :line))%>

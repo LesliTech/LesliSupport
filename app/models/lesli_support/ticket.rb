@@ -2,7 +2,7 @@
 
 Lesli
 
-Copyright (c) 2023, Lesli Technologies, S. A.
+Copyright (c) 2026, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ along with this program. If not, see http://www.gnu.org/licenses/.
 
 Lesli · Ruby on Rails SaaS Development Framework.
 
-Made with ♥ by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
 @contact  hello@lesli.tech
@@ -42,5 +42,26 @@ module LesliSupport
 
         has_many :activities
         has_many :discussions
+        has_many :assignments
+
+        before_create :before_create_ticket
+
+        def before_create_ticket
+            self.subject = self.subject.titleize
+            self.number ||= loop do
+                candidate = generate_ticket_number
+                break candidate unless Ticket.exists?(number: candidate)
+            end
+        end
+
+        def generate_ticket_number
+            prefix = Lesli.config.support.dig(:prefix)
+            # No se usa 1 ni 0 para evitar ambigüedad
+            # dicta números por teléfono los lee rápido
+            # con esto evitamos "¿Eso es: uno ele cero O?"
+            charset = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
+            code = Array.new(5) { charset.chars.sample }.join
+            "#{prefix}-#{code}"
+        end
     end
 end

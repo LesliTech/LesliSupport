@@ -23,4 +23,5 @@
 07.02.11.05. support/ticket/subscribers 
 07.02.11.06. support/ticket/attachments 
 07.02.11.07. support/ticket/versions
+07.02.11.10. support/ticket/assignments
 ```

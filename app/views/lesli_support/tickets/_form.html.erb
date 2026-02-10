@@ -1,6 +1,4 @@
 
-
-<%#= form_with(model: @ticket, builder: LesliView::Forms::Builder, data: { turbo: @ticket.id.present? }) do |form| %>
 <%= form_with(model: @ticket, builder: LesliView::Forms::Builder) do |form| %>
     <%= form.fieldset do %>
         <%= form.field_control(:subject) %>
@@ -15,14 +13,7 @@
                 <%= form.field_control_select(:priority_id, current_user.account.support.catalogs.items_for("Ticket Priorities").pluck(:name, :id)) %>
             </div>
         </div>
-        <%= form.field_text_editor(:description) %>
-
-        
-
-        <%#= form.field_control(:email) %>
-        <%#= form.field_control(:first_name) %>
-        <%#= form.field_control(:last_name) %>
-        <%#= form.field_control(:telephone) %>
+        <%= form.field_control_textarea(:description, label:false) %>
         <hr/>
         <%= form.field_control_submit %>
     <% end %>        

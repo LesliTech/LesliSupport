@@ -60,20 +60,24 @@ catalog_priorities.items.find_or_create_by!(:name => "High", :order => 3)
 
 seeds["tickets"].each_with_index do |ticket, index|
 
-    # Start tickets from 10 days ago
-    ticket_date = (index - 10).days.from_now 
+    # Determine which day this ticket belongs to
+    day = ((Math.sqrt(8 * index + 1) - 1) / 2).floor + 1
+
+    # Start from 10 days ago
+    ticket_date = day.days.ago
 
     #
     current_user.account.support.tickets.create!({
         :subject => ticket["subject"],
         :description => ticket["description"],
-        :deadline => ticket_date,
+        :deadline_at => ticket_date,
         :agent => Lesli::User.first.account.users.sample,
         :user => Lesli::User.first.account.users.sample,
         
         #:catalog_workspace => current_user.account.support.catalog_workspaces.first,
         :type => catalog_types.items.sample,
         :category => catalog_categories.items.sample,
-        :priority => catalog_priorities.items.sample
+        :priority => catalog_priorities.items.sample,
+        :created_at => ticket_date
     })
 end 

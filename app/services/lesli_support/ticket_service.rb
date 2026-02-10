@@ -37,17 +37,6 @@ module LesliSupport
             super(current_user.account.support.tickets.find_by(id: ticket_id))
         end
 
-        def index_with_deadline 
-            return current_user.account.support.tickets
-            .where.not(:deadline => nil )
-            .select(
-                :id,
-                :subject,
-                :deadline,
-                :description
-            ).order(id: :asc)
-        end
-
         def index
 
             return current_user.account.support.tickets.left_joins(
@@ -56,9 +45,9 @@ module LesliSupport
                 :priority
             ).select(
                 :id,
+                :number,
                 :subject,
-                :deadline,
-                Date2.new.db_column(:deadline),
+                Date2.new.db_column(:deadline_at),
                 "CONCAT_WS(' ', lesli_users.first_name, lesli_users.last_name) as user_name",
                 "CONCAT_WS(' ', agents_lesli_support_tickets.first_name, agents_lesli_support_tickets.last_name) as agent_name",
                 "lesli_support_catalog_items.name as priority_name"

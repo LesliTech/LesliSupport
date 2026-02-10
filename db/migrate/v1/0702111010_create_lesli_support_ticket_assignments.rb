@@ -1,8 +1,8 @@
-<%#
+=begin
 
 Lesli
 
-Copyright (c) 2025, Lesli Technologies, S. A.
+Copyright (c) 2026, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -28,6 +28,17 @@ Building a better future, one line of code at a time.
 
 // · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
-%>
+=end
 
-<%= render("/lesli/shared/dashboards/edit") %>
+class CreateLesliSupportTicketAssignments < ActiveRecord::Migration[8.0]
+    def change
+        create_table :lesli_support_ticket_assignments do |t|
+            t.datetime :assigned_at
+            t.datetime :unassigned_at
+            t.timestamps
+        end
+
+        add_reference(:lesli_support_ticket_assignments, :ticket, foreign_key: { to_table: :lesli_support_tickets })
+        add_reference(:lesli_support_ticket_assignments, :user, foreign_key: { to_table: :lesli_users })
+    end
+end
