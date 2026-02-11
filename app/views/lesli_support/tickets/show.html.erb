@@ -11,5 +11,9 @@
         <% tabs.with_tab(id:"ticket-discussions", title:"Discussions", icon:"forum") do %>
             <%= render(LesliView::Items::Discussions.new(@ticket, ticket_discussions_path(@ticket))) %>
         <% end %>
+
+        <% tabs.with_tab(id:"ticket-activities", title:"Activities", icon:"search_activity") do %>
+            <%= render(LesliView::Items::Activities.new(@ticket)) %>
+        <% end %>
     <% end %>
 <% end %>

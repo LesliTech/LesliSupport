@@ -44,6 +44,9 @@ module LesliSupport
         has_many :discussions
 
         before_create :before_create_ticket
+        after_save :after_save_ticket
+
+        private
 
         def before_create_ticket
             self.subject = self.subject.titleize
@@ -61,6 +64,36 @@ module LesliSupport
             charset = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
             code = Array.new(5) { charset.chars.sample }.join
             "#{prefix}-#{code}"
+        end
+
+        def after_save_ticket
+            if self.saved_change_to_owner_id?
+                self.activities.create(
+                    description: "Agent assigned #{self.owner.name}",
+                    metadata: { owner_id: self.owner.id }
+                )
+            end 
+
+            if self.saved_change_to_type_id?
+                self.activities.create(
+                    description: "Ticket type updated to #{self.type.name}",
+                    metadata: { type_id: self.type.id }
+                )
+            end 
+
+            if self.saved_change_to_category_id?
+                self.activities.create(
+                    description: "Ticket category updated to #{self.category.name}",
+                    metadata: { category_id: self.category.id }
+                )
+            end 
+
+            if self.saved_change_to_priority_id?
+                self.activities.create(
+                    description: "Ticket priority updated to #{self.priority.name}",
+                    metadata: { priority_id: self.priority.id }
+                )
+            end 
         end
     end
 end

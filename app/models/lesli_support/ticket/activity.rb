@@ -1,4 +1,4 @@
 module LesliSupport
-    class Ticket::Activity < Lesli::Items::Activity
-    end
+  class Ticket::Activity < ApplicationRecord
+  end
 end

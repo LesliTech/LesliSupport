@@ -31,6 +31,9 @@ Building a better future, one line of code at a time.
 =end
 
 LesliSupport::Engine.routes.draw do
+  namespace :ticket do
+    resources :activities
+  end
 
     Lesli::Router.mount_routes_for(LesliSupport)
 
