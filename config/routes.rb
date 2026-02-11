@@ -35,7 +35,6 @@ LesliSupport::Engine.routes.draw do
     Lesli::Router.mount_routes_for(LesliSupport)
 
     resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
-        resources :discussions, module: :ticket
-        resources :assignments, module: :ticket, only: [:create]
+        resources :discussions, module: :ticket, only: [:create]
     end
 end

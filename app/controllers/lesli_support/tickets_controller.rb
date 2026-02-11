@@ -143,7 +143,8 @@ module LesliSupport
                 :deadline,
                 :started_at,
                 :completed_at,
-                :hours_worked
+                :hours_worked,
+                :owner_id
             )
         end
     end

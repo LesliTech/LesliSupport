@@ -2,14 +2,10 @@
 
     <%= render(LesliView::Components::Header.new("#{@ticket.number} - #{@ticket.subject}")) %>
 
-    <%= render LesliView::Components::Tabs.new(active_tab: "ticket-assignments") do |tabs| %>
+    <%= render LesliView::Components::Tabs.new(active_tab: "ticket-information") do |tabs| %>
 
         <% tabs.with_tab(id:"ticket-information", title:"information", icon:"info") do %>
             <%= render("form") %>
-        <% end %>
-
-        <% tabs.with_tab(id:"ticket-assignments", title:"Assignments", icon:"group") do %>
-            <%= render("form-assignments") %>
         <% end %>
 
         <% tabs.with_tab(id:"ticket-discussions", title:"Discussions", icon:"forum") do %>

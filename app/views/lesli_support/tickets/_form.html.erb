@@ -13,6 +13,13 @@
                 <%= form.field_control_select(:priority_id, current_user.account.support.catalogs.items_for("Ticket Priorities").pluck(:name, :id)) %>
             </div>
         </div>
+
+        <div class="columns">
+            <div class="column">
+                <%= form.field_control_select(:owner_id, current_user.account.users.pluck(:first_name, :id)) %>
+            </div>
+        </div>
+
         <%= form.field_control_textarea(:description, label:false) %>
         <hr/>
         <%= form.field_control_submit %>

@@ -41,7 +41,7 @@ module LesliSupport
 
             return current_user.account.support.tickets.left_joins(
                 :user, 
-                :agent, 
+                :owner, 
                 :priority
             ).select(
                 :id,
@@ -49,7 +49,7 @@ module LesliSupport
                 :subject,
                 Date2.new.db_column(:deadline_at),
                 "CONCAT_WS(' ', lesli_users.first_name, lesli_users.last_name) as user_name",
-                "CONCAT_WS(' ', agents_lesli_support_tickets.first_name, agents_lesli_support_tickets.last_name) as agent_name",
+                "CONCAT_WS(' ', owners_lesli_support_tickets.first_name, owners_lesli_support_tickets.last_name) as agent_name",
                 "lesli_support_catalog_items.name as priority_name"
             ).order(id: :desc)
             .page(query[:pagination][:page])
@@ -82,7 +82,7 @@ module LesliSupport
 
         def show()
             return current_user.account.support.tickets.left_joins(
-                :user, :agent
+                :user, :owner
             # ).select(
             #     :id,
             #     :subject,

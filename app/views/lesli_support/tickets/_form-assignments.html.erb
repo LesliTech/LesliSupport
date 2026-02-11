@@ -1,7 +1,0 @@
-
-<%= form_with(url: ticket_assignments_path(@ticket), model: @ticket.assignments.new, builder: LesliView::Forms::Builder) do |form| %>
-    <%= form.fieldset do %>
-        <%= form.field_control_select(:user_id, current_user.account.users.pluck(:first_name, :id), label:'Assign agent') %>
-        <%= form.field_control_submit %>
-    <% end %>
-<% end %>

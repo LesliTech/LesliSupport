@@ -71,7 +71,7 @@ seeds["tickets"].each_with_index do |ticket, index|
         :subject => ticket["subject"],
         :description => ticket["description"],
         :deadline_at => ticket_date,
-        :agent => Lesli::User.first.account.users.sample,
+        :owner => Lesli::User.first.account.users.sample,
         :user => Lesli::User.first.account.users.sample,
         
         #:catalog_workspace => current_user.account.support.catalog_workspaces.first,

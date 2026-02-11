@@ -33,8 +33,8 @@ Building a better future, one line of code at a time.
 module LesliSupport
     class Ticket < Lesli::ApplicationLesliRecord
         belongs_to :account
+        belongs_to :owner, class_name: "Lesli::User"
         belongs_to :user, class_name: "Lesli::User"
-        belongs_to :agent, class_name: "Lesli::User"
 
         belongs_to :type, optional: true, class_name: "Catalog::Item"
         belongs_to :category, optional: true, class_name: "Catalog::Item"
@@ -42,7 +42,6 @@ module LesliSupport
 
         has_many :activities
         has_many :discussions
-        has_many :assignments
 
         before_create :before_create_ticket
 
