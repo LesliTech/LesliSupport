@@ -1,6 +1,6 @@
 <%= render(LesliView::Layout::Container.new("support-tickets-#{@ticket.id}")) do %>
 
-    <%= render(LesliView::Components::Header.new("#{@ticket.number} - #{@ticket.subject}")) %>
+    <%= render(LesliView::Components::Header.new("#{@ticket.uid} - #{@ticket.subject}")) %>
 
     <%= render LesliView::Components::Tabs.new(active_tab: "ticket-information") do |tabs| %>
 

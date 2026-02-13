@@ -33,8 +33,14 @@ Building a better future, one line of code at a time.
 module LesliSupport
     class TicketService < Lesli::ApplicationLesliService
 
-        def find ticket_id
-            super(current_user.account.support.tickets.find_by(id: ticket_id))
+        def find(id: nil, uid: nil)
+            scope  = current_user.account.support.tickets
+
+            # Use a hash to filter out nil values and find the record
+            params = { id: id, uid: uid }.compact
+
+            # Search and assign the resource if search params exist
+            super(scope.find_by(params)) if params.any?
         end
 
         def index
@@ -45,7 +51,7 @@ module LesliSupport
                 :priority
             ).select(
                 :id,
-                :number,
+                :uid,
                 :subject,
                 Date2.new.db_column(:deadline_at),
                 "CONCAT_WS(' ', lesli_users.first_name, lesli_users.last_name) as user_name",
@@ -60,7 +66,7 @@ module LesliSupport
 
             ticket = current_user.account.support.tickets.new(ticket_params)
             #ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
-            ticket.agent = current_user
+            ticket.owner = current_user
             ticket.user = current_user
 
             unless ticket_params.dig(:started_at)

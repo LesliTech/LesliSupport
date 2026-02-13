@@ -4,7 +4,7 @@ tickets = current_user.account.support.tickets.left_joins(
     :owner, 
     :priority
 ).select(
-    :number,
+    :uid,
     :subject,
     Date2.new.db_column(:deadline_at),
     "CONCAT_WS(' ', lesli_users.first_name, lesli_users.last_name) as user_name",

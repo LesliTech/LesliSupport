@@ -122,9 +122,7 @@ module LesliSupport
         private
 
         def set_ticket
-            ticket_id = params[:id] unless params[:id].blank?
-            ticket_id = params[:ticket_id] unless params[:ticket_id].blank?
-            @ticket = TicketService.new(current_user, query).find(ticket_id)
+            @ticket = TicketService.new(current_user, query).find(id:params[:id])
             return respond_with_not_found unless @ticket.found?
         end
 

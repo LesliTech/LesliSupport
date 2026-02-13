@@ -49,49 +49,44 @@ module LesliSupport
         private
 
         def before_create_ticket
-            self.subject = self.subject.titleize
-            self.number ||= loop do
-                candidate = generate_ticket_number
-                break candidate unless Ticket.exists?(number: candidate)
-            end
-        end
-
-        def generate_ticket_number
             prefix = Lesli.config.support.dig(:prefix)
-            # No se usa 1 ni 0 para evitar ambigüedad
-            # dicta números por teléfono los lee rápido
-            # con esto evitamos "¿Eso es: uno ele cero O?"
-            charset = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ"
-            code = Array.new(5) { charset.chars.sample }.join
-            "#{prefix}-#{code}"
+            self.subject = self.subject.titleize
+            self.uid ||= loop do
+                candidate = generate_resource_uid(prefix:prefix)
+                break candidate unless Ticket.exists?(uid: candidate)
+            end
         end
 
         def after_save_ticket
             if self.saved_change_to_owner_id?
                 self.activities.create(
                     description: "Agent assigned #{self.owner.name}",
-                    metadata: { owner_id: self.owner.id }
+                    activity_code: :owner_id,
+                    metadata: { owner_id: self.owner.id, icon: 'favorite' }
                 )
             end 
 
             if self.saved_change_to_type_id?
                 self.activities.create(
                     description: "Ticket type updated to #{self.type.name}",
-                    metadata: { type_id: self.type.id }
+                    activity_code: :type_id,
+                    metadata: { type_id: self.type.id, icon: 'star' }
                 )
             end 
 
             if self.saved_change_to_category_id?
                 self.activities.create(
                     description: "Ticket category updated to #{self.category.name}",
-                    metadata: { category_id: self.category.id }
+                    activity_code: :category_id,
+                    metadata: { category_id: self.category.id, icon: 'search' }
                 )
             end 
 
             if self.saved_change_to_priority_id?
                 self.activities.create(
                     description: "Ticket priority updated to #{self.priority.name}",
-                    metadata: { priority_id: self.priority.id }
+                    activity_code: :priority_id,
+                    metadata: { priority_id: self.priority.id, icon: 'sunny' }
                 )
             end 
         end
