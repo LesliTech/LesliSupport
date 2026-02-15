@@ -2,7 +2,7 @@
 
     <%= render(LesliView::Components::Header.new("#{@ticket.uid} - #{@ticket.subject}")) %>
 
-    <%= render LesliView::Components::Tabs.new(active_tab: "ticket-information") do |tabs| %>
+    <%= render LesliView::Components::Tabs.new(active_tab: "ticket-activities") do |tabs| %>
 
         <% tabs.with_tab(id:"ticket-information", title:"information", icon:"info") do %>
             <%= render("form") %>
@@ -13,7 +13,12 @@
         <% end %>
 
         <% tabs.with_tab(id:"ticket-activities", title:"Activities", icon:"search_activity") do %>
-            <%= render(LesliView::Items::Activities.new(@ticket)) %>
+            <%= render(LesliView::Items::Activities.new(@ticket, icons: {
+                type_id: 'star',
+                owner_id: 'favorite',
+                priority_id: 'sunny',
+                category_id: 'search'
+            })) %>
         <% end %>
     <% end %>
 <% end %>

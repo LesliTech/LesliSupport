@@ -62,7 +62,7 @@ module LesliSupport
                 self.activities.create(
                     description: "Agent assigned #{self.owner.name}",
                     activity_code: :owner_id,
-                    metadata: { owner_id: self.owner.id, icon: 'favorite' }
+                    metadata: { owner_id: self.owner.id }
                 )
             end 
 
@@ -70,7 +70,7 @@ module LesliSupport
                 self.activities.create(
                     description: "Ticket type updated to #{self.type.name}",
                     activity_code: :type_id,
-                    metadata: { type_id: self.type.id, icon: 'star' }
+                    metadata: { type_id: self.type.id }
                 )
             end 
 
@@ -78,7 +78,7 @@ module LesliSupport
                 self.activities.create(
                     description: "Ticket category updated to #{self.category.name}",
                     activity_code: :category_id,
-                    metadata: { category_id: self.category.id, icon: 'search' }
+                    metadata: { category_id: self.category.id }
                 )
             end 
 
@@ -86,7 +86,7 @@ module LesliSupport
                 self.activities.create(
                     description: "Ticket priority updated to #{self.priority.name}",
                     activity_code: :priority_id,
-                    metadata: { priority_id: self.priority.id, icon: 'sunny' }
+                    metadata: { priority_id: self.priority.id }
                 )
             end 
         end
