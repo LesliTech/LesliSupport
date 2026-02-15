@@ -36,13 +36,17 @@ module LesliSupport
         belongs_to :owner, class_name: "Lesli::User"
         belongs_to :user, class_name: "Lesli::User"
 
+        # Catalogs
         belongs_to :type, optional: true, class_name: "Catalog::Item"
         belongs_to :category, optional: true, class_name: "Catalog::Item"
         belongs_to :priority, optional: true, class_name: "Catalog::Item"
 
+        # Items
+        has_many :actions
         has_many :activities
         has_many :discussions
 
+        # Hooks
         before_create :before_create_ticket
         after_save :after_save_ticket
 
