@@ -32,7 +32,7 @@ Building a better future, one line of code at a time.
 
 LesliSupport::Engine.routes.draw do
 
-    Lesli::Router.mount_routes_for(LesliSupport)
+    Lesli::Router.mount_lesli_engine_routes(self)
 
     resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
         resources :actions, module: :ticket, only: [:create, :update]

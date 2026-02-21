@@ -16,7 +16,7 @@
             <%= render(LesliView::Items::Actions.new(
                 @ticket, 
                 path_to_create:ticket_actions_path(@ticket), 
-                path_to_update:->(action) { ticket_action_path(@ticket, action)}
+                path_to_update:->(action) {ticket_action_path(@ticket, action)}
             )) %>
         <% end %>
 
