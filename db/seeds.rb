@@ -34,5 +34,5 @@ L2.msg("LesliSupport", "Version: #{LesliSupport::VERSION}", "Build: #{LesliSuppo
 
 # · load specific environment seeds
 if Rails.env.development? || Lesli.config.demo 
-    load LesliSupport::Engine.root.join("db", "seed", "#{ Rails.env.downcase }.rb")
+    load(LesliSupport::Engine.root.join("db", "seed", "#{ Rails.env.downcase }.rb"))
 end 

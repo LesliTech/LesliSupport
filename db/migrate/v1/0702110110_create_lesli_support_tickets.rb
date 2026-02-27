@@ -64,12 +64,5 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
         add_reference(:lesli_support_tickets, :user, foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :owner, foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :account, foreign_key: { to_table: :lesli_support_accounts })
-
-        create_table_lesli_item_actions_10(:lesli_support_tickets)
-        create_table_lesli_item_activities_10(:lesli_support_tickets)
-        create_table_lesli_item_discussions_10(:lesli_support_tickets)
-        create_table_lesli_item_subscribers_10(:lesli_support_tickets)
-        create_table_lesli_item_attachments_10(:lesli_support_tickets)
-        create_table_lesli_item_versions_10(:lesli_support_tickets)
     end
 end

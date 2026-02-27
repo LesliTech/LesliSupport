@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lesli_support (0.1.0)
+    lesli_support (1.0.0)
       lesli (~> 5.0)
 
 GEM

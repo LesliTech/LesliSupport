@@ -2,7 +2,7 @@
 
     <%= render(LesliView::Components::Header.new("#{@ticket.uid} - #{@ticket.subject}")) %>
 
-    <%= render LesliView::Components::Tabs.new(active_tab: "ticket-information") do |tabs| %>
+    <%= render LesliView::Components::Tabs.new(active_tab: "ticket-tasks") do |tabs| %>
 
         <% tabs.with_tab(id:"ticket-information", title:"information", icon:"info") do %>
             <%= render("form") %>
@@ -12,12 +12,9 @@
             <%= render(LesliView::Items::Discussions.new(@ticket, ticket_discussions_path(@ticket))) %>
         <% end %>
 
-        <% tabs.with_tab(id:"ticket-actions", title:"Actions", icon:"checklist") do %>
-            <%= render(LesliView::Items::Actions.new(
-                @ticket, 
-                path_to_create:ticket_actions_path(@ticket), 
-                path_to_update:->(action) {ticket_action_path(@ticket, action)}
-            )) %>
+        <% tabs.with_tab(id:"ticket-tasks", title:"Tasks", icon:"checklist") do %>
+            <%= render(LesliView::Items::Tasks.new(@ticket, path_to_create:"", path_to_update:"")) %>
+            <%#= render(LesliView::Items::Actions.new(@ticket, path_to_create:ticket_actions_path(@ticket), path_to_update:->(action) {ticket_action_path(@ticket, action)})) %>
         <% end %>
 
         <% tabs.with_tab(id:"ticket-activities", title:"Activities", icon:"search_activity") do %>
@@ -27,6 +24,13 @@
                 priority_id: 'sunny',
                 category_id: 'search'
             })) %>
+        <% end %>
+
+        <% tabs.with_tab(id:"ticket-attachments", title:"Attachments", icon:"attach_file") do %>
+            <%= render(LesliView::Items::Attachments.new(@ticket, 
+                path_to_create:ticket_actions_path(@ticket), 
+                path_to_update:->(action) {ticket_action_path(@ticket, action)}
+            )) %>
         <% end %>
     <% end %>
 <% end %>
