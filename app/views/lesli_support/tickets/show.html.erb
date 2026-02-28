@@ -9,16 +9,15 @@
         <% end %>
 
         <% tabs.with_tab(id:"ticket-discussions", title:"Discussions", icon:"forum") do %>
-            <%= render(LesliView::Items::Discussions.new(@ticket, ticket_discussions_path(@ticket))) %>
+            <%#= render(LesliView::Items::Discussions.new(@ticket, ticket_discussions_path(@ticket))) %>
         <% end %>
 
         <% tabs.with_tab(id:"ticket-tasks", title:"Tasks", icon:"checklist") do %>
-            <%= render(LesliView::Items::Tasks.new(@ticket, path_to_create:"", path_to_update:"")) %>
-            <%#= render(LesliView::Items::Actions.new(@ticket, path_to_create:ticket_actions_path(@ticket), path_to_update:->(action) {ticket_action_path(@ticket, action)})) %>
+            <%= render(LesliView::Items::Tasks.new(@ticket)) %>
         <% end %>
 
         <% tabs.with_tab(id:"ticket-activities", title:"Activities", icon:"search_activity") do %>
-            <%= render(LesliView::Items::Activities.new(@ticket, icons: {
+            <%#= render(LesliView::Items::Activities.new(@ticket, icons: {
                 type_id: 'star',
                 owner_id: 'favorite',
                 priority_id: 'sunny',
@@ -27,7 +26,7 @@
         <% end %>
 
         <% tabs.with_tab(id:"ticket-attachments", title:"Attachments", icon:"attach_file") do %>
-            <%= render(LesliView::Items::Attachments.new(@ticket, 
+            <%#= render(LesliView::Items::Attachments.new(@ticket, 
                 path_to_create:ticket_actions_path(@ticket), 
                 path_to_update:->(action) {ticket_action_path(@ticket, action)}
             )) %>

@@ -53,7 +53,7 @@ module LesliSupport
 
         # Hooks
         before_create :before_create_ticket
-        after_save :after_save_ticket
+        # after_save :after_save_ticket
 
         private
 
