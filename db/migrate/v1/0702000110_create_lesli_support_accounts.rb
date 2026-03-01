@@ -35,7 +35,7 @@ class CreateLesliSupportAccounts < ActiveRecord::Migration[7.0]
         create_table_lesli_shared_account_10(:lesli_support)
 
         create_table_lesli_item_tasks_10(:lesli_support)
-        # create_table_lesli_item_activities_10(:lesli_support_tickets)
+        create_table_lesli_item_activities_10(:lesli_support)
         # create_table_lesli_item_discussions_10(:lesli_support_tickets)
         # create_table_lesli_item_subscribers_10(:lesli_support_tickets)
         # create_table_lesli_item_attachments_10(:lesli_support_tickets)

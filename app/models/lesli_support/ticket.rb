@@ -42,18 +42,15 @@ module LesliSupport
         belongs_to :priority, optional: true, class_name: "Catalog::Item"
 
         # Items
-        include Lesli::Items::Tasks
-        # include Lesli::Items::Activities 
+        include Lesli::Item::Tasks
+        include Lesli::Item::Activities
         # include Lesli::Items::Discussions 
         # include Lesli::Items::Attachments 
         # include Lesli::Items::Subscribers
 
-        has_many :activities
-        has_many :discussions
-
         # Hooks
         before_create :before_create_ticket
-        # after_save :after_save_ticket
+        after_save :after_save_activities
 
         private
 
@@ -66,9 +63,10 @@ module LesliSupport
             end
         end
 
-        def after_save_ticket
+        def after_save_activities
+
             if self.saved_change_to_owner_id?
-                self.activities.create(
+                self.activities_create(
                     description: "Agent assigned #{self.owner.name}",
                     activity_code: :owner_id,
                     metadata: { owner_id: self.owner.id }
@@ -76,7 +74,7 @@ module LesliSupport
             end 
 
             if self.saved_change_to_type_id?
-                self.activities.create(
+                self.activities_create(
                     description: "Ticket type updated to #{self.type.name}",
                     activity_code: :type_id,
                     metadata: { type_id: self.type.id }
@@ -84,7 +82,7 @@ module LesliSupport
             end 
 
             if self.saved_change_to_category_id?
-                self.activities.create(
+                self.activities_create(
                     description: "Ticket category updated to #{self.category.name}",
                     activity_code: :category_id,
                     metadata: { category_id: self.category.id }
@@ -92,7 +90,7 @@ module LesliSupport
             end 
 
             if self.saved_change_to_priority_id?
-                self.activities.create(
+                self.activities_create(
                     description: "Ticket priority updated to #{self.priority.name}",
                     activity_code: :priority_id,
                     metadata: { priority_id: self.priority.id }

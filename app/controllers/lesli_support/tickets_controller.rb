@@ -69,16 +69,17 @@ module LesliSupport
         def update
 
             if @ticket.update(ticket_params)
-                log(
-                    subject: @invite,
-                    description: "Ticket updated successfully"
-                )
+                # log(
+                #     subject: @invite,
+                #     description: "Ticket updated successfully"
+                # )
                 respond_with_lesli(
                     :turbo => stream_notification_success("Ticket updated successfully")
                 ) 
             else 
                 respond_with_lesli(
-                    :turbo => stream_notification_danger(@invite.errors.full_messages.to_sentence)
+                    :turbo => stream_notification_danger(@ticket.errors)
+                    #:turbo => stream_notification_danger(@ticket.errors.full_messages.to_sentence)
                 ) 
             end
         end
