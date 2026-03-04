@@ -44,7 +44,9 @@ module LesliSupport
         # Items
         include Lesli::Item::Tasks
         include Lesli::Item::Activities
-        # include Lesli::Items::Discussions 
+        include Lesli::Item::Discussions 
+        #has_many :discussions, class_name: "LesliSupport::Item::Discussion"
+
         # include Lesli::Items::Attachments 
         # include Lesli::Items::Subscribers
 
