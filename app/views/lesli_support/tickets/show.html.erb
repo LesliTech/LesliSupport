@@ -13,7 +13,7 @@
         <% end %>
 
         <% tabs.with_tab(id:"ticket-tasks", title:"Tasks", icon:"checklist") do %>
-            <%= render(LesliView::Item::Tasks.new(@ticket)) %>
+            <%= render(LesliView::Items::Tasks.new(@ticket)) %>
         <% end %>
 
         <% tabs.with_tab(id:"ticket-activities", title:"Activities", icon:"search_activity") do %>
