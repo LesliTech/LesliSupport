@@ -42,9 +42,9 @@ module LesliSupport
         belongs_to :priority, optional: true, class_name: "Catalog::Item"
 
         # Items
-        include Lesli::Item::Tasks
-        include Lesli::Item::Activities
-        include Lesli::Item::Discussions 
+        include Lesli::Items::Tasks
+        include Lesli::Items::Activities
+        include Lesli::Items::Discussions 
         #has_many :discussions, class_name: "LesliSupport::Item::Discussion"
 
         # include Lesli::Items::Attachments 
