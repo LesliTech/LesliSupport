@@ -1,8 +1,10 @@
 
 <%= form_with(model: @ticket, builder: LesliView::Forms::Builder) do |form| %>
     <%= form.fieldset do %>
+
         <%= form.field_control(:subject) %>
-        <div class="columns">
+
+        <div class="columns mb-0">
             <div class="column">
                 <%= form.field_control_select(:type_id, current_user.account.support.catalogs.items_for("Ticket Types").pluck(:name, :id)) %>
             </div>
@@ -14,14 +16,13 @@
             </div>
         </div>
 
-        <div class="columns">
-            <div class="column">
-                <%= form.field_control_select(:owner_id, current_user.account.users.pluck(:first_name, :id)) %>
-            </div>
-        </div>
+        <%= form.field_control_select(:owner_id, current_user.account.users.pluck(:first_name, :id)) %>
 
         <%= form.field_control_textarea(:description, label:false) %>
+
         <hr/>
+
         <%= form.field_control_submit %>
+
     <% end %>        
 <% end %>

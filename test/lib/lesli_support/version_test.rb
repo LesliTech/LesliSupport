@@ -1,12 +1,12 @@
 require "test_helper"
 
-module Lesli
+module LesliSupport
     class VersionTest < ActiveSupport::TestCase
         test "it has a version number" do
-            assert(Lesli::VERSION)
+            assert(LesliSupport::VERSION)
         end
         test "it has a build number" do
-            assert(Lesli::BUILD)
+            assert(LesliSupport::BUILD)
         end
     end
 end

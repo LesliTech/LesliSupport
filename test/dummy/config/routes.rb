@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  Lesli::Routing.mount
+    mount Lesli::Engine => "lesli"
+    mount LesliSupport::Engine => "/lesli_support"
 end

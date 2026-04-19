@@ -32,7 +32,7 @@ Building a better future, one line of code at a time.
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in my_engine.gemspec.
+# Specify your gem's dependencies in blorgh.gemspec.
 gemspec
 
 gem "puma"
@@ -44,22 +44,11 @@ gem "propshaft"
 # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
 gem "rubocop-rails-omakase", require: false
 
-gem "minitest-reporters"
-gem "color_pound_spec_reporter"
-
-# Code coverage
-# https://github.com/simplecov-ruby/simplecov
-gem "simplecov", "0.21.2", require: false
-
-# Code coverage stats in the console
-# https://github.com/chetan/simplecov-console
-gem "simplecov-console", "0.9.2", require: false
+# Start debugger with binding.b [https://github.com/ruby/debug]
+# gem "debug", ">= 1.0.0"
 
 gem "brakeman"
 
 gem "lesli"
 
-# Start debugger with binding.b [https://github.com/ruby/debug]
-# gem "debug", ">= 1.0.0"
-
-
+gem "lesli_testing"
