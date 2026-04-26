@@ -2,6 +2,12 @@
 <%= form_with(model: @ticket, builder: LesliView::Forms::Builder) do |form| %>
     <%= form.fieldset do %>
 
+        <div class="field">
+            <div class="control">
+                <input class="input has-text-centered" type="text" disabled value="<%= @ticket.uid %>">
+            </div>
+        </div>
+
         <%= form.field_control(:subject) %>
 
         <div class="columns mb-0">

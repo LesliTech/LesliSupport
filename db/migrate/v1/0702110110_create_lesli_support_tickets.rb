@@ -52,8 +52,6 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
             t.timestamps
         end
 
-        add_index(:lesli_support_tickets, :uid, unique: true)
-
         add_reference(:lesli_support_tickets, :sla,       foreign_key: { to_table: :lesli_support_slas })
         add_reference(:lesli_support_tickets, :type,      foreign_key: { to_table: :lesli_support_catalog_items })
         #add_reference(:lesli_support_tickets, :status,    foreign_key: { to_table: :lesli_support_workflow_statuses })
@@ -64,5 +62,7 @@ class CreateLesliSupportTickets < ActiveRecord::Migration[6.0]
         add_reference(:lesli_support_tickets, :user, foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :owner, foreign_key: { to_table: :lesli_users })
         add_reference(:lesli_support_tickets, :account, foreign_key: { to_table: :lesli_support_accounts })
+
+        add_index(:lesli_support_tickets, [:account_id, :uid], unique: true)
     end
 end
