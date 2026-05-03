@@ -30,7 +30,7 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
-Termline.msg("LesliSupport", "Version: #{LesliSupport::VERSION}", "Build: #{LesliSupport::BUILD}")
+Termline.info("Loading seeds for: LesliSupport #{LesliSupport::VERSION} (#{LesliSupport::BUILD})")
 
 # · load specific environment seeds
 if Rails.env.development? || Lesli.config.demo 
