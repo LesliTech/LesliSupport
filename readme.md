@@ -1,14 +1,15 @@
 <div align="center">
-    <img width="100" alt="LesliSupport logo" src="./app/assets/images/lesli_support/support-logo.svg" />
-    <h3 align="center">Support Ticket System for the Lesli Framework.</h3>
+    <h1 align="center">
+        <img width="100" alt="LesliSupport" src="./app/assets/images/lesli_support/support-logo.svg" />
+    </h1>
+    <h3 align="center">Customer support and ticketing for the Lesli Framework.</h3>
 </div>
 
 <br />
-<hr/>
 
 <div align="center">
-    <a target="_blank" href="https://github.com/LesliTech/LesliSupport/actions">
-        <img alt="Tests passing" src="https://img.shields.io/badge/Tests-passing-green?style=for-the-badge&logo=github">
+    <a target="_blank" href="https://github.com/LesliTech/LesliSupport/actions/workflows/lesli-ci-tests.yaml">
+        <img alt="LesliSupport test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/LesliSupport/lesli-ci-tests.yaml?branch=master&style=for-the-badge&logo=github&label=tests">
     </a>
     <a target="_blank" href="https://rubygems.org/gems/lesli_support">
         <img alt="Gem Version" src="https://img.shields.io/gem/v/lesli_support?style=for-the-badge&logo=ruby">
@@ -16,83 +17,148 @@
     <a target="_blank" href="https://codecov.io/github/LesliTech/LesliSupport">
         <img alt="Codecov" src="https://img.shields.io/codecov/c/github/LesliTech/LesliSupport?style=for-the-badge&logo=codecov">
     </a>
+    <a target="_blank" href="https://sonarcloud.io/project/overview?id=LesliTech_LesliSupport">
+        <img alt="Sonar Quality Gate" src="https://img.shields.io/sonar/quality_gate/LesliTech_LesliSupport?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonarqubecloud&label=Quality">
+    </a>
 </div>
 
-<hr/>
 <br />
 
 <div align="center">
     <img
         style="width:100%;max-width:800px;border-radius:6px;"
-        alt="Lesli screenshot" src="./docs/images/screenshot.png" />
+        alt="LesliSupport ticket management"
+        src="./docs/images/screenshot.png" />
 </div>
 
-<br />
-<hr/>
+---
+
 <br />
 
-### Installation
+## Introduction
+
+LesliSupport is the official customer-support and ticketing engine for the [Lesli Framework](https://github.com/LesliTech/Lesli).
+
+It provides account-scoped tools for receiving, organizing, discussing, and resolving support requests.
+
+<br />
+
+## Features
+
+- Support ticket creation and tracking
+- Ticket assignment and status workflows
+- Internal and customer-facing discussions
+- Ticket activity history
+- Service catalog and account-scoped organization
+
+<br />
+
+## Try LesliSupport
+
+- [Try the online demo](https://demo.lesli.dev/)
+- [Run the Docker demo](https://github.com/LesliTech/lesli-docker-demo)
+
+<br />
+
+## Quick Start
+
+### Requirements
+
+- A Rails application with [Lesli](https://rubygems.org/gems/lesli)
+- SQLite by default, or PostgreSQL when preferred by the host application
+
+### Install LesliSupport
+
+Add the engine to the host Rails application and prepare its database:
 
 ```shell
-# Add LesliSupport engine gem
 bundle add lesli_support
-
-# Setup & initialize the database
-rake lesli:db:setup
+bin/rails db:prepare
 ```
 
+### Mount the engine
+
+Applications using Lesli's standard router mount LesliSupport automatically at `/support`:
+
 ```ruby
-# Load LesliSupport engine
+# config/routes.rb
+Rails.application.routes.draw do
+    Lesli::Router.mount(self)
+end
+```
+
+If the application does not use the standard Lesli router, mount the engine directly:
+
+```ruby
+# config/routes.rb
 Rails.application.routes.draw do
     mount LesliSupport::Engine => "/support"
 end
 ```
 
-<br />
-<hr/>
-<br />
-
-### Development 
+Start Rails and visit [http://127.0.0.1:3000/support](http://127.0.0.1:3000/support):
 
 ```shell
-# clone the lesli repo inside your engine folder: RailsApp/engines
-git clone https://github.com/LesliTech/LesliSupport.git
-
-# Load LesliSupport as a Gem
-gem "lesli", path: "engines/LesliSupport"
-
-# Install the necessary Gems to run LesliSupport
-bundle install
-
-# Setup & initialize the database
-rake lesli:db:setup
-
+bin/rails server
 ```
 
 <br />
-<hr/>
+
+## Development
+
+Clone LesliSupport into the host application's `engines` directory:
+
+```shell
+cd RailsApp
+mkdir -p engines
+git clone https://github.com/LesliTech/LesliSupport.git engines/LesliSupport
+```
+
+Reference the local engine from the host application's `Gemfile`:
+
+```ruby
+gem "lesli_support", path: "engines/LesliSupport"
+```
+
+Install dependencies, prepare the host database, and start Rails:
+
+```shell
+bundle install
+bin/rails db:prepare
+bin/rails server
+```
+
+### Tests
+
+From a complete Lesli development workspace, run the engine test suite from the LesliSupport directory:
+
+```shell
+cd engines/LesliSupport
+bin/rails test
+```
+
 <br />
 
-### Demo
+## Documentation
 
-* [online demo](https://demo.lesli.dev/)
-* [docker demo](https://github.com/LesliTech/lesli-docker-demo)
+- [Lesli website](https://www.lesli.dev/)
+- [Documentation](https://www.lesli.dev/engines/support)
+- [Release notes](https://github.com/LesliTech/LesliSupport/releases)
+- [Issue tracker](https://github.com/LesliTech/LesliSupport/issues)
+- [Source code](https://github.com/LesliTech/LesliSupport)
 
+<br />
 
-### Documentation
-* [website](https://www.lesli.dev/)
-* [documentation](https://www.lesli.dev/engines/support)
+## Community
 
+- [X: @LesliTech](https://x.com/LesliTech)
+- [hello@lesli.tech](mailto:hello@lesli.tech)
+- [https://www.lesli.tech](https://www.lesli.tech)
 
-### Connect with Lesli
+<br />
 
-* [X: @LesliTech](https://x.com/LesliTech)
-* [Email: hello@lesli.tech](hello@lesli.tech)
-* [Website: https://www.lesli.tech](https://www.lesli.tech)
+## License
 
-
-### License
--------
 Copyright (c) 2026, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
@@ -106,19 +172,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program. If not, see http://www.gnu.org/licenses/.
+along with this program. If not, see [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).
+
+---
 
 <br />
-<hr />
-<br />
 <br />
 
-<div align="center" class="has-text-centered">
-    <img width="200" alt="Lesli logo" src="https://cdn.lesli.tech/lesli/brand/app-logo.svg" />
-    <h3 align="center" class="mt-0">
-        The Open-Source SaaS Development Framework for Ruby on Rails.
-    </h3>
+<div align="center">
+    <img width="80" alt="Lesli icon" src="https://cdn.lesli.tech/lesli/brand/app-icon.svg" />
+    <h3 align="center">The Open-Source SaaS Development Framework for Ruby on Rails.</h3>
 </div>
-
-<br />
-<br />

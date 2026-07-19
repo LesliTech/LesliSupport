@@ -1,17 +1,6 @@
-
-<%
-tickets = current_user.account.support.tickets
+<%= render(LesliView::Widgets::Chart.new('Priorities', 
+    current_user.account.support.tickets
     .joins(:priority)
     .group('lesli_support_catalog_items.name')
     .count
-%>
-
-<%= render(LesliView::Widgets::Chart.new('Priorities', tickets))%>
-
-<%
-tickets = current_user.account.support.tickets
-    .joins(:category)
-    .group('lesli_support_catalog_items.name')
-    .count
-%>
-
+))%>
