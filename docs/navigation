@@ -1,2 +1,2 @@
-<%= navigation_for("engines", "support", "about") %>
-<%= navigation_for("engines", "support", "tickets", order: ["list", "view", "create"]) %>
+<%= navigation_for_folder("engines", "support", "about", order:["installation", "translations", "dashboards", "database"]) %>
+<%= navigation_for_folder("engines", "support", "tickets", order:["list", "create", "view"]) %>
