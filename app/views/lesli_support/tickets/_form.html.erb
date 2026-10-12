@@ -2,22 +2,23 @@
 <%= form_with(model: @ticket, builder: LesliView::Forms::Builder) do |form| %>
     <%= form.fieldset do %>
 
-        <div class="field">
-            <div class="control">
-                <input class="input has-text-centered" type="text" disabled value="<%= @ticket.uid %>">
-            </div>
-        </div>
+        <input
+            class="mb-3 block w-full rounded-lg border border-slate-300 bg-slate-100 px-3 py-2 text-center text-sm text-slate-500 shadow-sm disabled:cursor-not-allowed"
+            type="text"
+            disabled
+            value="<%= @ticket.uid %>"
+        >
 
         <%= form.field_control(:subject) %>
 
-        <div class="columns mb-0">
-            <div class="column">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div>
                 <%= form.field_control_select(:type_id, current_user.account.support.catalogs.items_for("Ticket Types").pluck(:name, :id)) %>
             </div>
-            <div class="column">
+            <div>
                 <%= form.field_control_select(:category_id, current_user.account.support.catalogs.items_for("Ticket Categories").pluck(:name, :id)) %>
             </div>
-            <div class="column">
+            <div>
                 <%= form.field_control_select(:priority_id, current_user.account.support.catalogs.items_for("Ticket Priorities").pluck(:name, :id)) %>
             </div>
         </div>
@@ -26,9 +27,9 @@
 
         <%= form.field_control_textarea(:description, label:false) %>
 
-        <hr/>
+        <hr class="my-6 border-0 border-t border-slate-200">
 
         <%= form.field_control_submit %>
 
-    <% end %>        
+    <% end %>
 <% end %>
