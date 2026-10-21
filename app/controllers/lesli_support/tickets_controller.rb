@@ -56,7 +56,6 @@ module LesliSupport
             if ticket.successful?
                 success('ticket creado de forma exitosass')
                 respond_with_lesli(
-                    #:html => redirect_to(ticket_path(@ticket.id)),
                     :turbo => stream_redirection(ticket_path(@ticket.id))
                 )
             else
@@ -86,7 +85,7 @@ module LesliSupport
 
         def destroy
             return respond_with_not_found unless @ticket
-            return respond_with_unauthorized unless @ticket.is_editable_by?(current_user)
+            return respond_with_forbidden unless @ticket.is_editable_by?(current_user)
 
             ticket_destroy_response = TicketServices.destroy(current_user, @ticket)
 

@@ -26,10 +26,7 @@
         <% end %>
 
         <% tabs.with_tab(id:"ticket-attachments", title:"Attachments", icon:"attach_file") do %>
-            <%#= render(LesliView::Items::Attachments.new(@ticket, 
-                path_to_create:ticket_actions_path(@ticket), 
-                path_to_update:->(action) {ticket_action_path(@ticket, action)}
-            )) %>
+            <%= render LesliView::Items::Attachments.new(@ticket) %>
         <% end %>
     <% end %>
 <% end %>

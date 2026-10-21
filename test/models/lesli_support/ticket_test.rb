@@ -32,6 +32,17 @@ module LesliSupport
             assert_includes LesliSupport::Ticket.ancestors, Lesli::Items::Tasks
             assert_includes LesliSupport::Ticket.ancestors, Lesli::Items::Activities
             assert_includes LesliSupport::Ticket.ancestors, Lesli::Items::Discussions
+            assert_includes LesliSupport::Ticket.ancestors, Lesli::Items::Attachments
+        end
+
+        test "has polymorphic attachments" do
+            reflection = LesliSupport::Ticket.reflect_on_association(:attachments)
+
+            assert_not_nil reflection
+            assert_equal :has_many, reflection.macro
+            assert_equal "LesliSupport::Items::Attachment", reflection.class_name
+            assert_equal :attachable, reflection.options[:as]
+            assert_equal :destroy, reflection.options[:dependent]
         end
 
         test "registers ticket lifecycle callbacks" do

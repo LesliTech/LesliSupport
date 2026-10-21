@@ -8,14 +8,17 @@ LesliSupport uses collection code `07` and engine code `02`.
 | `07.02.00.01.10` | `lesli_support_items_tasks` | Tasks attached to supported records |
 | `07.02.00.01.10` | `lesli_support_items_activities` | Activity history for supported records |
 | `07.02.00.01.10` | `lesli_support_items_discussions` | Threaded discussions for supported records |
+| `07.02.00.02.10` | `lesli_support_items_attachments` | File metadata attached to supported records |
 | `07.02.00.20.10` | `lesli_support_catalogs` | Account-scoped catalog groups |
 | `07.02.00.20.10` | `lesli_support_catalog_items` | Type, category, priority, and other catalog values |
 | `07.02.10.01.10` | `lesli_support_slas` | Service-level configuration |
 | `07.02.11.01.10` | `lesli_support_tickets` | Ticket details, ownership, classification, and lifecycle dates |
 
-A ticket belongs to a Support account and its creator, may have an assigned owner, and references catalog items for type, category, and priority. Ticket records include the shared tasks, activities, and discussions features.
+A ticket belongs to a Support account and its creator, may have an assigned owner, and references catalog items for type, category, and priority. Ticket records include the shared tasks, activities, discussions, and attachments features.
 
-The current migrations do not create settings, workflows, subscribers, attachments, versions, or assignment tables. Some of those integrations remain visible as commented implementation code and must not be treated as persisted features.
+Attachment rows contain tenant ownership and domain metadata. Active Storage owns the corresponding filename, content type, byte size, checksum, and storage-service key in its shared tables.
+
+The current migrations do not create settings, workflows, subscribers, versions, or assignment tables. Some of those integrations remain visible as commented implementation code and must not be treated as persisted features.
 
 ```shell
 bin/rails lesli:db:prepare

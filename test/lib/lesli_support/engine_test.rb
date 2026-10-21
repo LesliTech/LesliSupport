@@ -17,6 +17,8 @@ module LesliSupport
             assert_includes route_names, "ticket"
             assert_includes route_names, "ticket_actions"
             assert_includes route_names, "ticket_discussions"
+            assert_includes route_names, "items_attachments"
+            assert_includes route_names, "items_attachment"
         end
     end
 end

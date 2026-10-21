@@ -44,15 +44,21 @@ module LesliSupport
         # Items
         include Lesli::Items::Tasks
         include Lesli::Items::Activities
-        include Lesli::Items::Discussions 
+        include Lesli::Items::Discussions
+        include Lesli::Items::Attachments
         #has_many :discussions, class_name: "LesliSupport::Item::Discussion"
 
-        # include Lesli::Items::Attachments 
         # include Lesli::Items::Subscribers
 
         # Hooks
         before_create :before_create_ticket
         after_save :after_save_activities
+
+        # Shared items belong to the core account, while tickets belong to the
+        # engine account. This exposes the core owner used for tenant checks.
+        def lesli_item_account
+            account.account
+        end
 
         private
 

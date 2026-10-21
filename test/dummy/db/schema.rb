@@ -11,6 +11,34 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 702110110) do
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
   create_table "lesli_accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "deleted_at"
@@ -140,6 +168,22 @@ ActiveRecord::Schema[8.1].define(version: 702110110) do
     t.index ["user_id"], name: "index_lesli_support_item_tasks_on_user_id"
   end
 
+  create_table "lesli_support_items_attachments", force: :cascade do |t|
+    t.string "label"
+    t.string "category"
+    t.string "attachable_type", null: false
+    t.bigint "attachable_id", null: false
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.integer "account_id"
+    t.index ["account_id", "attachable_type", "attachable_id"], name: "lesli_support_items_attachments_attachable_type_id"
+    t.index ["account_id"], name: "index_lesli_support_items_attachments_on_account_id"
+    t.index ["deleted_at"], name: "index_lesli_support_items_attachments_on_deleted_at"
+    t.index ["user_id"], name: "index_lesli_support_items_attachments_on_user_id"
+  end
+
   create_table "lesli_support_slas", force: :cascade do |t|
     t.integer "accounts_id"
     t.text "body"
@@ -245,6 +289,8 @@ ActiveRecord::Schema[8.1].define(version: 702110110) do
     t.index ["unlock_token"], name: "index_lesli_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "lesli_accounts", "lesli_users", column: "user_id"
   add_foreign_key "lesli_resources", "lesli_resources", column: "parent_id"
   add_foreign_key "lesli_roles", "lesli_accounts", column: "account_id"
@@ -258,6 +304,8 @@ ActiveRecord::Schema[8.1].define(version: 702110110) do
   add_foreign_key "lesli_support_item_discussions", "lesli_users", column: "user_id"
   add_foreign_key "lesli_support_item_tasks", "lesli_support_accounts", column: "account_id"
   add_foreign_key "lesli_support_item_tasks", "lesli_users", column: "user_id"
+  add_foreign_key "lesli_support_items_attachments", "lesli_accounts", column: "account_id"
+  add_foreign_key "lesli_support_items_attachments", "lesli_users", column: "user_id"
   add_foreign_key "lesli_support_slas", "lesli_support_accounts", column: "accounts_id"
   add_foreign_key "lesli_support_slas", "lesli_users", column: "users_id"
   add_foreign_key "lesli_support_tickets", "lesli_support_accounts", column: "account_id"
