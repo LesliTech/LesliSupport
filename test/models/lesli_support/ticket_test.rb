@@ -45,7 +45,7 @@ module LesliSupport
             assert_equal :destroy, reflection.options[:dependent]
         end
 
-        test "registers ticket lifecycle callbacks" do
+        test "only keeps model-level callbacks required by the model" do
             before_create = LesliSupport::Ticket
                 ._create_callbacks
                 .find { |registered_callback| registered_callback.filter == :before_create_ticket }
@@ -55,8 +55,7 @@ module LesliSupport
 
             assert_not_nil before_create
             assert_equal :before, before_create.kind
-            assert_not_nil after_save
-            assert_equal :after, after_save.kind
+            assert_nil after_save
         end
     end
 end

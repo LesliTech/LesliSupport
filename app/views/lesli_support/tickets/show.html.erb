@@ -18,10 +18,10 @@
 
         <% tabs.with_tab(id:"ticket-activities", title:"Activities", icon:"search_activity") do %>
             <%= render(LesliView::Items::Activities.new(@ticket, icons: {
-                type_id: 'star',
-                owner_id: 'favorite',
-                priority_id: 'sunny',
-                category_id: 'search'
+                type_changed: 'star',
+                owner_changed: 'favorite',
+                priority_changed: 'sunny',
+                category_changed: 'search'
             })) %>
         <% end %>
 

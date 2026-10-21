@@ -63,26 +63,28 @@ module LesliSupport
         end
 
         def create(ticket_params)
-
             ticket = current_user.account.support.tickets.new(ticket_params)
-            #ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
             ticket.owner = current_user
             ticket.user = current_user
 
-            unless ticket_params.dig(:started_at)
-                #ticket.started_at = LC::Date2.new(Time.current).date.get
+            Ticket.transaction do
+                ticket.save!
+                ticket.record_activity!(
+                    actor: current_user,
+                    code: :ticket_created,
+                    description: "Ticket created",
+                    metadata: {
+                        from: nil,
+                        to: ticket_snapshot(ticket)
+                    }
+                )
             end
 
-            if ticket.save
-                #Ticket.log_activity_create(current_user, ticket)
-                #Ticket::Subscriber.add_subscriber(ticket, current_user, "discussion_created", "email")
-                #Workflow::Action.execute_actions(current_user, ticket, {}, ticket.attributes)
-                self.resource = ticket
-            else
-                pp ticket.errors.full_messages
-                self.error(ticket.errors.full_messages.to_sentence)
-            end
-
+            self.resource = ticket
+            self
+        rescue ActiveRecord::RecordInvalid => exception
+            self.resource = ticket
+            error(exception.record.errors.full_messages.to_sentence)
             self
         end
 
@@ -112,8 +114,18 @@ module LesliSupport
         end
 
         def update(params)
-            self.resource.update(params)
-        end 
+            Ticket.transaction do
+                resource.update!(params)
+                record_update_activities
+            end
+
+            self
+        rescue ActiveRecord::RecordInvalid => exception
+            message = exception.record.errors.full_messages.to_sentence
+            resource.reload if resource.persisted?
+            error(message)
+            self
+        end
 
         def with_deadline()
             current_user.account.support.tickets
@@ -124,6 +136,63 @@ module LesliSupport
             #.where("cloud_help_tickets.deadline <= ? ", query[:filters][:end_date])
             #.where("cloud_help_tickets.users_id = ? or cloud_help_tickets.user_main_id = ? or chta.users_id = ?", current_user.id, current_user.id, current_user.id)
             .order(:deadline)
+        end
+
+        private
+
+        def record_update_activities
+            record_relation_change(:owner, :owner_changed, "Ticket owner")
+            record_relation_change(:type, :type_changed, "Ticket type")
+            record_relation_change(:category, :category_changed, "Ticket category")
+            record_relation_change(:priority, :priority_changed, "Ticket priority")
+        end
+
+        def record_relation_change(association_name, code, label)
+            change = resource.saved_changes["#{association_name}_id"]
+            return unless change
+
+            model = resource.class.reflect_on_association(association_name).klass
+            metadata = {
+                from: relation_snapshot(model, change.first),
+                to: relation_snapshot(model, change.last)
+            }
+
+            resource.record_activity!(
+                actor: current_user,
+                code: code,
+                description: relation_change_description(label, metadata),
+                metadata: metadata
+            )
+        end
+
+        def relation_snapshot(model, id)
+            return if id.nil?
+
+            record = model.find_by(id: id)
+            {
+                id: id,
+                name: record&.name
+            }
+        end
+
+        def relation_change_description(label, metadata)
+            return "#{label} removed" unless metadata[:to]
+            return "#{label} set to #{snapshot_name(metadata[:to])}" unless metadata[:from]
+
+            "#{label} changed from #{snapshot_name(metadata[:from])} " \
+                "to #{snapshot_name(metadata[:to])}"
+        end
+
+        def snapshot_name(snapshot)
+            snapshot[:name].presence || "##{snapshot[:id]}"
+        end
+
+        def ticket_snapshot(ticket)
+            {
+                id: ticket.id,
+                uid: ticket.uid,
+                subject: ticket.subject
+            }
         end
     end
 end

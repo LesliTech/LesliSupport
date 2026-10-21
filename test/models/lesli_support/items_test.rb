@@ -9,6 +9,19 @@ module LesliSupport
             assert_operator LesliSupport::Items::Task, :<, Lesli::Items::Task
         end
 
+        test "configures activity ownership and storage explicitly" do
+            activity = LesliSupport::Items::Activity
+            actor = activity.reflect_on_association(:actor)
+            account = activity.reflect_on_association(:account)
+            subject = activity.reflect_on_association(:subject)
+
+            assert_equal "lesli_support_items_activities", activity.table_name
+            assert_equal "Lesli::User", actor.class_name
+            assert_equal "user_id", actor.foreign_key
+            assert_equal "LesliSupport::Account", account.class_name
+            assert subject.polymorphic?
+        end
+
         test "configures ticket attachment storage" do
             assert_equal "lesli_support_items_attachments",
                 LesliSupport::Items::Attachment.table_name

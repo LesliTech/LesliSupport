@@ -52,12 +52,16 @@ module LesliSupport
 
         # Hooks
         before_create :before_create_ticket
-        after_save :after_save_activities
 
-        # Shared items belong to the core account, while tickets belong to the
-        # engine account. This exposes the core owner used for tenant checks.
+        # Shared items belong to the same engine account as the ticket.
         def lesli_item_account
-            account.account
+            account
+        end
+
+        # Attachments still use the core account until their ownership model is
+        # aligned with the other shared items.
+        def lesli_item_accessible_by?(user)
+            user.present? && account.account == user.account
         end
 
         private
@@ -71,39 +75,5 @@ module LesliSupport
             end
         end
 
-        def after_save_activities
-
-            if self.saved_change_to_owner_id?
-                self.activities_create(
-                    description: "Agent assigned #{self.owner.name}",
-                    activity_code: :owner_id,
-                    metadata: { owner_id: self.owner.id }
-                )
-            end 
-
-            if self.saved_change_to_type_id?
-                self.activities_create(
-                    description: "Ticket type updated to #{self.type.name}",
-                    activity_code: :type_id,
-                    metadata: { type_id: self.type.id }
-                )
-            end 
-
-            if self.saved_change_to_category_id?
-                self.activities_create(
-                    description: "Ticket category updated to #{self.category.name}",
-                    activity_code: :category_id,
-                    metadata: { category_id: self.category.id }
-                )
-            end 
-
-            if self.saved_change_to_priority_id?
-                self.activities_create(
-                    description: "Ticket priority updated to #{self.priority.name}",
-                    activity_code: :priority_id,
-                    metadata: { priority_id: self.priority.id }
-                )
-            end 
-        end
     end
 end
