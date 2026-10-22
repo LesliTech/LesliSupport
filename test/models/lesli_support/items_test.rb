@@ -37,6 +37,48 @@ module LesliSupport
             end
         end
 
+        test "configures the task data contract" do
+            task = LesliSupport::Items::Task
+            account = task.reflect_on_association(:account)
+            user = task.reflect_on_association(:user)
+            taskable = task.reflect_on_association(:taskable)
+
+            assert_nil Lesli::Items::Task.reflect_on_association(:account)
+            assert_equal "lesli_support_items_tasks", task.table_name
+            assert_equal "LesliSupport::Account", account.class_name
+            assert_equal "Lesli::User", user.class_name
+            assert taskable.polymorphic?
+            assert_equal(
+                [ActiveRecord::Validations::PresenceValidator],
+                task.validators_on(:title).map(&:class)
+            )
+            assert_empty task.validators_on(:done)
+        end
+
+        test "requires a task title with content" do
+            task = LesliSupport::Items::Task.new(title: "   ")
+
+            refute task.valid?
+            assert_includes task.errors[:title], "can't be blank"
+        end
+
+        test "obtains task ownership from the taskable resource" do
+            account = LesliSupport::Account.new
+            ticket = LesliSupport::Ticket.new(account: account)
+
+            assert_same account, ticket.lesli_item_account
+        end
+
+        test "stores required task ownership without soft deletion" do
+            columns = ActiveRecord::Base.connection
+                .columns("lesli_support_items_tasks")
+                .index_by(&:name)
+
+            assert_not columns["user_id"].null
+            assert_not columns["account_id"].null
+            assert_not columns.key?("deleted_at")
+        end
+
         test "keeps the activity table name independent from base class loading" do
             activity = LesliSupport::Items::Activity
 

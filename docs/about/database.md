@@ -16,6 +16,10 @@ LesliSupport uses collection code `07` and engine code `02`.
 
 A ticket belongs to a Support account and its creator, may have an assigned owner, and references catalog items for type, category, and priority. Ticket records include the shared tasks, activities, discussions, and attachments features.
 
+Task rows require a Core user, a Support account, a polymorphic taskable, and a
+non-blank title. They do not include `deleted_at`; LesliSupport does not expose
+an individual task deletion operation.
+
 Attachment rows contain tenant ownership and domain metadata. Active Storage owns the corresponding filename, content type, byte size, checksum, and storage-service key in its shared tables.
 
 The current migrations do not create settings, workflows, subscribers, versions, or assignment tables. Some of those integrations remain visible as commented implementation code and must not be treated as persisted features.
