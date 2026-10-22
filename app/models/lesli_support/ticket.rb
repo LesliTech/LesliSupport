@@ -32,7 +32,7 @@ Building a better future, one line of code at a time.
 
 module LesliSupport
     class Ticket < Lesli::ApplicationLesliRecord
-        belongs_to :account
+        belongs_to :account, class_name: "LesliSupport::Account"
         belongs_to :owner, class_name: "Lesli::User"
         belongs_to :user, class_name: "Lesli::User"
 
@@ -58,8 +58,6 @@ module LesliSupport
             account
         end
 
-        # Attachments still use the core account until their ownership model is
-        # aligned with the other shared items.
         def lesli_item_accessible_by?(user)
             user.present? && account.account == user.account
         end

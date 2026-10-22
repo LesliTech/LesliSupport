@@ -34,7 +34,7 @@ module LesliSupport
     class CatalogService < Lesli::ApplicationLesliService
 
         def find ticket_id
-            super(current_user.account.help.tickets.find_by(id: ticket_id))
+            super(current_user.account.support.tickets.find_by(id: ticket_id))
         end
 
         def index
@@ -55,7 +55,7 @@ module LesliSupport
             .page(query[:pagination][:page])
             .per(query[:pagination][:perPage])
 
-            current_user.account.help.tickets.left_joins(
+            current_user.account.support.tickets.left_joins(
                 :priority, 
                 :type, 
                 :workspace, 
@@ -79,8 +79,8 @@ module LesliSupport
 
         def create(ticket_params)
 
-            ticket = current_user.account.help.tickets.new(ticket_params)
-            #ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.help)
+            ticket = current_user.account.support.tickets.new(ticket_params)
+            #ticket.source = Catalog::TicketSource.cloud_help_source(current_user.account.support)
             ticket.creator = current_user
             ticket.user = current_user
 
@@ -102,7 +102,7 @@ module LesliSupport
         end
 
         def show()
-            return current_user.account.help.tickets.left_joins(
+            return current_user.account.support.tickets.left_joins(
                 :user, :creator
             ).select(
                 :id,

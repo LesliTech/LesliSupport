@@ -19,10 +19,11 @@ module LesliSupport
                     account: @account
                 )
                 @user.save!(validate: false)
-                @support_account = LesliSupport::Account.create!(
-                    account: @account,
-                    name: "Support"
-                )
+                @support_account = @account.support ||
+                    LesliSupport::Account.create!(
+                        account: @account,
+                        name: "Support"
+                    )
                 @ticket = create_ticket
 
                 user = @user
@@ -51,7 +52,7 @@ module LesliSupport
                 assert_response :success
 
                 attachment = LesliSupport::Items::Attachment.last
-                assert_equal @account, attachment.account
+                assert_equal @support_account, attachment.account
                 assert_equal @user, attachment.user
                 assert_equal @ticket, attachment.attachable
                 assert_equal "attachment.txt", attachment.file.filename.to_s
@@ -150,7 +151,7 @@ module LesliSupport
 
             def create_attachment
                 @ticket.attachments.create!(
-                    account: @account,
+                    account: @support_account,
                     user: @user,
                     label: "Existing attachment",
                     file: uploaded_file

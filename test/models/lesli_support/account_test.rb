@@ -8,6 +8,22 @@ module LesliSupport
             assert_not_nil reflection
             assert_equal :belongs_to, reflection.macro
             assert_equal "Lesli::Account", reflection.class_name
+            assert_equal :support, reflection.options[:inverse_of]
+        end
+
+        test "allows only one support account per Lesli account" do
+            core_account = Lesli::Account.create!(
+                status: "active",
+                name: "Unique support account",
+                email: "support-account-#{SecureRandom.hex(4)}@example.com"
+            )
+            existing_account = core_account.support ||
+                LesliSupport::Account.create!(account: core_account)
+            duplicate_account = LesliSupport::Account.new(account: core_account)
+
+            assert_predicate existing_account, :persisted?
+            refute_predicate duplicate_account, :valid?
+            assert_predicate duplicate_account.errors[:account_id], :any?
         end
 
         test "has many support resources" do

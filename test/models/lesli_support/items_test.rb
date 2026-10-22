@@ -22,6 +22,21 @@ module LesliSupport
             assert subject.polymorphic?
         end
 
+        test "configures every item with the support account" do
+            item_classes = {
+                LesliSupport::Items::Task => "lesli_support_items_tasks",
+                LesliSupport::Items::Discussion => "lesli_support_items_discussions",
+                LesliSupport::Items::Attachment => "lesli_support_items_attachments"
+            }
+
+            item_classes.each do |item_class, table_name|
+                account = item_class.reflect_on_association(:account)
+
+                assert_equal table_name, item_class.table_name
+                assert_equal "LesliSupport::Account", account.class_name
+            end
+        end
+
         test "keeps the activity table name independent from base class loading" do
             activity = LesliSupport::Items::Activity
 

@@ -171,10 +171,11 @@ module LesliSupport
         test "does not expose a ticket or its activities to another tenant" do
             other_account = create_core_account("isolated")
             other_user = create_user("other tenant", account: other_account)
-            other_support_account = LesliSupport::Account.create!(
-                account: other_account,
-                name: "Other support"
-            )
+            other_support_account = other_account.support ||
+                LesliSupport::Account.create!(
+                    account: other_account,
+                    name: "Other support"
+                )
 
             @ticket.record_activity!(
                 actor: @current_user,
