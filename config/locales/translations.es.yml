@@ -1,2 +1,31 @@
 ---
-:es: {}
+:es:
+  lesli_support:
+    items:
+      activities:
+        empty: Todavía no se ha registrado actividad.
+        unknown_actor: Usuario desconocido
+        events:
+          ticket_created:
+            operation: Ticket creado
+            set: Se creó el ticket %{to}.
+          owner_changed:
+            operation: Responsable actualizado
+            set: Se asignó a %{to}.
+            changed: Se cambió de %{from} a %{to}.
+            removed: Se removió a %{from} como responsable.
+          type_changed:
+            operation: Tipo actualizado
+            set: Se estableció como %{to}.
+            changed: Se cambió de %{from} a %{to}.
+            removed: Se removió %{from}.
+          category_changed:
+            operation: Categoría actualizada
+            set: Se estableció como %{to}.
+            changed: Se cambió de %{from} a %{to}.
+            removed: Se removió %{from}.
+          priority_changed:
+            operation: Prioridad actualizada
+            set: Se estableció como %{to}.
+            changed: Se cambió de %{from} a %{to}.
+            removed: Se removió %{from}.

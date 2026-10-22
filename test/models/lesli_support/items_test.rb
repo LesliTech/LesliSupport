@@ -22,6 +22,31 @@ module LesliSupport
             assert subject.polymorphic?
         end
 
+        test "keeps the activity table name independent from base class loading" do
+            activity = LesliSupport::Items::Activity
+
+            assert activity.instance_variable_defined?(:@table_name)
+            assert_equal(
+                "lesli_support_items_activities",
+                activity.instance_variable_get(:@table_name)
+            )
+            assert_equal "lesli_support_items_activities", activity.table_name
+        end
+
+        test "indexes activities for the subject timeline query" do
+            index = ActiveRecord::Base.connection
+                .indexes("lesli_support_items_activities")
+                .find do |candidate|
+                    candidate.name == "lesli_support_items_activities_timeline"
+                end
+
+            assert_not_nil index
+            assert_equal(
+                %w[subject_type subject_id deleted_at created_at id],
+                index.columns
+            )
+        end
+
         test "configures ticket attachment storage" do
             assert_equal "lesli_support_items_attachments",
                 LesliSupport::Items::Attachment.table_name

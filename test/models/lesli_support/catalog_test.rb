@@ -21,5 +21,6 @@ module LesliSupport
             assert_equal :has_many, reflection.macro
             assert_equal LesliSupport::Catalog::Item, reflection.klass
         end
+
     end
 end

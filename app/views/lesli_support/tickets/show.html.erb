@@ -17,12 +17,17 @@
         <% end %>
 
         <% tabs.with_tab(id:"ticket-activities", title:"Activities", icon:"search_activity") do %>
-            <%= render(LesliView::Items::Activities.new(@ticket, icons: {
-                type_changed: 'star',
-                owner_changed: 'favorite',
-                priority_changed: 'sunny',
-                category_changed: 'search'
-            })) %>
+            <%= render LesliView::Items::Activities.new(
+                @ticket,
+                i18n_scope: "lesli_support.items.activities",
+                icons: {
+                    ticket_created: "add_circle",
+                    owner_changed: "manage_accounts",
+                    type_changed: "label",
+                    category_changed: "category",
+                    priority_changed: "priority_high"
+                }
+            ) %>
         <% end %>
 
         <% tabs.with_tab(id:"ticket-attachments", title:"Attachments", icon:"attach_file") do %>

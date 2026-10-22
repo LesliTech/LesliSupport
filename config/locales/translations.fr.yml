@@ -1,2 +1,31 @@
 ---
-:fr: {}
+:fr:
+  lesli_support:
+    items:
+      activities:
+        empty: Aucune activité n'a encore été enregistrée.
+        unknown_actor: Utilisateur inconnu
+        events:
+          ticket_created:
+            operation: Ticket créé
+            set: Le ticket %{to} a été créé.
+          owner_changed:
+            operation: Responsable modifié
+            set: Assigné à %{to}.
+            changed: Modifié de %{from} à %{to}.
+            removed: "%{from} n'est plus responsable."
+          type_changed:
+            operation: Type modifié
+            set: Défini sur %{to}.
+            changed: Modifié de %{from} à %{to}.
+            removed: "%{from} a été supprimé."
+          category_changed:
+            operation: Catégorie modifiée
+            set: Définie sur %{to}.
+            changed: Modifiée de %{from} à %{to}.
+            removed: "%{from} a été supprimée."
+          priority_changed:
+            operation: Priorité modifiée
+            set: Définie sur %{to}.
+            changed: Modifiée de %{from} à %{to}.
+            removed: "%{from} a été supprimée."

@@ -19,4 +19,14 @@ store `from` and `to` snapshots in their metadata. The actor is always the
 current user executing the service operation. Removing an optional relation is
 represented by a `nil` `to` snapshot.
 
-All records and selector values must belong to the current account. Authorization and account scoping should remain in the ticket service when extending the page.
+The shared `LesliView::Items::Activities` component converts those records into
+timeline data. Event titles and descriptions are resolved through I18n, while
+LesliSupport uses the engine-specific `lesli_support.items.activities` scope
+and maps each known event to a Material Symbol. The timeline displays the
+actor, event, date, and change description. It loads the 25 most recent
+activities initially and displays a translated empty state when no events have
+been recorded.
+
+Ticket lookup remains scoped to the current account. Form selectors also load
+their options from that account, but ticket updates do not perform an
+additional ownership validation for submitted relation IDs.
