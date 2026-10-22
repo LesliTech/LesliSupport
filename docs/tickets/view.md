@@ -5,12 +5,13 @@ Select a ticket from `/support/tickets` to open its detail page. The page curren
 | Tab | Purpose |
 | --- | --- |
 | Information | Update subject, classification, owner, and description |
-| Discussions | Add and read the ticket conversation |
+| Discussions | Add and read a linear list of ticket comments |
 | Tasks | Track work attached to the ticket |
 | Activities | Review changes to the ticket |
 | Attachments | Upload and manage files associated with the ticket |
 
-Saving the information form updates the ticket in place. Discussion creation is exposed through the ticket's nested discussion route, while tasks and activities use Lesli's shared item components.
+Saving the information form updates the ticket in place. Discussions, tasks,
+activities, and attachments use Lesli's shared item components and routes.
 
 Ticket activity events are recorded by `LesliSupport::TicketService` in the
 same transaction as the ticket change. Creation records `ticket_created`.

@@ -7,7 +7,7 @@ LesliSupport uses collection code `07` and engine code `02`.
 | `07.02.00.01.10` | `lesli_support_accounts` | Engine state for a Lesli account |
 | `07.02.00.01.10` | `lesli_support_items_tasks` | Tasks attached to supported records |
 | `07.02.00.01.10` | `lesli_support_items_activities` | Activity history for supported records |
-| `07.02.00.01.10` | `lesli_support_items_discussions` | Threaded discussions for supported records |
+| `07.02.00.01.10` | `lesli_support_items_discussions` | Linear comments attached to supported records |
 | `07.02.00.02.10` | `lesli_support_items_attachments` | File metadata attached to supported records |
 | `07.02.00.20.10` | `lesli_support_catalogs` | Account-scoped catalog groups |
 | `07.02.00.20.10` | `lesli_support_catalog_items` | Type, category, priority, and other catalog values |
@@ -19,6 +19,11 @@ A ticket belongs to a Support account and its creator, may have an assigned owne
 Task rows require a Core user, a Support account, a polymorphic taskable, and a
 non-blank title. They do not include `deleted_at`; LesliSupport does not expose
 an individual task deletion operation.
+
+Discussion rows represent individual comments, not threads. Each row requires
+a Core author, a Support account, a polymorphic discussable, and a non-blank
+plain-text message. The first version does not provide replies, editing,
+deletion, or soft deletion.
 
 Attachment rows contain tenant ownership and domain metadata. Active Storage owns the corresponding filename, content type, byte size, checksum, and storage-service key in its shared tables.
 

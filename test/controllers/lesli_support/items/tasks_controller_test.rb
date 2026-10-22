@@ -51,6 +51,7 @@ module LesliSupport
                 assert_response :created
                 assert_includes response.body,
                     I18n.t("lesli.items.tasks.created")
+                assert_equal "", task_title_input["value"].to_s
 
                 task = LesliSupport::Items::Task.last
                 assert_equal @support_account, task.account
@@ -73,6 +74,8 @@ module LesliSupport
                 end
 
                 assert_response :unprocessable_content
+                assert_equal "   ", task_title_input["value"]
+                assert_includes response.body, "blank"
             end
 
             test "creates a task with a consistent JSON response" do
@@ -111,7 +114,7 @@ module LesliSupport
                 assert_response :success
                 assert_predicate task.reload, :done?
                 assert_equal(
-                    I18n.t("lesli.items.tasks.updated"),
+                    I18n.t("lesli.items.tasks.completed"),
                     response.parsed_body["message"]
                 )
                 assert_equal true, response.parsed_body.dig("task", "done")
@@ -125,12 +128,26 @@ module LesliSupport
                 assert_response :success
                 assert_predicate task.reload, :done?
                 assert_includes response.body,
-                    I18n.t("lesli.items.tasks.updated")
+                    I18n.t("lesli.items.tasks.completed")
                 assert_includes response.body,
                     ActionView::RecordIdentifier.dom_id(
                         task,
                         "lesli_support_items_task"
                     )
+            end
+
+            test "reopens a completed task" do
+                task = create_task(done: true)
+
+                patch :update, params: { id: task.id }, format: :json
+
+                assert_response :success
+                assert_not task.reload.done?
+                assert_equal(
+                    I18n.t("lesli.items.tasks.reopened"),
+                    response.parsed_body["message"]
+                )
+                assert_equal false, response.parsed_body.dig("task", "done")
             end
 
             test "returns validation errors when a task cannot be completed" do
@@ -177,6 +194,73 @@ module LesliSupport
                 end
             end
 
+            test "rejects a resource type that does not support tasks" do
+                assert_no_difference("LesliSupport::Items::Task.count") do
+                    assert_raises(ActiveRecord::RecordNotFound) do
+                        post(
+                            :create,
+                            params: {
+                                taskable_type: "Lesli::User",
+                                taskable_id: @user.id,
+                                lesli_support_items_task: {
+                                    title: "Invalid resource task"
+                                }
+                            },
+                            format: :json
+                        )
+                    end
+                end
+            end
+
+            test "rejects a taskable resource that does not exist" do
+                assert_no_difference("LesliSupport::Items::Task.count") do
+                    assert_raises(ActiveRecord::RecordNotFound) do
+                        post(
+                            :create,
+                            params: {
+                                taskable_type: "LesliSupport::Ticket",
+                                taskable_id: -1,
+                                lesli_support_items_task: {
+                                    title: "Missing resource task"
+                                }
+                            },
+                            format: :json
+                        )
+                    end
+                end
+            end
+
+            test "renders the translated empty state" do
+                html = I18n.with_locale(:es) do
+                    LesliView::Items::Tasks
+                        .new(@ticket)
+                        .render_in(@controller.view_context)
+                end
+
+                assert_includes html,
+                    I18n.t("lesli.items.tasks.empty", locale: :es)
+            end
+
+            test "uses translated Turbo notifications" do
+                I18n.with_locale(:es) do
+                    post(
+                        :create,
+                        params: {
+                            taskable_type: "LesliSupport::Ticket",
+                            taskable_id: @ticket.id,
+                            lesli_support_items_task: {
+                                title: "Tarea traducida"
+                            }
+                        },
+                        format: :turbo_stream
+                    )
+
+                    assert_response :created
+                    assert_includes response.body,
+                        I18n.t("lesli.items.tasks.created")
+                end
+            end
+
             test "exposes only create and update routes" do
                 assert_equal "lesli_support/items/tasks", @routes.recognize_path(
                     "/items/tasks",
@@ -197,7 +281,7 @@ module LesliSupport
 
             private
 
-            def create_task(title: "Follow up")
+            def create_task(title: "Follow up", done: false)
                 now = Time.current
                 result = LesliSupport::Items::Task.insert_all!([{
                     account_id: @support_account.id,
@@ -205,12 +289,20 @@ module LesliSupport
                     taskable_type: @ticket.class.name,
                     taskable_id: @ticket.id,
                     title: title,
-                    done: false,
+                    done: done,
                     created_at: now,
                     updated_at: now
                 }])
 
                 LesliSupport::Items::Task.find(result.rows.first.first)
+            end
+
+            def task_title_input
+                Nokogiri::HTML
+                    .fragment(response.body)
+                    .at_css(
+                        'input[name="lesli_support_items_task[title]"]'
+                    )
             end
 
             def create_ticket

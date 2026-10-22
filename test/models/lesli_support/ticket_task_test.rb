@@ -44,7 +44,7 @@ module LesliSupport
             assert_equal task, @ticket.tasks.first
         end
 
-        test "add_task uses the configured association" do
+        test "add_task uses the configured association and class" do
             ticket = TicketWithTaskList.find(@ticket.id)
             ticket.define_singleton_method(:tasks) do
                 raise "add_task! used the default association"
@@ -56,6 +56,8 @@ module LesliSupport
             )
 
             assert_equal :task_list, ticket.class.lesli_tasks_association_name
+            assert_equal LesliSupport::Items::Task,
+                ticket.class.lesli_tasks_class
             assert_equal ticket, task.taskable
             assert_includes ticket.task_list, task
         end
@@ -68,15 +70,32 @@ module LesliSupport
             end
         end
 
+        test "lists only tasks that belong to the requested resource" do
+            other_ticket = create_ticket(subject: "Other task API test")
+            requested_task = @ticket.add_task!(
+                creator: @creator,
+                title: "Requested resource task"
+            )
+            other_ticket.add_task!(
+                creator: @creator,
+                title: "Other resource task"
+            )
+
+            assert_equal [requested_task.id],
+                @ticket.tasks.reload.pluck(:id)
+            assert_equal ["Requested resource task"],
+                @ticket.tasks.pluck(:title)
+        end
+
         private
 
-        def create_ticket
+        def create_ticket(subject: "Task API test")
             now = Time.current
             result = LesliSupport::Ticket.insert_all!([{
                 account_id: @support_account.id,
                 owner_id: @creator.id,
                 user_id: @creator.id,
-                subject: "Task API test",
+                subject: subject,
                 uid: "TKT-#{SecureRandom.hex(4)}",
                 created_at: now,
                 updated_at: now

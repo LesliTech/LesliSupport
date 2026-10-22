@@ -138,18 +138,17 @@ ActiveRecord::Schema[8.1].define(version: 702110110) do
     t.index ["user_id"], name: "index_lesli_support_items_activities_on_user_id"
   end
 
-  create_table "lesli_support_item_discussions", force: :cascade do |t|
-    t.integer "account_id"
+  create_table "lesli_support_items_discussions", force: :cascade do |t|
+    t.integer "account_id", null: false
     t.datetime "created_at", null: false
-    t.datetime "deleted_at"
     t.bigint "discussable_id", null: false
     t.string "discussable_type", null: false
-    t.text "message"
+    t.text "message", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.index ["account_id"], name: "index_lesli_support_item_discussions_on_account_id"
-    t.index ["deleted_at"], name: "index_lesli_support_item_discussions_on_deleted_at"
-    t.index ["user_id"], name: "index_lesli_support_item_discussions_on_user_id"
+    t.integer "user_id", null: false
+    t.index ["account_id", "discussable_type", "discussable_id"], name: "lesli_support_items_discussions_discussable_type_id"
+    t.index ["account_id"], name: "index_lesli_support_items_discussions_on_account_id"
+    t.index ["user_id"], name: "index_lesli_support_items_discussions_on_user_id"
   end
 
   create_table "lesli_support_items_tasks", force: :cascade do |t|
@@ -298,8 +297,8 @@ ActiveRecord::Schema[8.1].define(version: 702110110) do
   add_foreign_key "lesli_support_catalogs", "lesli_support_catalogs", column: "parent_id"
   add_foreign_key "lesli_support_items_activities", "lesli_support_accounts", column: "account_id"
   add_foreign_key "lesli_support_items_activities", "lesli_users", column: "user_id"
-  add_foreign_key "lesli_support_item_discussions", "lesli_support_accounts", column: "account_id"
-  add_foreign_key "lesli_support_item_discussions", "lesli_users", column: "user_id"
+  add_foreign_key "lesli_support_items_discussions", "lesli_support_accounts", column: "account_id"
+  add_foreign_key "lesli_support_items_discussions", "lesli_users", column: "user_id"
   add_foreign_key "lesli_support_items_tasks", "lesli_support_accounts", column: "account_id"
   add_foreign_key "lesli_support_items_tasks", "lesli_users", column: "user_id"
   add_foreign_key "lesli_support_items_attachments", "lesli_support_accounts", column: "account_id"

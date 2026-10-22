@@ -36,6 +36,5 @@ LesliSupport::Engine.routes.draw do
 
     resources :tickets, only: [:show, :index, :new, :create, :edit, :update] do 
         resources :actions, module: :ticket, only: [:create, :update]
-        resources :discussions, module: :ticket, only: [:create]
     end
 end

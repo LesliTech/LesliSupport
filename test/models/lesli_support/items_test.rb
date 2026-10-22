@@ -55,6 +55,40 @@ module LesliSupport
             assert_empty task.validators_on(:done)
         end
 
+        test "configures the discussion data contract" do
+            discussion = LesliSupport::Items::Discussion
+            account = discussion.reflect_on_association(:account)
+            author = discussion.reflect_on_association(:author)
+            discussable = discussion.reflect_on_association(:discussable)
+
+            assert_nil Lesli::Items::Discussion.reflect_on_association(:account)
+            assert_equal "lesli_support_items_discussions", discussion.table_name
+            assert_equal "LesliSupport::Account", account.class_name
+            assert_equal "Lesli::User", author.class_name
+            assert_equal "user_id", author.foreign_key
+            assert discussable.polymorphic?
+            assert_equal(
+                [ActiveRecord::Validations::PresenceValidator],
+                discussion.validators_on(:message).map(&:class)
+            )
+        end
+
+        test "requires a plain-text discussion message" do
+            [nil, "   "].each do |message|
+                discussion = LesliSupport::Items::Discussion.new(message: message)
+
+                refute discussion.valid?
+                assert_includes discussion.errors[:message], "can't be blank"
+            end
+
+            discussion = LesliSupport::Items::Discussion.new(
+                message: "Follow up with the customer"
+            )
+
+            discussion.valid?
+            assert_empty discussion.errors[:message]
+        end
+
         test "requires a task title with content" do
             task = LesliSupport::Items::Task.new(title: "   ")
 
@@ -88,6 +122,59 @@ module LesliSupport
                 activity.instance_variable_get(:@table_name)
             )
             assert_equal "lesli_support_items_activities", activity.table_name
+        end
+
+        test "keeps the task table name independent from base class loading" do
+            task = LesliSupport::Items::Task
+
+            assert task.instance_variable_defined?(:@table_name)
+            assert_equal(
+                "lesli_support_items_tasks",
+                task.instance_variable_get(:@table_name)
+            )
+            assert_equal "lesli_support_items_tasks", task.table_name
+        end
+
+        test "keeps the discussion table name independent from base class loading" do
+            discussion = LesliSupport::Items::Discussion
+
+            assert discussion.instance_variable_defined?(:@table_name)
+            assert_equal(
+                "lesli_support_items_discussions",
+                discussion.instance_variable_get(:@table_name)
+            )
+            assert_equal "lesli_support_items_discussions",
+                discussion.table_name
+        end
+
+        test "stores required discussion ownership in the local account" do
+            connection = ActiveRecord::Base.connection
+            table_name = "lesli_support_items_discussions"
+            columns = connection.columns(table_name).index_by(&:name)
+            account_foreign_key = connection
+                .foreign_keys(table_name)
+                .find { |foreign_key| foreign_key.options[:column] == "account_id" }
+            resource_index = connection
+                .indexes(table_name)
+                .find do |index|
+                    index.name ==
+                        "lesli_support_items_discussions_discussable_type_id"
+                end
+
+            assert_not columns["account_id"].null
+            assert_not columns["user_id"].null
+            assert_not columns["discussable_type"].null
+            assert_not columns["discussable_id"].null
+            assert_not columns["message"].null
+            assert_not columns.key?("deleted_at")
+            assert_not_nil account_foreign_key
+            assert_not_nil resource_index
+            assert_equal "lesli_support_accounts",
+                account_foreign_key.to_table
+            assert_equal(
+                %w[account_id discussable_type discussable_id],
+                resource_index.columns
+            )
         end
 
         test "indexes activities for the subject timeline query" do
