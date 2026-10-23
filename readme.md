@@ -8,8 +8,8 @@
 <br />
 
 <div align="center">
-    <a target="_blank" href="https://github.com/LesliTech/LesliSupport/actions/workflows/lesli-ci-tests.yaml">
-        <img alt="LesliSupport test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/LesliSupport/lesli-ci-tests.yaml?branch=master&style=for-the-badge&logo=github&label=tests">
+    <a target="_blank" href="https://github.com/LesliTech/LesliSupport/actions/workflows/lesli-ci-engine.yaml">
+        <img alt="LesliSupport test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/LesliSupport/lesli-ci-engine.yaml?branch=master&style=for-the-badge&logo=github&label=tests">
     </a>
     <a target="_blank" href="https://rubygems.org/gems/lesli_support">
         <img alt="Gem Version" src="https://img.shields.io/gem/v/lesli_support?style=for-the-badge&logo=ruby">
@@ -49,6 +49,7 @@ It provides account-scoped tools for receiving, organizing, discussing, and reso
 - Ticket assignment and status workflows
 - Internal and customer-facing discussions
 - Ticket activity history
+- Private ticket attachments backed by Rails Active Storage
 - Service catalog and account-scoped organization
 
 <br />
@@ -75,6 +76,17 @@ Add the engine to the host Rails application and prepare its database:
 bundle add lesli_support
 bin/rails lesli:db:prepare
 ```
+
+Ticket attachments require the host application's shared Active Storage
+tables. Install them once if they are not already present:
+
+```shell
+bin/rails active_storage:install
+bin/rails db:migrate
+```
+
+AWS S3 and Cloudflare R2 require `aws-sdk-s3` in the host application. See the
+[attachment setup guide](docs/tickets/attachments.md) for provider examples.
 
 ### Mount the engine
 

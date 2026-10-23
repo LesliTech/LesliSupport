@@ -29,6 +29,10 @@ migration. Do not install separate Active Storage tables for each Lesli engine.
 
 Development and test environments can use the disk service. AWS S3 and Cloudflare R2 use the Active Storage S3 adapter and require `aws-sdk-s3` in the host application.
 
+```shell
+bundle add aws-sdk-s3
+```
+
 ## Supported Files
 
 The default maximum size is 25 MB. The first implementation accepts common images, PDF, plain text, CSV, ZIP, and Microsoft Office formats. An engine can override `lesli_attachment_max_file_size` or `lesli_attachment_content_types` on its concrete attachment model.
@@ -49,6 +53,21 @@ in `config/storage.yml`. If production uses `local`, mount the Rails `storage`
 directory on persistent storage; container-local files are lost when a
 container is replaced.
 
+An AWS S3 service can use the standard Active Storage configuration:
+
+```yaml
+amazon:
+  service: S3
+  access_key_id: <%= ENV.fetch("AWS_ACCESS_KEY_ID") %>
+  secret_access_key: <%= ENV.fetch("AWS_SECRET_ACCESS_KEY") %>
+  region: <%= ENV.fetch("AWS_REGION") %>
+  bucket: <%= ENV.fetch("AWS_BUCKET") %>
+```
+
+When the application uses an IAM role, workload identity, or another AWS SDK
+credential provider, omit the explicit access keys and allow the SDK credential
+chain to resolve them.
+
 An S3-compatible configuration for Cloudflare R2 looks like:
 
 ```yaml
@@ -61,5 +80,10 @@ cloudflare:
   endpoint: <%= ENV.fetch("R2_ENDPOINT") %>
   force_path_style: true
 ```
+
+`R2_ENDPOINT` uses the account-specific S3 API endpoint, for example
+`https://<account-id>.r2.cloudflarestorage.com`. Keep buckets private; Lesli
+authorizes the download before Active Storage creates its short-lived service
+URL.
 
 The initial implementation sends uploads through Rails. Browser-to-storage direct uploads and upload progress can be added without changing the attachment domain model.
