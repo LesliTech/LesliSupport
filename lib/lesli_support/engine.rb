@@ -35,10 +35,6 @@ module LesliSupport
         isolate_namespace LesliSupport
 
         initializer :lesli_support do |app|
-
-            # register assets manifest
-            config.assets.precompile += %w[lesli_support_manifest.js]
-
             # register engine migrations path
             unless app.root.to_s.match root.to_s
                 config.paths["db/migrate"].expanded.each do |expanded_path|

@@ -6,14 +6,26 @@ LesliSupport stores attachment ownership and labels in `lesli_support_items_atta
 
 ## Setup
 
-Install the shared Active Storage tables once in the host application:
+The host application, rather than Lesli Core or an individual engine, owns the
+Active Storage infrastructure. It must contain these shared tables:
+
+| Table | Responsibility |
+| --- | --- |
+| `active_storage_blobs` | File metadata, checksum, storage key, and service name |
+| `active_storage_attachments` | Association between a blob and a Lesli attachment record |
+| `active_storage_variant_records` | Generated image and preview variants |
+
+If the host does not already use Active Storage, install its migration once:
 
 ```shell
 bin/rails active_storage:install
 bin/rails db:migrate
 ```
 
-Do not install separate Active Storage tables for each Lesli engine.
+The Lesli-specific `lesli_support_items_attachments` table does not replace
+these Rails tables. `bin/rails lesli:db:prepare` can apply a generated Active
+Storage migration, but it does not run `active_storage:install` or create that
+migration. Do not install separate Active Storage tables for each Lesli engine.
 
 Development and test environments can use the disk service. AWS S3 and Cloudflare R2 use the Active Storage S3 adapter and require `aws-sdk-s3` in the host application.
 

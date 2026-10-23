@@ -25,7 +25,14 @@ a Core author, a Support account, a polymorphic discussable, and a non-blank
 plain-text message. The first version does not provide replies, editing,
 deletion, or soft deletion.
 
-Attachment rows contain tenant ownership and domain metadata. Active Storage owns the corresponding filename, content type, byte size, checksum, and storage-service key in its shared tables.
+Attachment rows contain tenant ownership and domain metadata. Active Storage
+owns the corresponding filename, content type, byte size, checksum, and
+storage-service key in the host application's shared `active_storage_blobs`,
+`active_storage_attachments`, and `active_storage_variant_records` tables.
+Those infrastructure tables are installed once in the host; they are not
+created by the LesliSupport migration. See
+[Ticket Attachments](/engines/support/tickets/attachments/) for setup and
+storage-provider configuration.
 
 The current migrations do not create settings, workflows, subscribers, versions, or assignment tables. Some of those integrations remain visible as commented implementation code and must not be treated as persisted features.
 

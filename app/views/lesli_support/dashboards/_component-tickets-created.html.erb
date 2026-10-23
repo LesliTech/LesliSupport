@@ -1,8 +1,8 @@
 <%
-group = Date2.new.date.db_column(:created_at)
+group = Date2.new.date.db_column(:created_at, as: false)
 tickets = current_user.account.support.tickets
-    .group(group.sub('as created_at_string',''))
-    .order(created_at: :asc)
+    .group(Arel.sql(group))
+    .order(Arel.sql('MIN(created_at) ASC'))
     .limit(10)
     .count
 %>
